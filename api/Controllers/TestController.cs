@@ -70,12 +70,9 @@ public class TestController : ControllerBase
             connection.Open();
             using var command = new MySqlCommand(sql, connection);
             command.Parameters.AddWithValue("@data", test.Data);
-            var result = command.ExecuteScalar();
+            command.ExecuteNonQuery();
             connection.Close();
-            Console.WriteLine(result);
-            test.Id = Convert.ToInt32(result);
-            var returnobj = JsonConvert.SerializeObject(test);
-            return Created(Convert.ToString(result), test);
+            return Ok();
         }
     }
 
@@ -96,7 +93,7 @@ public class TestController : ControllerBase
             {
                 return NotFound("not found");
             }
-            return Ok(test);
+            return Ok();
         }
     }
 
@@ -116,7 +113,7 @@ public class TestController : ControllerBase
             {
                 return NotFound("not found");
             }
-            return Ok("deleted");
+            return Ok();
         }
     }
 }
