@@ -20,7 +20,7 @@ public class TestController : ControllerBase
     [HttpGet]
     public IActionResult Get()
     {
-        string connectionString = _configuration.GetConnectionString("DefaultConnection");
+        string connectionString = _configuration.GetConnectionString("PebblesDB");
         using (var connection = new MySqlConnection(connectionString))
         {
             string sql = "SELECT * FROM test";
@@ -42,7 +42,7 @@ public class TestController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Get(int id)
     {
-        string connectionString = _configuration.GetConnectionString("DefaultConnection");
+        string connectionString = _configuration.GetConnectionString("PebblesDB");
         using (var connection = new MySqlConnection(connectionString))
         {
             string sql = "SELECT * FROM test WHERE id = @id";
@@ -63,7 +63,7 @@ public class TestController : ControllerBase
     [HttpPost]
     public IActionResult Post([FromBody] Test test)
     {
-        string connectionString = _configuration.GetConnectionString("DefaultConnection");
+        string connectionString = _configuration.GetConnectionString("PebblesDB");
         using (var connection = new MySqlConnection(connectionString))
         {
             string sql = "INSERT INTO test (data) VALUES (@data)";
@@ -82,7 +82,7 @@ public class TestController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult Put(int id, [FromBody] Test test)
     {
-        string connectionString = _configuration.GetConnectionString("DefaultConnection");
+        string connectionString = _configuration.GetConnectionString("PebblesDB");
         using (var connection = new MySqlConnection(connectionString))
         {
             string sql = "UPDATE test SET data = @data WHERE id = @id";
@@ -103,7 +103,7 @@ public class TestController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        string connectionString = _configuration.GetConnectionString("DefaultConnection");
+        string connectionString = _configuration.GetConnectionString("PebblesDB");
         using (var connection = new MySqlConnection(connectionString))
         {
             connection.Open();
