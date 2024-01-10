@@ -1,5 +1,4 @@
-using System.Data.SqlClient;
-using Newtonsoft.Json;
+using MySqlConnector;
 using Pebbles.Models;
 
 namespace Pebbles.Repositories;
@@ -29,12 +28,12 @@ public class TestRepository : ITestRepository
     {
         try
         {
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new MySqlConnection(connectionString))
             {
                 string sql = "SELECT * FROM test";
                 await connection.OpenAsync();
-                using var command = new SqlCommand(sql, connection);
-                using SqlDataReader reader = command.ExecuteReader();
+                using var command = new MySqlCommand(sql, connection);
+                using MySqlDataReader reader = command.ExecuteReader();
                 var tests = new List<Test>();
                 while (reader.Read())
                 {
@@ -58,13 +57,13 @@ public class TestRepository : ITestRepository
     {
         try
         {
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new MySqlConnection(connectionString))
             {
                 string sql = "SELECT * FROM test WHERE id = @id";
                 await connection.OpenAsync();
-                using var command = new SqlCommand(sql, connection);
+                using var command = new MySqlCommand(sql, connection);
                 command.Parameters.AddWithValue("@id", id);
-                using SqlDataReader reader = command.ExecuteReader();
+                using MySqlDataReader reader = command.ExecuteReader();
 
                 reader.Read();
                 var test = new Test(int.Parse(reader["id"].ToString()), reader["data"].ToString());
@@ -84,11 +83,11 @@ public class TestRepository : ITestRepository
     {
         try
         {
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new MySqlConnection(connectionString))
             {
                 string sql = "INSERT INTO test (data) VALUES (@data)";
                 await connection.OpenAsync();
-                using var command = new SqlCommand(sql, connection);
+                using var command = new MySqlCommand(sql, connection);
                 command.Parameters.AddWithValue("@data", test.Data);
                 command.ExecuteNonQuery();
                 await connection.CloseAsync();
@@ -106,11 +105,11 @@ public class TestRepository : ITestRepository
     {
         try
         {
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new MySqlConnection(connectionString))
             {
                 string sql = "UPDATE test SET data = @data WHERE id = @id";
                 await connection.OpenAsync();
-                using var command = new SqlCommand(sql, connection);
+                using var command = new MySqlCommand(sql, connection);
                 command.Parameters.AddWithValue("@id", test.Id);
                 command.Parameters.AddWithValue("@data", test.Data);
                 command.ExecuteNonQuery();
@@ -129,11 +128,11 @@ public class TestRepository : ITestRepository
     {
         try
         {
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new MySqlConnection(connectionString))
             {
                 string sql = "DELETE FROM test WHERE id = @id";
                 await connection.OpenAsync();
-                using var command = new SqlCommand(sql, connection);
+                using var command = new MySqlCommand(sql, connection);
                 command.Parameters.AddWithValue("@id", id);
                 command.ExecuteNonQuery();
                 await connection.CloseAsync();
