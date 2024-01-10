@@ -5,7 +5,7 @@ import { AuthRoutes } from "../../../core/config/routes";
 const AuthContainer = () => {
   const location = useLocation();
   // TODO: Check auth status
-  const auth = false;
+  const auth = true;
 
   if (!auth) {
     return (

@@ -4,6 +4,10 @@ const AuthRoutes = {
   Register: '/auth/register',
 }
 
+const PatientRoutes = {
+  Dashboard: '/',
+}
 
 
-export { AuthRoutes };
+
+export { AuthRoutes, PatientRoutes };
