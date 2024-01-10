@@ -10,14 +10,8 @@ import LoginScreen from "../screens/LoginScreen";
 const App = () => (
   <Routes>
     {/* Authentication Paths */}
-    <Route
-      path={AuthRoutes.Index}
-      element={<Navigate to={AuthRoutes.Login} />}
-    />
-    <Route path={AuthRoutes.Index} element={<OnboardingLayout />}>
-      <Route path={AuthRoutes.Login} element={<LoginScreen />} />
-      <Route path={AuthRoutes.Register} element={<RegisterScreen />} />
-      <Route path="*" element={<Navigate to={AuthRoutes.Login} />} />
+    <Route path={AuthRoutes.Login} element={<OnboardingLayout />}>
+      <Route index element={<LoginScreen />} />
     </Route>
 
     {/* Routes when logged in */}
