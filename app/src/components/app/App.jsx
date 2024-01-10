@@ -1,11 +1,11 @@
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import OnboardingLayout from "./auth/OnboardingLayout";
-import LoginScreen from "./screens/LoginScreen";
-import RegisterScreen from "./screens/RegisterScreen";
+import RegisterScreen from "../screens/RegisterScreen";
 import { AuthRoutes } from "../../core/config/routes";
 import AuthContainer from "./auth/AuthContainer";
 import RoleContainer from "./auth/RoleContainer";
 import { UserRoles } from "../../core/config/userRoles";
+import LoginScreen from "../screens/LoginScreen";
 
 const App = () => (
   <Routes>
