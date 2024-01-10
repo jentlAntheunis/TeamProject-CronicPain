@@ -85,11 +85,15 @@ public class TestRepository : ITestRepository
         {
             using (var connection = new MySqlConnection(connectionString))
             {
-                string sql = "INSERT INTO test (data) VALUES (@data)";
+                string sql = "INSERT INTO test (data) VALUES (@data); SELECT LAST_INSERT_ID();";
                 await connection.OpenAsync();
                 using var command = new MySqlCommand(sql, connection);
                 command.Parameters.AddWithValue("@data", test.Data);
-                command.ExecuteNonQuery();
+                object result = await command.ExecuteScalarAsync();
+                if (result != null)
+                {
+                    test.Id = Convert.ToInt32(result);
+                }
                 await connection.CloseAsync();
                 return test;
             }
