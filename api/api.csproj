@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="mysqlconnector" Version="2.3.3" />
     <PackageReference Include="newtonsoft.json" Version="13.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="system.data.sqlclient" Version="4.8.6" />
   </ItemGroup>
 
 </Project>

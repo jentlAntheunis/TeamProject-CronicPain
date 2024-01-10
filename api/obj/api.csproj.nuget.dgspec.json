@@ -42,13 +42,13 @@
               "target": "Package",
               "version": "[6.5.0, )"
             },
-            "mysqlconnector": {
-              "target": "Package",
-              "version": "[2.3.3, )"
-            },
             "newtonsoft.json": {
               "target": "Package",
               "version": "[13.0.3, )"
+            },
+            "system.data.sqlclient": {
+              "target": "Package",
+              "version": "[4.8.6, )"
             }
           },
           "imports": [

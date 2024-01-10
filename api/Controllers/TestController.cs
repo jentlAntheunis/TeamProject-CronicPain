@@ -1,119 +1,58 @@
 using Microsoft.AspNetCore.Mvc;
-using MySqlConnector;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System.Runtime.CompilerServices;
 
 using Pebbles.Models;
-using System.Runtime.CompilerServices;
+using Pebbles.Services;
+using Pebbles.Repositories;
 
 [ApiController]
 [Route("tests")]
 public class TestController : ControllerBase
 {
     private readonly IConfiguration _configuration;
+    private readonly ITestService _testService;
 
     public TestController(IConfiguration configuration)
     {
         _configuration = configuration;
+        _testService = new TestService(new TestRepository(_configuration));
     }
 
     [HttpGet]
-    public IActionResult Get()
+    public async Task<IActionResult> GetTestsAsync()
     {
-        string connectionString = _configuration.GetConnectionString("PebblesDB");
-        using (var connection = new MySqlConnection(connectionString))
-        {
-            string sql = "SELECT * FROM test";
-            connection.Open();
-            using var command = new MySqlCommand(sql, connection);
-            using MySqlDataReader reader = command.ExecuteReader();
-            var tests = new List<Test>();
-            while (reader.Read())
-            {
-                var test = new Test(reader.GetInt32("id"), reader.GetString("data"));
-                tests.Add(test);
-            }
-            connection.Close();
-
-            return Ok(tests);
-        }
+        var tests = await _testService.GetTestsAsync();
+        return Ok(JsonConvert.SerializeObject(tests));
     }
 
     [HttpGet("{id}")]
-    public IActionResult Get(int id)
+    public async Task<IActionResult> GetTestAsync(int id)
     {
-        string connectionString = _configuration.GetConnectionString("PebblesDB");
-        using (var connection = new MySqlConnection(connectionString))
-        {
-            string sql = "SELECT * FROM test WHERE id = @id";
-            connection.Open();
-            using var command = new MySqlCommand(sql, connection);
-            command.Parameters.AddWithValue("@id", id);
-            using MySqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                var test = new Test(reader.GetInt32("id"), reader.GetString("data"));
-                connection.Close();
-                return Ok(test);
-            }
-            return NotFound("not found");
-        }
+        var test = await _testService.GetTestAsync(id);
+        return Ok(JsonConvert.SerializeObject(test));
     }
 
     [HttpPost]
-    public IActionResult Post([FromBody] Test test)
+    public async Task<IActionResult> AddTestAsync([FromBody] Test test)
     {
-        string connectionString = _configuration.GetConnectionString("PebblesDB");
-        using (var connection = new MySqlConnection(connectionString))
-        {
-            string sql = "INSERT INTO test (data) VALUES (@data)";
-            connection.Open();
-            using var command = new MySqlCommand(sql, connection);
-            command.Parameters.AddWithValue("@data", test.Data);
-            command.ExecuteNonQuery();
-            connection.Close();
-            return Ok();
-        }
+        var newTest = await _testService.AddTestAsync(test);
+        return Ok(JsonConvert.SerializeObject(newTest));
     }
 
     [HttpPut("{id}")]
-    public IActionResult Put(int id, [FromBody] Test test)
+    public async Task<IActionResult> UpdateTestAsync(int id, [FromBody] Test test)
     {
-        string connectionString = _configuration.GetConnectionString("PebblesDB");
-        using (var connection = new MySqlConnection(connectionString))
-        {
-            string sql = "UPDATE test SET data = @data WHERE id = @id";
-            connection.Open();
-            using var command = new MySqlCommand(sql, connection);
-            command.Parameters.AddWithValue("@id", id);
-            command.Parameters.AddWithValue("@data", test.Data);
-            var result = command.ExecuteNonQuery();
-            connection.Close();
-            if (result == 0)
-            {
-                return NotFound("not found");
-            }
-            return Ok();
-        }
+        test.Id = id;
+        var updatedTest = await _testService.UpdateTestAsync(test);
+        return Ok(JsonConvert.SerializeObject(updatedTest));
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> DeleteTestAsync(int id)
     {
-        string connectionString = _configuration.GetConnectionString("PebblesDB");
-        using (var connection = new MySqlConnection(connectionString))
-        {
-            connection.Open();
-            string sql = "DELETE FROM test WHERE id = @id";
-            using var command = new MySqlCommand(sql, connection);
-            command.Parameters.AddWithValue("@id", id);
-            var result = command.ExecuteNonQuery();
-            connection.Close();
-            if (result == 0)
-            {
-                return NotFound("not found");
-            }
-            return Ok();
-        }
+        await _testService.DeleteTestAsync(id);
+        return Ok();
     }
 }

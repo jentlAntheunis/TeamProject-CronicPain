@@ -10,6 +10,8 @@ public class Test
         Data = data;
     }
 
+    public Test() { }
+
     [JsonProperty("id")]
     public int Id { get; set; }
     [JsonProperty("data")]
