@@ -36,40 +36,47 @@ public class PebblesContext : DbContext
         modelBuilder.Entity<Answer>()
             .HasOne(a => a.Question)
             .WithMany(q => q.Answers)
-            .HasForeignKey(a => a.QuestionId);
-        
+            .HasForeignKey(a => a.QuestionId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         modelBuilder.Entity<Answer>()
             .HasOne(a => a.Option)
             .WithMany(o => o.Answers)
-            .HasForeignKey(a => a.OptionId);
+            .HasForeignKey(a => a.OptionId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Answer>()
             .HasOne(a => a.Questionnaire)
             .WithMany(q => q.Answers)
-            .HasForeignKey(a => a.QuestionnaireId);
+            .HasForeignKey(a => a.QuestionnaireId)
+            .OnDelete(DeleteBehavior.Restrict);
 
 
         modelBuilder.Entity<Option>()
             .HasOne(s => s.Scale)
             .WithMany(o => o.Options)
-            .HasForeignKey(o => o.ScaleId);
+            .HasForeignKey(o => o.ScaleId)
+            .OnDelete(DeleteBehavior.Restrict);
 
 
         modelBuilder.Entity<Question>()
             .HasOne(q => q.Category)
             .WithMany(c => c.Questions)
-            .HasForeignKey(q => q.CategoryId);
-        
+            .HasForeignKey(q => q.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         modelBuilder.Entity<Question>()
             .HasOne(q => q.Scale)
             .WithMany(q => q.Questions)
-            .HasForeignKey(q => q.QuestionnaireId);
+            .HasForeignKey(q => q.ScaleId)
+            .OnDelete(DeleteBehavior.Restrict);
 
-        
+
         modelBuilder.Entity<User>()
             .HasOne(u => u.Role)
             .WithMany(r => r.Users)
-            .HasForeignKey(u => u.RoleId);
+            .HasForeignKey(u => u.RoleId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<User>()
             .HasMany(u => u.Colors)
@@ -80,17 +87,34 @@ public class PebblesContext : DbContext
         modelBuilder.Entity<Avatar>()
             .HasOne(a => a.User)
             .WithMany(u => u.Avatars)
-            .HasForeignKey(a => a.UserId);
+            .HasForeignKey(a => a.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Avatar>()
             .HasOne(a => a.Color)
             .WithMany(c => c.Avatars)
-            .HasForeignKey(a => a.ColorId);
+            .HasForeignKey(a => a.ColorId)
+            .OnDelete(DeleteBehavior.Restrict);
 
 
         //users with role id 1 are specialists, users with role id 0 are patients
         //there is a many to many relation between these two types of users using the UserSpecialist table
+        //specify no action on delete
+
         modelBuilder.Entity<UserSpecialist>()
-            .HasKey(us => new {us.UserId, us.SpecialistId});
+            .HasKey(us => new { us.UserId, us.SpecialistId });
+
+        modelBuilder.Entity<UserSpecialist>()
+            .HasOne(us => us.User)
+            .WithMany(u => u.UserSpecialists)
+            .HasForeignKey(us => us.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<UserSpecialist>()
+            .HasOne(us => us.Specialist)
+            .WithMany(s => s.SpecialistUsers)
+            .HasForeignKey(us => us.SpecialistId)
+            .OnDelete(DeleteBehavior.Cascade);
+
     }
 }

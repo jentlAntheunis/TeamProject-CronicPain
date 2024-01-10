@@ -28,4 +28,8 @@ public class User
 
     public List<Color> Colors { get; set; }
     public List<Avatar> Avatars { get; set; }
+    public List<User> Users { get; set; }
+    public List<User> Specialists { get; set; }
+    public List<UserSpecialist> UserSpecialists { get; set; }
+    public List<UserSpecialist> SpecialistUsers { get; set; }
 }
