@@ -26,82 +26,122 @@ public class TestRepository : ITestRepository
 
     public async Task<List<Test>> GetTestsAsync()
     {
-        using (var connection = new SqlConnection(connectionString))
+        try
         {
-            string sql = "SELECT * FROM test";
-            await connection.OpenAsync();
-            using var command = new SqlCommand(sql, connection);
-            using SqlDataReader reader = command.ExecuteReader();
-            var tests = new List<Test>();
-            while (reader.Read())
+            using (var connection = new SqlConnection(connectionString))
             {
-                var id = int.Parse(reader["id"].ToString());
-                var data = reader["data"].ToString();
-                tests.Add(new Test(id, data));
-            }
-            await connection.CloseAsync();
+                string sql = "SELECT * FROM test";
+                await connection.OpenAsync();
+                using var command = new SqlCommand(sql, connection);
+                using SqlDataReader reader = command.ExecuteReader();
+                var tests = new List<Test>();
+                while (reader.Read())
+                {
+                    var id = int.Parse(reader["id"].ToString());
+                    var data = reader["data"].ToString();
+                    tests.Add(new Test(id, data));
+                }
+                await connection.CloseAsync();
 
-            return tests;
+                return tests;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
         }
     }
 
     public async Task<Test> GetTestAsync(int id)
     {
-        using (var connection = new SqlConnection(connectionString))
+        try
         {
-            string sql = "SELECT * FROM test WHERE id = @id";
-            await connection.OpenAsync();
-            using var command = new SqlCommand(sql, connection);
-            command.Parameters.AddWithValue("@id", id);
-            using SqlDataReader reader = command.ExecuteReader();
+            using (var connection = new SqlConnection(connectionString))
+            {
+                string sql = "SELECT * FROM test WHERE id = @id";
+                await connection.OpenAsync();
+                using var command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@id", id);
+                using SqlDataReader reader = command.ExecuteReader();
 
-            reader.Read();
-            var test = new Test(int.Parse(reader["id"].ToString()), reader["data"].ToString());
-            await connection.CloseAsync();
+                reader.Read();
+                var test = new Test(int.Parse(reader["id"].ToString()), reader["data"].ToString());
+                await connection.CloseAsync();
 
-            return test;
+                return test;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
         }
     }
 
     public async Task<Test> AddTestAsync(Test test)
     {
-        using (var connection = new SqlConnection(connectionString))
+        try
         {
-            string sql = "INSERT INTO test (data) VALUES (@data)";
-            await connection.OpenAsync();
-            using var command = new SqlCommand(sql, connection);
-            command.Parameters.AddWithValue("@data", test.Data);
-            command.ExecuteNonQuery();
-            await connection.CloseAsync();
-            return test;
+            using (var connection = new SqlConnection(connectionString))
+            {
+                string sql = "INSERT INTO test (data) VALUES (@data)";
+                await connection.OpenAsync();
+                using var command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@data", test.Data);
+                command.ExecuteNonQuery();
+                await connection.CloseAsync();
+                return test;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
         }
     }
 
     public async Task<Test> UpdateTestAsync(Test test)
     {
-        using (var connection = new SqlConnection(connectionString))
+        try
         {
-            string sql = "UPDATE test SET data = @data WHERE id = @id";
-            await connection.OpenAsync();
-            using var command = new SqlCommand(sql, connection);
-            command.Parameters.AddWithValue("@id", test.Id);
-            command.Parameters.AddWithValue("@data", test.Data);
-            command.ExecuteNonQuery();
-            await connection.CloseAsync();
-            return test;   
+            using (var connection = new SqlConnection(connectionString))
+            {
+                string sql = "UPDATE test SET data = @data WHERE id = @id";
+                await connection.OpenAsync();
+                using var command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@id", test.Id);
+                command.Parameters.AddWithValue("@data", test.Data);
+                command.ExecuteNonQuery();
+                await connection.CloseAsync();
+                return test;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
         }
     }
 
     public async Task DeleteTestAsync(int id)
     {
-        using (var connection = new SqlConnection(connectionString))
+        try
         {
-            string sql = "DELETE FROM test WHERE id = @id";
-            await connection.OpenAsync();
-            using var command = new SqlCommand(sql, connection);
-            command.Parameters.AddWithValue("@id", id);
-            command.ExecuteNonQuery();
-            await connection.CloseAsync();
+            using (var connection = new SqlConnection(connectionString))
+            {
+                string sql = "DELETE FROM test WHERE id = @id";
+                await connection.OpenAsync();
+                using var command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@id", id);
+                command.ExecuteNonQuery();
+                await connection.CloseAsync();
+                return;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
             return;
         }
     }
