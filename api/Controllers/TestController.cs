@@ -24,6 +24,10 @@ public class TestController : ControllerBase
     public async Task<IActionResult> GetTestsAsync()
     {
         var tests = await _testService.GetTestsAsync();
+        if(tests == null)
+        {
+            return StatusCode(500);
+        }
         return Ok(JsonConvert.SerializeObject(tests));
     }
 
@@ -31,6 +35,10 @@ public class TestController : ControllerBase
     public async Task<IActionResult> GetTestAsync(int id)
     {
         var test = await _testService.GetTestAsync(id);
+        if(test == null)
+        {
+            return NotFound();
+        }
         return Ok(JsonConvert.SerializeObject(test));
     }
 

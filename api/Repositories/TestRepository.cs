@@ -22,6 +22,7 @@ public class TestRepository : ITestRepository
     {
         _configuration = configuration;
         connectionString = _configuration.GetConnectionString("PebblesDB");
+        Console.WriteLine("Connection string: " + connectionString);
     }
 
     public async Task<List<Test>> GetTestsAsync()
@@ -48,7 +49,7 @@ public class TestRepository : ITestRepository
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(e.Message);
             return null;
         }
     }
