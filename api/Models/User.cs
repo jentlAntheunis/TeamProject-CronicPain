@@ -8,6 +8,7 @@ public class User
 
     [Required]
     public Guid RoleId { get; set; }
+    public Role Role { get; set; }
     public Guid SpecialistId { get; set; }
 
     [Required]
@@ -24,4 +25,7 @@ public class User
     public string LastName { get; set; }
 
     public int Points { get; set; }
+
+    public List<Color> Colors { get; set; }
+    public List<Avatar> Avatars { get; set; }
 }

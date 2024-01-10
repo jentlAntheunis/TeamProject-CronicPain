@@ -8,10 +8,13 @@ public class Answer
 
     [Required]
     public Guid QuestionId { get; set; }
+    public Question Question { get; set; }
 
     [Required]
     public Guid OptionId { get; set; }
+    public Option Option { get; set; }
 
     [Required]
     public Guid QuestionnaireId { get; set; }
+    public Questionnaire Questionnaire { get; set; }
 }

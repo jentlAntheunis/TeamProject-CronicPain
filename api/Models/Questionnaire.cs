@@ -11,4 +11,6 @@ public class Questionnaire
 
     [Required]
     public DateTime Date { get; set; }
+
+    public List<Answer> Answers { get; set; }
 }

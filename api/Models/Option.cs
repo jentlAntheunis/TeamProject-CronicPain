@@ -8,7 +8,10 @@ public class Option
 
     [Required]
     public Guid ScaleId { get; set; }
+    public Scale Scale { get; set; }
 
     public string Content { get; set; }
     public string Position { get; set; }
+
+    public List<Answer> Answers { get; set; }
 }

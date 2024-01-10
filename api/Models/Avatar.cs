@@ -8,7 +8,9 @@ public class Avatar
 
     [Required]
     public Guid UserId { get; set; }
+    public User User { get; set; }
 
     [Required]
     public Guid ColorId { get; set; }
+    public Color Color { get; set; }
 }

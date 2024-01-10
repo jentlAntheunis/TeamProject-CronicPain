@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Pebbles.Models;
 
@@ -26,12 +27,70 @@ public class PebblesContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        //get connection string from appsettings.json
         optionsBuilder.UseSqlServer(_configuration.GetConnectionString("PebblesDB"));
     }
 
-  protected override void OnModelCreating(ModelBuilder modelBuilder)
-  {
-    
-  }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        //relations between tables
+        modelBuilder.Entity<Answer>()
+            .HasOne(a => a.Question)
+            .WithMany(q => q.Answers)
+            .HasForeignKey(a => a.QuestionId);
+        
+        modelBuilder.Entity<Answer>()
+            .HasOne(a => a.Option)
+            .WithMany(o => o.Answers)
+            .HasForeignKey(a => a.OptionId);
+
+        modelBuilder.Entity<Answer>()
+            .HasOne(a => a.Questionnaire)
+            .WithMany(q => q.Answers)
+            .HasForeignKey(a => a.QuestionnaireId);
+
+
+        modelBuilder.Entity<Option>()
+            .HasOne(s => s.Scale)
+            .WithMany(o => o.Options)
+            .HasForeignKey(o => o.ScaleId);
+
+
+        modelBuilder.Entity<Question>()
+            .HasOne(q => q.Category)
+            .WithMany(c => c.Questions)
+            .HasForeignKey(q => q.CategoryId);
+        
+        modelBuilder.Entity<Question>()
+            .HasOne(q => q.Scale)
+            .WithMany(q => q.Questions)
+            .HasForeignKey(q => q.QuestionnaireId);
+
+        
+        modelBuilder.Entity<User>()
+            .HasOne(u => u.Role)
+            .WithMany(r => r.Users)
+            .HasForeignKey(u => u.RoleId);
+
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.Colors)
+            .WithMany(c => c.Users)
+            .UsingEntity<Purchase>();
+
+
+        modelBuilder.Entity<Avatar>()
+            .HasOne(a => a.User)
+            .WithMany(u => u.Avatars)
+            .HasForeignKey(a => a.UserId);
+
+        modelBuilder.Entity<Avatar>()
+            .HasOne(a => a.Color)
+            .WithMany(c => c.Avatars)
+            .HasForeignKey(a => a.ColorId);
+
+
+        //users with role id 1 are specialists, users with role id 0 are patients
+        //there is a many to many relation between these two types of users using the UserSpecialist table
+        modelBuilder.Entity<UserSpecialist>()
+            .HasKey(us => new {us.UserId, us.SpecialistId});
+    }
 }

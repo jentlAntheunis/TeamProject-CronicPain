@@ -8,4 +8,7 @@ public class Scale
 
     [Required]
     public string Name { get; set; }
+
+    public List<Option> Options { get; set; }
+    public List<Question> Questions { get; set; }
 }
