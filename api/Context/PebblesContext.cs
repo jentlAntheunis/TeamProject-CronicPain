@@ -17,7 +17,7 @@ public class PebblesContext : DbContext
     public DbSet<Questionnaire> Questionnaire { get; set; }
     public DbSet<Scale> Scale { get; set; }
     public DbSet<Specialist> Specialist { get; set; }
-    public DbSet<AnonymousPatientData> AnonymousPatientData { get; set; }
+    public DbSet<User> User { get; set; }
 
     private readonly IConfiguration _configuration;
 

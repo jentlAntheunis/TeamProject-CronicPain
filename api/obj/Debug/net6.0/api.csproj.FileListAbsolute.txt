@@ -1,0 +1,138 @@
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/appsettings.Development.json
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/appsettings.json
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/api.exe
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/api.deps.json
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/api.runtimeconfig.json
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/api.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/api.pdb
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.OpenApi.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/Newtonsoft.Json.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/Swashbuckle.AspNetCore.Swagger.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/api.csproj.AssemblyReference.cache
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/api.GeneratedMSBuildEditorConfig.editorconfig
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/api.AssemblyInfoInputs.cache
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/api.AssemblyInfo.cs
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/api.csproj.CoreCompileInputs.cache
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/api.MvcApplicationPartsAssemblyInfo.cs
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/api.MvcApplicationPartsAssemblyInfo.cache
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/api.sourcelink.json
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/staticwebassets.build.json
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/staticwebassets.development.json
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/staticwebassets/msbuild.api.Microsoft.AspNetCore.StaticWebAssets.props
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/staticwebassets/msbuild.build.api.props
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/staticwebassets/msbuild.buildMultiTargeting.api.props
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/staticwebassets/msbuild.buildTransitive.api.props
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/staticwebassets.pack.json
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/scopedcss/bundle/api.styles.css
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/api.csproj.CopyComplete
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/api.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/refint/api.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/api.pdb
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/api.genruntimeconfig.cache
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/obj/Debug/net6.0/ref/api.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.Extensions.Logging.Abstractions.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/MySqlConnector.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/System.Diagnostics.DiagnosticSource.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/Humanizer.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.Data.SqlClient.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.EntityFrameworkCore.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.EntityFrameworkCore.Design.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.EntityFrameworkCore.Relational.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.EntityFrameworkCore.SqlServer.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.Identity.Client.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.IdentityModel.JsonWebTokens.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.IdentityModel.Logging.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.IdentityModel.Protocols.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.IdentityModel.Tokens.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.Win32.SystemEvents.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/System.Configuration.ConfigurationManager.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/System.Drawing.Common.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/System.IdentityModel.Tokens.Jwt.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/System.Runtime.Caching.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/System.Security.Cryptography.ProtectedData.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/System.Security.Permissions.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/System.Windows.Extensions.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/unix/lib/netcoreapp3.1/Microsoft.Data.SqlClient.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/win/lib/netcoreapp3.1/Microsoft.Data.SqlClient.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/win-arm/native/Microsoft.Data.SqlClient.SNI.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/win-arm64/native/Microsoft.Data.SqlClient.SNI.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/win-x64/native/Microsoft.Data.SqlClient.SNI.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/win-x86/native/Microsoft.Data.SqlClient.SNI.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/win/lib/netcoreapp3.0/Microsoft.Win32.SystemEvents.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/unix/lib/netcoreapp3.0/System.Drawing.Common.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/win/lib/netcoreapp3.0/System.Drawing.Common.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/win/lib/netstandard2.0/System.Runtime.Caching.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
+C:/MCT/Team Project/github/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/win/lib/netcoreapp3.0/System.Windows.Extensions.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/Debug/net6.0/api.csproj.AssemblyReference.cache
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/Debug/net6.0/api.GeneratedMSBuildEditorConfig.editorconfig
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/Debug/net6.0/api.AssemblyInfoInputs.cache
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/Debug/net6.0/api.AssemblyInfo.cs
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/Debug/net6.0/api.csproj.CoreCompileInputs.cache
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/Debug/net6.0/api.MvcApplicationPartsAssemblyInfo.cs
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/Debug/net6.0/api.MvcApplicationPartsAssemblyInfo.cache
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/Debug/net6.0/api.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/Debug/net6.0/refint/api.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/Debug/net6.0/api.pdb
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/appsettings.json
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/api
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/api.deps.json
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/api.runtimeconfig.json
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/api.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/api.pdb
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/Humanizer.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.Data.SqlClient.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.EntityFrameworkCore.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.EntityFrameworkCore.Design.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.EntityFrameworkCore.Relational.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.EntityFrameworkCore.SqlServer.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.Extensions.Logging.Abstractions.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.Identity.Client.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.IdentityModel.Logging.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.IdentityModel.Protocols.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.IdentityModel.Tokens.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.OpenApi.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/Microsoft.Win32.SystemEvents.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/MySqlConnector.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/Newtonsoft.Json.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/Swashbuckle.AspNetCore.Swagger.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/System.Configuration.ConfigurationManager.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/System.Diagnostics.DiagnosticSource.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/System.Drawing.Common.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/System.IdentityModel.Tokens.Jwt.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/System.Runtime.Caching.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/System.Security.Cryptography.ProtectedData.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/System.Security.Permissions.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/System.Windows.Extensions.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/unix/lib/netcoreapp3.1/Microsoft.Data.SqlClient.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/win/lib/netcoreapp3.1/Microsoft.Data.SqlClient.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/win-arm/native/Microsoft.Data.SqlClient.SNI.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/win-arm64/native/Microsoft.Data.SqlClient.SNI.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/win-x64/native/Microsoft.Data.SqlClient.SNI.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/win-x86/native/Microsoft.Data.SqlClient.SNI.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/win/lib/netcoreapp3.0/Microsoft.Win32.SystemEvents.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/unix/lib/netcoreapp3.0/System.Drawing.Common.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/win/lib/netcoreapp3.0/System.Drawing.Common.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/win/lib/netstandard2.0/System.Runtime.Caching.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/bin/Debug/net6.0/runtimes/win/lib/netcoreapp3.0/System.Windows.Extensions.dll
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/Debug/net6.0/staticwebassets/msbuild.api.Microsoft.AspNetCore.StaticWebAssets.props
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/Debug/net6.0/staticwebassets/msbuild.build.api.props
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/Debug/net6.0/staticwebassets/msbuild.buildMultiTargeting.api.props
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/Debug/net6.0/staticwebassets/msbuild.buildTransitive.api.props
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/Debug/net6.0/staticwebassets.pack.json
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/Debug/net6.0/staticwebassets.build.json
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/Debug/net6.0/staticwebassets.development.json
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/Debug/net6.0/scopedcss/bundle/api.styles.css
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/Debug/net6.0/api.csproj.CopyComplete
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/Debug/net6.0/api.genruntimeconfig.cache
+/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/Debug/net6.0/ref/api.dll
