@@ -2,6 +2,10 @@ const AuthRoutes = {
   Login: '/login',
 }
 
+const TestRoutes = {
+  Test: "/test",
+}
 
 
-export { AuthRoutes };
+
+export { AuthRoutes, TestRoutes };

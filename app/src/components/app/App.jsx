@@ -1,6 +1,6 @@
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import OnboardingLayout from "./auth/OnboardingLayout";
-import { AuthRoutes } from "../../core/config/routes";
+import { AuthRoutes, TestRoutes } from "../../core/config/routes";
 import AuthContainer from "./auth/AuthContainer";
 import RoleContainer from "./auth/RoleContainer";
 import { UserRoles } from "../../core/config/userRoles";
@@ -46,6 +46,7 @@ const App = () => (
         }
       >
         {/* Patient Paths */}
+        <Route path={TestRoutes.Test} />
       </Route>
     </Route>
   </Routes>
