@@ -18,7 +18,7 @@ public class SpecialistController : ControllerBase
     public SpecialistController(IConfiguration configuration, ISpecialistService specialistService)
     {
         _configuration = configuration;
-        _specialistService = _specialistService;
+        _specialistService = specialistService;
     }
 
     [HttpGet]
@@ -77,7 +77,7 @@ public class SpecialistController : ControllerBase
                 return NotFound("Specialist not found");
             }
 
-            _specialistService.SendEmailWithInvitation(specialist.FirstName, specialist.LastName, patientData.FirstName, patientData.LastName, patientData.Email, invitationToken);
+            _specialistService.SendEmailWithInvitation(specialist.FirstName, specialist.LastName, patientData.FirstName, patientData.LastName, patientData.Email);
 
             return Ok("Invitation email sent successfully");
         }
