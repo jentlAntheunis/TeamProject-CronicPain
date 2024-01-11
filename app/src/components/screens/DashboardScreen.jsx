@@ -6,10 +6,10 @@ import RewardMetrics from "../ui/RewardMetrics/RewardMetrics.jsx";
 const DashboardScreen = () => {
   return (
     <div>
-      <RewardMetrics number={10}>
+      <RewardMetrics number={300}>
         <Coin />
       </RewardMetrics>
-      <RewardMetrics number={10}>
+      <RewardMetrics number={2}>
         <Streaks />
       </RewardMetrics>
     </div>

@@ -1,8 +1,10 @@
+import styles from './RewardMetrics.module.css';
+
 const RewardMetrics = ({children, number}) => (
-    <div>
+    <span className={styles.background}>
       {children}
       <span>{number}</span>
-    </div>
+    </span>
 )
 
 export default RewardMetrics;
