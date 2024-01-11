@@ -4,7 +4,7 @@ import { AuthRoutes } from "../../core/config/routes";
 import AuthContainer from "./auth/AuthContainer";
 import RoleContainer from "./auth/RoleContainer";
 import { UserRoles } from "../../core/config/userRoles";
-import LoginScreen from "../screens/LoginScreen";
+import LoginScreen from "../screens/LoginScreen/LoginScreen";
 
 const App = () => (
   <Routes>

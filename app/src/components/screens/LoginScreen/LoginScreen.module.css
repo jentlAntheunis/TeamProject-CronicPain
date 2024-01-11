@@ -1,0 +1,17 @@
+.pebbles {
+  z-index: -1;
+}
+
+.waterBackground {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+}
+
+.water {
+  background-color: #2987fb4d;
+  flex-grow: 1;
+}
