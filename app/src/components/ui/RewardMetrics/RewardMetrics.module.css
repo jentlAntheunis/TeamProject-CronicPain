@@ -1,14 +1,4 @@
-.background {
-  background-color: var(--grey-100);
-  border-radius: var(--border-radius-sm);
-  padding: 0.38rem 0.5rem;
+.flex{
   display: flex;
-  align-items: center;
-  justify-content: center;
   gap: 0.5rem;
-  max-width: fit-content;
-}
-
-.font {
-  font-weight: var(--medium);
 }
