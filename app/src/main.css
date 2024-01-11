@@ -1,0 +1,129 @@
+:root {
+  /* Colors */
+  --white: #ffffff;
+  --black: #020617;
+  --grey-50: #f8fafc;
+  --grey-100: #f1f5f9;
+  --grey-200: #e2e8f0;
+  --grey-300: #cbd5e1;
+  --grey-400: #94a3b8;
+  --grey-500: #64748b;
+  --grey-600: #475569;
+  --grey-700: #334155;
+  --grey-800: #1e293b;
+  --grey-900: #0f172a;
+  --blue-50: #eff6ff;
+  --blue-100: #dbeafe;
+  --blue-200: #bfdbfe;
+  --blue-300: #93c5fd;
+  --blue-400: #60a5fa;
+  --blue-500: #3b82f6;
+  --blue-600: #2563eb;
+  --blue-700: #1d4ed8;
+  --blue-800: #1e40af;
+  --blue-900: #1e3a8a;
+  --lime-50: #f7fee7;
+  --lime-100: #ecfccb;
+  --lime-200: #d9f99d;
+  --lime-300: #bef264;
+  --lime-400: #a3e635;
+  --lime-500: #84cc16;
+  --lime-600: #65a30d;
+  --lime-700: #4d7c0f;
+  --lime-800: #3f6212;
+  --lime-900: #365314;
+
+  /* Font Family */
+  --font-sans: "Outfit", sans-serif;
+
+  /* Font Sizes */
+  --h1: 3rem;
+  --h2: 2.5rem;
+  --h3: 2rem;
+  --h4: 1.7rem;
+  --h5: 1.4rem;
+  --h6: 1.2rem;
+  --paragraph: 1rem;
+  --small: 0.88rem;
+
+  /* Font weights */
+  --thin: 100;
+  --extra-light: 200;
+  --light: 300;
+  --regular: 400;
+  --medium: 500;
+  --semi-bold: 600;
+  --bold: 700;
+
+  /* Media queries */
+  --phone: 600px;
+  --tablet: 900px;
+  --desktop: 1200px;
+  --large-desktop: 1800px;
+
+  /* Border radius */
+  --border-radius: 0.5rem;
+  --border-radius-sm: 0.25rem;
+  --border-radius-xl: 1.375rem;
+  --border-radius-2xl: 1.875rem;
+}
+
+html {
+  font-family: var(--font-sans);
+  color: var(--black);
+  font-size: 16px;
+  box-sizing: border-box;
+  -werbkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+::selection {
+  background-color: var(--blue-500);
+  color: var(--white);
+  text-shadow: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: var(--regular);
+  line-height: 1.2;
+}
+
+
+/* UTILS */
+
+/* Reset button style */
+.btn-reset {
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    overflow: visible;
+    background: transparent;
+    appearance: none;
+
+    /* inherit font & color from ancestor */
+    color: inherit;
+    font: inherit;
+
+    /* Normalize `line-height`. Cannot be changed from `normal` in Firefox 4+. */
+    line-height: normal;
+
+    /* Corrects font smoothing for webkit */
+    -webkit-font-smoothing: inherit;
+    -moz-osx-font-smoothing: inherit;
+
+    /* Corrects inability to style clickable `input` types in iOS */
+    -webkit-appearance: none;
+}
