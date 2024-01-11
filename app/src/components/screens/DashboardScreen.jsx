@@ -8,14 +8,18 @@ import styles from "./DashboardScreen.module.css";
 const DashboardScreen = () => {
   return (
     <>
-      <TopBar />
-      <Avatar />
-      <Btn text="Ik wil bewegen!" className={styles.btnSpacing}>
-        <Play size={22} weight="bold" />
-      </Btn>
-      <Btn text="Vul bonusvragen in" type="secondary">
-        <ClipboardText size={22} weight="bold" />
-      </Btn>
+      <div className={styles.screen}>
+        <TopBar />
+        <div className={styles.center}>
+          <Avatar />
+          <Btn text="Ik wil bewegen!" className={styles.btnSpacing}>
+            <Play size={22} weight="bold" />
+          </Btn>
+          <Btn text="Vul bonusvragen in" type="secondary">
+            <ClipboardText size={22} weight="bold" />
+          </Btn>
+        </div>
+      </div>
       <TabBarNav />
     </>
   );
