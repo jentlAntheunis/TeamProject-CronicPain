@@ -14,11 +14,13 @@ public class SpecialistController : ControllerBase
 {
     private readonly IConfiguration _configuration;
     private readonly ISpecialistService _specialistService;
+    private readonly IPatientService _patientService;
 
-    public SpecialistController(IConfiguration configuration, ISpecialistService specialistService)
+    public SpecialistController(IConfiguration configuration)
     {
         _configuration = configuration;
-        _specialistService = specialistService;
+        _specialistService = new SpecialistService();
+        _patientService = new PatientService();
     }
 
     [HttpGet]
@@ -87,5 +89,18 @@ public class SpecialistController : ControllerBase
         }
     }
 
-
+    [HttpPost("{specialistId}/patients")]
+    public async Task<ActionResult<Patient>> AddPatientBySpecialistAsync(Guid specialistId, [FromBody] Patient patient)
+    {
+        try
+        {
+            var newPatientId = await _patientService.AddPatientBySpecialistAsync(specialistId, patient);
+            return Created("Ok", newPatientId);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return StatusCode(500);
+        }
+    }
 }
