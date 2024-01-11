@@ -1,6 +1,6 @@
 import styles from "./Btn.module.css";
 
-const Btn = ({ children, text, type }) => {
+const Btn = ({ children, text, type, className }) => {
   let btnStyle = styles.btnPrimary;
 
   if (type === "secondary") {
@@ -8,7 +8,7 @@ const Btn = ({ children, text, type }) => {
   }
 
   return (
-    <button className={`${btnStyle} ${styles.btn} btn-reset`}>
+    <button className={`${btnStyle} ${styles.btn} btn-reset ${className}`}>
       {text}
       {children}
     </button>
