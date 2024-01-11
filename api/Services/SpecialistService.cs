@@ -3,13 +3,14 @@ using Pebbles.Repositories;
 
 namespace Pebbles.Services;
 
-public interface ISpecialistRepository
+public interface ISpecialistService
 {
     Task<List<Specialist>> GetAllSpecialistsAsync();
     Task<Specialist> GetSpecialistByIdAsync(Guid id);
     Task<Specialist> CreateSpecialistAsync(Specialist specialist);
     Task<Specialist> UpdateSpecialistAsync(Specialist specialist);
     Task DeleteSpecialistAsync(Guid id);
+    void SendEmailWithInvitation(string specialistName, string specialistSurname, string patientName, string patientSurname, string patientEmail);
 }
 
 public class SpecialistService : ISpecialistService
@@ -33,7 +34,7 @@ public class SpecialistService : ISpecialistService
 
     public async Task DeleteSpecialistAsync(Guid id) => await _specialistRepository.DeleteSpecialistAsync(id);
 
-    public void SendEmail(string afzenderVoornaam, string afzenderAchternaam, string ontvangerVoornaam, string ontvangerAchternaam, string ontvangerEmail)
+    public void SendEmailWithInvitation(string specialistName, string specialistSurname, string patientName, string patientSurname, string patientEmail)
     {
         try
         {
@@ -42,11 +43,11 @@ public class SpecialistService : ISpecialistService
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient("smtp-auth.mailprotect.be");
 
-            mail.From = new MailAddress(_configuration["EmailSettings:SmtpUsername"], );
-            mail.To.Add(ontvangerEmail); 
+            mail.From = new MailAddress(_configuration["EmailSettings:SmtpUsername"] );
+            mail.To.Add(patientEmail); 
             mail.Subject = "Uitnodiging voor Pebbles";
-            mail.Body = "Beste " + ontvangerVoornaam + " " + ontvangerAchternaam + ",\n\n" +
-                "Je bent uitgenodigd door " + afzenderVoornaam + " " + afzenderAchternaam + " om deel te nemen aan Pebbles.\n" +
+            mail.Body = "Beste " + patientName + " " + patientSurname + ",\n\n" +
+                "Je bent uitgenodigd door " + specialistName + " " + specialistSurname + " om deel te nemen aan Pebbles.\n" +
                 "Klik op de volgende link om je aan te melden: *link*\n\n" +
                 "Met vriendelijke groeten,\n" +
                 "Het Pebbles-team";

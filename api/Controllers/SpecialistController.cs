@@ -65,22 +65,21 @@ public class SpecialistController : ControllerBase
         return Ok();
     }
 
-    [HttpPost("send-email")]
-    public IActionResult SendEmail([FromBody] EmailData emailData)
+    [HttpPost("send-email/{specialistId}")]
+    public IActionResult SendEmail(Guid specialistId, [FromBody] AnonymousPatientData patientData)
     {
         try
         {
-            // Retrieve data for email parameters from the request or elsewhere.
-            string afzenderVoornaam = emailData.AfzenderVoornaam;
-            string afzenderAchternaam = emailData.AfzenderAchternaam;
-            string ontvangerVoornaam = emailData.OntvangerVoornaam;
-            string ontvangerAchternaam = emailData.OntvangerAchternaam;
-            string ontvangerEmail = emailData.OntvangerEmail;
+            var specialist = _specialistService.GetSpecialistByIdAsync(specialistId).Result;
 
-            // Call the SendEmail method from the ISpecialistService
-            _specialistService.SendEmail(afzenderVoornaam, afzenderAchternaam, ontvangerVoornaam, ontvangerAchternaam, ontvangerEmail);
+            if (specialist == null)
+            {
+                return NotFound("Specialist not found");
+            }
 
-            return Ok("Email sent successfully");
+            _specialistService.SendEmailWithInvitation(specialist.FirstName, specialist.LastName, patientData.FirstName, patientData.LastName, patientData.Email, invitationToken);
+
+            return Ok("Invitation email sent successfully");
         }
         catch (Exception ex)
         {
