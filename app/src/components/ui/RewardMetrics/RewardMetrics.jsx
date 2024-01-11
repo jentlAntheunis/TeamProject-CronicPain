@@ -3,7 +3,7 @@ import styles from './RewardMetrics.module.css';
 const RewardMetrics = ({children, number}) => (
     <span className={styles.background}>
       {children}
-      <span>{number}</span>
+      <span className={styles.font}>{number}</span>
     </span>
 )
 

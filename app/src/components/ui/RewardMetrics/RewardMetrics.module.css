@@ -8,3 +8,7 @@
   gap: 0.5rem;
   max-width: fit-content;
 }
+
+.font {
+  font-weight: var(--medium);
+}
