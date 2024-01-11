@@ -16,7 +16,7 @@ const TopBar = () => {
           <Streaks />
         </RewardMetric>
       </div>
-      <DotsThreeVertical size={32} weight="bold" />
+      <DotsThreeVertical size={32} weight="bold" className={styles.menu} />
     </div>
   );
 };
