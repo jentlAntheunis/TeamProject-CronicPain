@@ -89,6 +89,10 @@ html {
   text-shadow: none;
 }
 
+body {
+  min-height: 100svh;
+}
+
 h1,
 h2,
 h3,
