@@ -19,8 +19,8 @@ public class SpecialistController : ControllerBase
     public SpecialistController(IConfiguration configuration)
     {
         _configuration = configuration;
-        _specialistService = new SpecialistService();
-        _patientService = new PatientService();
+        _specialistService = new SpecialistService(_configuration);
+        _patientService = new PatientService(_configuration);
     }
 
     [HttpGet]

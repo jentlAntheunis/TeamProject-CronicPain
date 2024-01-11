@@ -17,10 +17,10 @@ public class PatientService : IPatientService
 {
     private readonly IPatientRepository _patientRepository;
     private readonly ISpecialistRepository _specialistRepository;
-    public PatientService(IPatientRepository patientRepository, ISpecialistRepository specialistRepository)
+    public PatientService(IConfiguration configuration)
     {
-        _patientRepository = patientRepository;
-        _specialistRepository = specialistRepository;
+        _patientRepository = new PatientRepository(configuration);
+        _specialistRepository = new SpecialistRepository(configuration);
     }
 
     public async Task<Patient> GetPatientAsync(Guid id) => await _patientRepository.GetPatientByIdAsync(id);

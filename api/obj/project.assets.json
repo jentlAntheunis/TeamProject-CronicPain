@@ -2509,19 +2509,19 @@
     ]
   },
   "packageFolders": {
-    "/Users/liendejong/.nuget/packages/": {}
+    "C:\\Users\\jentl\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/api.csproj",
+      "projectUniqueName": "C:\\MCT\\Team Project\\github\\TeamProject-CronicPain\\api\\api.csproj",
       "projectName": "api",
-      "projectPath": "/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/api.csproj",
-      "packagesPath": "/Users/liendejong/.nuget/packages/",
-      "outputPath": "/Users/liendejong/code/Team_project/TeamProject-CronicPain/api/obj/",
+      "projectPath": "C:\\MCT\\Team Project\\github\\TeamProject-CronicPain\\api\\api.csproj",
+      "packagesPath": "C:\\Users\\jentl\\.nuget\\packages\\",
+      "outputPath": "C:\\MCT\\Team Project\\github\\TeamProject-CronicPain\\api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/liendejong/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\jentl\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
@@ -2583,6 +2583,24 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[6.0.25, 6.0.25]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[6.0.25, 6.0.25]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[6.0.25, 6.0.25]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[6.0.25, 6.0.25]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -2591,7 +2609,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.404/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }
