@@ -1,0 +1,27 @@
+.tabBarNav {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 2px solid var(--grey-300);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.navBtn {
+  padding: 1.3125rem 0 1.625rem 0;
+  display: grid;
+  place-items: center;
+  color: var(--grey-400);
+  transition: background-color 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.navBtn:hover {
+  background-color: var(--blue-50);
+}
+
+.active {
+  fill: var(--blue-500);
+  color: var(--blue-500);
+}
