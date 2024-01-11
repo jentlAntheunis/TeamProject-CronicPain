@@ -6,7 +6,7 @@ const AuthContainer = () => {
   const location = useLocation();
   // TODO: Check auth status
   const auth = true;
-
+  console.log("auth");
   if (!auth) {
     return (
       <Navigate to={AuthRoutes.Login} state={{ from: location }} replace />

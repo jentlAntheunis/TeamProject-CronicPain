@@ -1,7 +1,17 @@
+import Coin from "../ui/Icons/Coin.jsx";
+import Streaks from "../ui/Icons/Streaks.jsx";
+import RewardMetrics from "../ui/RewardMetrics/RewardMetrics.jsx";
+
+
 const DashboardScreen = () => {
   return (
     <div>
-      <h1>Dashboard screen</h1>
+      <RewardMetrics number={10}>
+        <Coin />
+      </RewardMetrics>
+      <RewardMetrics number={10}>
+        <Streaks />
+      </RewardMetrics>
     </div>
   );
 };

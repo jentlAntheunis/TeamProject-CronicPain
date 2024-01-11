@@ -8,56 +8,58 @@ import { UserRoles } from "../../core/config/userRoles";
 import LoginScreen from "../screens/LoginScreen";
 import DashboardScreen from "../screens/DashboardScreen";
 
-const App = () => (
-  <Routes>
-    {/* Authentication Paths */}
-    <Route
-      path={AuthRoutes.Index}
-      element={<Navigate to={AuthRoutes.Login} />}
-    />
-    <Route path={AuthRoutes.Index} element={<OnboardingLayout />}>
-      <Route path={AuthRoutes.Login} element={<LoginScreen />} />
-      <Route path={AuthRoutes.Register} element={<RegisterScreen />} />
-      <Route path="*" element={<Navigate to={AuthRoutes.Login} />} />
-    </Route>
-
-    {/* Routes when logged in */}
-    <Route element={<AuthContainer />}>
-      {/* Admin */}
+const App = () => {
+  return (
+    <Routes>
+      {/* Authentication Paths */}
       <Route
-        element={
-          <RoleContainer roles={[UserRoles.Admin]}>
-            <Outlet />
-          </RoleContainer>
-        }
-      >
-        {/* Admin Paths */}
+        path={AuthRoutes.Index}
+        element={<Navigate to={AuthRoutes.Login} />}
+      />
+      <Route path={AuthRoutes.Index} element={<OnboardingLayout />}>
+        <Route path={AuthRoutes.Login} element={<LoginScreen />} />
+        <Route path={AuthRoutes.Register} element={<RegisterScreen />} />
+        <Route path="*" element={<Navigate to={AuthRoutes.Login} />} />
       </Route>
 
-      {/* Specialist */}
-      <Route
-        element={
-          <RoleContainer roles={[UserRoles.Specialist]}>
-            <Outlet />
-          </RoleContainer>
-        }
-      >
-        {/* Specialist Paths */}
-      </Route>
+      {/* Routes when logged in */}
+      <Route element={<AuthContainer />}>
+        {/* Admin */}
+        <Route
+          element={
+            <RoleContainer roles={[UserRoles.Admin]}>
+              <Outlet />
+            </RoleContainer>
+          }
+        >
+          {/* Admin Paths */}
+        </Route>
 
-      {/* Patient */}
-      <Route
-        element={
-          <RoleContainer roles={[UserRoles.Patient]}>
-            <Outlet />
-          </RoleContainer>
-        }
-      >
-        {/* Patient Paths */}
-        <Route path={PatientRoutes.Dashboard} element={<DashboardScreen />} />
+        {/* Specialist */}
+        <Route
+          element={
+            <RoleContainer roles={[UserRoles.Specialist]}>
+              <Outlet />
+            </RoleContainer>
+          }
+        >
+          {/* Specialist Paths */}
+        </Route>
+
+        {/* Patient */}
+        <Route
+          element={
+            <RoleContainer roles={[UserRoles.Patient]}>
+              <Outlet />
+            </RoleContainer>
+          }
+        >
+          {/* Patient Paths */}
+          <Route path={PatientRoutes.Dashboard} element={<DashboardScreen />} />
+        </Route>
       </Route>
-    </Route>
-  </Routes>
-);
+    </Routes>
+  );
+};
 
 export default App;
