@@ -29,13 +29,11 @@ public class UserService : IUserService
     public async Task<User> UpdateUserAsync(User user) => await _userRepository.UpdateUserAsync(user);
     public async Task DeleteUserAsync(Guid id) => await _userRepository.DeleteUserAsync(id);
 
-    public async Task CheckIfUserExistsAsync(Guid id)
+    public async Task<bool> CheckIfUserExistsAsync(Guid id)
     {
         var user = await GetUserAsync(id);
-        if(user == null)
-        {
-            throw new Exception("User does not exist");
-        }
-        return (user.Email, user.FirstName, user.LastName);
+        //return true or false: bool
+        return user != null;
     }
+
 }
