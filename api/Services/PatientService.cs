@@ -22,7 +22,7 @@ public class PatientService
         return patientSpecialists.Select(ps => ps.Patient);
     }
 
-    public async Task<Patient> AddPatientBySpecialistAsync(Guid SpecialistId, Patient patient)
+    public async Task<Guid> AddPatientBySpecialistAsync(Guid SpecialistId, Patient patient)
     {
         var specialist = await _specialistRepository.GetSpecialistByIdAsync(SpecialistId);
         if (specialist == null)

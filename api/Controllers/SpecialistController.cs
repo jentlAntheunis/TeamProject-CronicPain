@@ -26,8 +26,8 @@ public class SpecialistController : ControllerBase
     {
         try
         {
-            var newPatient = await _patientService.AddPatientBySpecialistAsync(specialistId, patient);
-            return Created(newPatient.Id.ToString(), newPatient);
+            var newPatientId = await _patientService.AddPatientBySpecialistAsync(specialistId, patient);
+            return Created("Ok", newPatientId);
         }
         catch (Exception ex)
         {

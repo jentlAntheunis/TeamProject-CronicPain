@@ -8,7 +8,7 @@ public interface IPatientRepository
 {
     Task<List<Patient>> GetAllPatientsAsync();
     Task<Patient> GetPatientByIdAsync(Guid id);
-    Task<Patient> CreatePatientAsync(Patient patient);
+    Task<Guid> CreatePatientAsync(Patient patient);
     Task<Patient> UpdatePatientAsync(Patient patient);
     Task DeletePatientAsync(Guid id);
 }
@@ -26,11 +26,11 @@ public class PatientRepository : IPatientRepository
 
     public async Task<Patient> GetPatientByIdAsync(Guid id) => await _context.Patient.FirstOrDefaultAsync(p => p.Id == id);
 
-    public async Task<Patient> CreatePatientAsync(Patient patient)
+    public async Task<Guid> CreatePatientAsync(Patient patient)
     {
         await _context.Patient.AddAsync(patient);
         await _context.SaveChangesAsync();
-        return patient;
+        return patient.Id;
     }
 
     public async Task<Patient> UpdatePatientAsync(Patient patient)
