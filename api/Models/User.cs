@@ -4,12 +4,18 @@ namespace Pebbles.Models;
 
 public class User
 {
-    public Guid Id { get; set; }
+    public User() { }
 
-    [Required]
-    public Guid RoleId { get; set; }
-    public Role Role { get; set; }
-    public Guid SpecialistId { get; set; }
+    public User(string firstName, string lastName, string email)
+    {
+        Id = Guid.NewGuid();
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+    }
+
+    [Key]
+    public Guid Id { get; set; }
 
     [Required]
     [EmailAddress]
@@ -23,13 +29,4 @@ public class User
     [Required]
     [StringLength(100)]
     public string LastName { get; set; }
-
-    public int Points { get; set; }
-
-    public List<Color> Colors { get; set; }
-    public List<Avatar> Avatars { get; set; }
-    public List<User> Users { get; set; }
-    public List<User> Specialists { get; set; }
-    public List<UserSpecialist> UserSpecialists { get; set; }
-    public List<UserSpecialist> SpecialistUsers { get; set; }
 }

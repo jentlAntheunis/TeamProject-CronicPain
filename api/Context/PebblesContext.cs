@@ -11,12 +11,12 @@ public class PebblesContext : DbContext
     public DbSet<Category> Category { get; set; }
     public DbSet<Color> Color { get; set; }
     public DbSet<Option> Option { get; set; }
+    public DbSet<Patient> Patient { get; set; }
     public DbSet<Purchase> Purchase { get; set; }
     public DbSet<Question> Question { get; set; }
     public DbSet<Questionnaire> Questionnaire { get; set; }
-    public DbSet<Role> Role { get; set; }
     public DbSet<Scale> Scale { get; set; }
-    public DbSet<User> User { get; set; }
+    public DbSet<Specialist> Specialist { get; set; }
 
     private readonly IConfiguration _configuration;
 
@@ -72,22 +72,27 @@ public class PebblesContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        modelBuilder.Entity<User>()
-            .HasOne(u => u.Role)
-            .WithMany(r => r.Users)
-            .HasForeignKey(u => u.RoleId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<User>()
-            .HasMany(u => u.Colors)
-            .WithMany(c => c.Users)
-            .UsingEntity<Purchase>();
+        modelBuilder.Entity<Specialist>()
+            .HasMany(s => s.Patients)
+            .WithMany(p => p.Specialists)
+            .UsingEntity<PatientSpecialist>(
+                j => j
+                    .HasOne(us => us.Patient)
+                    .WithMany(p => p.PatientSpecialists)
+                    .HasForeignKey(us => us.PatientId)
+                    .OnDelete(DeleteBehavior.Restrict),
+                j => j
+                    .HasOne(us => us.Specialist)
+                    .WithMany(s => s.PatientSpecialists)
+                    .HasForeignKey(us => us.SpecialistId)
+                    .OnDelete(DeleteBehavior.Restrict)
+            );
 
 
         modelBuilder.Entity<Avatar>()
-            .HasOne(a => a.User)
-            .WithMany(u => u.Avatars)
-            .HasForeignKey(a => a.UserId)
+            .HasOne(a => a.Patient)
+            .WithMany(p => p.Avatars)
+            .HasForeignKey(a => a.PatientId)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Avatar>()
@@ -97,24 +102,12 @@ public class PebblesContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
 
-        //users with role id 1 are specialists, users with role id 0 are patients
-        //there is a many to many relation between these two types of users using the UserSpecialist table
-        //specify no action on delete
-
-        modelBuilder.Entity<UserSpecialist>()
-            .HasKey(us => new { us.UserId, us.SpecialistId });
-
-        modelBuilder.Entity<UserSpecialist>()
-            .HasOne(us => us.User)
-            .WithMany(u => u.UserSpecialists)
-            .HasForeignKey(us => us.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<UserSpecialist>()
-            .HasOne(us => us.Specialist)
-            .WithMany(s => s.SpecialistUsers)
-            .HasForeignKey(us => us.SpecialistId)
-            .OnDelete(DeleteBehavior.Cascade);
-
+        //seed data
+        modelBuilder.Entity<Specialist>().HasData(
+            //specialists
+            new Specialist("Walter", "De Pril", "walter.de.pril@ziekenhuis.be"),
+            new Specialist("Johan", "Van der Auwera", "johan.van.der.auwera@ziekenhuis.be"),
+            new Specialist("Rita", "Coonincks", "rita.coonincks@ziekenhuis.be")
+        );
     }
 }
