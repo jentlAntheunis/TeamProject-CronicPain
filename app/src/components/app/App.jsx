@@ -1,6 +1,5 @@
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import OnboardingLayout from "./auth/OnboardingLayout";
-import RegisterScreen from "../screens/RegisterScreen";
 import { AuthRoutes } from "../../core/config/routes";
 import AuthContainer from "./auth/AuthContainer";
 import RoleContainer from "./auth/RoleContainer";
