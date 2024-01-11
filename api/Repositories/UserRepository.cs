@@ -6,9 +6,9 @@ namespace Pebbles.Repositories;
 
 public interface IUserRepository
 {
-    Task<List<User>> GetAllUsersAsync();
+    Task<List<User>> GetUsersAsync();
     Task<User> GetUserByIdAsync(Guid id);
-    Task<User> CreateUserAsync(User user);
+    Task<User> AddUserAsync(User user);
     Task<User> UpdateUserAsync(User user);
     Task DeleteUserAsync(Guid id);
 
@@ -23,11 +23,11 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public async Task<List<User>> GetAllUsersAsync() => await _context.User.ToListAsync();
+    public async Task<List<User>> GetUsersAsync() => await _context.User.ToListAsync();
 
     public async Task<User> GetUserByIdAsync(Guid id) => await _context.User.FirstOrDefaultAsync(u => u.Id == id);
 
-    public async Task<User> CreateUserAsync(User user)
+    public async Task<User> AddUserAsync(User user)
     {
         await _context.User.AddAsync(user);
         await _context.SaveChangesAsync();

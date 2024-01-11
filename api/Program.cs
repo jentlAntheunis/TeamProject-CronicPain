@@ -1,18 +1,25 @@
 using Microsoft.EntityFrameworkCore;
 
 using Pebbles.Context;
+using Pebbles.Repositories;
+using Pebbles.Services;
+using Pebbles.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<PebblesContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("PebblesDB")));
+
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();   
 
 var app = builder.Build();
 

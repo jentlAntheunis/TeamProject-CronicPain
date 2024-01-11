@@ -34,7 +34,7 @@ public class UserController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUserAsync(Guid id)
     {
-        var user = await _userService.GetUserAsync(id);
+        var user = await _userService.GetUserByIdAsync(id);
         if(user == null)
         {
             return NotFound();
@@ -64,10 +64,10 @@ public class UserController : ControllerBase
         return Ok();
     }
 
-    [HttpGet("CheckIfUserExists/{id}")]
-    public async Task<IActionResult> CheckIfUserExistsAsync(Guid id)
+    [HttpGet("CheckIfUserExists/{email}")]
+    public async Task<IActionResult> CheckIfUserExistsAsync(string email)
     {
-        var userExists = await _userService.CheckIfUserExistsAsync(id);
+        var userExists = await _userService.CheckIfUserExistsAsync(email);
         return Ok(JsonConvert.SerializeObject(userExists));
     }
 }
