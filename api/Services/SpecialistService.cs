@@ -15,10 +15,12 @@ public interface ISpecialistRepository
 public class SpecialistService : ISpecialistService
 {
     private readonly ISpecialistRepository _specialistRepository;
+    private readonly IConfiguration _configuration;
 
-    public SpecialistService(ISpecialistRepository specialistRepository)
+    public SpecialistService(ISpecialistRepository specialistRepository, IConfiguration configuration)
     {
         _specialistRepository = specialistRepository;
+        _configuration = configuration;
     }
 
     public async Task<List<Specialist>> GetAllSpecialistsAsync() => await _specialistRepository.GetAllSpecialistsAsync();
@@ -40,7 +42,7 @@ public class SpecialistService : ISpecialistService
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient("smtp-auth.mailprotect.be");
 
-            mail.From = new MailAddress("noreply@pebbles-health.be");
+            mail.From = new MailAddress(_configuration["EmailSettings:SmtpUsername"], );
             mail.To.Add(ontvangerEmail); 
             mail.Subject = "Uitnodiging voor Pebbles";
             mail.Body = "Beste " + ontvangerVoornaam + " " + ontvangerAchternaam + ",\n\n" +
@@ -50,7 +52,10 @@ public class SpecialistService : ISpecialistService
                 "Het Pebbles-team";
 
             SmtpServer.Port = 587;
-            SmtpServer.Credentials = new NetworkCredential("noreply@pebbles-health.be", "88H2i5o615L4Ei8vxxY8");
+            SmtpServer.Credentials = new NetworkCredential(
+                _configuration["EmailSettings:SmtpUsername"], 
+                _configuration["EmailSettings:SmtpPassword"]
+            );
             SmtpServer.EnableSsl = true;
 
             SmtpServer.Send(mail);
