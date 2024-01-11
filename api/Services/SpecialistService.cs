@@ -31,5 +31,37 @@ public class SpecialistService : ISpecialistService
 
     public async Task DeleteSpecialistAsync(Guid id) => await _specialistRepository.DeleteSpecialistAsync(id);
 
-    
+    public void SendEmail(string afzenderVoornaam, string afzenderAchternaam, string ontvangerVoornaam, string ontvangerAchternaam, string ontvangerEmail)
+    {
+        try
+        {
+            Console.WriteLine("Versturen van e-mail...");
+
+            MailMessage mail = new MailMessage();
+            SmtpClient SmtpServer = new SmtpClient("smtp-auth.mailprotect.be");
+
+            mail.From = new MailAddress("noreply@pebbles-health.be");
+            mail.To.Add(ontvangerEmail); 
+            mail.Subject = "Uitnodiging voor Pebbles";
+            mail.Body = "Beste " + ontvangerVoornaam + " " + ontvangerAchternaam + ",\n\n" +
+                "Je bent uitgenodigd door " + afzenderVoornaam + " " + afzenderAchternaam + " om deel te nemen aan Pebbles.\n" +
+                "Klik op de volgende link om je aan te melden: *link*\n\n" +
+                "Met vriendelijke groeten,\n" +
+                "Het Pebbles-team";
+
+            SmtpServer.Port = 587;
+            SmtpServer.Credentials = new NetworkCredential("noreply@pebbles-health.be", "88H2i5o615L4Ei8vxxY8");
+            SmtpServer.EnableSsl = true;
+
+            SmtpServer.Send(mail);
+
+            Console.WriteLine("Mail Verstuurd");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Fout bij het versturen van e-mail: " + ex.Message);
+        }
+    }
+
+
 }
