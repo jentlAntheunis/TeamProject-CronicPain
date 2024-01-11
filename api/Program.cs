@@ -1,10 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 
 using Pebbles.Context;
+using Pebbles.Models;
+using Pebbles.Repositories;
+using Pebbles.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<ISpecialistService, SpecialistService>();
+builder.Services.AddScoped<ISpecialistRepository, SpecialistRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
