@@ -1,9 +1,9 @@
-import RewardMetrics from "../ui/RewardMetrics/RewardMetrics.jsx";
+import TopBar from "../ui/TopBar/TopBar.jsx";
 
 const DashboardScreen = () => {
   return (
     <>
-    <RewardMetrics />
+    <TopBar />
     </>
   );
 };
