@@ -17,6 +17,7 @@ public class PebblesContext : DbContext
     public DbSet<Questionnaire> Questionnaire { get; set; }
     public DbSet<Scale> Scale { get; set; }
     public DbSet<Specialist> Specialist { get; set; }
+    public DbSet<AnonymousPatientData> AnonymousPatientData { get; set; }
 
     private readonly IConfiguration _configuration;
 
@@ -32,6 +33,8 @@ public class PebblesContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<AnonymousPatientData>().HasNoKey();
+
         //relations between tables
         modelBuilder.Entity<Answer>()
             .HasOne(a => a.Question)
