@@ -1,0 +1,23 @@
+.button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  border-radius: var(--border-radius);
+  border: none;
+  padding: 0.875rem 1.5rem;
+  font-size: var(--h6);
+  font-weight: var(--medium);
+  width: 100%;
+  cursor: pointer;
+}
+
+.button:disabled {
+  pointer-events: none;
+  opacity: 50%;
+}
+
+.primary {
+  background: var(--blue-500);
+  color: var(--white);
+}
