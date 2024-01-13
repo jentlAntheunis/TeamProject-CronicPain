@@ -80,7 +80,7 @@ const FormMessage = forwardRef(({ className, children, ...props }, ref) => {
   if (!body) return null;
 
   return (
-    <p ref={ref} className={clsx(styling.message, className)} {...props}>
+    <p ref={ref} className={clsx("error-message", className)} {...props}>
       {body}
     </p>
   );

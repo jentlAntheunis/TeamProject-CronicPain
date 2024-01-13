@@ -18,17 +18,32 @@
   color: var(--blue-600);
 }
 
-.formContainer {
+.titleContainer p {
+  font-size: var(--h6);
+  font-weight: var(--regular);
+}
 
+.formContainer {
+  margin-bottom: 4rem;
+}
+
+.submit {
+  margin-top: 1.625rem;
+}
+
+.success {
+  font-weight: var(--medium);
+  padding: 1rem 0;
+  background-color: var(--grey-100);
+  border-radius: var(--border-radius);
 }
 
 .pebbles {
   z-index: -1;
   position: absolute;
-  bottom: 0;
   left: 50%;
+  bottom: 55%;
   translate: -50% 50%;
-  bottom: 50%;
 }
 
 .waterBackground {

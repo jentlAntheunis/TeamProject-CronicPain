@@ -7,8 +7,8 @@ import { auth } from "../../../core/services/firebase";
 import { useSendSignInLinkToEmail } from "react-firebase-hooks/auth";
 import { actionCodeSettings } from "../../../core/config/emailAuth";
 import { z } from "zod";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-toastify";
+
 import {
   Form,
   FormControl,
@@ -20,23 +20,6 @@ import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
 
 const LoginScreen = () => {
-  const [email, setEmail] = useState("");
-  const [sendSignInLink, sending, error] = useSendSignInLinkToEmail(auth);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const success = await sendSignInLink(email, actionCodeSettings);
-    if (success) {
-      window.localStorage.setItem("emailForSignIn", email);
-      setEmail("");
-      console.log("email sent to " + email);
-    }
-  };
-
-  if (sending) return <p>Sending...</p>;
-
-  if (error) return <p>{error.message}</p>;
-
   return (
     <div className={`full-height padding-mobile ${styling.mainContainer}`}>
       {/* Top part */}
@@ -45,7 +28,7 @@ const LoginScreen = () => {
       </div>
 
       {/* Bottom part */}
-      <div>
+      <div className={styling.formContainer}>
         <LoginForm />
       </div>
 
@@ -68,22 +51,45 @@ const formSchema = z.object({
 });
 
 const LoginForm = () => {
+  const [sendSignInLink, sending, error] = useSendSignInLinkToEmail(auth);
+
   const defaultValues = {
     email: "",
   };
 
-  const onSubmit = (data) => console.log(data);
+  if (error) {
+    toast("Er is iets fout gegaan, probeer opnieuw of neem contact op", {
+      type: "error",
+    });
+  }
+
+  const onSubmit = async ({ email }) => {
+    const success = await sendSignInLink(email, actionCodeSettings);
+    if (success) {
+      window.localStorage.setItem("emailForSignIn", email);
+      toast("E-mail verstuurd naar " + email + ", check je inbox!", {
+        type: "success",
+      });
+    }
+  };
 
   return (
     <Form schema={formSchema} defaultValues={defaultValues} onSubmit={onSubmit}>
       <FormItem name="email">
         <FormLabel>Email</FormLabel>
         <FormControl>
-          <Input placeholder="Email" autoComplete="email" />
+          <Input placeholder="dirkjanssens@voorbeeld.be" autoComplete="email" />
         </FormControl>
         <FormMessage />
       </FormItem>
-      <Button type="submit">Submit</Button>
+      <Button
+        type="submit"
+        size="full"
+        disabled={sending}
+        className={styling.submit}
+      >
+        Submit
+      </Button>
     </Form>
   );
 };
