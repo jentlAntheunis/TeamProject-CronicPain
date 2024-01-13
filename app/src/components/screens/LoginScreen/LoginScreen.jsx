@@ -1,13 +1,21 @@
-import { useState } from "react";
+import { forwardRef, useState } from "react";
 import { PebblesMoods } from "../../../core/config/pebblesMoods";
 import Pebbles from "../../ui/Illustrations/Pebbles";
 import Wave from "../../ui/Illustrations/Wave";
 import styling from "./LoginScreen.module.css";
 import { auth } from "../../../core/services/firebase";
-import {
-  useSendSignInLinkToEmail,
-} from "react-firebase-hooks/auth";
+import { useSendSignInLinkToEmail } from "react-firebase-hooks/auth";
 import { actionCodeSettings } from "../../../core/config/emailAuth";
+import { z } from "zod";
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../../app/form/Form";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -28,30 +36,20 @@ const LoginScreen = () => {
   if (error) return <p>{error.message}</p>;
 
   return (
-    <div>
+    <div className={`full-height padding-mobile ${styling.mainContainer}`}>
       {/* Top part */}
-      <div>
+      <div className={styling.titleContainer}>
         <h1>Pebbles</h1>
       </div>
 
       {/* Bottom part */}
       <div>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            placeholder="dirkjanssens@voorbeeld.be"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <button type="submit">Log in</button>
-        </form>
+        <LoginForm />
       </div>
 
       {/* Pebbles */}
       <div className={styling.pebbles}>
-        <Pebbles mood={PebblesMoods.Bubbles} width="2rem" />
+        <Pebbles mood={PebblesMoods.Bubbles} size="13rem" />
       </div>
 
       {/* Water */}
@@ -63,4 +61,34 @@ const LoginScreen = () => {
   );
 };
 
+const formSchema = z.object({
+  email: z.string().email(),
+});
+
+const LoginForm = () => {
+  const defaultValues = {
+    email: "",
+  };
+  
+  const onSubmit = (data) => console.log(data);
+
+  return (
+    <Form schema={formSchema} defaultValues={defaultValues} onSubmit={onSubmit}>
+      <FormItem name="email">
+        <FormLabel>Email</FormLabel>
+        <FormControl>
+          <NestedInput />
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+      <button type="submit">Submit</button>
+    </Form>
+  );
+};
+
 export default LoginScreen;
+
+const NestedInput = forwardRef(({ ...props }, ref) => {
+  return <input ref={ref} {...props} />;
+});
+NestedInput.displayName = "NestedInput";
