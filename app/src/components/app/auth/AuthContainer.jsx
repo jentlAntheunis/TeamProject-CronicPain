@@ -4,8 +4,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../core/services/firebase";
 
 const AuthContainer = () => {
-  console.log("test");
-
   const location = useLocation();
   const [user] = useAuthState(auth);
 
