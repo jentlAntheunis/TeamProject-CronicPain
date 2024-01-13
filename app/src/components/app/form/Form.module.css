@@ -1,0 +1,16 @@
+.form > * + * {
+  margin-top: 2rem;
+}
+
+.formItem > * + * {
+  margin-top: 0.5rem;
+}
+
+.labelError {
+  color: var(--error);
+}
+
+.message {
+  color: var(--error);
+  font-size: var(--small);
+}

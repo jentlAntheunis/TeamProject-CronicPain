@@ -1,19 +1,19 @@
 import PropTypes from "prop-types";
 import { PebblesMoods } from "../../../core/config/pebblesMoods";
 
-const Pebbles = ({ mood = PebblesMoods.Neutral, width, style }) => {
+const Pebbles = ({ mood = PebblesMoods.Neutral, size, style }) => {
   switch (mood) {
     case PebblesMoods.Neutral:
-      return <PebblesNeutral width={width} style={style} />
+      return <PebblesNeutral size={size} style={style} />
 
     case PebblesMoods.Happy:
-      return <PebblesHappy width={width} style={style} />;
+      return <PebblesHappy size={size} style={style} />;
 
     case PebblesMoods.Sad:
-      return <PebblesSad width={width} style={style} />;
+      return <PebblesSad size={size} style={style} />;
 
     case PebblesMoods.Bubbles:
-      return <PebblesBubbles width={width} style={style} />;
+      return <PebblesBubbles size={size} style={style} />;
 
     default:
       break;
@@ -24,14 +24,14 @@ Pebbles.propTypes = {
   mood: PropTypes.oneOf(Object.values(PebblesMoods)),
 };
 
-const PebblesNeutral = ({ width, style }) => (
+const PebblesNeutral = ({ size, style }) => (
   <svg
     width="1062"
     height="780"
     viewBox="0 0 1062 780"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    style={{ width: width, height: width, ...style}}
+    style={{ width: size, height: size, ...style}}
   >
     <g clipPath="url(#clip0_78_1725)">
       <path
@@ -183,14 +183,14 @@ const PebblesNeutral = ({ width, style }) => (
   </svg>
 );
 
-const PebblesHappy = ({ width, style }) => (
+const PebblesHappy = ({ size, style }) => (
   <svg
     width="1062"
     height="780"
     viewBox="0 0 1062 780"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    style={{ width: width, height: width, ...style }}
+    style={{ width: size, height: size, ...style }}
   >
     <g clipPath="url(#clip0_74_426)">
       <path
@@ -411,14 +411,14 @@ const PebblesHappy = ({ width, style }) => (
   </svg>
 );
 
-const PebblesSad = ({ width, style }) => (
+const PebblesSad = ({ size, style }) => (
   <svg
     width="1049"
     height="769"
     viewBox="0 0 1049 769"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    style={{ width: width, height: width, ...style }}
+    style={{ width: size, height: size, ...style }}
   >
     <g clipPath="url(#clip0_77_1614)">
       <path
@@ -578,14 +578,14 @@ const PebblesSad = ({ width, style }) => (
   </svg>
 );
 
-const PebblesBubbles = ({ width, style }) => (
+const PebblesBubbles = ({ size, style }) => (
   <svg
     width="1436"
     height="1166"
     viewBox="0 0 1436 1166"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    style={{ width: width, height: width, ...style }}
+    style={{ width: size, height: size, ...style }}
   >
     <g clipPath="url(#clip0_753_830)">
       <path
