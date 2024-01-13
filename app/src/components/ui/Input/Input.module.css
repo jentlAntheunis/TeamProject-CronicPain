@@ -14,7 +14,6 @@
 
 .input::placeholder {
   color: var(--grey-400);
-  font-weight: var(--medium);
 }
 
 .input:disabled {

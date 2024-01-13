@@ -10,14 +10,13 @@ const buttonVariants = cva(styling.button, {
       secondary: styling.secondary,
     },
     size: {
-      small: {},
-      medium: {},
-      large: {},
+      default: styling.defaultSize,
+      full: styling.fullWidth,
     },
   },
   defaultVariants: {
     variant: "primary",
-    size: "medium",
+    size: "default",
   },
 });
 

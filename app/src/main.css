@@ -111,6 +111,13 @@ h6 {
   line-height: 1.2;
 }
 
+/* Set font correct for all text element */
+button, input, optgroup, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
 /* UTILS */
 
 /* Reset button style */
@@ -153,4 +160,10 @@ h6 {
 .padding-mobile {
   padding: var(--margin-mobile-top) var(--margin-mobile-side)
     var(--margin-mobile-bottom);
+}
+
+.error-message {
+  color: var(--error);
+  font-size: var(--small);
+  margin-bottom: 0;
 }
