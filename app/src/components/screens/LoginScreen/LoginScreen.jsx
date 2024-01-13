@@ -1,4 +1,4 @@
-import { forwardRef, useState } from "react";
+import { forwardRef } from "react";
 import { PebblesMoods } from "../../../core/config/pebblesMoods";
 import Pebbles from "../../ui/Illustrations/Pebbles";
 import Wave from "../../ui/Illustrations/Wave";
