@@ -2,8 +2,6 @@ import clsx from "clsx";
 import { forwardRef } from "react";
 import styling from "./Label.module.css";
 
-console.log(styling.label);
-
 const Label = forwardRef((props, forwardedRef) => (
   <label
     {...props}

@@ -33,6 +33,7 @@
   --lime-800: #3f6212;
   --lime-900: #365314;
   --error: #dc2626;
+  --transparent: #00000000;
 
   /* Font Family */
   --font-sans: "Outfit", sans-serif;
@@ -110,32 +111,31 @@ h6 {
   line-height: 1.2;
 }
 
-
 /* UTILS */
 
 /* Reset button style */
 .btn-reset {
-    border: none;
-    margin: 0;
-    padding: 0;
-    width: auto;
-    overflow: visible;
-    background: transparent;
-    appearance: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  overflow: visible;
+  background: transparent;
+  appearance: none;
 
-    /* inherit font & color from ancestor */
-    color: inherit;
-    font: inherit;
+  /* inherit font & color from ancestor */
+  color: inherit;
+  font: inherit;
 
-    /* Normalize `line-height`. Cannot be changed from `normal` in Firefox 4+. */
-    line-height: normal;
+  /* Normalize `line-height`. Cannot be changed from `normal` in Firefox 4+. */
+  line-height: normal;
 
-    /* Corrects font smoothing for webkit */
-    -webkit-font-smoothing: inherit;
-    -moz-osx-font-smoothing: inherit;
+  /* Corrects font smoothing for webkit */
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
 
-    /* Corrects inability to style clickable `input` types in iOS */
-    -webkit-appearance: none;
+  /* Corrects inability to style clickable `input` types in iOS */
+  -webkit-appearance: none;
 }
 
 .full-height {
@@ -146,9 +146,11 @@ h6 {
 }
 
 .margin-mobile {
-  margin: var(--margin-mobile-top) var(--margin-mobile-side) var(--margin-mobile-bottom);
+  margin: var(--margin-mobile-top) var(--margin-mobile-side)
+    var(--margin-mobile-bottom);
 }
 
 .padding-mobile {
-  padding: var(--margin-mobile-top) var(--margin-mobile-side) var(--margin-mobile-bottom);
+  padding: var(--margin-mobile-top) var(--margin-mobile-side)
+    var(--margin-mobile-bottom);
 }

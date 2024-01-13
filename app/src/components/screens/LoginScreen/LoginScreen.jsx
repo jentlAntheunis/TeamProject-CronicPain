@@ -16,6 +16,8 @@ import {
   FormLabel,
   FormMessage,
 } from "../../app/form/Form";
+import Input from "../../ui/Input/Input";
+import Button from "../../ui/Button/Button";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -69,7 +71,7 @@ const LoginForm = () => {
   const defaultValues = {
     email: "",
   };
-  
+
   const onSubmit = (data) => console.log(data);
 
   return (
@@ -77,11 +79,11 @@ const LoginForm = () => {
       <FormItem name="email">
         <FormLabel>Email</FormLabel>
         <FormControl>
-          <NestedInput />
+          <Input placeholder="Email" autoComplete="email" />
         </FormControl>
         <FormMessage />
       </FormItem>
-      <button type="submit">Submit</button>
+      <Button type="submit">Submit</Button>
     </Form>
   );
 };

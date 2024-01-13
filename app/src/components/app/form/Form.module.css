@@ -1,9 +1,9 @@
 .form > * + * {
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 .formItem > * + * {
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .labelError {

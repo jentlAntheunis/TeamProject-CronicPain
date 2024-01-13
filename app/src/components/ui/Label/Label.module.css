@@ -1,3 +1,5 @@
 .label {
   display: block;
+  font-size: var(--small);
+  font-weight: var(--medium);
 }
