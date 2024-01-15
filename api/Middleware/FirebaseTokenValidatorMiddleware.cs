@@ -1,3 +1,5 @@
+
+using FirebaseAdmin;
 public class FirebaseTokenValidatorMiddleware
 {
     private readonly RequestDelegate _next;
