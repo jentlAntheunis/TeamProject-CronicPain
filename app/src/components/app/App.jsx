@@ -1,10 +1,12 @@
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import OnboardingLayout from "./auth/OnboardingLayout";
-import { AuthRoutes, TestRoutes } from "../../core/config/routes";
 import AuthContainer from "./auth/AuthContainer";
 import RoleContainer from "./auth/RoleContainer";
 import { UserRoles } from "../../core/config/userRoles";
 import LoginScreen from "../screens/LoginScreen/LoginScreen";
+import DashboardScreen from "../screens/DashboardScreen";
+import AddPatient from "../screens/Specialist/AddPatient/AddPatient";
+import { AuthRoutes, PatientRoutes, SpecialistRoutes } from "../../core/config/routes";
 
 const App = () => (
   <Routes>
@@ -35,6 +37,7 @@ const App = () => (
         }
       >
         {/* Specialist Paths */}
+        <Route path={SpecialistRoutes.AddPatient} element={<AddPatient />} />
       </Route>
 
       {/* Patient */}
@@ -46,7 +49,7 @@ const App = () => (
         }
       >
         {/* Patient Paths */}
-        <Route path={TestRoutes.Test} />
+        <Route path={PatientRoutes.Dashboard} element={<DashboardScreen />} />
       </Route>
     </Route>
   </Routes>

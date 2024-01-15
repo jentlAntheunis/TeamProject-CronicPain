@@ -1,0 +1,11 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-bottom: 7rem;
+  justify-content: space-between;
+}
+
+.btnContainer > * + * {
+  margin-top: 0.75rem;
+}

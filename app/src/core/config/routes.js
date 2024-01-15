@@ -2,10 +2,16 @@ const AuthRoutes = {
   Login: '/login',
 }
 
-const TestRoutes = {
-  Test: "/test",
+const PatientRoutes = {
+  Dashboard: '/',
+  Progress: '/progress',
+  Shop: '/shop',
+}
+
+const SpecialistRoutes = {
+  Index: "/",
+  AddPatient: "/add-patient",
 }
 
 
-
-export { AuthRoutes, TestRoutes };
+export { AuthRoutes, PatientRoutes, SpecialistRoutes };

@@ -1,0 +1,14 @@
+.pageHeading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.arrow{
+  position: absolute;
+  left: var(--margin-side);
+}
+
+.heading {
+  font-size: var(--h6);
+}
