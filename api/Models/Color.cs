@@ -15,6 +15,6 @@ public class Color
     [Required]
     public int Price { get; set; }
 
-    public List<User> Users { get; set; }
+    public List<Patient> Patients { get; set; }
     public List<Avatar> Avatars { get; set; }
 }

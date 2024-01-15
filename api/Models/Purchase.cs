@@ -4,11 +4,12 @@ namespace Pebbles.Models;
 
 public class Purchase
 {
-    public Guid Id { get; set; }
 
-    [Required]
-    public Guid UserId { get; set; }
+    [Key]
+    public Guid PatientId { get; set; }
+    public Patient Patient { get; set; }
 
-    [Required]
+    [Key]
     public Guid ColorId { get; set; }
+    public Color Color { get; set; }
 }
