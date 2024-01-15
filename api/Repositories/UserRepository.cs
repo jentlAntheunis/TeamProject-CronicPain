@@ -23,7 +23,7 @@ public class UserRepository : IUserRepository
         _context = new PebblesContext(configuration);
     }
 
-    public async Task<List<User>> GetUsersAsync() => await _context.User.ToListAsync();
+    public async Task<List<User>> GetUsersAsync() => await _context.User.Where(u => u.IsDeleted == false).ToListAsync();
 
     public async Task<User> GetUserByIdAsync(Guid id) => await _context.User.FirstOrDefaultAsync(u => u.Id == id);
 

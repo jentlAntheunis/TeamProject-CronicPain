@@ -22,9 +22,9 @@ public class PatientRepository : IPatientRepository
         _context = new PebblesContext(configuration);
     }
 
-    public async Task<List<Patient>> GetAllPatientsAsync() => await _context.Patient.ToListAsync();
+    public async Task<List<Patient>> GetAllPatientsAsync() => await _context.Patient.Where(p => p.IsDeleted == false).ToListAsync();
 
-    public async Task<Patient> GetPatientByIdAsync(Guid id) => await _context.Patient.FirstOrDefaultAsync(p => p.Id == id);
+    public async Task<Patient> GetPatientByIdAsync(Guid id) => await _context.Patient.Where(p => p.IsDeleted == false).FirstOrDefaultAsync(p => p.Id == id);
 
     public async Task<Guid> CreatePatientAsync(Patient patient)
     {

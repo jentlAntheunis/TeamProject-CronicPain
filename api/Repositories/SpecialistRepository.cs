@@ -21,7 +21,7 @@ public class SpecialistRepository : ISpecialistRepository
         _context = new PebblesContext(configuration);
     }
 
-    public async Task<List<Specialist>> GetAllSpecialistsAsync() => await _context.Specialist.ToListAsync();
+    public async Task<List<Specialist>> GetAllSpecialistsAsync() => await _context.Specialist.Where(s => s.IsDeleted == false).ToListAsync();
 
     public async Task<Specialist> GetSpecialistByIdAsync(Guid id) => await _context.Specialist.FirstOrDefaultAsync(s => s.Id == id);
 
