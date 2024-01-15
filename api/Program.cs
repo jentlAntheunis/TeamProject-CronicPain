@@ -27,7 +27,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();   
 
 // Initialize Firebase Admin SDK
-var serviceAccountPath = "path/to/your/serviceAccountKey.json"; // Update with your service account JSON file path
+var serviceAccountPath = "./ServiceAccountCredentials.json";
 
 var firebaseCredential = GoogleCredential.FromFile(serviceAccountPath);
 
