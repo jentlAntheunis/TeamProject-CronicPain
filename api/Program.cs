@@ -51,4 +51,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseMiddleware<FirebaseTokenValidatorMiddleware>();
+
 app.Run();
