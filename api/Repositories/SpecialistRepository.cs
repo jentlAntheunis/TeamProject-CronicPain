@@ -10,16 +10,15 @@ public interface ISpecialistRepository
     Task<Specialist> GetSpecialistByIdAsync(Guid id);
     Task<Specialist> CreateSpecialistAsync(Specialist specialist);
     Task<Specialist> UpdateSpecialistAsync(Specialist specialist);
-    Task DeleteSpecialistAsync(Guid id);
+    Task DeleteSpecialistAsync(Specialist specialist);
 }
 
 public class SpecialistRepository : ISpecialistRepository
 {
     private readonly PebblesContext _context;
-
-    public SpecialistRepository(PebblesContext context)
+    public SpecialistRepository(IConfiguration configuration)
     {
-        _context = context;
+        _context = new PebblesContext(configuration);
     }
 
     public async Task<List<Specialist>> GetAllSpecialistsAsync() => await _context.Specialist.ToListAsync();
@@ -40,9 +39,8 @@ public class SpecialistRepository : ISpecialistRepository
         return specialist;
     }
 
-    public async Task DeleteSpecialistAsync(Guid id)
+    public async Task DeleteSpecialistAsync(Specialist specialist)
     {
-        var specialist = await GetSpecialistByIdAsync(id);
         _context.Specialist.Remove(specialist);
         await _context.SaveChangesAsync();
     }

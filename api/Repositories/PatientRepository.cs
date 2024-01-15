@@ -8,29 +8,29 @@ public interface IPatientRepository
 {
     Task<List<Patient>> GetAllPatientsAsync();
     Task<Patient> GetPatientByIdAsync(Guid id);
-    Task<Patient> CreatePatientAsync(Patient patient);
+    Task<Guid> CreatePatientAsync(Patient patient);
     Task<Patient> UpdatePatientAsync(Patient patient);
-    Task DeletePatientAsync(Guid id);
+    Task DeletePatientAsync(Patient patient);
 }
 
 public class PatientRepository : IPatientRepository
 {
     private readonly PebblesContext _context;
 
-    public PatientRepository(PebblesContext context)
+    public PatientRepository(IConfiguration configuration)
     {
-        _context = context;
+        _context = new PebblesContext(configuration);
     }
 
     public async Task<List<Patient>> GetAllPatientsAsync() => await _context.Patient.ToListAsync();
 
     public async Task<Patient> GetPatientByIdAsync(Guid id) => await _context.Patient.FirstOrDefaultAsync(p => p.Id == id);
 
-    public async Task<Patient> CreatePatientAsync(Patient patient)
+    public async Task<Guid> CreatePatientAsync(Patient patient)
     {
         await _context.Patient.AddAsync(patient);
         await _context.SaveChangesAsync();
-        return patient;
+        return patient.Id;
     }
 
     public async Task<Patient> UpdatePatientAsync(Patient patient)
@@ -40,9 +40,8 @@ public class PatientRepository : IPatientRepository
         return patient;
     }
 
-    public async Task DeletePatientAsync(Guid id)
+    public async Task DeletePatientAsync(Patient patient)
     {
-        var patient = await GetPatientByIdAsync(id);
         _context.Patient.Remove(patient);
         await _context.SaveChangesAsync();
     }
