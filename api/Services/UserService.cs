@@ -28,11 +28,7 @@ public class UserService : IUserService
     public async Task<User> AddUserAsync(User user) => await _userRepository.AddUserAsync(user);
     public async Task<User> UpdateUserAsync(User user) => await _userRepository.UpdateUserAsync(user);
 
-    public async Task DeleteUserAsync(User user) {
-        
-        Console.WriteLine("not implemented");
-        return;
-    }
+    public async Task DeleteUserAsync(User user) => await _userRepository.DeleteUserAsync(user);
 
     public async Task<bool> CheckIfUserExistsAsync(string email)
     {

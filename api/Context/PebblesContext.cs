@@ -30,16 +30,18 @@ public class PebblesContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(_configuration.GetConnectionString("PebblesDB"));
+        optionsBuilder
+            .UseSqlServer(_configuration.GetConnectionString("PebblesDB"))
+            .AddInterceptors(new SoftDeleteInterceptor());
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AnonymousPatientData>().HasNoKey();
-        
+
         modelBuilder.Entity<Purchase>()
             .HasKey(p => new { p.PatientId, p.ColorId });
-        
+
         modelBuilder.Entity<PatientSpecialist>()
             .HasKey(ps => new { ps.PatientId, ps.SpecialistId });
 
@@ -49,7 +51,7 @@ public class PebblesContext : DbContext
             .HasMany(s => s.Patients)
             .WithMany(p => p.Specialists)
             .UsingEntity<PatientSpecialist>();
-            
+
         modelBuilder.Entity<Patient>()
             .HasMany(p => p.Colors)
             .WithMany(c => c.Patients)
