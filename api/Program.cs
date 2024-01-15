@@ -8,12 +8,6 @@ using Pebbles.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddScoped<ISpecialistService, SpecialistService>();
-builder.Services.AddScoped<ISpecialistRepository, SpecialistRepository>();
-
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();  
 
 builder.Services.AddControllers();
 

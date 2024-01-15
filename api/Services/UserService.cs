@@ -18,10 +18,10 @@ public class UserService : IUserService
     private readonly IUserRepository _userRepository;
     private readonly IPatientSpecialistRepository _patientSpecialistRepository;
 
-    public UserService(IUserRepository userRepository, IPatientSpecialistRepository patientSpecialistRepository)
+    public UserService(IConfiguration configuration)
     {
-        _userRepository = userRepository;
-        _patientSpecialistRepository = patientSpecialistRepository;
+        _userRepository = new UserRepository(configuration);
+        _patientSpecialistRepository = new PatientSpecialistRepository(configuration);
     }
 
     public async Task<List<User>> GetUsersAsync() => await _userRepository.GetUsersAsync();
@@ -39,7 +39,6 @@ public class UserService : IUserService
         }
 
         await _userRepository.DeleteUserAsync(id);
-    
     }
 
     public async Task<bool> CheckIfUserExistsAsync(string email)

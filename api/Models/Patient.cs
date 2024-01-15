@@ -4,13 +4,9 @@ namespace Pebbles.Models;
 
 public class Patient : User
 {
-    public Patient() : base()
-    {
-        Avatar = new Avatar(Id);
-        AvatarId = Avatar.Id;
-    }
     public Patient(string firstName, string lastName, string email) : base(firstName, lastName, email)
     {
+        Specialists = new List<Specialist>();
         Avatar = new Avatar(Id);
         AvatarId = Avatar.Id;
     }

@@ -4,6 +4,27 @@ namespace Pebbles.Models;
 
 public class Color
 {
+    public Color(string name, string hex)
+    {
+        Id = Guid.NewGuid();
+        Name = name;
+        Hex = hex;
+        Price = 0;
+
+        Patients = new List<Patient>();
+        Avatars = new List<Avatar>();
+    }
+
+    public Color(string name, string hex, int price)
+    {
+        Id = Guid.NewGuid();
+        Name = name;
+        Hex = hex;
+        Price = price;
+
+        Patients = new List<Patient>();
+        Avatars = new List<Avatar>();
+    }
     public Guid Id { get; set; }
 
     [Required]

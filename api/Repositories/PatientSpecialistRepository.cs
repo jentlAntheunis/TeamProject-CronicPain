@@ -17,9 +17,9 @@ public class PatientSpecialistRepository : IPatientSpecialistRepository
 {
     private readonly PebblesContext _context;
 
-    public PatientSpecialistRepository(PebblesContext context)
+    public PatientSpecialistRepository(IConfiguration configuration)
     {
-        _context = context;
+        _context = new PebblesContext(configuration);
     }
 
     public async Task<List<PatientSpecialist>> GetPatientSpecialistsAsync() => await _context.PatientSpecialist.ToListAsync();

@@ -18,9 +18,9 @@ public class UserRepository : IUserRepository
 {
     private readonly PebblesContext _context;
 
-    public UserRepository(PebblesContext context)
+    public UserRepository(IConfiguration configuration)
     {
-        _context = context;
+        _context = new PebblesContext(configuration);
     }
 
     public async Task<List<User>> GetUsersAsync() => await _context.User.ToListAsync();
