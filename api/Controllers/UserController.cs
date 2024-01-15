@@ -57,17 +57,16 @@ public class UserController : ControllerBase
         return Ok(JsonConvert.SerializeObject(updatedUser));
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteUserAsync(Guid id)
-    {
-        await _userService.DeleteUserAsync(id);
-        return Ok();
-    }
-
     [HttpGet("CheckIfUserExists/{email}")]
     public async Task<IActionResult> CheckIfUserExistsAsync(string email)
     {
         var userExists = await _userService.CheckIfUserExistsAsync(email);
         return Ok(JsonConvert.SerializeObject(userExists));
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteUserAsync(Guid id)
+    {
+        return BadRequest("Not implemented");
     }
 }

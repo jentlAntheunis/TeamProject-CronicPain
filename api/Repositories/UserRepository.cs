@@ -10,7 +10,7 @@ public interface IUserRepository
     Task<User> GetUserByIdAsync(Guid id);
     Task<User> AddUserAsync(User user);
     Task<User> UpdateUserAsync(User user);
-    Task DeleteUserAsync(Guid id);
+    Task DeleteUserAsync(User user);
 
 }
 
@@ -41,9 +41,8 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public async Task DeleteUserAsync(Guid id)
+    public async Task DeleteUserAsync(User user)
     {
-        var user = await GetUserByIdAsync(id);
         _context.User.Remove(user);
         await _context.SaveChangesAsync();
     }

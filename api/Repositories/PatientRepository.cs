@@ -10,7 +10,7 @@ public interface IPatientRepository
     Task<Patient> GetPatientByIdAsync(Guid id);
     Task<Guid> CreatePatientAsync(Patient patient);
     Task<Patient> UpdatePatientAsync(Patient patient);
-    Task DeletePatientAsync(Guid id);
+    Task DeletePatientAsync(Patient patient);
 }
 
 public class PatientRepository : IPatientRepository
@@ -40,9 +40,8 @@ public class PatientRepository : IPatientRepository
         return patient;
     }
 
-    public async Task DeletePatientAsync(Guid id)
+    public async Task DeletePatientAsync(Patient patient)
     {
-        var patient = await GetPatientByIdAsync(id);
         _context.Patient.Remove(patient);
         await _context.SaveChangesAsync();
     }
