@@ -1,18 +1,11 @@
-.btnSpacing {
-  margin-top: 4rem;
-  margin-bottom: 1.25rem;
-}
-
 .screen {
   display: flex;
   flex-direction: column;
-  height: 100svh;
+  height: 100%;
+  padding-bottom: 7rem;
+  justify-content: space-between;
 }
 
-.center {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  margin-bottom: 6rem;
+.btnContainer > * + * {
+  margin-top: 0.75rem;
 }

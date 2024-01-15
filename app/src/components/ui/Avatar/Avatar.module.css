@@ -7,12 +7,8 @@
 .avatar {
   background-color: var(--grey-100);
   border-radius: 100%;
-  width: min(80%, 30rem);
+  width: 20rem;
   aspect-ratio: 1/1;
   display: grid;
   place-items: center;
-}
-
-.pebbles {
-  grid-area: 1/1;
 }

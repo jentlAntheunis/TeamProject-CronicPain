@@ -112,6 +112,10 @@ h6 {
   line-height: 1.2;
 }
 
+button, input, textarea, optgroup, select {
+  font-family: inherit;
+}
+
 
 /* UTILS */
 

@@ -24,7 +24,7 @@ const Button = forwardRef(({ className, variant, size, ...props }, ref) => (
   <button
     ref={ref}
     {...props}
-    className={clsx(buttonVariants({ variant, size, className }))}
+    className={clsx(buttonVariants({ variant, size, className }), "btn-reset")}
   />
 ));
 Button.displayName = "Button";
