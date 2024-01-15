@@ -1,0 +1,22 @@
+.input {
+  outline: none;
+  border: none;
+  display: flex;
+  width: 100%;
+  border-radius: var(--border-radius);
+  padding: 1.125rem 1rem;
+  background: var(--grey-100);
+}
+
+.input:focus {
+  box-shadow: 0 0 0 1px var(--blue-700);
+}
+
+.input::placeholder {
+  color: var(--grey-400);
+}
+
+.input:disabled {
+  cursor: not-allowed;
+  opacity: 50%;
+}

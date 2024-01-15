@@ -1,0 +1,38 @@
+.button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  gap: 0.5rem;
+  border-radius: var(--border-radius);
+  border: none;
+  padding: 0.875rem 2rem;
+  font-size: var(--h6);
+  width: auto;
+  cursor: pointer;
+}
+
+.button:disabled {
+  pointer-events: none;
+  opacity: 50%;
+}
+
+.primary {
+  background: var(--blue-500);
+  color: var(--white);
+}
+
+.secondary {
+  background: var(--transparent);
+  color: var(--blue-500);
+  border: 2px solid var(--blue-500);
+  font-weight: var(--medium);
+}
+
+.defaultSize {
+  width: auto;
+}
+
+.fullWidth {
+  width: 100%;
+}
