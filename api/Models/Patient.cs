@@ -1,34 +1,19 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Pebbles.Models;
 
 public class Patient : User
 {
-    public Patient()
+    public Patient(string firstName, string lastName, string email) : base(firstName, lastName, email)
     {
-        PatientSpecialists = new List<PatientSpecialist>();
-        Avatars = new List<Avatar>();
+        Specialists = new List<Specialist>();
+        Avatar = new Avatar(Id);
+        AvatarId = Avatar.Id;
     }
 
-    public Patient(string firstName, string lastName, string email)
-    {
-        Id = Guid.NewGuid();
-        FirstName = firstName;
-        LastName = lastName;
-        Email = email;
-
-        PatientSpecialists = new List<PatientSpecialist>();
-        Avatars = new List<Avatar>();
-    }
-
-    public Patient(Guid id, string firstName, string lastName, string email)
-    {
-        Id = id;
-        FirstName = firstName;
-        LastName = lastName;
-        Email = email;
-    }
+    public Guid AvatarId { get; set; }
+    public Avatar Avatar { get; set; }
 
     public List<Specialist> Specialists { get; set; }
-    public List<PatientSpecialist> PatientSpecialists { get; set; }
-    public List<Avatar> Avatars { get; set; }
-
+    public List<Color> Colors { get; set; }
 }
