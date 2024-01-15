@@ -4,6 +4,7 @@ using Pebbles.Context;
 using Pebbles.Models;
 using Pebbles.Repositories;
 using Pebbles.Services;
+using FirebaseAdmin;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,16 @@ builder.Services.AddDbContext<PebblesContext>(options =>
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();   
+
+// Initialize Firebase Admin SDK
+var serviceAccountPath = "path/to/your/serviceAccountKey.json"; // Update with your service account JSON file path
+
+var firebaseCredential = GoogleCredential.FromFile(serviceAccountPath);
+
+FirebaseApp.Create(new AppOptions
+{
+    Credential = firebaseCredential,
+});
 
 var app = builder.Build();
 
