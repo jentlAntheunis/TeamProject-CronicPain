@@ -57,6 +57,13 @@ public class UserRepository : IUserRepository
             //delete patient
             _context.Patient.Remove(patient);
         }
-        await _context.SaveChangesAsync();
+        //check if user is a specialist
+        var specialist = await _context.Specialist.FirstOrDefaultAsync(s => s.Id == user.Id);
+        if(specialist != null)
+        {
+            //delete specialist
+            _context.Specialist.Remove(specialist);
+        }
+        _context.SaveChanges();
     }
 }
