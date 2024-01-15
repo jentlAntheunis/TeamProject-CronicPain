@@ -2,8 +2,10 @@ const AuthRoutes = {
   Login: '/login',
 }
 
-const TestRoutes = {
-  Test: "/test",
+const PatientRoutes = {
+  Dashboard: '/',
+  Progress: '/progress',
+  Shop: '/shop',
 }
 
 const SpecialistRoutes = {
@@ -12,4 +14,4 @@ const SpecialistRoutes = {
 }
 
 
-export { AuthRoutes, TestRoutes, SpecialistRoutes };
+export { AuthRoutes, PatientRoutes, SpecialistRoutes };
