@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Pebbles.Models;
 
-public class User
+public class User : ISoftDelete
 {
     public User()
     {
@@ -43,4 +43,7 @@ public class User
     public List<PatientSpecialist> PatientSpecialists { get; set; }
     public List<Questionnaire> Questionnaires { get; set; }
     public List<MovementSuggestion> MovementSuggestions { get; set; }
+
+    public bool IsDeleted { get; set; }
+    public DateTimeOffset? DeletedAt { get; set; }
 }
