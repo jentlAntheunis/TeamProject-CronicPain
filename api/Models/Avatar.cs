@@ -4,6 +4,15 @@ namespace Pebbles.Models;
 
 public class Avatar
 {
+    public Avatar()
+    {
+        Id = Guid.NewGuid();
+    }
+    public Avatar(Guid patientId)
+    {
+        Id = Guid.NewGuid();
+        PatientId = patientId;
+    }
     public Guid Id { get; set; }
 
     [Required]

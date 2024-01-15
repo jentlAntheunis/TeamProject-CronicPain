@@ -16,10 +16,12 @@ public interface IUserService
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
+    private readonly IPatientSpecialistRepository _patientSpecialistRepository;
 
-    public UserService(IUserRepository userRepository)
+    public UserService(IUserRepository userRepository, IPatientSpecialistRepository patientSpecialistRepository)
     {
         _userRepository = userRepository;
+        _patientSpecialistRepository = patientSpecialistRepository;
     }
 
     public async Task<List<User>> GetUsersAsync() => await _userRepository.GetUsersAsync();
@@ -27,7 +29,18 @@ public class UserService : IUserService
 
     public async Task<User> AddUserAsync(User user) => await _userRepository.AddUserAsync(user);
     public async Task<User> UpdateUserAsync(User user) => await _userRepository.UpdateUserAsync(user);
-    public async Task DeleteUserAsync(Guid id) => await _userRepository.DeleteUserAsync(id);
+    public async Task DeleteUserAsync(Guid id) {
+        //find user references in PatientSpecialist table
+        var patientSpecialists = await _patientSpecialistRepository.GetPatientSpecialistsByIdAsync(id);
+        //delete user references in PatientSpecialist table
+        foreach(var ps in patientSpecialists)
+        {
+            await _patientSpecialistRepository.DeletePatientSpecialistAsync(ps);
+        }
+
+        await _userRepository.DeleteUserAsync(id);
+    
+    }
 
     public async Task<bool> CheckIfUserExistsAsync(string email)
     {
