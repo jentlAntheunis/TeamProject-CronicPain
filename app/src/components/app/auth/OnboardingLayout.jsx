@@ -51,7 +51,7 @@ const OnboardingLayout = () => {
   }
 
   if (error) {
-    toast("Er is iets misgelopen bij het inloggen");
+    console.error(error.message);
   }
 
   if (!user) {
