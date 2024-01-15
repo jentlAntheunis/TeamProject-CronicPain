@@ -12,7 +12,6 @@ public interface ISpecialistService
     Task<Specialist> GetSpecialistByIdAsync(Guid id);
     Task<Specialist> CreateSpecialistAsync(Specialist specialist);
     Task<Specialist> UpdateSpecialistAsync(Specialist specialist);
-    Task DeleteSpecialistAsync(Guid id);
     void SendEmailWithInvitation(string specialistName, string specialistSurname, string patientName, string patientSurname, string patientEmail);
 }
 
@@ -35,8 +34,6 @@ public class SpecialistService : ISpecialistService
 
     public async Task<Specialist> UpdateSpecialistAsync(Specialist specialist) => await _specialistRepository.UpdateSpecialistAsync(specialist);
 
-    public async Task DeleteSpecialistAsync(Guid id) => await _specialistRepository.DeleteSpecialistAsync(id);
-
     public void SendEmailWithInvitation(string specialistName, string specialistSurname, string patientName, string patientSurname, string patientEmail)
     {
         try
@@ -46,8 +43,8 @@ public class SpecialistService : ISpecialistService
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient("smtp-auth.mailprotect.be");
 
-            mail.From = new MailAddress(_configuration["EmailSettings:SmtpUsername"] );
-            mail.To.Add(patientEmail); 
+            mail.From = new MailAddress(_configuration["EmailSettings:SmtpUsername"]);
+            mail.To.Add(patientEmail);
             mail.Subject = "Uitnodiging voor Pebbles";
             mail.Body = "Beste " + patientName + " " + patientSurname + ",\n\n" +
                 "Je bent uitgenodigd door " + specialistName + " " + specialistSurname + " om deel te nemen aan Pebbles.\n" +
@@ -57,7 +54,7 @@ public class SpecialistService : ISpecialistService
 
             SmtpServer.Port = 587;
             SmtpServer.Credentials = new NetworkCredential(
-                _configuration["EmailSettings:SmtpUsername"], 
+                _configuration["EmailSettings:SmtpUsername"],
                 _configuration["EmailSettings:SmtpPassword"]
             );
             SmtpServer.EnableSsl = true;

@@ -8,9 +8,6 @@ using Pebbles.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddScoped<ISpecialistService, SpecialistService>();
-builder.Services.AddScoped<ISpecialistRepository, SpecialistRepository>();
 
 builder.Services.AddControllers();
 
@@ -22,8 +19,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<PebblesContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("PebblesDB")));
 
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();   
 
 var app = builder.Build();
 

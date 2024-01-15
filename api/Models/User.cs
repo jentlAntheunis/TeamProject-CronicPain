@@ -7,6 +7,10 @@ public class User
     public User()
     {
         Id = Guid.NewGuid();
+
+        PatientSpecialists = new List<PatientSpecialist>();
+        Questionnaires = new List<Questionnaire>();
+        MovementSuggestions = new List<MovementSuggestion>();
     }
     public User(string firstName, string lastName, string email)
     {
@@ -14,6 +18,10 @@ public class User
         FirstName = firstName;
         LastName = lastName;
         Email = email;
+
+        PatientSpecialists = new List<PatientSpecialist>();
+        Questionnaires = new List<Questionnaire>();
+        MovementSuggestions = new List<MovementSuggestion>();
     }
 
     [Key]

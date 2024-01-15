@@ -5,12 +5,11 @@ namespace Pebbles.Services;
 
 public interface IPatientService
 {
-    Task<Patient> GetPatientAsync(Guid id);
+    Task<Patient> GetPatientByIdAsync(Guid id);
     Task<IEnumerable<Patient>> GetPatientsBySpecialistAsync(Guid SpecialistId);
     Task<Guid> AddPatientBySpecialistAsync(Guid SpecialistId, Patient patient);
     Task AddPatientToSpecialist(Guid PatientId, Guid SpecialistId);
     Task<Patient> UpdatePatientAsync(Patient patient);
-    Task DeletePatientAsync(Patient patient);
 }
 
 public class PatientService : IPatientService
@@ -23,7 +22,7 @@ public class PatientService : IPatientService
         _specialistRepository = new SpecialistRepository(configuration);
     }
 
-    public async Task<Patient> GetPatientAsync(Guid id) => await _patientRepository.GetPatientByIdAsync(id);
+    public async Task<Patient> GetPatientByIdAsync(Guid id) => await _patientRepository.GetPatientByIdAsync(id);
 
     public async Task<IEnumerable<Patient>> GetPatientsBySpecialistAsync(Guid SpecialistId)
     {
@@ -54,5 +53,5 @@ public class PatientService : IPatientService
     }
 
     public async Task<Patient> UpdatePatientAsync(Patient patient) => await _patientRepository.UpdatePatientAsync(patient);
-    public async Task DeletePatientAsync(Patient patient) => await _patientRepository.DeletePatientAsync(patient.Id);
+
 }
