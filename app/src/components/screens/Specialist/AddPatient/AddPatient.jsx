@@ -4,9 +4,8 @@ import PageHeading from "../../../ui/PageHeading/PageHeading";
 const AddPatient = () => {
   return (
     <FullHeightScreen>
-      <PageHeading>
-        Add Patient
-      </PageHeading>
+      <PageHeading>Patiënt toevoegen</PageHeading>
+      
     </FullHeightScreen>
   );
 };

@@ -8,3 +8,7 @@
   position: absolute;
   left: var(--margin-side);
 }
+
+.heading {
+  font-size: var(--h6);
+}
