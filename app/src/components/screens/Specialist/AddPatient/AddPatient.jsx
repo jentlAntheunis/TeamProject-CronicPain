@@ -1,9 +1,12 @@
 import FullHeightScreen from "../../../ui/FullHeightScreen/FullHeightScreen";
+import PageHeading from "../../../ui/PageHeading/PageHeading";
 
 const AddPatient = () => {
   return (
     <FullHeightScreen>
-      <h1>Add Patient</h1>
+      <PageHeading>
+        Add Patient
+      </PageHeading>
     </FullHeightScreen>
   );
 };
