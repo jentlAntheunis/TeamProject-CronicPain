@@ -2,6 +2,10 @@
   margin-top: 0.25rem;
 }
 
+.form > * + * {
+  margin-top: 1rem;
+}
+
 .labelError {
   color: var(--error);
 }

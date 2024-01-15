@@ -76,7 +76,7 @@ const LoginForm = () => {
   return (
     <Form schema={formSchema} defaultValues={defaultValues} onSubmit={onSubmit}>
       <FormItem name="email">
-        <FormLabel>Email</FormLabel>
+        <FormLabel>E-mail</FormLabel>
         <FormControl>
           <Input placeholder="dirkjanssens@voorbeeld.be" autoComplete="email" />
         </FormControl>
