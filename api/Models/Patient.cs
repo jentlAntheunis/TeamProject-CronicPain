@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Pebbles.Models;
 
-public class Patient : User, ISoftDelete
+public class Patient : User
 {
     public Patient(string firstName, string lastName, string email) : base(firstName, lastName, email)
     {
@@ -16,7 +16,4 @@ public class Patient : User, ISoftDelete
 
     public List<Specialist> Specialists { get; set; }
     public List<Color> Colors { get; set; }
-
-    public bool IsDeleted { get; set; }
-    public DateTimeOffset? DeletedAt { get; set; }
 }

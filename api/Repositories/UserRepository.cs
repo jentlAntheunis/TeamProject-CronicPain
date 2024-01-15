@@ -43,9 +43,20 @@ public class UserRepository : IUserRepository
 
     public async Task DeleteUserAsync(User user)
     {
-        _context.User.Remove(user);
+        //check if user is a patient
+        var patient = await _context.Patient.FirstOrDefaultAsync(p => p.Id == user.Id);
+        if(patient != null)
+        {
+            //check if patient has an avatar
+            var avatar = await _context.Avatar.FirstOrDefaultAsync(a => a.Id == patient.AvatarId);
+            if(avatar != null)
+            {
+                //delete avatar
+                _context.Avatar.Remove(avatar);
+            }
+            //delete patient
+            _context.Patient.Remove(patient);
+        }
         await _context.SaveChangesAsync();
     }
-
-
 }
