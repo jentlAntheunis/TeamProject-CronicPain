@@ -1,9 +1,11 @@
 const AuthRoutes = {
-  Index: '/auth',
-  Login: '/auth/login',
-  Register: '/auth/register',
+  Login: '/login',
+}
+
+const TestRoutes = {
+  Test: "/test",
 }
 
 
 
-export { AuthRoutes };
+export { AuthRoutes, TestRoutes };
