@@ -8,4 +8,10 @@ const PatientRoutes = {
   Shop: '/shop',
 }
 
-export { AuthRoutes, PatientRoutes };
+const SpecialistRoutes = {
+  Index: "/",
+  AddPatient: "/add-patient",
+}
+
+
+export { AuthRoutes, PatientRoutes, SpecialistRoutes };
