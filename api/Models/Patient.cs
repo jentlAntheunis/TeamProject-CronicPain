@@ -12,6 +12,8 @@ public class Patient : User
         Colors = new List<Color>();
     }
 
+    public int Streak { get; set; }
+    public int Coins { get; set; }
     public Guid AvatarId { get; set; }
     public Avatar Avatar { get; set; }
 
