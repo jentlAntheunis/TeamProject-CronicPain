@@ -16,6 +16,8 @@ const OnboardingLayout = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
+  console.log("rerender onboardinglayout")
+
   useEffect(() => {
     if (!user) {
       if (isSignInWithEmailLink(auth, window.location.href)) {

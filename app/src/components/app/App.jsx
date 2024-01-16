@@ -10,10 +10,13 @@ import {
   PatientRoutes,
   SpecialistRoutes,
 } from "../../core/config/routes";
-import DashboardScreen from "../screens/Patient/DashboardScreen/DashboardScreen";
 import QuestionaireScreen from "../screens/Patient/Questionaire/QuestionaireScreen";
+import DashboardScreen from "../screens/Patient/DashboardScreen/DashboardScreen";
 
-const App = () => (
+const App = () => {
+  console.log("rerender app")
+
+  return (
   <Routes>
     {/* Authentication Paths */}
     <Route path={AuthRoutes.Login} element={<OnboardingLayout />}>
@@ -59,6 +62,6 @@ const App = () => (
       </Route>
     </Route>
   </Routes>
-);
+)};
 
 export default App;

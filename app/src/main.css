@@ -34,6 +34,7 @@
   --lime-900: #365314;
   --error: #dc2626;
   --transparent: #00000000;
+  --bg-overlay: rgba(0, 0, 0, 0.5);
 
   /* Font Family */
   --font-sans: "Outfit", sans-serif;
@@ -73,6 +74,9 @@
   --margin-side: 1.5rem;
   --margin-top: 4.5rem;
   --margin-bottom: 2.5rem;
+
+  /* Bezier */
+  --animate-in: cubic-bezier(0.32, 0.94, 0.6, 1);
 }
 
 html {
@@ -84,11 +88,13 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
-* , *:before, *:after{
-  box-sizing:border-box;
-  -moz-box-sizing:border-box;
-  -webkit-box-sizing:border-box;
-  -ms-box-sizing:border-box;
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
 }
 
 ::selection {
@@ -112,10 +118,13 @@ h6 {
   line-height: 1.2;
 }
 
-button, input, textarea, optgroup, select {
+button,
+input,
+textarea,
+optgroup,
+select {
   font-family: inherit;
 }
-
 
 /* UTILS */
 
@@ -152,13 +161,11 @@ button, input, textarea, optgroup, select {
 }
 
 .screen-margin {
-  margin: var(--margin-top) var(--margin-side)
-    var(--margin-bottom);
+  margin: var(--margin-top) var(--margin-side) var(--margin-bottom);
 }
 
 .screen-padding {
-  padding: var(--margin-top) var(--margin-side)
-    var(--margin-bottom);
+  padding: var(--margin-top) var(--margin-side) var(--margin-bottom);
 }
 
 .error-message {
@@ -175,4 +182,3 @@ button, input, textarea, optgroup, select {
     /* waardes nog aanpassen */
   }
 }
-
