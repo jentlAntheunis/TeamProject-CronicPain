@@ -20,6 +20,7 @@ public class PebblesContext : DbContext
     public DbSet<Questionnaire> Questionnaire { get; set; }
     public DbSet<Scale> Scale { get; set; }
     public DbSet<User> User { get; set; }
+    public DbSet<Login> Login { get; set; }
 
     private readonly IConfiguration _configuration;
 
@@ -132,6 +133,12 @@ public class PebblesContext : DbContext
             .HasOne(m => m.Specialist)
             .WithMany(s => s.MovementSuggestions)
             .HasForeignKey(m => m.SpecialistId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Login>()
+            .HasOne(l => l.Patient)
+            .WithMany(p => p.Logins)
+            .HasForeignKey(l => l.PatientId)
             .OnDelete(DeleteBehavior.NoAction);
 
         //seed data
