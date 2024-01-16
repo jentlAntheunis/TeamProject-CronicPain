@@ -116,6 +116,9 @@ button, input, textarea, optgroup, select {
   font-family: inherit;
 }
 
+strong {
+  font-weight: var(--semi-bold);
+}
 
 /* UTILS */
 

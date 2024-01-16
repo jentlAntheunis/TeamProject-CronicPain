@@ -6,6 +6,7 @@ const PatientRoutes = {
   Dashboard: '/',
   Progress: '/progress',
   Shop: '/shop',
+  WellDone: '/well-done',
 }
 
 const SpecialistRoutes = {
