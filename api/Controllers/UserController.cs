@@ -50,7 +50,7 @@ public class UserController : ControllerBase
         return Ok(JsonConvert.SerializeObject(updatedUser));
     }
 
-    [HttpGet("CheckIfUserExists/{email}")]
+    [HttpGet("exists/{email}")]
     public async Task<IActionResult> CheckIfUserExistsAsync(string email)
     {
         var userExists = await _userService.CheckIfUserExistsAsync(email);
