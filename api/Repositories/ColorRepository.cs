@@ -23,7 +23,7 @@ public class ColorRepository : IColorRepository
         _context = new PebblesContext(configuration);
     }
 
-    public async Task<List<Color>> GetAllColorsAsync() => await _context.Color.ToListAsync();
+    public async Task<List<Color>> GetAllColorsAsync() => await _context.Color.Where(c => c.IsDeleted == false).ToListAsync();
 
     public async Task<Color> GetColorByIdAsync(Guid id) => await _context.Color.FirstOrDefaultAsync(c => c.Id == id);
 
