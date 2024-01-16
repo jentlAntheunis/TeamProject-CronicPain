@@ -141,5 +141,9 @@ public class PebblesContext : DbContext
             new Specialist("Johan", "Van der Auwera", "johan.van.der.auwera@ziekenhuis.be"),
             new Specialist("Rita", "Coonincks", "rita.coonincks@ziekenhuis.be")
         );
+
+        modelBuilder.Entity<Color>().HasData(
+            new Color ("Blue (Default)", "#3B82F6")
+        );
     }
 }
