@@ -12,7 +12,7 @@ using Pebbles.Models;
 using Pebbles.Services;
 using Pebbles.Repositories;
 
-[Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
+
 [ApiController]
 [Route("Users")]
 public class UserController : ControllerBase
@@ -26,6 +26,7 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
+    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
     [HttpGet]
     public async Task<IActionResult> GetUsersAsync()
     {
@@ -40,6 +41,7 @@ public class UserController : ControllerBase
         return Ok(JsonConvert.SerializeObject(users));
     }
 
+    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUserAsync(Guid id)
     {
@@ -51,6 +53,7 @@ public class UserController : ControllerBase
         return Ok(JsonConvert.SerializeObject(user));
     }
 
+    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
     [HttpPost]
     public async Task<IActionResult> AddUserAsync([FromBody] User user)
     {
@@ -58,6 +61,7 @@ public class UserController : ControllerBase
         return Ok(JsonConvert.SerializeObject(newUser));
     }
 
+    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateUserAsync(Guid id, [FromBody] User user)
     {
@@ -66,6 +70,7 @@ public class UserController : ControllerBase
         return Ok(JsonConvert.SerializeObject(updatedUser));
     }
 
+    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUserAsync(Guid id)
     {
