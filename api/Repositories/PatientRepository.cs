@@ -42,14 +42,6 @@ public class PatientRepository : IPatientRepository
 
     public async Task DeletePatientAsync(Patient patient)
     {
-        //check if patient has an avatar
-        var avatar = await _context.Avatar.FirstOrDefaultAsync(a => a.Id == patient.AvatarId);
-        if (avatar != null)
-        {
-            //delete avatar
-            _context.Avatar.Remove(avatar);
-        }
-        //delete patient
         _context.Patient.Remove(patient);
         await _context.SaveChangesAsync();
     }

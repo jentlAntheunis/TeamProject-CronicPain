@@ -15,11 +15,16 @@ public interface IUserService
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
+    private readonly IPatientRepository _patientRepository;
     private readonly IAvatarRepository _avatarRepository;
+    private readonly ISpecialistRepository _specialistRepository;
 
     public UserService(IConfiguration configuration)
     {
         _userRepository = new UserRepository(configuration);
+        _patientRepository = new PatientRepository(configuration);
+        _avatarRepository = new AvatarRepository(configuration);
+        _specialistRepository = new SpecialistRepository(configuration);
     }
 
     public async Task<List<User>> GetUsersAsync() => await _userRepository.GetUsersAsync();
@@ -27,7 +32,30 @@ public class UserService : IUserService
 
     public async Task<User> UpdateUserAsync(User user) => await _userRepository.UpdateUserAsync(user);
 
-    public async Task DeleteUserAsync(User user) => await _userRepository.DeleteUserAsync(user);
+    public async Task DeleteUserAsync(User user)
+    {
+        //check if user is a patient
+        var patient = await _patientRepository.GetPatientByIdAsync(user.Id);
+        if (patient != null)
+        {
+            //check if patient has an avatar
+            var avatar = await _avatarRepository.GetAvatarByIdAsync(patient.AvatarId);
+            if (avatar != null)
+            {
+                //delete avatar
+                await _avatarRepository.DeleteAvatarAsync(avatar);
+            }
+            //delete patient
+            await _patientRepository.DeletePatientAsync(patient);
+        }
+        //check if user is a specialist
+        var specialist = await _specialistRepository.GetSpecialistByIdAsync(user.Id);
+        if (specialist != null)
+        {
+            //delete specialist
+            await _specialistRepository.DeleteSpecialistAsync(specialist);
+        }
+    }
 
     public async Task<bool> CheckIfUserExistsAsync(string email)
     {
@@ -35,5 +63,4 @@ public class UserService : IUserService
         //return true or false: bool
         return users.Any(u => u.Email == email);
     }
-
 }
