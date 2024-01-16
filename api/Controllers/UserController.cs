@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using FirebaseAdmin;
 using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 
 using Pebbles.Models;
@@ -18,6 +19,7 @@ public class UserController : ControllerBase
 {
     private readonly IConfiguration _configuration;
     private readonly IUserService _userService;
+    private readonly ILogger<FirebaseTokenValidatorMiddleware> logger;
 
     public UserController(IConfiguration configuration, IUserService userService)
     {
@@ -28,11 +30,14 @@ public class UserController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetUsersAsync()
     {
+        Console.WriteLine("GetUsersAsync called");
         var users = await _userService.GetUsersAsync();
-        if(users == null)
+        if (users == null)
         {
+            Console.WriteLine("GetUsersAsync returned null");
             return StatusCode(500);
         }
+        Console.WriteLine($"GetUsersAsync returned {users.Count()} users");
         return Ok(JsonConvert.SerializeObject(users));
     }
 
@@ -40,7 +45,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetUserAsync(Guid id)
     {
         var user = await _userService.GetUserByIdAsync(id);
-        if(user == null)
+        if (user == null)
         {
             return NotFound();
         }
