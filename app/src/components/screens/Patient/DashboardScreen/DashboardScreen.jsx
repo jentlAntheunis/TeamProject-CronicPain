@@ -13,6 +13,7 @@ import { useState } from "react";
 import BottomSheet from "../../../ui/BottomSheet/BottomSheet.jsx";
 import clsx from "clsx";
 import useStore from "../../../../core/hooks/useStore.jsx";
+import { ExampleQuestions } from "../../../../core/config/questions.js";
 
 const DashboardScreen = () => {
   // get user
@@ -22,15 +23,16 @@ const DashboardScreen = () => {
   const navigate = useNavigate();
 
   // state management
-  const { removeQuestions, removeAnswers } = useStore();
- 
+  const { removeAnswers } = useStore();
+  const setQuestions = useStore((state) => state.setQuestions);
+
   user.getIdTokenResult().then((token) => {
     console.log(token);
   });
 
   const handleStartMovement = () => {
-    removeQuestions();
     removeAnswers();
+    setQuestions(ExampleQuestions);
     navigate(PatientRoutes.Questionaire);
   };
 

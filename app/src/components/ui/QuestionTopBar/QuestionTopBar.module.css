@@ -1,0 +1,13 @@
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  font-size: var(--h5);
+}
+
+.questionCount {
+  font-size: var(--h5);
+  margin: 0;
+}

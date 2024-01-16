@@ -77,6 +77,8 @@
 
   /* Bezier */
   --animate-in: cubic-bezier(0.32, 0.94, 0.6, 1);
+  --animate-ease: cubic-bezier(0.66, 0, 0.34, 1);
+  --animate-out: cubic-bezier(0.4, 0, 0.68, 0.06);
 }
 
 html {
