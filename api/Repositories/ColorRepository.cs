@@ -18,9 +18,9 @@ public class ColorRepository : IColorRepository
 {
     private readonly PebblesContext _context;
 
-    public ColorRepository(IConfiguration configuration)
+    public ColorRepository(PebblesContext context)
     {
-        _context = new PebblesContext(configuration);
+        _context = context;
     }
 
     public async Task<List<Color>> GetAllColorsAsync() => await _context.Color.ToListAsync();

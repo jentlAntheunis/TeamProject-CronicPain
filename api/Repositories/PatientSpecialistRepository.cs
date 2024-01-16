@@ -12,9 +12,9 @@ public class PatientSpecialistRepository : IPatientSpecialistRepository
 {
     private readonly PebblesContext _context;
 
-    public PatientSpecialistRepository(IConfiguration configuration)
+    public PatientSpecialistRepository(PebblesContext context)
     {
-        _context = new PebblesContext(configuration);
+        _context = context;
     }
 
     public async Task DeletePatientSpecialistAsync(PatientSpecialist patientSpecialist)

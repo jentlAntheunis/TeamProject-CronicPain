@@ -16,11 +16,11 @@ public class SpecialistController : ControllerBase
     private readonly ISpecialistService _specialistService;
     private readonly IPatientService _patientService;
 
-    public SpecialistController(IConfiguration configuration)
+    public SpecialistController(IConfiguration configuration, ISpecialistService specialistService, IPatientService patientService)
     {
         _configuration = configuration;
-        _specialistService = new SpecialistService(_configuration);
-        _patientService = new PatientService(_configuration);
+        _specialistService = specialistService;
+        _patientService = patientService;
     }
 
     [HttpGet]

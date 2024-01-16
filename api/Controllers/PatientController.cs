@@ -15,10 +15,10 @@ public class PatientController : ControllerBase
     private readonly IConfiguration _configuration;
     private readonly IPatientService _patientService;
 
-    public PatientController(IConfiguration configuration)
+    public PatientController(IConfiguration configuration, IPatientService patientService)
     {
         _configuration = configuration;
-        _patientService = new PatientService(_configuration);
+        _patientService = patientService;
     }
 
     [HttpDelete("{id}")]

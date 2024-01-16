@@ -18,12 +18,16 @@ public class UserService : IUserService
     private readonly IAvatarRepository _avatarRepository;
     private readonly ISpecialistRepository _specialistRepository;
 
-    public UserService(IConfiguration configuration)
+    public UserService(
+        IUserRepository userRepository,
+        IPatientRepository patientRepository,
+        IAvatarRepository avatarRepository,
+        ISpecialistRepository specialistRepository)
     {
-        _userRepository = new UserRepository(configuration);
-        _patientRepository = new PatientRepository(configuration);
-        _avatarRepository = new AvatarRepository(configuration);
-        _specialistRepository = new SpecialistRepository(configuration);
+        _userRepository = userRepository;
+        _patientRepository = patientRepository;
+        _avatarRepository = avatarRepository;
+        _specialistRepository = specialistRepository;
     }
 
     public async Task<List<User>> GetUsersAsync() => await _userRepository.GetUsersAsync();

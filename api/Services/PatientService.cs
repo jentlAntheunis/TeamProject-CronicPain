@@ -20,13 +20,19 @@ public class PatientService : IPatientService
     private readonly IColorRepository _colorRepository;
     private readonly IAvatarRepository _avatarRepository;
     private readonly IPatientSpecialistRepository _patientSpecialistRepository;
-    public PatientService(IConfiguration configuration)
+    public PatientService(
+        IPatientRepository patientRepository,
+        ISpecialistRepository specialistRepository,
+        IColorRepository colorRepository,
+        IAvatarRepository avatarRepository,
+        IPatientSpecialistRepository patientSpecialistRepository
+        )
     {
-        _patientRepository = new PatientRepository(configuration);
-        _specialistRepository = new SpecialistRepository(configuration);
-        _colorRepository = new ColorRepository(configuration);
-        _avatarRepository = new AvatarRepository(configuration);
-        _patientSpecialistRepository = new PatientSpecialistRepository(configuration);
+        _patientRepository = patientRepository;
+        _specialistRepository = specialistRepository;
+        _colorRepository = colorRepository;
+        _avatarRepository = avatarRepository;
+        _patientSpecialistRepository = patientSpecialistRepository;
     }
 
     public async Task<Patient> GetPatientByIdAsync(Guid id) => await _patientRepository.GetPatientByIdAsync(id);
@@ -72,12 +78,6 @@ public class PatientService : IPatientService
         {
             //delete avatar
             await _avatarRepository.DeleteAvatarAsync(avatar);
-        }
-        //delete patientSpialist relations
-        var patientSpecialists = patient.PatientSpecialists;
-        foreach (var patientSpecialist in patientSpecialists)
-        {
-            await _patientSpecialistRepository.DeletePatientSpecialistAsync(patientSpecialist);
         }
         //delete patient
         await _patientRepository.DeletePatientAsync(patient);

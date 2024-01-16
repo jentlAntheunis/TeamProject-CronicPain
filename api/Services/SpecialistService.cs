@@ -22,11 +22,11 @@ public class SpecialistService : ISpecialistService
     private readonly ISpecialistRepository _specialistRepository;
     private readonly IPatientSpecialistRepository _patientSpecialistRepository;
 
-    public SpecialistService(IConfiguration configuration)
+    public SpecialistService(IConfiguration configuration, ISpecialistRepository specialistRepository, IPatientSpecialistRepository patientSpecialistRepository)
     {
         _configuration = configuration;
-        _specialistRepository = new SpecialistRepository(_configuration);
-        _patientSpecialistRepository = new PatientSpecialistRepository(_configuration);
+        _specialistRepository = specialistRepository;
+        _patientSpecialistRepository = patientSpecialistRepository;
     }
 
     public async Task<List<Specialist>> GetAllSpecialistsAsync() => await _specialistRepository.GetAllSpecialistsAsync();

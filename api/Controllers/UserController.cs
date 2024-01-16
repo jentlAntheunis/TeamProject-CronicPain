@@ -14,10 +14,10 @@ public class UserController : ControllerBase
     private readonly IConfiguration _configuration;
     private readonly IUserService _userService;
 
-    public UserController(IConfiguration configuration)
+    public UserController(IConfiguration configuration, IUserService userService)
     {
         _configuration = configuration;
-        _userService = new UserService(_configuration);
+        _userService = userService;
     }
 
     [HttpGet]
