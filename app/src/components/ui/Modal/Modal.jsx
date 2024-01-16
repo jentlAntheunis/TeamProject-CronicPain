@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styles from "./Modal.module.css";
 
 const Modal = ({ showModal, setShowModal, children }) => {

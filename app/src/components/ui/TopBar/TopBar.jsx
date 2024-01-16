@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import Coin from "../Icons/Coin";
 import Streaks from "../Icons/Streaks";
 import RewardMetric from "../RewardMetric/RewardMetric.jsx";
@@ -12,6 +12,20 @@ import { auth } from "../../../core/services/firebase.js";
 const TopBar = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const menu = useRef(null);
+
+  useEffect(() => {
+    const closeOpenMenus = (e) => {
+      if (showMenu && !menu.current?.contains(e.target)) {
+        setShowMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", closeOpenMenus);
+    return () => {
+      document.removeEventListener("mousedown", closeOpenMenus);
+    };
+  }, [showMenu]);
 
   const onClickDots = () => {
     setShowMenu(!showMenu);
@@ -21,6 +35,8 @@ const TopBar = () => {
     setShowModal(false);
     auth.signOut();
   };
+
+
 
   return (
     <div className={styles.spaceBetween}>
@@ -39,45 +55,51 @@ const TopBar = () => {
           className={styles.dots}
           onClick={onClickDots}
         />
-        <Menu showMenu={showMenu} setShowMenu={setShowMenu} setShowModal={setShowModal} />
+        <Menu
+          showMenu={showMenu}
+          setShowMenu={setShowMenu}
+          setShowModal={setShowModal}
+          ref={menu}
+        />
       </div>
       <Modal showModal={showModal} setShowModal={setShowModal}>
-          <div>
-            <div className={styles.modalText}>
-              Weet je zeker dat je wilt uitloggen?
-            </div>
-            <div className={styles.modalButtons}>
-              <Button
-                variant="tertiary"
-                size="small"
-                className="btn-reset"
-                onClick={() => setShowModal(false)}
-              >
-                Annuleren
-              </Button>
-              <Button
-                size="small"
-                className="btn-reset"
-                onClick={handleLogout}
-              >
-                Uitloggen
-              </Button>
-            </div>
+        <div>
+          <div className={styles.modalText}>
+            Weet je zeker dat je wilt uitloggen?
           </div>
-        </Modal>
+          <div className={styles.modalButtons}>
+            <Button
+              variant="tertiary"
+              size="small"
+              className="btn-reset"
+              onClick={() => setShowModal(false)}
+            >
+              Annuleren
+            </Button>
+            <Button size="small" className="btn-reset" onClick={handleLogout}>
+              Uitloggen
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
 
-const Menu = ({ showMenu, setShowMenu, setShowModal }) => {
-
+const Menu = forwardRef(({ showMenu, setShowMenu, setShowModal }, ref) => {
   if (!showMenu) {
     return null;
   }
 
   return (
-    <div className={styles.menu}>
-      <button className={`btn-reset ${styles.menuItem}`} onClick={() => { setShowModal(true); setShowMenu(false); }}>
+    <div className={styles.menu} ref={ref}>
+      <button
+        className={`btn-reset ${styles.menuItem}`}
+        onClick={() => {
+          setShowModal(true);
+          setShowMenu(false);
+        }}
+      >
         Uitloggen
         <SignOut size={24} />
       </button>
@@ -87,6 +109,7 @@ const Menu = ({ showMenu, setShowMenu, setShowModal }) => {
       </button>
     </div>
   );
-};
+});
+Menu.displayName = "Menu";
 
 export default TopBar;
