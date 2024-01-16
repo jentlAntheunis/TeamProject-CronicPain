@@ -19,3 +19,10 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.selected {
+  border: 1px solid var(--blue-400);
+  background-color: var(--blue-50);
+  color: var(--blue-600);
+  font-weight: var(--medium);
+}
