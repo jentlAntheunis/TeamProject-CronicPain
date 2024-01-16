@@ -1,18 +1,20 @@
-import Avatar from "../ui/Avatar/Avatar.jsx";
-import TabBarNav from "../ui/TabBarNav/TabBarNav.jsx";
-import TopBar from "../ui/TopBar/TopBar.jsx";
+import Avatar from "../../../ui/Avatar/Avatar.jsx";
+import TabBarNav from "../../../ui/TabBarNav/TabBarNav.jsx";
+import TopBar from "../../../ui/TopBar/TopBar.jsx";
 import { Play, ClipboardText } from "@phosphor-icons/react";
 import styles from "./DashboardScreen.module.css";
-import FullHeightScreen from "../ui/FullHeightScreen/FullHeightScreen.jsx";
-import Button from "../ui/Button/Button.jsx";
+import FullHeightScreen from "../../../ui/FullHeightScreen/FullHeightScreen.jsx";
+import Button from "../../../ui/Button/Button.jsx";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../core/services/firebase.js";
+import { auth } from "../../../../core/services/firebase.js";
 
 const DashboardScreen = () => {
   // get user
   const [user] = useAuthState(auth);
 
-  console.log(user);
+  user.getIdTokenResult().then((token) => {
+    console.log(token);
+  });
 
   return (
     <FullHeightScreen>

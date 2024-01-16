@@ -4,9 +4,14 @@ import AuthContainer from "./auth/AuthContainer";
 import RoleContainer from "./auth/RoleContainer";
 import { UserRoles } from "../../core/config/userRoles";
 import LoginScreen from "../screens/LoginScreen/LoginScreen";
-import DashboardScreen from "../screens/DashboardScreen";
 import AddPatient from "../screens/Specialist/AddPatient/AddPatient";
-import { AuthRoutes, PatientRoutes, SpecialistRoutes } from "../../core/config/routes";
+import {
+  AuthRoutes,
+  PatientRoutes,
+  SpecialistRoutes,
+} from "../../core/config/routes";
+import DashboardScreen from "../screens/Patient/DashboardScreen/DashboardScreen";
+import QuestionaireScreen from "../screens/Patient/Questionaire/QuestionaireScreen";
 
 const App = () => (
   <Routes>
@@ -50,6 +55,7 @@ const App = () => (
       >
         {/* Patient Paths */}
         <Route path={PatientRoutes.Dashboard} element={<DashboardScreen />} />
+        <Route path={PatientRoutes.Questionaire} element={<QuestionaireScreen />} />
       </Route>
     </Route>
   </Routes>
