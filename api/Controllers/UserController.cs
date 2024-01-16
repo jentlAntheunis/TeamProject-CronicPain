@@ -8,7 +8,7 @@ using Pebbles.Services;
 using Pebbles.Repositories;
 
 [ApiController]
-[Route("Users")]
+[Route("users")]
 public class UserController : ControllerBase
 {
     private readonly IConfiguration _configuration;
@@ -40,13 +40,6 @@ public class UserController : ControllerBase
             return NotFound();
         }
         return Ok(JsonConvert.SerializeObject(user));
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> AddUserAsync([FromBody] User user)
-    {
-        var newUser = await _userService.AddUserAsync(user);
-        return Ok(JsonConvert.SerializeObject(newUser));
     }
 
     [HttpPut("{id}")]
