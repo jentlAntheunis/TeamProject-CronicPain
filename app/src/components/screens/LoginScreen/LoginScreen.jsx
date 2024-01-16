@@ -18,31 +18,32 @@ import {
 } from "../../app/form/Form";
 import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
+import FullHeightScreen from "../../ui/FullHeightScreen/FullHeightScreen";
 
 const LoginScreen = () => {
   return (
-    <div className={`full-height padding-mobile ${styling.mainContainer}`}>
-      {/* Top part */}
-      <div className={styling.titleContainer}>
-        <h1>Pebbles</h1>
-      </div>
+    <FullHeightScreen className={styling.mainContainer}>
+        {/* Top part */}
+        <div className={styling.titleContainer}>
+          <h1>Pebbles</h1>
+        </div>
 
-      {/* Bottom part */}
-      <div className={styling.formContainer}>
-        <LoginForm />
-      </div>
+        {/* Bottom part */}
+        <div className={styling.formContainer}>
+          <LoginForm />
+        </div>
 
-      {/* Pebbles */}
-      <div className={styling.pebbles}>
-        <Pebbles mood={PebblesMoods.Bubbles} size="13rem" />
-      </div>
+        {/* Pebbles */}
+        <div className={styling.pebbles}>
+          <Pebbles mood={PebblesMoods.Bubbles} size="13rem" />
+        </div>
 
-      {/* Water */}
-      <div className={styling.waterBackground}>
-        <Wave />
-        <div className={styling.water}></div>
-      </div>
-    </div>
+        {/* Water */}
+        <div className={styling.waterBackground}>
+          <Wave />
+          <div className={styling.water}></div>
+        </div>
+    </FullHeightScreen>
   );
 };
 
