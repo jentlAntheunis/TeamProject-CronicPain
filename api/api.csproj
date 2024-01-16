@@ -20,6 +20,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
     <PackageReference Include="Google.Apis.Auth" Version="1.60.0" />
     <PackageReference Include="Google.Cloud.Firestore" Version="3.4.0" />
+    <PackageReference Include="FirebaseAuthentication.Net" Version="4.1.0" />
+
 
   </ItemGroup>
 

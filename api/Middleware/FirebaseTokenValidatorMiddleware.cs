@@ -22,6 +22,8 @@ public class FirebaseTokenValidatorMiddleware
         {
             try
             {
+                Console.WriteLine($"Received token: {token}");
+                
                 // Verify the token
                 var decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(token);
                 Console.WriteLine("Token is valid"); // Log token is valid

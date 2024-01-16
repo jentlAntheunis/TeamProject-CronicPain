@@ -12,14 +12,13 @@ using Pebbles.Models;
 using Pebbles.Services;
 using Pebbles.Repositories;
 
-[Authorize(AuthenticationSchemes= "FirebaseAuthentication")] //only authenticated users can access this controller
+[Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
 [ApiController]
 [Route("Users")]
 public class UserController : ControllerBase
 {
     private readonly IConfiguration _configuration;
     private readonly IUserService _userService;
-    private readonly ILogger<FirebaseTokenValidatorMiddleware> logger;
 
     public UserController(IConfiguration configuration, IUserService userService)
     {

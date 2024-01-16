@@ -10,6 +10,10 @@ using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication;
+
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -57,17 +61,31 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
 // Configure Firebase Authentication (right error codes)
-builder.Services.AddAuthentication("FirebaseAuthentication") // Use a custom authentication scheme name
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) 
     .AddJwtBearer("FirebaseAuthentication", options =>
     {
-        options.Authority = "https://pebbles-294c6.firebaseapp.com";
+        var projectId = "pebbles-294c6";
+        options.Authority = $"https://securetoken.google.com/{projectId}";
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
-            ValidIssuer = "https://pebbles-294c6.firebaseapp.com",
-            // Add other validation parameters as needed
+            ValidIssuer = $"https://securetoken.google.com/{projectId}",
+            ValidateAudience = true,
+            ValidAudience = projectId,
+            ValidateLifetime = true
+        };
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                // Your Firebase authentication logic here
+                // You can use FirebaseAuthenticationHandler methods directly
+                return Task.CompletedTask;
+            }
         };
     });
+    
+
 
 
 // Initialize Firebase Admin SDK
