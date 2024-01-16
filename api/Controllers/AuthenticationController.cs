@@ -10,7 +10,6 @@ using FirebaseAdmin.Auth;
 [Route("[controller]")]
 public class AuthController : ControllerBase
 {
-    // Constructor and dependency injections here
     private readonly IConfiguration _configuration;
 
     public AuthController(IConfiguration configuration)
@@ -19,17 +18,22 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] string firebaseToken)
+    public IActionResult Login()
     {
-        try
+        // Check if user information has been added to the HttpContext by the middleware
+        if (HttpContext.Items.ContainsKey("UserEmail"))
         {
-            var decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(firebaseToken);
+            // You can access the user's email (or other information) here
+            var userEmail = HttpContext.Items["UserEmail"].ToString();
+            Console.WriteLine($"User email: {userEmail}");
+
             // Create a session or equivalent user identification logic
-            return Ok(); // Or return relevant user information
+            // You can use userEmail to identify the user in your application
+
+            // Return relevant user information if needed
+            return Ok(new { Email = userEmail });
         }
-        catch (FirebaseAuthException ex)
-        {
-            return Unauthorized(ex.Message); // Token verification failed
-        }
+
+        return Unauthorized("Token validation failed or user information not available.");
     }
 }
