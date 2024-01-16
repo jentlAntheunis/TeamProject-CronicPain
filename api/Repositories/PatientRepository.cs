@@ -10,7 +10,7 @@ public interface IPatientRepository
     Task<Patient> GetPatientByIdAsync(Guid id);
     Task<Guid> CreatePatientAsync(Patient patient);
     Task<Patient> UpdatePatientAsync(Patient patient);
-    Task DeletePatientAsync(Guid id);
+    Task DeletePatientAsync(Patient patient);
 }
 
 public class PatientRepository : IPatientRepository
@@ -22,9 +22,9 @@ public class PatientRepository : IPatientRepository
         _context = new PebblesContext(configuration);
     }
 
-    public async Task<List<Patient>> GetAllPatientsAsync() => await _context.Patient.ToListAsync();
+    public async Task<List<Patient>> GetAllPatientsAsync() => await _context.Patient.Where(p => p.IsDeleted == false).ToListAsync();
 
-    public async Task<Patient> GetPatientByIdAsync(Guid id) => await _context.Patient.FirstOrDefaultAsync(p => p.Id == id);
+    public async Task<Patient> GetPatientByIdAsync(Guid id) => await _context.Patient.Where(p => p.IsDeleted == false).FirstOrDefaultAsync(p => p.Id == id);
 
     public async Task<Guid> CreatePatientAsync(Patient patient)
     {
@@ -40,9 +40,16 @@ public class PatientRepository : IPatientRepository
         return patient;
     }
 
-    public async Task DeletePatientAsync(Guid id)
+    public async Task DeletePatientAsync(Patient patient)
     {
-        var patient = await GetPatientByIdAsync(id);
+        //check if patient has an avatar
+        var avatar = await _context.Avatar.FirstOrDefaultAsync(a => a.Id == patient.AvatarId);
+        if (avatar != null)
+        {
+            //delete avatar
+            _context.Avatar.Remove(avatar);
+        }
+        //delete patient
         _context.Patient.Remove(patient);
         await _context.SaveChangesAsync();
     }

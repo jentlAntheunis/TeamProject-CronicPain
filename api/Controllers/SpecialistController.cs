@@ -66,13 +66,6 @@ public class SpecialistController : ControllerBase
         return Ok(JsonConvert.SerializeObject(updatedSpecialist));
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteSpecialistAsync(Guid id)
-    {
-        await _specialistService.DeleteSpecialistAsync(id);
-        return Ok();
-    }
-
     [HttpPost("send-email/{specialistId}")]
     public IActionResult SendEmail(Guid specialistId, [FromBody] AnonymousPatientData patientData)
     {

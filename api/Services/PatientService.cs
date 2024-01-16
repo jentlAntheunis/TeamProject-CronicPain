@@ -5,25 +5,26 @@ namespace Pebbles.Services;
 
 public interface IPatientService
 {
-    Task<Patient> GetPatientAsync(Guid id);
+    Task<Patient> GetPatientByIdAsync(Guid id);
     Task<IEnumerable<Patient>> GetPatientsBySpecialistAsync(Guid SpecialistId);
     Task<Guid> AddPatientBySpecialistAsync(Guid SpecialistId, Patient patient);
-    Task AddPatientToSpecialist(Guid PatientId, Guid SpecialistId);
+    Task AddPatientToSpecialistAsync(Guid PatientId, Guid SpecialistId);
     Task<Patient> UpdatePatientAsync(Patient patient);
-    Task DeletePatientAsync(Patient patient);
 }
 
 public class PatientService : IPatientService
 {
     private readonly IPatientRepository _patientRepository;
     private readonly ISpecialistRepository _specialistRepository;
+    private readonly IColorRepository _colorRepository;
     public PatientService(IConfiguration configuration)
     {
         _patientRepository = new PatientRepository(configuration);
         _specialistRepository = new SpecialistRepository(configuration);
+        _colorRepository = new ColorRepository(configuration);
     }
 
-    public async Task<Patient> GetPatientAsync(Guid id) => await _patientRepository.GetPatientByIdAsync(id);
+    public async Task<Patient> GetPatientByIdAsync(Guid id) => await _patientRepository.GetPatientByIdAsync(id);
 
     public async Task<IEnumerable<Patient>> GetPatientsBySpecialistAsync(Guid SpecialistId)
     {
@@ -38,10 +39,13 @@ public class PatientService : IPatientService
         if (specialist == null)
             throw new Exception("Specialist does not exist");
         patient.PatientSpecialists.Add(new PatientSpecialist { PatientId = patient.Id, SpecialistId = SpecialistId });
+
+        var color = await _colorRepository.GetDefaultColorAsync();
+        patient.Avatar.ColorId = color.Id;
         return await _patientRepository.CreatePatientAsync(patient);
     }
 
-    public async Task AddPatientToSpecialist(Guid PatientId, Guid SpecialistId)
+    public async Task AddPatientToSpecialistAsync(Guid PatientId, Guid SpecialistId)
     {
         var patient = await _patientRepository.GetPatientByIdAsync(PatientId);
         var specialist = await _specialistRepository.GetSpecialistByIdAsync(SpecialistId);
@@ -54,5 +58,5 @@ public class PatientService : IPatientService
     }
 
     public async Task<Patient> UpdatePatientAsync(Patient patient) => await _patientRepository.UpdatePatientAsync(patient);
-    public async Task DeletePatientAsync(Patient patient) => await _patientRepository.DeletePatientAsync(patient.Id);
+
 }

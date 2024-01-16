@@ -14,16 +14,16 @@ using Pebbles.Repositories;
 
 
 [ApiController]
-[Route("Users")]
+[Route("users")]
 public class UserController : ControllerBase
 {
     private readonly IConfiguration _configuration;
     private readonly IUserService _userService;
 
-    public UserController(IConfiguration configuration, IUserService userService)
+    public UserController(IConfiguration configuration)
     {
         _configuration = configuration;
-        _userService = userService;
+        _userService = new UserService(_configuration);
     }
 
     [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
@@ -53,15 +53,6 @@ public class UserController : ControllerBase
         return Ok(JsonConvert.SerializeObject(user));
     }
 
-    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
-    [HttpPost]
-    public async Task<IActionResult> AddUserAsync([FromBody] User user)
-    {
-        var newUser = await _userService.AddUserAsync(user);
-        return Ok(JsonConvert.SerializeObject(newUser));
-    }
-
-    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateUserAsync(Guid id, [FromBody] User user)
     {
@@ -70,18 +61,23 @@ public class UserController : ControllerBase
         return Ok(JsonConvert.SerializeObject(updatedUser));
     }
 
-    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteUserAsync(Guid id)
-    {
-        await _userService.DeleteUserAsync(id);
-        return Ok();
-    }
-
-    [HttpGet("CheckIfUserExists/{email}")]
+    [HttpGet("exists/{email}")]
     public async Task<IActionResult> CheckIfUserExistsAsync(string email)
     {
         var userExists = await _userService.CheckIfUserExistsAsync(email);
         return Ok(JsonConvert.SerializeObject(userExists));
+    }
+
+    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteUserAsync(Guid id)
+    {
+        var user = await _userService.GetUserByIdAsync(id);
+        if (user == null)
+        {
+            return NotFound();
+        }
+        await _userService.DeleteUserAsync(user);
+        return Ok();
     }
 }

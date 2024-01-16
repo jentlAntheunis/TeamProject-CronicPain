@@ -7,27 +7,27 @@ public interface IUserService
 {
     Task<List<User>> GetUsersAsync();
     Task<User> GetUserByIdAsync(Guid id);
-    Task<User> AddUserAsync(User user);
     Task<User> UpdateUserAsync(User user);
-    Task DeleteUserAsync(Guid id);
+    Task DeleteUserAsync(User user);
     Task<bool> CheckIfUserExistsAsync(string email);
 }
 
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
+    private readonly IAvatarRepository _avatarRepository;
 
-    public UserService(IUserRepository userRepository)
+    public UserService(IConfiguration configuration)
     {
-        _userRepository = userRepository;
+        _userRepository = new UserRepository(configuration);
     }
 
     public async Task<List<User>> GetUsersAsync() => await _userRepository.GetUsersAsync();
     public async Task<User> GetUserByIdAsync(Guid id) => await _userRepository.GetUserByIdAsync(id);
 
-    public async Task<User> AddUserAsync(User user) => await _userRepository.AddUserAsync(user);
     public async Task<User> UpdateUserAsync(User user) => await _userRepository.UpdateUserAsync(user);
-    public async Task DeleteUserAsync(Guid id) => await _userRepository.DeleteUserAsync(id);
+
+    public async Task DeleteUserAsync(User user) => await _userRepository.DeleteUserAsync(user);
 
     public async Task<bool> CheckIfUserExistsAsync(string email)
     {

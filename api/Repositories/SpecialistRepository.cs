@@ -10,7 +10,7 @@ public interface ISpecialistRepository
     Task<Specialist> GetSpecialistByIdAsync(Guid id);
     Task<Specialist> CreateSpecialistAsync(Specialist specialist);
     Task<Specialist> UpdateSpecialistAsync(Specialist specialist);
-    Task DeleteSpecialistAsync(Guid id);
+    Task DeleteSpecialistAsync(Specialist specialist);
 }
 
 public class SpecialistRepository : ISpecialistRepository
@@ -21,7 +21,7 @@ public class SpecialistRepository : ISpecialistRepository
         _context = new PebblesContext(configuration);
     }
 
-    public async Task<List<Specialist>> GetAllSpecialistsAsync() => await _context.Specialist.ToListAsync();
+    public async Task<List<Specialist>> GetAllSpecialistsAsync() => await _context.Specialist.Where(s => s.IsDeleted == false).ToListAsync();
 
     public async Task<Specialist> GetSpecialistByIdAsync(Guid id) => await _context.Specialist.FirstOrDefaultAsync(s => s.Id == id);
 
@@ -39,9 +39,8 @@ public class SpecialistRepository : ISpecialistRepository
         return specialist;
     }
 
-    public async Task DeleteSpecialistAsync(Guid id)
+    public async Task DeleteSpecialistAsync(Specialist specialist)
     {
-        var specialist = await GetSpecialistByIdAsync(id);
         _context.Specialist.Remove(specialist);
         await _context.SaveChangesAsync();
     }

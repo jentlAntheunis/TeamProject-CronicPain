@@ -10,7 +10,7 @@ public interface IUserRepository
     Task<User> GetUserByIdAsync(Guid id);
     Task<User> AddUserAsync(User user);
     Task<User> UpdateUserAsync(User user);
-    Task DeleteUserAsync(Guid id);
+    Task DeleteUserAsync(User user);
 
 }
 
@@ -18,12 +18,12 @@ public class UserRepository : IUserRepository
 {
     private readonly PebblesContext _context;
 
-    public UserRepository(PebblesContext context)
+    public UserRepository(IConfiguration configuration)
     {
-        _context = context;
+        _context = new PebblesContext(configuration);
     }
 
-    public async Task<List<User>> GetUsersAsync() => await _context.User.ToListAsync();
+    public async Task<List<User>> GetUsersAsync() => await _context.User.Where(u => u.IsDeleted == false).ToListAsync();
 
     public async Task<User> GetUserByIdAsync(Guid id) => await _context.User.FirstOrDefaultAsync(u => u.Id == id);
 
@@ -41,12 +41,29 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public async Task DeleteUserAsync(Guid id)
+    public async Task DeleteUserAsync(User user)
     {
-        var user = await GetUserByIdAsync(id);
-        _context.User.Remove(user);
-        await _context.SaveChangesAsync();
+        //check if user is a patient
+        var patient = await _context.Patient.FirstOrDefaultAsync(p => p.Id == user.Id);
+        if(patient != null)
+        {
+            //check if patient has an avatar
+            var avatar = await _context.Avatar.FirstOrDefaultAsync(a => a.Id == patient.AvatarId);
+            if(avatar != null)
+            {
+                //delete avatar
+                _context.Avatar.Remove(avatar);
+            }
+            //delete patient
+            _context.Patient.Remove(patient);
+        }
+        //check if user is a specialist
+        var specialist = await _context.Specialist.FirstOrDefaultAsync(s => s.Id == user.Id);
+        if(specialist != null)
+        {
+            //delete specialist
+            _context.Specialist.Remove(specialist);
+        }
+        _context.SaveChanges();
     }
-
-
 }
