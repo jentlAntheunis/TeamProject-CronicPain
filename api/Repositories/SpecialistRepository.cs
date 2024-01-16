@@ -16,9 +16,9 @@ public interface ISpecialistRepository
 public class SpecialistRepository : ISpecialistRepository
 {
     private readonly PebblesContext _context;
-    public SpecialistRepository(IConfiguration configuration)
+    public SpecialistRepository(PebblesContext context)
     {
-        _context = new PebblesContext(configuration);
+        _context = context;
     }
 
     public async Task<List<Specialist>> GetAllSpecialistsAsync() => await _context.Specialist.Where(s => s.IsDeleted == false).ToListAsync();

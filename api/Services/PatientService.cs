@@ -17,11 +17,15 @@ public class PatientService : IPatientService
     private readonly IPatientRepository _patientRepository;
     private readonly ISpecialistRepository _specialistRepository;
     private readonly IColorRepository _colorRepository;
-    public PatientService(IConfiguration configuration)
+    public PatientService(
+        IPatientRepository patientRepository,
+        ISpecialistRepository specialistRepository,
+        IColorRepository colorRepository
+        )
     {
-        _patientRepository = new PatientRepository(configuration);
-        _specialistRepository = new SpecialistRepository(configuration);
-        _colorRepository = new ColorRepository(configuration);
+        _patientRepository = patientRepository;
+        _specialistRepository = specialistRepository;
+        _colorRepository = colorRepository;
     }
 
     public async Task<Patient> GetPatientByIdAsync(Guid id) => await _patientRepository.GetPatientByIdAsync(id);
@@ -51,7 +55,7 @@ public class PatientService : IPatientService
         var specialist = await _specialistRepository.GetSpecialistByIdAsync(SpecialistId);
         if (patient == null)
             throw new Exception("Patient does not exist");
-        if(specialist == null)
+        if (specialist == null)
             throw new Exception("Specialist does not exist");
         patient.PatientSpecialists.Add(new PatientSpecialist { PatientId = PatientId, SpecialistId = SpecialistId });
         await _patientRepository.UpdatePatientAsync(patient);

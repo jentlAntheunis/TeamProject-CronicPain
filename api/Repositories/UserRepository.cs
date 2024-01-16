@@ -18,9 +18,9 @@ public class UserRepository : IUserRepository
 {
     private readonly PebblesContext _context;
 
-    public UserRepository(IConfiguration configuration)
+    public UserRepository(PebblesContext context)
     {
-        _context = new PebblesContext(configuration);
+        _context = context;
     }
 
     public async Task<List<User>> GetUsersAsync() => await _context.User.Where(u => u.IsDeleted == false).ToListAsync();

@@ -20,10 +20,15 @@ public class UserService : IUserService
     private readonly IAvatarRepository _avatarRepository;
     private readonly IPatientRepository _patientRepository;
 
-    public UserService(IConfiguration configuration)
+    public UserService(
+        IUserRepository userRepository,
+        IAvatarRepository avatarRepository,
+        IPatientRepository patientRepository
+        )
     {
-        _userRepository = new UserRepository(configuration);
-        _avatarRepository = new AvatarRepository(configuration);
+        _userRepository = userRepository;
+        _avatarRepository = avatarRepository;
+        _patientRepository = patientRepository;
     }
 
     public async Task<List<User>> GetUsersAsync() => await _userRepository.GetUsersAsync();

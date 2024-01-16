@@ -14,9 +14,11 @@ public class TestController : ControllerBase
     private readonly IConfiguration _configuration;
     private readonly IUserService _userService;
 
-    public TestController(IConfiguration configuration)
+    public TestController(
+        IConfiguration configuration, 
+        IUserService userService
+        )
     {
-        _configuration = configuration;
-        _userService = new UserService(_configuration);
+        _userService = userService;
     }
 }

@@ -17,9 +17,9 @@ public class PatientRepository : IPatientRepository
 {
     private readonly PebblesContext _context;
 
-    public PatientRepository(IConfiguration configuration)
+    public PatientRepository(PebblesContext context)
     {
-        _context = new PebblesContext(configuration);
+        _context = context;
     }
 
     public async Task<List<Patient>> GetAllPatientsAsync() => await _context.Patient.Where(p => p.IsDeleted == false).ToListAsync();

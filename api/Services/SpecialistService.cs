@@ -20,10 +20,13 @@ public class SpecialistService : ISpecialistService
     private readonly ISpecialistRepository _specialistRepository;
     private readonly IConfiguration _configuration;
 
-    public SpecialistService(IConfiguration configuration)
+    public SpecialistService(
+        IConfiguration configuration,
+        ISpecialistRepository specialistRepository
+        )
     {
         _configuration = configuration;
-        _specialistRepository = new SpecialistRepository(_configuration);
+        _specialistRepository = specialistRepository;
     }
 
     public async Task<List<Specialist>> GetAllSpecialistsAsync() => await _specialistRepository.GetAllSpecialistsAsync();
