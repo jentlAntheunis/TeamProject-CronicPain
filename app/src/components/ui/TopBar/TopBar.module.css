@@ -39,3 +39,19 @@
   font-size: var(--p);
   width: 10rem;
 }
+
+.modalText {
+  font-size: var(--h6);
+  margin-bottom: 2rem;
+}
+
+.modalButtons{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.modalButtons button {
+  flex-grow: 1;
+}
