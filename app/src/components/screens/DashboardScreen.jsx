@@ -5,8 +5,15 @@ import { Play, ClipboardText } from "@phosphor-icons/react";
 import styles from "./DashboardScreen.module.css";
 import FullHeightScreen from "../ui/FullHeightScreen/FullHeightScreen.jsx";
 import Button from "../ui/Button/Button.jsx";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../core/services/firebase.js";
 
 const DashboardScreen = () => {
+  // get user
+  const [user] = useAuthState(auth);
+
+  console.log(user);
+
   return (
     <FullHeightScreen>
       <div className={styles.screen}>
