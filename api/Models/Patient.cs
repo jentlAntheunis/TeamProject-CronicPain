@@ -19,5 +19,4 @@ public class Patient : User
 
     public List<Specialist> Specialists { get; set; }
     public List<Color> Colors { get; set; }
-    public List<Login> Logins { get; set; }
 }

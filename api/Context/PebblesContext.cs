@@ -136,9 +136,9 @@ public class PebblesContext : DbContext
             .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<Login>()
-            .HasOne(l => l.Patient)
-            .WithMany(p => p.Logins)
-            .HasForeignKey(l => l.PatientId)
+            .HasOne(l => l.User)
+            .WithMany(u => u.Logins)
+            .HasForeignKey(l => l.UserId)
             .OnDelete(DeleteBehavior.NoAction);
 
         //seed data

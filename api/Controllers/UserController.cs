@@ -68,4 +68,15 @@ public class UserController : ControllerBase
         await _userService.DeleteUserAsync(user);
         return Ok();
     }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> LoginAsync([FromBody] string email)
+    {
+        var user = await _userService.LoginAsync(email);
+        if(user == null)
+        {
+            return NotFound();
+        }
+        return Ok(user);
+    }
 }
