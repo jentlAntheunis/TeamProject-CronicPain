@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Pebbles.Models;
 
-public class Color
+public class Color : ISoftDelete
 {
     public Color(string name, string hex)
     {
@@ -35,6 +35,9 @@ public class Color
 
     [Required]
     public int Price { get; set; }
+
+    public bool IsDeleted { get; set; }
+    public DateTimeOffset? DeletedAt { get; set; }
 
     public List<Patient> Patients { get; set; }
     public List<Avatar> Avatars { get; set; }

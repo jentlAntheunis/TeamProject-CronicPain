@@ -9,6 +9,7 @@ public class Patient : User
         Specialists = new List<Specialist>();
         Avatar = new Avatar(Id);
         AvatarId = Avatar.Id;
+        Colors = new List<Color>();
     }
 
     public Guid AvatarId { get; set; }
