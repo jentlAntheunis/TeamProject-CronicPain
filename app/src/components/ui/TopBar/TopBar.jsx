@@ -16,6 +16,7 @@ const TopBar = () => {
 
   useEffect(() => {
     const closeOpenMenus = (e) => {
+      console.log("clicked outside")
       if (showMenu && !menu.current?.contains(e.target)) {
         setShowMenu(false);
       }
@@ -28,6 +29,7 @@ const TopBar = () => {
   }, [showMenu]);
 
   const onClickDots = () => {
+    console.log("clicked on dots")
     setShowMenu(!showMenu);
   };
 
@@ -49,12 +51,13 @@ const TopBar = () => {
         </RewardMetric>
       </div>
       <div className={styles.menuContainer}>
-        <DotsThreeVertical
-          size={32}
-          weight="bold"
-          className={styles.dots}
-          onClick={onClickDots}
-        />
+        <button className="btn-reset" onClick={onClickDots} disabled={showMenu}>
+          <DotsThreeVertical
+            size={32}
+            weight="bold"
+            className={styles.dots}
+          />
+        </button>
         <Menu
           showMenu={showMenu}
           setShowMenu={setShowMenu}
@@ -92,21 +95,23 @@ const Menu = forwardRef(({ showMenu, setShowMenu, setShowModal }, ref) => {
   }
 
   return (
-    <div className={styles.menu} ref={ref}>
-      <button
-        className={`btn-reset ${styles.menuItem}`}
-        onClick={() => {
-          setShowModal(true);
-          setShowMenu(false);
-        }}
-      >
-        Uitloggen
-        <SignOut size={24} />
-      </button>
-      <button className={`btn-reset ${styles.menuItem}`}>
-        Credits
-        <Scroll size={24} />
-      </button>
+    <div className={styles.menuWrapper}>
+      <div className={styles.menu} ref={ref}>
+        <button
+          className={`btn-reset ${styles.menuItem}`}
+          onClick={() => {
+            setShowModal(true);
+            setShowMenu(false);
+          }}
+        >
+          Uitloggen
+          <SignOut size={24} />
+        </button>
+        <button className={`btn-reset ${styles.menuItem}`}>
+          Credits
+          <Scroll size={24} />
+        </button>
+      </div>
     </div>
   );
 });
