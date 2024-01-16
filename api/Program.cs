@@ -9,8 +9,7 @@ using FirebaseAdmin.Auth;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore;
 using Microsoft.IdentityModel.Tokens;
-
-
+using Microsoft.OpenApi.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,13 +23,38 @@ builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    // Define the FirebaseAuthentication security scheme
+    var firebaseSecurityScheme = new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.ApiKey,
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Description = "Bearer {your_access_token}",
+        Scheme = "Bearer"
+    };
+
+    // Define the FirebaseAuthentication security requirement
+    var firebaseSecurityRequirement = new OpenApiSecurityRequirement
+    {
+        {
+            firebaseSecurityScheme, new string[] {}
+        },
+    };
+
+    // Add the security definition and requirement to Swagger
+    c.AddSecurityDefinition("FirebaseAuthentication", firebaseSecurityScheme);
+    c.AddSecurityRequirement(firebaseSecurityRequirement);
+});
+
 
 builder.Services.AddDbContext<PebblesContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("PebblesDB")));
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();   
+
 
 // Configure Firebase Authentication (right error codes)
 builder.Services.AddAuthentication("FirebaseAuthentication") // Use a custom authentication scheme name
@@ -62,7 +86,13 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API V1");
+        // Enable the "Authorize" button
+        c.OAuthClientId("swagger-ui");
+        c.OAuthAppName("Swagger UI");
+    });
 }
 
 app.UseHttpsRedirection();
