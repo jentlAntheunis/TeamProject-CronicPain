@@ -14,7 +14,7 @@ using Pebbles.Repositories;
 
 [ApiController]
 [Route("specialists")]
-[Authorize]
+[Authorize(AuthenticationSchemes= "FirebaseAuthentication")] // only authenticated users can access this controller
 
 public class SpecialistController : ControllerBase
 {

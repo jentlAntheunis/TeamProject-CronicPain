@@ -13,7 +13,7 @@ using Pebbles.Repositories;
 
 [ApiController]
 [Route("Users")]
-[Authorize]
+[Authorize(AuthenticationSchemes= "FirebaseAuthentication")] //only authenticated users can access this controller
 public class UserController : ControllerBase
 {
     private readonly IConfiguration _configuration;

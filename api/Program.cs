@@ -8,6 +8,8 @@ using FirebaseAdmin;
 using FirebaseAdmin.Auth;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore;
+using Microsoft.IdentityModel.Tokens;
+
 
 
 
@@ -30,6 +32,20 @@ builder.Services.AddDbContext<PebblesContext>(options =>
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();   
 
+// Configure Firebase Authentication (right error codes)
+builder.Services.AddAuthentication("FirebaseAuthentication") // Use a custom authentication scheme name
+    .AddJwtBearer("FirebaseAuthentication", options =>
+    {
+        options.Authority = "https://pebbles-294c6.firebaseapp.com";
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = "https://pebbles-294c6.firebaseapp.com",
+            // Add other validation parameters as needed
+        };
+    });
+
+
 // Initialize Firebase Admin SDK
 var serviceAccountPath = "ServiceAccountCredentials.json";
 
@@ -51,10 +67,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseMiddleware<FirebaseTokenValidatorMiddleware>();
+
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.UseMiddleware<FirebaseTokenValidatorMiddleware>();
 
 app.Run();

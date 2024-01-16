@@ -1,5 +1,6 @@
 using FirebaseAdmin;
 using FirebaseAdmin.Auth;
+
 public class FirebaseTokenValidatorMiddleware
 {
     private readonly RequestDelegate _next;
@@ -24,11 +25,11 @@ public class FirebaseTokenValidatorMiddleware
                 // Add user information to the context
                 context.Items["UserEmail"] = decodedToken.Claims["email"].ToString();
             }
-            catch (FirebaseAuthException)
+            catch (FirebaseAuthException ex)
             {
                 // Token is invalid
+                Console.WriteLine($"Token is invalid: {ex.Message}");
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                Console.WriteLine("Token is invalid");
                 return;
             }
         }
