@@ -3,10 +3,9 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Pebbles.Models;
 
 namespace Pebbles.Context;
+
 public class SoftDeleteInterceptor : SaveChangesInterceptor
 {
-
-    //if an element is deleted, it is not actually deleted, but marked as deleted
     public override InterceptionResult<int> SavingChanges(
         DbContextEventData eventData,
         InterceptionResult<int> result)
@@ -15,11 +14,17 @@ public class SoftDeleteInterceptor : SaveChangesInterceptor
 
         foreach (var entry in eventData.Context.ChangeTracker.Entries())
         {
-            if (entry is not { State: EntityState.Deleted, Entity: ISoftDelete delete }) continue;
-            entry.State = EntityState.Modified;
-            delete.IsDeleted = true;
-            delete.DeletedAt = DateTimeOffset.UtcNow;
+            if (entry.Entity is not { } || entry.State != EntityState.Deleted) continue;
+
+            if (entry.Entity is ISoftDelete deleteEntity)
+            {
+                // Soft delete logic
+                entry.State = EntityState.Modified;
+                deleteEntity.IsDeleted = true;
+                deleteEntity.DeletedAt = DateTimeOffset.UtcNow;
+            }
         }
-        return result;
+
+        return base.SavingChanges(eventData, result);
     }
 }

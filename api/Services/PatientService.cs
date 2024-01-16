@@ -32,7 +32,7 @@ public class PatientService : IPatientService
         _specialistRepository = specialistRepository;
         _colorRepository = colorRepository;
         _avatarRepository = avatarRepository;
-        _patientSpecialistRepository = patientSpecialistRepository;
+        // _patientSpecialistRepository = patientSpecialistRepository;
     }
 
     public async Task<Patient> GetPatientByIdAsync(Guid id) => await _patientRepository.GetPatientByIdAsync(id);
