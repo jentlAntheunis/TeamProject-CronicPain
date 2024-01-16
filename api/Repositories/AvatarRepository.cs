@@ -21,7 +21,7 @@ public class AvatarRepository : IAvatarRepository
         _context = new PebblesContext(configuration);
     }
 
-    public async Task<Avatar> GetAvatarByIdAsync(Guid id) => await _context.Avatar.FirstOrDefaultAsync(a => a.Id == id);
+    public async Task<Avatar> GetAvatarByIdAsync(Guid id) => await _context.Avatar.Where(a => a.IsDeleted == false).FirstOrDefaultAsync(a => a.Id == id);
 
     public async Task<Avatar> AddAvatarAsync(Avatar avatar)
     {
