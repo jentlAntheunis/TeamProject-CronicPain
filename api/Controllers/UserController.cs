@@ -56,16 +56,4 @@ public class UserController : ControllerBase
         var userExists = await _userService.CheckIfUserExistsAsync(email);
         return Ok(JsonConvert.SerializeObject(userExists));
     }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteUserAsync(Guid id)
-    {
-        var user = await _userService.GetUserByIdAsync(id);
-        if(user == null)
-        {
-            return NotFound();
-        }
-        await _userService.DeleteUserAsync(user);
-        return Ok();
-    }
 }

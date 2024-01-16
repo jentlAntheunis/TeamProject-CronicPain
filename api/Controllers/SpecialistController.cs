@@ -96,4 +96,16 @@ public class SpecialistController : ControllerBase
             return StatusCode(500);
         }
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteSpecialistAsync(Guid id)
+    {
+        var specialist = await _specialistService.GetSpecialistByIdAsync(id);
+        if(specialist == null)
+        {
+            return NotFound();
+        }
+        await _specialistService.DeleteSpecialistAsync(specialist);
+        return Ok();
+    }
 }

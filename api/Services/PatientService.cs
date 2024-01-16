@@ -10,6 +10,7 @@ public interface IPatientService
     Task<Guid> AddPatientBySpecialistAsync(Guid SpecialistId, Patient patient);
     Task AddPatientToSpecialistAsync(Guid PatientId, Guid SpecialistId);
     Task<Patient> UpdatePatientAsync(Patient patient);
+    Task DeletePatientAsync(Patient patient);
 }
 
 public class PatientService : IPatientService
@@ -17,11 +18,15 @@ public class PatientService : IPatientService
     private readonly IPatientRepository _patientRepository;
     private readonly ISpecialistRepository _specialistRepository;
     private readonly IColorRepository _colorRepository;
+    private readonly IAvatarRepository _avatarRepository;
+    private readonly IPatientSpecialistRepository _patientSpecialistRepository;
     public PatientService(IConfiguration configuration)
     {
         _patientRepository = new PatientRepository(configuration);
         _specialistRepository = new SpecialistRepository(configuration);
         _colorRepository = new ColorRepository(configuration);
+        _avatarRepository = new AvatarRepository(configuration);
+        _patientSpecialistRepository = new PatientSpecialistRepository(configuration);
     }
 
     public async Task<Patient> GetPatientByIdAsync(Guid id) => await _patientRepository.GetPatientByIdAsync(id);
@@ -51,7 +56,7 @@ public class PatientService : IPatientService
         var specialist = await _specialistRepository.GetSpecialistByIdAsync(SpecialistId);
         if (patient == null)
             throw new Exception("Patient does not exist");
-        if(specialist == null)
+        if (specialist == null)
             throw new Exception("Specialist does not exist");
         patient.PatientSpecialists.Add(new PatientSpecialist { PatientId = PatientId, SpecialistId = SpecialistId });
         await _patientRepository.UpdatePatientAsync(patient);
@@ -59,4 +64,22 @@ public class PatientService : IPatientService
 
     public async Task<Patient> UpdatePatientAsync(Patient patient) => await _patientRepository.UpdatePatientAsync(patient);
 
+    public async Task DeletePatientAsync(Patient patient)
+    {
+        //check if patient has an avatar
+        var avatar = await _avatarRepository.GetAvatarByIdAsync(patient.AvatarId);
+        if (avatar != null)
+        {
+            //delete avatar
+            await _avatarRepository.DeleteAvatarAsync(avatar);
+        }
+        //delete patientSpialist relations
+        var patientSpecialists = patient.PatientSpecialists;
+        foreach (var patientSpecialist in patientSpecialists)
+        {
+            await _patientSpecialistRepository.DeletePatientSpecialistAsync(patientSpecialist);
+        }
+        //delete patient
+        await _patientRepository.DeletePatientAsync(patient);
+    }
 }

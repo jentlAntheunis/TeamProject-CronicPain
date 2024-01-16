@@ -12,18 +12,21 @@ public interface ISpecialistService
     Task<Specialist> GetSpecialistByIdAsync(Guid id);
     Task<Specialist> CreateSpecialistAsync(Specialist specialist);
     Task<Specialist> UpdateSpecialistAsync(Specialist specialist);
+    Task DeleteSpecialistAsync(Specialist specialist);
     void SendEmailWithInvitation(string specialistName, string specialistSurname, string patientName, string patientSurname, string patientEmail);
 }
 
 public class SpecialistService : ISpecialistService
 {
-    private readonly ISpecialistRepository _specialistRepository;
     private readonly IConfiguration _configuration;
+    private readonly ISpecialistRepository _specialistRepository;
+    private readonly IPatientSpecialistRepository _patientSpecialistRepository;
 
     public SpecialistService(IConfiguration configuration)
     {
         _configuration = configuration;
         _specialistRepository = new SpecialistRepository(_configuration);
+        _patientSpecialistRepository = new PatientSpecialistRepository(_configuration);
     }
 
     public async Task<List<Specialist>> GetAllSpecialistsAsync() => await _specialistRepository.GetAllSpecialistsAsync();
@@ -34,6 +37,19 @@ public class SpecialistService : ISpecialistService
 
     public async Task<Specialist> UpdateSpecialistAsync(Specialist specialist) => await _specialistRepository.UpdateSpecialistAsync(specialist);
 
+    public async Task DeleteSpecialistAsync(Specialist specialist)
+    {
+        if (specialist != null)
+        {
+            //delete PatientSpecialist relations
+            var patientSpecialists = specialist.PatientSpecialists;
+            foreach (var patientSpecialist in patientSpecialists)
+            {
+                await _patientSpecialistRepository.DeletePatientSpecialistAsync(patientSpecialist);
+            }
+            await _specialistRepository.DeleteSpecialistAsync(specialist);
+        }
+    }
     public void SendEmailWithInvitation(string specialistName, string specialistSurname, string patientName, string patientSurname, string patientEmail)
     {
         try

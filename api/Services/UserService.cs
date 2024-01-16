@@ -8,7 +8,6 @@ public interface IUserService
     Task<List<User>> GetUsersAsync();
     Task<User> GetUserByIdAsync(Guid id);
     Task<User> UpdateUserAsync(User user);
-    Task DeleteUserAsync(User user);
     Task<bool> CheckIfUserExistsAsync(string email);
 }
 
@@ -31,31 +30,6 @@ public class UserService : IUserService
     public async Task<User> GetUserByIdAsync(Guid id) => await _userRepository.GetUserByIdAsync(id);
 
     public async Task<User> UpdateUserAsync(User user) => await _userRepository.UpdateUserAsync(user);
-
-    public async Task DeleteUserAsync(User user)
-    {
-        //check if user is a patient
-        var patient = await _patientRepository.GetPatientByIdAsync(user.Id);
-        if (patient != null)
-        {
-            //check if patient has an avatar
-            var avatar = await _avatarRepository.GetAvatarByIdAsync(patient.AvatarId);
-            if (avatar != null)
-            {
-                //delete avatar
-                await _avatarRepository.DeleteAvatarAsync(avatar);
-            }
-            //delete patient
-            await _patientRepository.DeletePatientAsync(patient);
-        }
-        //check if user is a specialist
-        var specialist = await _specialistRepository.GetSpecialistByIdAsync(user.Id);
-        if (specialist != null)
-        {
-            //delete specialist
-            await _specialistRepository.DeleteSpecialistAsync(specialist);
-        }
-    }
 
     public async Task<bool> CheckIfUserExistsAsync(string email)
     {
