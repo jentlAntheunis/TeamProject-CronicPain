@@ -42,13 +42,6 @@ public class UserController : ControllerBase
         return Ok(JsonConvert.SerializeObject(user));
     }
 
-    [HttpPost]
-    public async Task<IActionResult> AddUserAsync([FromBody] User user)
-    {
-        var newUser = await _userService.AddUserAsync(user);
-        return Ok(JsonConvert.SerializeObject(newUser));
-    }
-
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateUserAsync(Guid id, [FromBody] User user)
     {

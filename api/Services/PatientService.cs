@@ -37,6 +37,8 @@ public class PatientService : IPatientService
         if (specialist == null)
             throw new Exception("Specialist does not exist");
         patient.PatientSpecialists.Add(new PatientSpecialist { PatientId = patient.Id, SpecialistId = SpecialistId });
+        patient.Avatar = new Avatar { PatientId = patient.Id };
+        patient.AvatarId = patient.Avatar.Id;
         return await _patientRepository.CreatePatientAsync(patient);
     }
 
