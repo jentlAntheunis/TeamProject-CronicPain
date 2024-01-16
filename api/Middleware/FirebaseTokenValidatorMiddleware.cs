@@ -1,5 +1,5 @@
-
 using FirebaseAdmin;
+using FirebaseAdmin.Auth;
 public class FirebaseTokenValidatorMiddleware
 {
     private readonly RequestDelegate _next;
