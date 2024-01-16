@@ -1,0 +1,23 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.backBtn {
+  display: flex;
+}
+
+.counter {
+  font-size: var(--h1);
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.startStopBtn {
+  background-color: var(--black);
+}
+
+.startStopBtn:hover {
+  background-color: var(--black);
+}
