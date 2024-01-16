@@ -6,7 +6,13 @@ import { UserRoles } from "../../core/config/userRoles";
 import LoginScreen from "../screens/LoginScreen/LoginScreen";
 import DashboardScreen from "../screens/DashboardScreen";
 import AddPatient from "../screens/Specialist/AddPatient/AddPatient";
-import { AuthRoutes, PatientRoutes, SpecialistRoutes } from "../../core/config/routes";
+import {
+  AuthRoutes,
+  PatientRoutes,
+  SpecialistRoutes,
+} from "../../core/config/routes";
+import MovementSuggestions from "../screens/MovementSuggestions/MovementSuggestions";
+import TimeTracker from "../screens/TimeTracker/TimeTracker";
 
 const App = () => (
   <Routes>
@@ -50,6 +56,8 @@ const App = () => (
       >
         {/* Patient Paths */}
         <Route path={PatientRoutes.Dashboard} element={<DashboardScreen />} />
+        <Route path={PatientRoutes.MovementSuggestions} element={<MovementSuggestions />} />
+        <Route path={PatientRoutes.TimeTracker} element={<TimeTracker />} />
       </Route>
     </Route>
   </Routes>
