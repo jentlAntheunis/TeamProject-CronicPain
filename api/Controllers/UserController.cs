@@ -8,7 +8,7 @@ using Pebbles.Services;
 using Pebbles.Repositories;
 
 [ApiController]
-[Route("Users")]
+[Route("users")]
 public class UserController : ControllerBase
 {
     private readonly IConfiguration _configuration;
