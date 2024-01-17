@@ -10,3 +10,13 @@ const postTodo = async (todo) => request({
   method: 'POST',
   data: todo,
 })
+
+const login = async (email) => request({
+  url: '/users/login',
+  method: 'POST',
+  data: email,
+})
+
+export {
+  login
+}

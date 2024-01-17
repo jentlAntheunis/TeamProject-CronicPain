@@ -1,3 +1,4 @@
+import axios from "axios";
 import { isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
@@ -28,6 +29,19 @@ const OnboardingLayout = () => {
         setLoginLoading(true);
         signInWithEmailLink(auth, email, window.location.href)
           .then(() => {
+            // axios.get(import.meta.env.VITE_API_URL + "/users/login").then((res) => {
+            //   if (res.data) {
+            //     console.log(res.data);
+            //   } else {
+            //     throw new Error("Er is iets misgelopen");
+            //   }
+            // })
+            // .catch((err) => {
+            //   console.error(err);
+            //   setLoginLoading(false);
+            //   setError(true);
+            //   return;
+            // });
             window.localStorage.removeItem("emailForSignIn");
             console.log("signed in");
             setLoginLoading(false);

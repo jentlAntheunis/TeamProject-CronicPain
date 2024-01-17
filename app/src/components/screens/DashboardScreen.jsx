@@ -7,7 +7,8 @@ import FullHeightScreen from "../ui/FullHeightScreen/FullHeightScreen.jsx";
 import Button from "../ui/Button/Button.jsx";
 import { useAuthState, useIdToken } from "react-firebase-hooks/auth";
 import { auth } from "../../core/services/firebase.js";
-
+import { login } from "../../core/utils/apiCalls.js";
+import axios from "axios";
 
 const DashboardScreen = () => {
   const [user] = useIdToken(auth);
@@ -16,11 +17,21 @@ const DashboardScreen = () => {
     console.log(user);
   }
 
+  const handleClick = async () => {
+    axios
+      .get("https://localhost:7121/users/exists/elicopter%40example.mail")
+      .then((res) => {
+        console.log(res);
+      });
+    // await login("elicopter@example.mail");
+  };
+
   return (
     <FullHeightScreen>
       <div className={styles.screen}>
         <TopBar />
         <Avatar />
+        <Button onClick={handleClick}>Test API</Button>
         <div className={styles.btnContainer}>
           <Button variant="primary" size="full">
             Ik wil bewegen! <Play size={22} weight="bold" />
