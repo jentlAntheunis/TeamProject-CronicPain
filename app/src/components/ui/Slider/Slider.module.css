@@ -1,7 +1,7 @@
 .sliderContainer {
   position: relative;
   width: 100%;
-  margin-bottom: 10px;
+  padding-bottom: 9px;
 }
 
 .slider {
@@ -44,12 +44,34 @@
   width: auto;
   left: 13px;
   right: 13px;
-  top: 50%;
+  top: calc(50%);
+  transform: translateY(-50%);
   pointer-events: none;
 }
 
 .marker {
-  width: 3px;
-  height: 11px;
+  width: 2px;
+  height: 6px;
   background: var(--grey-300);
+}
+
+.labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.25rem;
+}
+
+.label {
+  color: var(--grey-400);
+  font-size: var(--small);
+  text-align: center;
+  white-space: pre-line;
+}
+
+.label:first-child {
+  text-align: left;
+}
+
+.label:last-child {
+  text-align: right;
 }

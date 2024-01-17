@@ -19,8 +19,17 @@ const DailyPain = () => {
       <div className={styles.layout}>
         <div className={styles.question}>Hoeveel pijn ervaar je momenteel?</div>
         <div className={styles.sliderValue}>{sliderValue}</div>
-        <Slider max={10} setSliderValue={setSliderValue} />
-        <Button size="full">Ok</Button>
+        <div>
+          <Slider
+            max={10}
+            setSliderValue={setSliderValue}
+            minLabel="geen pijn"
+            maxLabel="veel pijn"
+          />
+          <Button size="full" className={styles.button}>
+            Ok
+          </Button>
+        </div>
       </div>
     </Modal>
   );

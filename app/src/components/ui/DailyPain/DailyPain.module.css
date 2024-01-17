@@ -19,3 +19,7 @@
   font-size: var(--h1);
   text-align: center;
 }
+
+.button {
+  margin-top: 1.625rem;
+}
