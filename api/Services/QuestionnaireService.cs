@@ -5,7 +5,7 @@ namespace Pebbles.Services;
 
 public interface IQuestionnaireService
 {
-    Task<Questionnaire> AddQuestionnaireAsync(string email);
+    Task<Questionnaire> AddQuestionnaireAsync(Guid userId, string categoryName);
     Task<Questionnaire> GetQuestionnaireAsync(Guid id);
     Task<List<Questionnaire>> GetQuestionnairesAsync();
     Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire);
@@ -26,7 +26,7 @@ public class QuestionnaireService : IQuestionnaireService
         _userService = userService;
     }
 
-    public async Task<Questionnaire> AddQuestionnaireAsync(string email) => await _questionnaireRepository.AddQuestionnaireAsync(email);
+    public async Task<Questionnaire> AddQuestionnaireAsync(Guid userId, string categoryName) => await _questionnaireRepository.AddQuestionnaireAsync(userId, categoryName);
 
     public async Task<Questionnaire> GetQuestionnaireAsync(Guid id) => await _questionnaireRepository.GetQuestionnaireByIdAsync(id);
 
