@@ -7,6 +7,7 @@ import LoginScreen from "../screens/LoginScreen/LoginScreen";
 import DashboardScreen from "../screens/DashboardScreen";
 import AddPatient from "../screens/Specialist/AddPatient/AddPatient";
 import { AuthRoutes, PatientRoutes, SpecialistRoutes } from "../../core/config/routes";
+import StreaksScreen from "../screens/Patient/StreaksScreen/StreaksScreen";
 
 const App = () => (
   <Routes>
@@ -50,6 +51,7 @@ const App = () => (
       >
         {/* Patient Paths */}
         <Route path={PatientRoutes.Dashboard} element={<DashboardScreen />} />
+        <Route path={PatientRoutes.Streaks} element={<StreaksScreen />} />
       </Route>
     </Route>
   </Routes>
