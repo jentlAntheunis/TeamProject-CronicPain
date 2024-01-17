@@ -10,9 +10,7 @@ public class Question
     public Guid CategoryId { get; set; }
     public Category Category { get; set; }
 
-    [Required]
-    public Guid QuestionnaireId { get; set; }
-    public Questionnaire Questionnaire { get; set; }
+    public List<Questionnaire> Questionnaires { get; set; }
 
     public Guid SpecialistId { get; set; }
 
