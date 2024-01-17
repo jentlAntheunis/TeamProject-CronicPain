@@ -15,7 +15,6 @@ using Pebbles.Repositories;
 
 [ApiController]
 [Route("users")]
-[Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
 public class UserController : ControllerBase
 {
     private readonly IConfiguration _configuration;
@@ -30,6 +29,7 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
+    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
     [HttpGet]
     public async Task<IActionResult> GetUsersAsync()
     {
@@ -44,6 +44,7 @@ public class UserController : ControllerBase
         return Ok(JsonConvert.SerializeObject(users));
     }
 
+    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUserAsync(Guid id)
     {
@@ -55,6 +56,7 @@ public class UserController : ControllerBase
         return Ok(JsonConvert.SerializeObject(user));
     }
 
+    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateUserAsync(Guid id, [FromBody] User user)
     {
@@ -70,6 +72,7 @@ public class UserController : ControllerBase
         return Ok(JsonConvert.SerializeObject(userExists));
     }
 
+    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUserAsync(Guid id)
     {
@@ -82,6 +85,7 @@ public class UserController : ControllerBase
         return Ok();
     }
 
+    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
     [HttpPost("getbyemail")]
     public async Task<IActionResult> LoginAsync([FromBody] string email)
     {
