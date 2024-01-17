@@ -5,7 +5,11 @@ import { auth } from "../../../core/services/firebase";
 
 const AuthContainer = () => {
   const location = useLocation();
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
+
+  if (loading) {
+    return null;
+  }
 
   if (!user) {
     return (
