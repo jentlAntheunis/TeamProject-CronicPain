@@ -48,7 +48,7 @@ const LoginScreen = () => {
 };
 
 const formSchema = z.object({
-  email: z.string().email(),
+  email: z.string().email({ message: "Geen geldig e-mailadres" }),
 });
 
 const LoginForm = () => {
