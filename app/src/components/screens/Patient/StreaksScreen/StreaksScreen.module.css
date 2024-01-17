@@ -1,0 +1,72 @@
+.streaksContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.closeBtn {
+  width: fit-content;
+  aspect-ratio: 1/1;
+  align-self: flex-end;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
+  margin-bottom: 4rem;
+}
+
+.streaks {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  font-weight: var(--medium);
+}
+
+.streaksText {
+  font-size: 1.1875rem;
+  font-weight: var(--medium);
+  color: var(--grey-600);
+}
+
+.stats {
+  border: 1px solid var(--grey-300);
+  border-radius: var(--border-radius-xl);
+}
+
+.weekdays {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* gap: 1.5rem; */
+  font-size: 1.1875rem;
+  font-weight: var(--medium);
+  padding: 1rem;
+  border-bottom: 1px solid var(--grey-200);
+}
+
+.StreakColor {
+  fill: var(--lime-500);
+}
+
+.noStreakColor {
+  fill: var(--grey-400);
+}
+
+.day {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.streaksInfo {
+  padding: 1rem;
+  color: var(--grey-400);
+  text-align: center;
+}
