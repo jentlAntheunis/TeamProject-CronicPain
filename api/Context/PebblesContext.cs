@@ -91,11 +91,6 @@ public class PebblesContext : DbContext
             .HasForeignKey(q => q.PatientId)
             .OnDelete(DeleteBehavior.NoAction);
         modelBuilder.Entity<Questionnaire>()
-            .HasOne(q => q.Specialist)
-            .WithMany(s => s.Questionnaires)
-            .HasForeignKey(q => q.SpecialistId)
-            .OnDelete(DeleteBehavior.NoAction);
-        modelBuilder.Entity<Questionnaire>()
             .HasMany(q => q.Questions)
             .WithMany(a => a.Questionnaires)
             .UsingEntity<QuestionnaireQuestion>();
@@ -158,8 +153,6 @@ public class PebblesContext : DbContext
             new Specialist("Johan", "Van der Auwera", "johan.van.der.auwera@ziekenhuis.be"),
             new Specialist("Rita", "Coonincks", "rita.coonincks@ziekenhuis.be")
         );
-
-        
 
         modelBuilder.Entity<Color>().HasData(
             new Color("Blue (Default)", "#3B82F6")

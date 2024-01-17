@@ -4,14 +4,6 @@ namespace Pebbles.Models;
 
 public class User : ISoftDelete
 {
-    public User()
-    {
-        Id = Guid.NewGuid();
-
-        PatientSpecialists = new List<PatientSpecialist>();
-        Questionnaires = new List<Questionnaire>();
-        MovementSuggestions = new List<MovementSuggestion>();
-    }
     public User(string firstName, string lastName, string email)
     {
         Id = Guid.NewGuid();
