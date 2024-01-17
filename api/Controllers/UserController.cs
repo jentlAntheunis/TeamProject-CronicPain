@@ -84,7 +84,7 @@ public class UserController : ControllerBase
         return Ok();
     }
 
-    [HttpPost("login")]
+    [HttpPost("getbyemail")]
     public async Task<IActionResult> LoginAsync([FromBody] string email)
     {
         var user = await _userService.LoginAsync(email);
