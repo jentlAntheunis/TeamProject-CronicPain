@@ -14,6 +14,7 @@ public interface IPatientService
     Task<Guid> StartMovementSessionAsync(Guid patientId);
     Task EndMovementSessionAsync(Guid movementSessionId);
     Task<List<MovementSuggestion>> GetMovementSuggestionsAsync(Guid patientId);
+    Task AddMovementSuggestion(Guid specialistId, Guid patientId, MovementSuggestion movementSuggestionId);
 }
 
 public class PatientService : IPatientService
@@ -103,5 +104,18 @@ public class PatientService : IPatientService
             throw new Exception("Patient does not exist");
         var movementSuggestions = await _movementSuggestionRepository.GetMovementSuggestionsByPatientIdAsync(patientId);
         return movementSuggestions;
+    }
+
+    public async Task AddMovementSuggestion(Guid specialistId, Guid patientId, MovementSuggestion movementSuggestion)
+    {
+        var patient = await _patientRepository.GetPatientByIdAsync(patientId);
+        if (patient == null)
+            throw new Exception("Patient does not exist");
+        var specialist = await _specialistRepository.GetSpecialistByIdAsync(specialistId);
+        if (specialist == null)
+            throw new Exception("Specialist does not exist");
+        movementSuggestion.PatientId = patientId;
+        movementSuggestion.SpecialistId = specialistId;
+        await _movementSuggestionRepository.CreateMovementSuggestionAsync(movementSuggestion);
     }
 }
