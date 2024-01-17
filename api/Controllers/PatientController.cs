@@ -49,4 +49,11 @@ public class PatientController : ControllerBase
         var movementSuggestions = await _patientService.GetMovementSuggestionsAsync(patientId);
         return Ok(JsonConvert.SerializeObject(movementSuggestions));
     }
+
+    [HttpGet("{patientId}/pebblesmood")]
+    public async Task<IActionResult> GetPebblesMoodAsync(Guid patientId)
+    {
+        var pebblesMood = await _patientService.GetPebblesMoodAsync(patientId);
+        return Ok(pebblesMood);
+    }
 }

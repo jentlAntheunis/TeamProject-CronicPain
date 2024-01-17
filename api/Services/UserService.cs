@@ -19,16 +19,19 @@ public class UserService : IUserService
     private readonly IUserRepository _userRepository;
     private readonly IAvatarRepository _avatarRepository;
     private readonly IPatientRepository _patientRepository;
+    private readonly ILoginRepository _loginRepository;
 
     public UserService(
         IUserRepository userRepository,
         IAvatarRepository avatarRepository,
-        IPatientRepository patientRepository
+        IPatientRepository patientRepository,
+        ILoginRepository loginRepository
         )
     {
         _userRepository = userRepository;
         _avatarRepository = avatarRepository;
         _patientRepository = patientRepository;
+        _loginRepository = loginRepository;
     }
 
     public async Task<List<User>> GetUsersAsync() => await _userRepository.GetUsersAsync();
@@ -52,6 +55,8 @@ public class UserService : IUserService
         {
             throw new Exception("User not found");
         }
+        var login = await _loginRepository.CreateLoginByPatientIdAsync(user.Id);
+        user.Logins.Add(login);
         return user;
     }
 }

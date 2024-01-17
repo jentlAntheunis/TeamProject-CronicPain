@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace Pebbles.Models;
 
@@ -39,6 +40,8 @@ public class Color : ISoftDelete
     public bool IsDeleted { get; set; }
     public DateTimeOffset? DeletedAt { get; set; }
 
+    [JsonIgnore]
     public List<Patient> Patients { get; set; }
+    [JsonIgnore]
     public List<Avatar> Avatars { get; set; }
 }

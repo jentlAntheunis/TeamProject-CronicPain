@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using Pebbles.Models;
 using Pebbles.Repositories;
 
@@ -15,6 +16,7 @@ public interface IPatientService
     Task EndMovementSessionAsync(Guid movementSessionId);
     Task<List<MovementSuggestion>> GetMovementSuggestionsAsync(Guid patientId);
     Task AddMovementSuggestion(Guid specialistId, Guid patientId, MovementSuggestion movementSuggestionId);
+    Task<string> GetPebblesMoodAsync(Guid patientId);
 }
 
 public class PatientService : IPatientService
@@ -117,5 +119,18 @@ public class PatientService : IPatientService
         movementSuggestion.PatientId = patientId;
         movementSuggestion.SpecialistId = specialistId;
         await _movementSuggestionRepository.CreateMovementSuggestionAsync(movementSuggestion);
+    }
+
+    public async Task<string> GetPebblesMoodAsync(Guid patientId)
+    {
+        var patient = await _patientRepository.GetPatientByIdAsync(patientId);
+        
+        if (patient == null)
+            throw new Exception("Patient does not exist");
+
+        //look at past 5 days and see when patient has logged in
+        Console.WriteLine(JsonConvert.SerializeObject(patient));
+        string mood = "happy";
+        return mood;
     }
 }

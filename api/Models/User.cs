@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace Pebbles.Models;
 
@@ -32,8 +33,11 @@ public class User : ISoftDelete
     [StringLength(100)]
     public string LastName { get; set; }
 
+    [JsonIgnore]
     public List<PatientSpecialist> PatientSpecialists { get; set; }
+    [JsonIgnore]
     public List<Questionnaire> Questionnaires { get; set; }
+    [JsonIgnore]
     public List<MovementSuggestion> MovementSuggestions { get; set; }
     public List<Login> Logins { get; set; }
 
