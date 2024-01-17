@@ -1,18 +1,19 @@
 import styles from "./Slider.module.css";
 import { useState } from "react";
 
-const Slider = ({ max }) => {
-  const [value, setValue] = useState(1); // Add state for the slider value
+const Slider = ({ max, setSliderValue  }) => {
+  const [value, setValue] = useState(1);
   const markers = Array.from({ length: max }, (_, index) => index + 1);
 
-  console.log("value", value)
-  console.log("markers", markers)
+  const handleSliderChange = (event) => {
+    setValue(parseInt(event.target.value));
+    setSliderValue(parseInt(event.target.value));
+  };
 
   return (
     <div className={styles.sliderContainer}>
       <div className={styles.markers}>
         {markers.map((marker) => {
-          console.log(marker === value)
           return (
           <span
             key={marker}
@@ -30,8 +31,8 @@ const Slider = ({ max }) => {
         max={max}
         className={styles.slider}
         list="tickmarks"
-        value={value} // Bind the value to the state
-        onChange={(e) => setValue(parseInt(e.target.value))} // Update the state on slider change
+        value={value}
+        onChange={handleSliderChange}
       />
     </div>
   );

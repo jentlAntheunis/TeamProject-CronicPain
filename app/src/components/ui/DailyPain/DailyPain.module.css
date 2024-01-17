@@ -1,15 +1,21 @@
-.layout
- {
+.layout {
   display: flex;
   flex-direction: column;
- }
+  justify-content: space-between;
+  height: 50svh;
+  margin-top: 1rem;
+}
 
- .btn {
+.btnContainer {
   display: flex;
-  width: fit-content;
-  align-self: flex-end;
- }
+  justify-content: flex-end;
+}
 
- .question {
+.question {
   font-size: var(--h4);
- }
+}
+
+.sliderValue {
+  font-size: var(--h1);
+  text-align: center;
+}
