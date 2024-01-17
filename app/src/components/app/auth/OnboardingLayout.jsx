@@ -10,10 +10,10 @@ const OnboardingLayout = () => {
   const location = useLocation();
   const search = location.search;
   // TODO: Check auth status
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
 
   // useStates
-  const [loading, setLoading] = useState(false);
+  const [loginLoading, setLoginLoading] = useState(false);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -25,17 +25,17 @@ const OnboardingLayout = () => {
           email = window.prompt("Geef uw e-mailadres voor bevestiging");
         }
         // sign in user
-        setLoading(true);
+        setLoginLoading(true);
         signInWithEmailLink(auth, email, window.location.href)
           .then(() => {
             window.localStorage.removeItem("emailForSignIn");
             console.log("signed in");
-            setLoading(false);
+            setLoginLoading(false);
             setError(false);
           })
           .catch((error) => {
             console.log(error.message);
-            setLoading(false);
+            setLoginLoading(false);
             setError(true);
           });
       }
@@ -43,6 +43,10 @@ const OnboardingLayout = () => {
   }, [user, location, search]);
 
   if (loading) {
+    return null;
+  }
+
+  if (loginLoading) {
     return (
       <CenteredInfo>
         <h1>Proberen inloggen...</h1>
