@@ -32,6 +32,8 @@ builder.Services.AddScoped<ISpecialistRepository, SpecialistRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAvatarRepository, AvatarRepository>();
 builder.Services.AddScoped<IColorRepository, ColorRepository>();
+builder.Services.AddScoped<IMovementSessionRepository, MovementSessionRepository>();
+builder.Services.AddScoped<IMovementSuggestionRepository, MovementSuggestionRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -94,8 +96,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             }
         };
     });
-    
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder =>
+    {
+        builder.WithOrigins("http://localhost:5173", "https://www.pebbles-health.be", "https://staging.pebbles-health.be")
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
 
 
 // Initialize Firebase Admin SDK
@@ -124,6 +134,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("CorsPolicy");
 
 app.UseMiddleware<FirebaseTokenValidatorMiddleware>();
 
