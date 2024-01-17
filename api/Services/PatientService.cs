@@ -13,6 +13,7 @@ public interface IPatientService
 
     Task<Guid> StartMovementSessionAsync(Guid patientId);
     Task EndMovementSessionAsync(Guid movementSessionId);
+    Task<List<MovementSuggestion>> GetMovementSuggestionsAsync(Guid patientId);
 }
 
 public class PatientService : IPatientService
@@ -21,17 +22,20 @@ public class PatientService : IPatientService
     private readonly ISpecialistRepository _specialistRepository;
     private readonly IColorRepository _colorRepository;
     private readonly IMovementSessionRepository _movementSessionRepository;
+    private readonly IMovementSuggestionRepository _movementSuggestionRepository;
     public PatientService(
         IPatientRepository patientRepository,
         ISpecialistRepository specialistRepository,
         IColorRepository colorRepository,
-        IMovementSessionRepository movementSessionRepository
+        IMovementSessionRepository movementSessionRepository,
+        IMovementSuggestionRepository movementSuggestionRepository
         )
     {
         _patientRepository = patientRepository;
         _specialistRepository = specialistRepository;
         _colorRepository = colorRepository;
         _movementSessionRepository = movementSessionRepository;
+        _movementSuggestionRepository = movementSuggestionRepository;
     }
 
     public async Task<Patient> GetPatientByIdAsync(Guid id) => await _patientRepository.GetPatientByIdAsync(id);
@@ -90,5 +94,14 @@ public class PatientService : IPatientService
         movementSession.EndTime = DateTime.Now;
         movementSession.timeSpan = movementSession.EndTime - movementSession.StartTime;
         await _movementSessionRepository.UpdateMovementSessionAsync(movementSession);
+    }
+
+    public async Task<List<MovementSuggestion>> GetMovementSuggestionsAsync(Guid patientId)
+    {
+        var patient = await _patientRepository.GetPatientByIdAsync(patientId);
+        if (patient == null)
+            throw new Exception("Patient does not exist");
+        var movementSuggestions = await _movementSuggestionRepository.GetMovementSuggestionsByPatientIdAsync(patientId);
+        return movementSuggestions;
     }
 }

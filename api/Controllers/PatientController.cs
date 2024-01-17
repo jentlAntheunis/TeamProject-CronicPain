@@ -43,4 +43,11 @@ public class PatientController : ControllerBase
         await _patientService.EndMovementSessionAsync(movementSessionId);
         return Ok();
     }
+
+    [HttpGet("{patientId}/movementsuggestions")]
+    public async Task<IActionResult> GetMovementSuggestionsAsync(Guid patientId)
+    {
+        var movementSuggestions = await _patientService.GetMovementSuggestionsAsync(patientId);
+        return Ok(movementSuggestions);
+    }
 }
