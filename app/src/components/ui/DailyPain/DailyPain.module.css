@@ -1,0 +1,15 @@
+.layout
+ {
+  display: flex;
+  flex-direction: column;
+ }
+
+ .btn {
+  display: flex;
+  width: fit-content;
+  align-self: flex-end;
+ }
+
+ .question {
+  font-size: var(--h4);
+ }

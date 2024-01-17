@@ -1,0 +1,53 @@
+.sliderContainer {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  background: var(--grey-300);
+  outline: none;
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--blue-500);
+  cursor: pointer;
+  border: 0;
+}
+
+.slider::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--blue-500);
+  cursor: pointer;
+  border: 0;
+}
+
+.markers {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: absolute;
+  width: auto;
+  left: 13px;
+  right: 13px;
+  top: 50%;
+  pointer-events: none;
+}
+
+.marker {
+  width: 3px;
+  height: 11px;
+  background: var(--grey-300);
+}
