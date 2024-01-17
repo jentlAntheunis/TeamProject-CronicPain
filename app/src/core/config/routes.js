@@ -7,6 +7,7 @@ const PatientRoutes = {
   Progress: "/progress",
   Shop: "/shop",
   Streaks: "/streaks",
+  WellDone: '/well-done',
 };
 
 const SpecialistRoutes = {
