@@ -1,3 +1,4 @@
+import axios from "axios";
 import request from "./request";
 
 // Example api call with bearer token
@@ -20,6 +21,12 @@ const getUser = async (email) => await request({
   },
 })
 
+const checkIfUserExists = async (email) => {
+  const { data } = await axios.get(import.meta.env.VITE_API_URL + '/users/exists/' + email)
+  return data
+}
+
 export {
-  getUser
+  getUser,
+  checkIfUserExists,
 }

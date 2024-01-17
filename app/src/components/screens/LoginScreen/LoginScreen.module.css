@@ -27,6 +27,10 @@
   margin-bottom: 4rem;
 }
 
+.emailInput {
+  background-color: var(--white) !important;
+}
+
 .submit {
   margin-top: 1.625rem;
 }
