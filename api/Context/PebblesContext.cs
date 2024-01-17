@@ -45,6 +45,9 @@ public class PebblesContext : DbContext
 
         modelBuilder.Entity<PatientSpecialist>()
             .HasKey(ps => new { ps.PatientId, ps.SpecialistId });
+        
+        modelBuilder.Entity<QuestionnaireQuestion>()
+            .HasKey(qq => new { qq.QuestionnaireId, qq.QuestionId });
 
         //relations between tables
 
@@ -92,9 +95,8 @@ public class PebblesContext : DbContext
             .OnDelete(DeleteBehavior.NoAction);
         modelBuilder.Entity<Questionnaire>()
             .HasMany(q => q.Questions)
-            .WithOne(a => a.Questionnaire)
-            .HasForeignKey(a => a.QuestionnaireId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .WithMany(a => a.Questionnaires)
+            .UsingEntity<QuestionnaireQuestion>();
 
         modelBuilder.Entity<Question>()
             .HasOne(q => q.Category)
