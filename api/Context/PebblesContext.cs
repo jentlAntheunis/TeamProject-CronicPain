@@ -21,6 +21,8 @@ public class PebblesContext : DbContext
     public DbSet<Scale> Scale { get; set; }
     public DbSet<User> User { get; set; }
     public DbSet<Login> Login { get; set; }
+    public DbSet<QuestionnaireQuestion> QuestionnaireQuestion { get; set; }
+    public DbSet<MovementSession> MovementSession { get; set; }
 
     private readonly IConfiguration _configuration;
 

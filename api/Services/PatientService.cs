@@ -10,6 +10,9 @@ public interface IPatientService
     Task<Guid> AddPatientBySpecialistAsync(Guid SpecialistId, Patient patient);
     Task AddPatientToSpecialistAsync(Guid PatientId, Guid SpecialistId);
     Task<Patient> UpdatePatientAsync(Patient patient);
+
+    Task<Guid> StartMovementSessionAsync(Guid patientId);
+    Task EndMovementSessionAsync(Guid movementSessionId);
 }
 
 public class PatientService : IPatientService
@@ -17,15 +20,18 @@ public class PatientService : IPatientService
     private readonly IPatientRepository _patientRepository;
     private readonly ISpecialistRepository _specialistRepository;
     private readonly IColorRepository _colorRepository;
+    private readonly IMovementSessionRepository _movementSessionRepository;
     public PatientService(
         IPatientRepository patientRepository,
         ISpecialistRepository specialistRepository,
-        IColorRepository colorRepository
+        IColorRepository colorRepository,
+        IMovementSessionRepository movementSessionRepository
         )
     {
         _patientRepository = patientRepository;
         _specialistRepository = specialistRepository;
         _colorRepository = colorRepository;
+        _movementSessionRepository = movementSessionRepository;
     }
 
     public async Task<Patient> GetPatientByIdAsync(Guid id) => await _patientRepository.GetPatientByIdAsync(id);
@@ -63,4 +69,26 @@ public class PatientService : IPatientService
 
     public async Task<Patient> UpdatePatientAsync(Patient patient) => await _patientRepository.UpdatePatientAsync(patient);
 
+    public async Task<Guid> StartMovementSessionAsync(Guid patientId)
+    {
+        var patient = await _patientRepository.GetPatientByIdAsync(patientId);
+        if (patient == null)
+            throw new Exception("Patient does not exist");
+        var movementSession = new MovementSession
+        {
+            PatientId = patient.Id,
+            StartTime = DateTime.Now
+        };
+        return await _movementSessionRepository.CreateMovementSessionAsync(movementSession);
+    }
+
+    public async Task EndMovementSessionAsync(Guid movementSessionId)
+    {
+        var movementSession = await _movementSessionRepository.GetMovementSessionByIdAsync(movementSessionId);
+        if (movementSession == null)
+            throw new Exception("Movement session does not exist");
+        movementSession.EndTime = DateTime.Now;
+        movementSession.timeSpan = movementSession.EndTime - movementSession.StartTime;
+        await _movementSessionRepository.UpdateMovementSessionAsync(movementSession);
+    }
 }
