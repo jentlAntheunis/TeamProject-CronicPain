@@ -143,6 +143,12 @@ public class PebblesContext : DbContext
             .HasForeignKey(l => l.UserId)
             .OnDelete(DeleteBehavior.NoAction);
 
+        modelBuilder.Entity<MovementSession>()
+            .HasOne(m => m.Patient)
+            .WithMany(p => p.MovementSessions)
+            .HasForeignKey(m => m.PatientId)
+            .OnDelete(DeleteBehavior.NoAction);
+
         //seed data
         modelBuilder.Entity<Specialist>().HasData(
             //specialists
