@@ -32,7 +32,49 @@ public class QuestionController : ControllerBase
     {
         try
         {
-            
+            // Create a "bewegingsvragen" questionnaire for the user
+            var bewegingsvragenQuestionnaire = await _questionnaireService.AddQuestionnaireAsync(userId, "bewegingsvragen");
+
+            if (bewegingsvragenQuestionnaire != null)
+            {
+                //Retrieve the questionnaire's questions
+                var questions = await _questionService.GetQuestionsByQuestionnaireIdAsync(bewegingsvragenQuestionnaire.Id);
+
+                //return the questions and their linked scale and options
+
+            }
+            else
+            {
+                return BadRequest("Failed to create a 'bewegingsvragen' questionnaire.");
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions and return an error response if necessary
+            return StatusCode(500, "Internal Server Error");
+        }
+    }
+
+    [HttpGet("bonusvragen")]
+    public async Task<IActionResult> GetBonusvragen(Guid userId)
+    {
+        try
+        {
+            //create a "bonusvragen" questionnaire for the user
+            var bonusvragenQuestionnaire = await _questionnaireService.AddQuestionnaireAsync(userId, "bonusvragen");
+
+            if (bonusvragenQuestionnaire != null)
+            {
+                //Retrieve the questionnaire's questions
+                var questions = await _questionService.GetQuestionsByQuestionnaireIdAsync(bonusvragenQuestionnaire.Id);
+
+                //return the questions and their linked scale and options
+
+            }
+            else
+            {
+                return BadRequest("Failed to create a 'bonusvragen' questionnaire.");
+            }GetBewegingsvragen
         }
         catch (Exception ex)
         {
