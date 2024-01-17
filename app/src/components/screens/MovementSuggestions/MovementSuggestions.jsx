@@ -3,15 +3,10 @@ import Button from "../../ui/Button/Button";
 import FullHeightScreen from "../../ui/FullHeightScreen/FullHeightScreen";
 import PageHeading from "../../ui/PageHeading/PageHeading";
 import styles from "./MovementSuggestions.module.css";
+import { suggestions } from "../../../core/config/movementSuggestions";
 
 const MovementSuggestions = () => {
-  const suggestions = [
-    "Spieroefeningen",
-    "Wandelen",
-    "Huishoudelijke taken",
-    "Vrij bewegen",
-    // Add more suggestions here
-  ];
+
 
   const [selectedSuggestion, setSelectedSuggestion] = useState(null);
   const suggestionsContainerRef = useRef(null);
