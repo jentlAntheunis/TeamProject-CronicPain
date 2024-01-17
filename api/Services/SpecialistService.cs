@@ -71,6 +71,4 @@ public class SpecialistService : ISpecialistService
             Console.WriteLine("Fout bij het versturen van e-mail: " + ex.Message);
         }
     }
-
-
 }
