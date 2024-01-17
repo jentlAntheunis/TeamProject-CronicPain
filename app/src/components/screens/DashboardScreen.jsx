@@ -7,23 +7,27 @@ import FullHeightScreen from "../ui/FullHeightScreen/FullHeightScreen.jsx";
 import Button from "../ui/Button/Button.jsx";
 import { useAuthState, useIdToken } from "react-firebase-hooks/auth";
 import { auth } from "../../core/services/firebase.js";
-import { login } from "../../core/utils/apiCalls.js";
 import axios from "axios";
+import { useAuthContext } from "../app/auth/AuthProvider.jsx";
 
 const DashboardScreen = () => {
   const [user] = useIdToken(auth);
-
-  if (user) {
-    console.log(user);
-  }
+  const { login } = useAuthContext();
 
   const handleClick = async () => {
-    axios
-      .get("https://localhost:7121/users/exists/elicopter%40example.mail")
+    // axios
+    //   .get("https://localhost:7121/users/exists/elicopter%40example.mail")
+    //   .then((res) => {
+    //     console.log(res);
+    //   });
+    console.log("user", user);
+    login(user.email)
       .then((res) => {
         console.log(res);
+      })
+      .catch((error) => {
+        console.log(error.message);
       });
-    // await login("elicopter@example.mail");
   };
 
   return (

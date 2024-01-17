@@ -6,12 +6,13 @@ const client = axios.create({
   timeout: 3000,
 });
 
-const request = ({ ...options }) => {
+const request = async ({ ...options }) => {
   // get token from firebase user
   const user = auth.currentUser;
   // if user is logged in, add token to request header, else throw error
   if (user) {
-    user.getIdToken().then((token) => {
+    console.log("User logged in, adding token to request header")
+    await user.getIdToken().then((token) => {
       client.defaults.headers.common.Authorization = `Bearer ${token}`;
     });
   } else {
@@ -26,6 +27,7 @@ const request = ({ ...options }) => {
   const onError = (error) => {
     // if session expired, log user out and redirect to login page
     console.error('Request Failed:', error.message);
+    console.log(error)
     if (error.response.status === 401) {
       auth.signOut();
     }

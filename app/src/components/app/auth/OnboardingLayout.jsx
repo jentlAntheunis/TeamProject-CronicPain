@@ -6,59 +6,52 @@ import { auth } from "../../../core/services/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import CenteredInfo from "../../ui/Centered/CenteredInfo";
 import { toast } from "react-toastify";
+import { useAuthContext } from "./AuthProvider";
 
 const OnboardingLayout = () => {
   const location = useLocation();
   const search = location.search;
   // TODO: Check auth status
-  const [user, loading] = useAuthState(auth);
+  const { user, login, logout } = useAuthContext();
 
   // useStates
   const [loginLoading, setLoginLoading] = useState(false);
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (!user) {
-      if (isSignInWithEmailLink(auth, window.location.href)) {
+    const handleSignInWithEmailLink = async () => {
+      if (!user && isSignInWithEmailLink(auth, window.location.href)) {
         let email = window.localStorage.getItem("emailForSignIn");
         if (!email) {
           // ask user for email
           email = window.prompt("Geef uw e-mailadres voor bevestiging");
         }
-        // sign in user
-        setLoginLoading(true);
-        signInWithEmailLink(auth, email, window.location.href)
-          .then(() => {
-            // axios.get(import.meta.env.VITE_API_URL + "/users/login").then((res) => {
-            //   if (res.data) {
-            //     console.log(res.data);
-            //   } else {
-            //     throw new Error("Er is iets misgelopen");
-            //   }
-            // })
-            // .catch((err) => {
-            //   console.error(err);
-            //   setLoginLoading(false);
-            //   setError(true);
-            //   return;
-            // });
-            window.localStorage.removeItem("emailForSignIn");
-            console.log("signed in");
-            setLoginLoading(false);
-            setError(false);
-          })
-          .catch((error) => {
-            console.log(error.message);
-            setLoginLoading(false);
-            setError(true);
-          });
+        try {
+          setLoginLoading(true);
+          const { user } = await signInWithEmailLink(
+            auth,
+            email,
+            window.location.href
+          );
+          await login(user.email);
+          window.localStorage.removeItem("emailForSignIn");
+          console.log("signed in");
+          setLoginLoading(false);
+          setError(false);
+        } catch (error) {
+          console.log(error.message);
+          setLoginLoading(false);
+          setError(true);
+        }
       }
-    }
-  }, [user, location, search]);
+    };
 
-  if (loading) {
-    return null;
-  }
+    handleSignInWithEmailLink();
+  }, [user, location, search, login]);
+
+  // if (loading) {
+  //   return null;
+  // }
 
   if (loginLoading) {
     return (
@@ -69,7 +62,9 @@ const OnboardingLayout = () => {
   }
 
   if (error) {
-    console.error(error.message);
+    toast.error(
+      "Er is iets misgelopen bij het inloggen, probeer opnieuw of neem contact op met ons"
+    );
   }
 
   if (!user) {

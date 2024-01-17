@@ -11,12 +11,15 @@ const postTodo = async (todo) => request({
   data: todo,
 })
 
-const login = async (email) => request({
-  url: '/users/login',
+const getUser = async (email) => await request({
+  url: '/users/getbyemail',
   method: 'POST',
   data: email,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 })
 
 export {
-  login
+  getUser
 }
