@@ -12,7 +12,7 @@ public class Question
 
     public List<Questionnaire> Questionnaires { get; set; }
 
-    public Guid SpecialistId { get; set; }
+    public Guid? SpecialistId { get; set; }
 
     public Guid ScaleId { get; set; }
     public Scale Scale { get; set; }

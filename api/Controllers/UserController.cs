@@ -15,6 +15,7 @@ using Pebbles.Repositories;
 
 [ApiController]
 [Route("users")]
+[Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
 public class UserController : ControllerBase
 {
     private readonly IConfiguration _configuration;
@@ -29,7 +30,6 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
-    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
     [HttpGet]
     public async Task<IActionResult> GetUsersAsync()
     {
@@ -44,7 +44,6 @@ public class UserController : ControllerBase
         return Ok(JsonConvert.SerializeObject(users));
     }
 
-    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUserAsync(Guid id)
     {
@@ -71,7 +70,6 @@ public class UserController : ControllerBase
         return Ok(JsonConvert.SerializeObject(userExists));
     }
 
-    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUserAsync(Guid id)
     {
@@ -84,11 +82,11 @@ public class UserController : ControllerBase
         return Ok();
     }
 
-    [HttpPost("login")]
+    [HttpPost("getbyemail")]
     public async Task<IActionResult> LoginAsync([FromBody] string email)
     {
         var user = await _userService.LoginAsync(email);
-        if(user == null)
+        if (user == null)
         {
             return NotFound();
         }
