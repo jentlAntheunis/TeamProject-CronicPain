@@ -10,16 +10,25 @@ public interface IUserService
     Task<User> UpdateUserAsync(User user);
     Task DeleteUserAsync(User user);
     Task<bool> CheckIfUserExistsAsync(string email);
+
+    Task<User> LoginAsync(string email);
 }
 
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
     private readonly IAvatarRepository _avatarRepository;
+    private readonly IPatientRepository _patientRepository;
 
-    public UserService(IConfiguration configuration)
+    public UserService(
+        IUserRepository userRepository,
+        IAvatarRepository avatarRepository,
+        IPatientRepository patientRepository
+        )
     {
-        _userRepository = new UserRepository(configuration);
+        _userRepository = userRepository;
+        _avatarRepository = avatarRepository;
+        _patientRepository = patientRepository;
     }
 
     public async Task<List<User>> GetUsersAsync() => await _userRepository.GetUsersAsync();
@@ -36,4 +45,13 @@ public class UserService : IUserService
         return users.Any(u => u.Email == email);
     }
 
+    public async Task<User> LoginAsync(string email)
+    {
+        var user = await _userRepository.GetUserByEmailAsync(email);
+        if (user == null)
+        {
+            throw new Exception("User not found");
+        }
+        return user;
+    }
 }

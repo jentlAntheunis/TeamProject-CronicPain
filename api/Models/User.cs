@@ -43,6 +43,7 @@ public class User : ISoftDelete
     public List<PatientSpecialist> PatientSpecialists { get; set; }
     public List<Questionnaire> Questionnaires { get; set; }
     public List<MovementSuggestion> MovementSuggestions { get; set; }
+    public List<Login> Logins { get; set; }
 
     public bool IsDeleted { get; set; }
     public DateTimeOffset? DeletedAt { get; set; }

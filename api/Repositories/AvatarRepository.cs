@@ -16,9 +16,9 @@ public class AvatarRepository : IAvatarRepository
 {
     private readonly PebblesContext _context;
 
-    public AvatarRepository(IConfiguration configuration)
+    public AvatarRepository(PebblesContext context)
     {
-        _context = new PebblesContext(configuration);
+        _context = context;
     }
 
     public async Task<Avatar> GetAvatarByIdAsync(Guid id) => await _context.Avatar.Where(a => a.IsDeleted == false).FirstOrDefaultAsync(a => a.Id == id);
