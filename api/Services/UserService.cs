@@ -55,7 +55,7 @@ public class UserService : IUserService
         {
             throw new Exception("User not found");
         }
-        var login = await _loginRepository.CreateLoginByPatientIdAsync(user.Id);
+        var login = await _loginRepository.CreateLoginByUserIdAsync(user.Id);
         user.Logins.Add(login);
         return user;
     }

@@ -7,8 +7,8 @@ namespace Pebbles.Repositories;
 public interface ILoginRepository
 {
     Task<Login> CreateLoginAsync(Login login);
-    Task<Login> CreateLoginByPatientIdAsync(Guid patientId);
-    Task<Login> GetLoginsByPatientAsync(Guid patientId);
+    Task<Login> CreateLoginByUserIdAsync(Guid patientId);
+    Task<Login> GetLoginsByUserAsync(Guid userId);
 }
 
 public class LoginRepository : ILoginRepository
@@ -26,11 +26,11 @@ public class LoginRepository : ILoginRepository
         return login;
     }
 
-    public async Task<Login> CreateLoginByPatientIdAsync(Guid patientId)
+    public async Task<Login> CreateLoginByUserIdAsync(Guid userId)
     {
         var login = new Login
         {
-            PatientId = patientId,
+            UserId = userId,
             Timestamp = DateTime.Now
         };
         await _context.Login.AddAsync(login);
@@ -38,9 +38,9 @@ public class LoginRepository : ILoginRepository
         return login;
     }
 
-    public async Task<Login> GetLoginsByPatientAsync(Guid patientId)
+    public async Task<Login> GetLoginsByUserAsync(Guid userId)
     {
-        var login = await _context.Login.FirstOrDefaultAsync(l => l.PatientId == patientId);
+        var login = await _context.Login.FirstOrDefaultAsync(l => l.UserId == userId);
         return login;
     }
 }

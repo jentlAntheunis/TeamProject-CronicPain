@@ -135,9 +135,9 @@ public class PebblesContext : DbContext
             .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<Login>()
-            .HasOne(l => l.Patient)
+            .HasOne(l => l.User)
             .WithMany(u => u.Logins)
-            .HasForeignKey(l => l.PatientId)
+            .HasForeignKey(l => l.UserId)
             .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<MovementSession>()
