@@ -18,28 +18,23 @@ public class User : ISoftDelete
     }
 
     [Key]
-    [JsonProperty("id")]
     public Guid Id { get; set; }
 
     [Required]
     [EmailAddress]
     [StringLength(100)]
-    [JsonProperty("email")]
     public string Email { get; set; }
 
     [Required]
     [StringLength(100)]
-    [JsonProperty("firstName")]
     public string FirstName { get; set; }
 
     [Required]
     [StringLength(100)]
-    [JsonProperty("lastName")]
     public string LastName { get; set; }
 
     [JsonIgnore]
     public List<PatientSpecialist> PatientSpecialists { get; set; }
-    [JsonProperty("movementSuggestions")]
     public List<MovementSuggestion> MovementSuggestions { get; set; }
     public List<Login> Logins { get; set; }
 
