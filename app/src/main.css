@@ -171,12 +171,27 @@ strong {
   margin-bottom: 0;
 }
 
-@media (min-width: var(--desktop)) {
+.mobile-only {
+  display: block;
+}
+
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 1200px) {
   :root {
-    --margin-side: 0rem;
-    --margin-top: 0rem;
+    --margin-side: 7.5rem;
+    --margin-top: 10rem;
     --margin-bottom: 0rem;
-    /* waardes nog aanpassen */
+  }
+
+  .mobile-only {
+    display: none;
+  }
+
+  .desktop-only {
+    display: block;
   }
 }
 
