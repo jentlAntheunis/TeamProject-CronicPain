@@ -1,7 +1,7 @@
 import Avatar from "../../../ui/Avatar/Avatar.jsx";
 import TabBarNav from "../../../ui/TabBarNav/TabBarNav.jsx";
 import TopBar from "../../../ui/TopBar/TopBar.jsx";
-import { Play, ClipboardText, Cross, X } from "@phosphor-icons/react";
+import { Play, ClipboardText, X } from "@phosphor-icons/react";
 import styles from "./DashboardScreen.module.css";
 import FullHeightScreen from "../../../ui/FullHeightScreen/FullHeightScreen.jsx";
 import Button from "../../../ui/Button/Button.jsx";

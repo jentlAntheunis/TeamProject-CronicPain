@@ -2,13 +2,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Runtime.CompilerServices;
+using FirebaseAdmin;
+using FirebaseAdmin.Auth;
+using Microsoft.AspNetCore.Authorization;
+
 
 using Pebbles.Models;
 using Pebbles.Services;
 using Pebbles.Repositories;
 
+
 [ApiController]
 [Route("specialists")]
+[Authorize(AuthenticationSchemes = "FirebaseAuthentication")] // only authenticated users can access this controller
 
 public class SpecialistController : ControllerBase
 {
@@ -16,11 +22,15 @@ public class SpecialistController : ControllerBase
     private readonly ISpecialistService _specialistService;
     private readonly IPatientService _patientService;
 
-    public SpecialistController(IConfiguration configuration)
+    public SpecialistController(
+        ISpecialistService specialistService, 
+        IPatientService patientService, 
+        IConfiguration configuration
+        )
     {
         _configuration = configuration;
-        _specialistService = new SpecialistService(_configuration);
-        _patientService = new PatientService(_configuration);
+        _specialistService = specialistService;
+        _patientService = patientService;
     }
 
     [HttpGet]
@@ -95,5 +105,12 @@ public class SpecialistController : ControllerBase
             Console.WriteLine(ex);
             return StatusCode(500);
         }
+    }
+
+    [HttpPost("{specialistId}/patients/{patientId}/movementsuggestions")]
+    public async Task<IActionResult> AddMovementSuggestionAsync(Guid specialistId, Guid patientId, [FromBody] MovementSuggestion movementSuggestion)
+    {
+        await _patientService.AddMovementSuggestion(specialistId, patientId, movementSuggestion);
+        return Ok();
     }
 }

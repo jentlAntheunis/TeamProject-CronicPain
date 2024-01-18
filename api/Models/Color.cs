@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace Pebbles.Models;
 
-public class Color
+public class Color : ISoftDelete
 {
     public Color(string name, string hex)
     {
@@ -36,6 +37,11 @@ public class Color
     [Required]
     public int Price { get; set; }
 
+    public bool IsDeleted { get; set; }
+    public DateTimeOffset? DeletedAt { get; set; }
+
+    [JsonIgnore]
     public List<Patient> Patients { get; set; }
+    [JsonIgnore]
     public List<Avatar> Avatars { get; set; }
 }

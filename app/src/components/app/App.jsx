@@ -12,11 +12,10 @@ import {
 } from "../../core/config/routes";
 import QuestionaireScreen from "../screens/Patient/Questionaire/QuestionaireScreen";
 import DashboardScreen from "../screens/Patient/DashboardScreen/DashboardScreen";
+import WellDone from "../screens/Patient/WellDone/WellDone";
+import StreaksScreen from "../screens/Patient/StreaksScreen/StreaksScreen";
 
-const App = () => {
-  console.log("rerender app")
-
-  return (
+const App = () => (
   <Routes>
     {/* Authentication Paths */}
     <Route path={AuthRoutes.Login} element={<OnboardingLayout />}>
@@ -58,10 +57,15 @@ const App = () => {
       >
         {/* Patient Paths */}
         <Route path={PatientRoutes.Dashboard} element={<DashboardScreen />} />
-        <Route path={PatientRoutes.Questionaire} element={<QuestionaireScreen />} />
+        <Route
+          path={PatientRoutes.Questionaire}
+          element={<QuestionaireScreen />}
+        />
+        <Route path={PatientRoutes.Streaks} element={<StreaksScreen />} />
+        <Route path={PatientRoutes.WellDone} element={<WellDone />} />
       </Route>
     </Route>
   </Routes>
-)};
+);
 
 export default App;

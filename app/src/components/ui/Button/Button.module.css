@@ -36,10 +36,26 @@
   background-color: var(--blue-50);
 }
 
+.tertiary {
+  background: var(--white);
+  color: var(--grey-700);
+  border: 1px solid var(--grey-200);
+}
+
+.tertiary:hover {
+  background-color: var(--grey-50);
+}
+
 .defaultSize {
   width: auto;
 }
 
 .fullWidth {
   width: 100%;
+}
+
+.small {
+  font-size: var(--paragraph);
+  font-weight: var(--medium);
+  width: auto;
 }

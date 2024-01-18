@@ -1,0 +1,30 @@
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.875rem;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.goedGedaan, .tijd, .uitleg {
+  text-align: center;
+}
+
+.goedGedaan {
+  font-size: var(--h3);
+  margin-bottom: 1.125rem;
+}
+
+.tijd {
+  margin-bottom: 1.5rem;
+}
+
+.uitleg {
+}

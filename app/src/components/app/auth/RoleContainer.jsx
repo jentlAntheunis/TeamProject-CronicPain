@@ -1,11 +1,12 @@
 import PropTypes from "prop-types";
 import { Navigate } from "react-router-dom";
 import { UserRoles } from "../../../core/config/userRoles";
+import { useUser } from "./AuthProvider";
 
 const RoleContainer = ({ roles = [], children }) => {
   // TODO: Check auth status
   const user = {
-    role: UserRoles.Patient,
+    role: UserRoles.Specialist,
   };
 
   if (!roles.includes(user.role)) {
