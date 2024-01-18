@@ -175,6 +175,20 @@ strong {
   margin-bottom: 0;
 }
 
+/* Container class */
+.container {
+  width: 100%;
+
+  @media (min-width: 1024px) {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 1536px) {
+    max-width: 1536px;
+  }
+}
+
 .mobile-only {
   display: block;
 }

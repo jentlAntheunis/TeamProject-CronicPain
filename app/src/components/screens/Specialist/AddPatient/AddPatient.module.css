@@ -16,11 +16,13 @@
   height: 100%;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+
 .csvImport {
-  position: absolute;
-  right: 0;
-  top: var(--margin-top);
-  margin-right: var(--margin-side);
   font-size: var(--p);
   border-width: 1px;
   font-weight: var(--regular);

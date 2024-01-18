@@ -87,52 +87,56 @@ const AddPatient = () => {
   return (
     <FullHeightScreen className={`margins-desktop ${styles.screen}`}>
       <NavBar />
-      <PageHeading>Patiënt toevoegen</PageHeading>
-      <div className="desktop-only">
-        <Button variant="secondary" className={styles.csvImport}>
-          CSV importeren
-        </Button>
+      <div className="container">
+        <div className={styles.header}>
+          <PageHeading>Patiënt toevoegen</PageHeading>
+          <div className="desktop-only">
+            <Button variant="secondary" className={styles.csvImport}>
+              CSV importeren
+            </Button>
+          </div>
+        </div>
+        <Form
+          schema={formSchema}
+          defaultValues={defaultValues}
+          onSubmit={handleSubmit}
+          className={styles.formContainer}
+        >
+          <div className={styles.formItems}>
+            <FormItem name="lastName">
+              <FormLabel>Achternaam</FormLabel>
+              <FormControl>
+                <Input placeholder="Vul een achternaam in" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+            <FormItem name="firstName">
+              <FormLabel>Voornaam</FormLabel>
+              <FormControl>
+                <Input placeholder="Vul een voornaam in" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+            <FormItem name="email">
+              <FormLabel>E-mail</FormLabel>
+              <FormControl>
+                <Input placeholder="dirkjanssens@voorbeeld.be" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          </div>
+          <div className={`mobile-only ${styles.removePadding}`}>
+            <Button type="submit" size="full">
+              Toevoegen
+            </Button>
+          </div>
+          <div className={`desktop-only ${styles.removePadding}`}>
+            <Button type="submit" size="default">
+              Toevoegen
+            </Button>
+          </div>
+        </Form>
       </div>
-      <Form
-        schema={formSchema}
-        defaultValues={defaultValues}
-        onSubmit={handleSubmit}
-        className={styles.formContainer}
-      >
-        <div className={styles.formItems}>
-          <FormItem name="lastName">
-            <FormLabel>Achternaam</FormLabel>
-            <FormControl>
-              <Input placeholder="Vul een achternaam in" />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-          <FormItem name="firstName">
-            <FormLabel>Voornaam</FormLabel>
-            <FormControl>
-              <Input placeholder="Vul een voornaam in" />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-          <FormItem name="email">
-            <FormLabel>E-mail</FormLabel>
-            <FormControl>
-              <Input placeholder="dirkjanssens@voorbeeld.be" />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        </div>
-        <div className={`mobile-only ${styles.removePadding}`}>
-          <Button type="submit" size="full">
-            Toevoegen
-          </Button>
-        </div>
-        <div className={`desktop-only ${styles.removePadding}`}>
-          <Button type="submit" size="default">
-            Toevoegen
-          </Button>
-        </div>
-      </Form>
     </FullHeightScreen>
   );
 };
