@@ -10,15 +10,16 @@
   padding-top: 1rem;
 }
 
-.screen{
+.screen {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-.csvImport{
+.csvImport {
   position: absolute;
   right: 0;
+  top: var(--margin-top);
   margin-right: var(--margin-side);
   font-size: var(--p);
   border-width: 1px;

@@ -23,9 +23,11 @@ const AddPatient = () => {
     <FullHeightScreen className={`margins-desktop ${styles.screen}`}>
       <NavBar />
       <PageHeading>Patiënt toevoegen</PageHeading>
-      <Button variant="secondary" className={styles.csvImport}>
-        CSV importeren
-      </Button>
+      <div className="desktop-only">
+        <Button variant="secondary" className={styles.csvImport}>
+          CSV importeren
+        </Button>
+      </div>
       <Form schema={formSchema} className={styles.formContainer}>
         <div className={styles.formItems}>
           <FormItem name="last-name">
