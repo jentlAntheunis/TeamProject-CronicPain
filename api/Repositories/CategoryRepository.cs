@@ -24,7 +24,15 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<List<Category>> GetAllCategoriesAsync() => await _context.Category.ToListAsync();
 
-    public async Task<string> GetCategoryNameByIdAsync(Guid id) => await _context.Category.Select(c => c.Name).FirstOrDefaultAsync(c => c.Id == id);
+    public async Task<string> GetCategoryNameByIdAsync(Guid id)
+    {
+        var categoryName = await _context.Category
+            .Where(c => c.Id == id)
+            .Select(c => c.Name)
+            .FirstOrDefaultAsync();
+
+        return categoryName;
+    }
 
     public async Task<Category> GetCategoryByNameAsync(string name) => await _context.Category.FirstOrDefaultAsync(c => c.Name == name);
 

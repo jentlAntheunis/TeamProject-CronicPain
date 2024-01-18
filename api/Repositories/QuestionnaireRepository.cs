@@ -32,7 +32,7 @@ public class QuestionnaireRepository : IQuestionnaireRepository
     {
         var questionnaire = new Questionnaire
         {
-            id= Guid.NewGuid(),
+            Id= Guid.NewGuid(),
             PatientId = id,
         };
 
@@ -58,12 +58,12 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         .ToListAsync();
 
         // Step 3: Create QuestionnaireQuestion objects for selected questions
-        foreach (var questionId in randomQuestionIds)
+        foreach (var question in randomQuestions)
         {
             var questionnaireQuestion = new QuestionnaireQuestion
             {
                 QuestionnaireId = questionnaire.Id,
-                QuestionId = questionId
+                QuestionId = question.Id
             };
 
             // Add the questionnaire item to the context (not saving yet)
@@ -79,7 +79,7 @@ public class QuestionnaireRepository : IQuestionnaireRepository
     {
         var questionnaire = new Questionnaire
         {
-            id= Guid.NewGuid(),
+            Id= Guid.NewGuid(),
             PatientId = userId,
         };
 
@@ -105,12 +105,12 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         .ToListAsync();
 
         // Step 3: Create QuestionnaireQuestion objects for selected questions
-        foreach (var questionId in randomQuestionIds)
+        foreach (var question in randomQuestions)
         {
             var questionnaireQuestion = new QuestionnaireQuestion
             {
                 QuestionnaireId = questionnaire.Id,
-                QuestionId = questionId
+                QuestionId = question.Id
             };
 
             // Add the questionnaire item to the context (not saving yet)

@@ -42,15 +42,14 @@ public class QuestionRepository : IQuestionRepository
 
     public async Task DeleteQuestionAsync(Question question)
     {
-        //check if question has options
-        var options = await _context.Option.Where(o => o.QuestionId == question.Id).ToListAsync();
-        if (options != null)
+        var answers = await _context.Answer.Where(a => a.QuestionId == question.Id).ToListAsync();
+        if (answers.Count > 0)
         {
-            //delete options
-            _context.Option.RemoveRange(options);
+            _context.Answer.RemoveRange(answers);
         }
-        //delete question
+
         _context.Question.Remove(question);
         await _context.SaveChangesAsync();
     }
+
 }

@@ -16,11 +16,13 @@ public class QuestionService : IQuestionService
 {
     private readonly IQuestionRepository _questionRepository;
     private readonly ICategoryRepository _categoryRepository;
+    private readonly IScaleRepository _scaleRepository;
 
-    public QuestionService(IQuestionRepository questionRepository, ICategoryRepository categoryRepository)
+    public QuestionService(IQuestionRepository questionRepository, ICategoryRepository categoryRepository, IScaleRepository scaleRepository)
     {
         _questionRepository = questionRepository;
         _categoryRepository = categoryRepository;
+        _scaleRepository = scaleRepository;
     }
     
 
@@ -29,29 +31,25 @@ public class QuestionService : IQuestionService
     public async Task<Question> GetQuestionByIdAsync(Guid id) => await _questionRepository.GetQuestionByIdAsync(id);
 
     public async Task<Guid> CreateQuestionAsync(Question question)
+    {
+        string categoryName = await _categoryRepository.GetCategoryNameByIdAsync(question.CategoryId);
+
+        string scaleName = await _scaleRepository.GetScaleNameByIdAsync(question.ScaleId);
+
+        if (categoryName == "beweging")
         {
-            // Fetch the category name from the database using the CategoryId
-            string categoryName = await _categoryRepository.GetCategoryNameByIdAsync(question.CategoryId);
-
-            // Define a mapping between categoryName and ScaleName
-            Dictionary<string, string> categoryToScaleMapping = new Dictionary<string, string>
-            {
-                { "beweging", "oneens_eens" },
-                { "bonus", "niet_altijd" },
-            };
-
-            // Check if categoryName exists in the mapping, and set ScaleName accordingly
-            if (categoryToScaleMapping.ContainsKey(categoryName))
-            {
-                question.ScaleName = categoryToScaleMapping[categoryName];
-            }
-            else
-            {
-                question.ScaleName = "oneens_eens"; // 
-            }
-
-            return await _questionRepository.CreateQuestionAsync(question);
+            question.ScaleId = await _scaleRepository.GetScaleIdByNameAsync("oneens_eens");
         }
+        else if (categoryName == "bonus")
+        {
+            question.ScaleId = await _scaleRepository.GetScaleIdByNameAsync("niet_altijd");
+        }
+
+        return await _questionRepository.CreateQuestionAsync(question);
+    }
+
+
+
 
     public async Task<Question> UpdateQuestionAsync(Question question) => await _questionRepository.UpdateQuestionAsync(question);
 

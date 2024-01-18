@@ -8,6 +8,7 @@ public interface IScaleRepository
 {
     Task<List<Scale>> GetAllScalesAsync();
     Task<Scale> GetScaleByIdAsync(Guid id);
+    Task<string> GetScaleNameByIdAsync(Guid id);
     Task<Guid> GetScaleIdByNameAsync(string name);
     Task<Guid> CreateScaleAsync(Scale scale);
     Task<Scale> UpdateScaleAsync(Scale scale);
@@ -27,7 +28,9 @@ public class ScaleRepository : IScaleRepository
 
     public async Task<Scale> GetScaleByIdAsync(Guid id) => await _context.Scale.FirstOrDefaultAsync(s => s.Id == id);
 
-    public async Task<Guid> GetScaleIdByNameAsync(string name) => await _context.Scale.Select(s => s.Id).FirstOrDefaultAsync(s => s.Name == name);
+    public async Task<Guid> GetScaleIdByNameAsync(string name) => await _context.Scale.Where(s => s.Name == name).Select(s => s.Id).FirstOrDefaultAsync();
+
+    public async Task<string> GetScaleNameByIdAsync(Guid id) => await _context.Scale.Where(s => s.Id == id).Select(s => s.Name).FirstOrDefaultAsync();
 
     public async Task<Guid> CreateScaleAsync(Scale scale)
     {
