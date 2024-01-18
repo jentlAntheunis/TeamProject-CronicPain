@@ -24,20 +24,15 @@ const AuthProvider = ({ children }) => {
   const [user, loading] = useAuthState(auth);
 
   useEffect(() => {
-    console.log("local auth check");
     if (localAuth) {
-      console.log("local auth");
       saveAuthToLocalStorage(localAuth);
     } else {
-      console.log("local no auth");
       localStorage.removeItem(KEY);
     }
   }, [localAuth]);
 
   useEffect(() => {
-    console.log("firebase auth check");
     if (!user && !loading) {
-      console.log("firebase no user");
       setLocalAuth(null);
     }
   }, [user, loading]);
@@ -51,7 +46,6 @@ const AuthProvider = ({ children }) => {
     return new Promise((resolve, reject) => {
       getUser(email)
         .then(({ data }) => {
-          console.log("res", data);
           setLocalAuth(data);
           resolve(data);
         })

@@ -52,7 +52,6 @@ const AddPatient = () => {
   };
 
   const handleSubmit = async (data) => {
-    console.log(data);
     setLoading(true);
 
     try {

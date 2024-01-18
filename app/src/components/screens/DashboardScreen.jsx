@@ -14,30 +14,11 @@ const DashboardScreen = () => {
   const { login } = useAuthContext();
   const user = useUser();
 
-
-
-  const handleClick = async () => {
-    // axios
-    //   .get("https://localhost:7121/users/exists/elicopter%40example.mail")
-    //   .then((res) => {
-    //     console.log(res);
-    //   });
-    console.log("user", user);
-    login(user.email)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-  };
-
   return (
     <FullHeightScreen>
       <div className={styles.screen}>
         <TopBar />
         <Avatar />
-        <Button onClick={handleClick}>Test API</Button>
         <div className={styles.btnContainer}>
           <Button variant="primary" size="full">
             Ik wil bewegen! <Play size={22} weight="bold" />

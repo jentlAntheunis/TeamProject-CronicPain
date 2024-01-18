@@ -17,7 +17,6 @@ const TopBar = () => {
 
   useEffect(() => {
     const closeOpenMenus = (e) => {
-      console.log("clicked outside");
       if (showMenu && !menu.current?.contains(e.target)) {
         setShowMenu(false);
       }
@@ -30,7 +29,6 @@ const TopBar = () => {
   }, [showMenu]);
 
   const onClickDots = () => {
-    console.log("clicked on dots");
     setShowMenu(!showMenu);
   };
 

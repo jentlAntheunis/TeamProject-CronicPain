@@ -20,34 +20,33 @@ const OnboardingLayout = () => {
 
   useEffect(() => {
     const handleSignInWithEmailLink = async () => {
-      if (!user && isSignInWithEmailLink(auth, window.location.href)) {
-        let email = window.localStorage.getItem("emailForSignIn");
-        if (!email) {
-          // ask user for email
-          email = window.prompt("Geef uw e-mailadres voor bevestiging");
-        }
-        try {
-          setLoginLoading(true);
-          const { user } = await signInWithEmailLink(
-            auth,
-            email,
-            window.location.href
-          );
-          await login(user.email);
-          window.localStorage.removeItem("emailForSignIn");
-          console.log("signed in");
-          setLoginLoading(false);
-          setError(false);
-        } catch (error) {
-          console.log(error.message);
-          setLoginLoading(false);
-          setError(true);
-        }
+      let email = window.localStorage.getItem("emailForSignIn");
+      if (!email) {
+        // ask user for email
+        email = window.prompt("Geef uw e-mailadres voor bevestiging");
+      }
+      try {
+        setLoginLoading(true);
+        const { user } = await signInWithEmailLink(
+          auth,
+          email,
+          window.location.href
+        );
+        await login(user.email);
+        window.localStorage.removeItem("emailForSignIn");
+        setLoginLoading(false);
+        setError(false);
+      } catch (error) {
+        console.log(error.message);
+        setLoginLoading(false);
+        setError(true);
       }
     };
 
-    handleSignInWithEmailLink();
-  }, [user, location, search, login]);
+    if (!user && isSignInWithEmailLink(auth, window.location.href)) {
+      handleSignInWithEmailLink();
+    }
+  }, [user, location, search]);
 
   // if (loading) {
   //   return null;

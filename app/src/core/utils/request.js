@@ -11,7 +11,6 @@ const request = async ({ ...options }) => {
   const user = auth.currentUser;
   // if user is logged in, add token to request header, else throw error
   if (user) {
-    console.log("User logged in, adding token to request header")
     await user.getIdToken().then((token) => {
       client.defaults.headers.common.Authorization = `Bearer ${token}`;
     });
