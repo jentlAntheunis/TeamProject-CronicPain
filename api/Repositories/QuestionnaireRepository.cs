@@ -8,7 +8,8 @@ public interface IQuestionnaireRepository
 {
     Task<Questionnaire> GetQuestionnaireByIdAsync(Guid id);
     Task<Questionnaire> GetQuestionnaireByPatientIdAsync(Guid id);
-    Task<Questionnaire> AddQuestionnaireAsync(Guid userId, string categoryName);
+    Task<Questionnaire> AddMovementQuestionnaireAsync(Guid id);
+    Task<Questionnaire> AddBonusQuestionnaireAsync(Guid userId);
     Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire);
     Task DeleteQuestionnaireAsync(Questionnaire questionnaire);
     Task<List<Questionnaire>> GetQuestionnairesAsync();
@@ -27,44 +28,96 @@ public class QuestionnaireRepository : IQuestionnaireRepository
 
     public async Task<Questionnaire> GetQuestionnaireByPatientIdAsync(Guid id) => await _context.Questionnaire.FirstOrDefaultAsync(q => q.PatientId == id);
 
-    public async Task<Questionnaire> AddQuestionnaireAsync(Guid userId, string categoryName)
+    public async Task<Questionnaire> AddMovementQuestionnaireAsync(Guid id)
     {
-        var patient = await _userService.GetUserByIdAsync(userId);
-
-        if (patient == null)
-        {
-            throw new Exception("Patient not found"); 
-        }
-
-        var category = await _context.Categories
-            .Include(c => c.Questions) // Include the questions related to the category
-            .FirstOrDefaultAsync(c => c.Name == categoryName);
-
-        if (category == null)
-        {
-            throw new Exception("Category not found");
-        }
-
         var questionnaire = new Questionnaire
         {
-            Id = Guid.NewGuid(),
-            Date = DateTime.Now,
-            PatientId = userId
+            id= Guid.NewGuid(),
+            PatientId = id,
         };
 
-        // Retrieve 5 random questions from the specified category
-        var randomQuestions = category.Questions
-            .OrderBy(q => Guid.NewGuid()) // Randomize the order
-            .Take(5)
-            .ToList();
+        //Retrieve the category ID based on the provided category name
+        var categoryId = await _context.Category
+        .Where(c => c.Name == "beweging")
+        .Select(c => c.Id)
+        .FirstOrDefaultAsync();
 
-        questionnaire.Questions = randomQuestions;
+        if (categoryId == null)
+        {
+            // Handle the case where the category name does not exist
+            throw new ArgumentException("Category not found.");
+        }
 
-        _context.Questionnaires.Add(questionnaire);
+        // Retrieve a list of random question IDs from the specified category
+        var randomQuestionIds = await _context.Question
+        .Where(q => q.CategoryId == categoryId)
+        .OrderBy(q => Guid.NewGuid()) // Shuffle the questions randomly
+        .Take(5) 
+        .Select(q => q.Id)
+        .ToListAsync();
+
+        // Step 3: Create QuestionnaireQuestion objects for selected questions
+        foreach (var questionId in randomQuestionIds)
+        {
+            var questionnaireQuestion = new QuestionnaireQuestion
+            {
+                QuestionnaireId = questionnaire.Id,
+                QuestionId = questionId
+            };
+
+            // Add the questionnaire item to the context (not saving yet)
+            await _context.QuestionnaireQuestion.AddAsync(questionnaireQuestion);
+        }
+            
+        await _context.Questionnaire.AddAsync(questionnaire);
         await _context.SaveChangesAsync();
-
         return questionnaire;
-        
+    }
+
+    public async Task<Questionnaire> AddBonusQuestionnaireAsync(Guid userId)
+    {
+        var questionnaire = new Questionnaire
+        {
+            id= Guid.NewGuid(),
+            PatientId = userId,
+        };
+
+        //Retrieve the category ID based on the provided category name
+        var categoryId = await _context.Category
+        .Where(c => c.Name == "bonus")
+        .Select(c => c.Id)
+        .FirstOrDefaultAsync();
+
+        if (categoryId == null)
+        {
+            // Handle the case where the category name does not exist
+            throw new ArgumentException("Category not found.");
+        }
+
+        // Retrieve a list of random question IDs from the specified category
+        var randomQuestionIds = await _context.Question
+        .Where(q => q.CategoryId == categoryId)
+        .OrderBy(q => Guid.NewGuid()) // Shuffle the questions randomly
+        .Take(5) 
+        .Select(q => q.Id)
+        .ToListAsync();
+
+        // Step 3: Create QuestionnaireQuestion objects for selected questions
+        foreach (var questionId in randomQuestionIds)
+        {
+            var questionnaireQuestion = new QuestionnaireQuestion
+            {
+                QuestionnaireId = questionnaire.Id,
+                QuestionId = questionId
+            };
+
+            // Add the questionnaire item to the context (not saving yet)
+            await _context.QuestionnaireQuestion.AddAsync(questionnaireQuestion);
+        }
+            
+        await _context.Questionnaire.AddAsync(questionnaire);
+        await _context.SaveChangesAsync();
+        return questionnaire;
     }
 
     public async Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire)
