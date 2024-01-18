@@ -12,7 +12,7 @@ import PageHeading from "../../../ui/PageHeading/PageHeading";
 import { z } from "zod";
 
 import styles from "./AddPatient.module.css";
-import NavBar from "../../../ui/navBar/navBar";
+import NavBar from "../../../ui/NavBar/NavBar";
 import {
   checkIfUserExists,
   sendMailToPatient,
