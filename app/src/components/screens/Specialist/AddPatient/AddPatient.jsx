@@ -23,6 +23,9 @@ const AddPatient = () => {
     <FullHeightScreen className={`margins-desktop ${styles.screen}`}>
       <NavBar />
       <PageHeading>Patiënt toevoegen</PageHeading>
+      <Button variant="secondary" className={styles.csvImport}>
+        CSV importeren
+      </Button>
       <Form schema={formSchema} className={styles.formContainer}>
         <div className={styles.formItems}>
           <FormItem name="last-name">
@@ -50,9 +53,16 @@ const AddPatient = () => {
             <FormMessage />
           </FormItem>
         </div>
-        <Button type="submit" size="full" className={styles.submit}>
-          Toevoegen
-        </Button>
+        <div className={`mobile-only ${styles.removePadding}`}>
+          <Button type="submit" size="full">
+            Toevoegen
+          </Button>
+        </div>
+        <div className={`desktop-only ${styles.removePadding}`}>
+          <Button type="submit" size="default">
+            Toevoegen
+          </Button>
+        </div>
       </Form>
     </FullHeightScreen>
   );
