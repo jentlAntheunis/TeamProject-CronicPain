@@ -23,7 +23,6 @@ public class Patient : User
     public List<Questionnaire> Questionnaires { get; set; }
     [JsonIgnore]
     public List<Specialist> Specialists { get; set; }
-    [JsonIgnore]
     public List<Color> Colors { get; set; }
     [JsonIgnore]
     public List<MovementSession> MovementSessions { get; set; }

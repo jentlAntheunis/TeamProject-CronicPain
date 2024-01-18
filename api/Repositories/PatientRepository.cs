@@ -8,6 +8,7 @@ public interface IPatientRepository
 {
     Task<List<Patient>> GetAllPatientsAsync();
     Task<Patient> GetPatientByIdAsync(Guid id);
+    Task<Patient> GetPatientDetailsByIdAsync(Guid id);
     Task<Guid> CreatePatientAsync(Patient patient);
     Task<Patient> UpdatePatientAsync(Patient patient);
     Task DeletePatientAsync(Patient patient);
@@ -22,9 +23,25 @@ public class PatientRepository : IPatientRepository
         _context = context;
     }
 
-    public async Task<List<Patient>> GetAllPatientsAsync() => await _context.Patient.Where(p => p.IsDeleted == false).ToListAsync();
+    public async Task<List<Patient>> GetAllPatientsAsync() => 
+        await _context.Patient
+        .Where(p => p.IsDeleted == false)
+        .ToListAsync();
 
-    public async Task<Patient> GetPatientByIdAsync(Guid id) => await _context.Patient.Where(p => p.IsDeleted == false).FirstOrDefaultAsync(p => p.Id == id);
+    public async Task<Patient> GetPatientByIdAsync(Guid id) => 
+        await _context.Patient
+        .Where(p => p.IsDeleted == false)
+        .FirstOrDefaultAsync(p => p.Id == id);
+
+    public async Task<Patient> GetPatientDetailsByIdAsync(Guid id) => 
+        await _context.Patient
+        .Include(p => p.Avatar)
+        .Include(p => p.Colors)
+        .Include(p => p.MovementSessions)
+        .Include(p => p.MovementSuggestions)
+        .Include(p => p.Logins)
+        .Where(p => p.IsDeleted == false)
+        .FirstOrDefaultAsync(p => p.Id == id);
 
     public async Task<Guid> CreatePatientAsync(Patient patient)
     {

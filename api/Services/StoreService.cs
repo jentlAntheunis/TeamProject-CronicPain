@@ -6,8 +6,7 @@ namespace Pebbles.Services;
 
 public interface IStoreService
 {
-    // Task<List<Color>> GetAvailableColorsAsync();
-    // Task<List<Color>> GetOwnedColorsAsync(Guid patientId);
+    Task<List<Color>> GetPatientStoreAsync(Guid patientId);
     Task PurchaseColorAsync(Guid patientId, Guid colorId);
 
 }
@@ -26,6 +25,17 @@ public class StoreService : IStoreService
         _patientRepository = patientRepository;
     }
 
+    public async Task<List<Color>> GetPatientStoreAsync(Guid patientId)
+    {
+        var patient = await _patientRepository.GetPatientByIdAsync(patientId);
+        if(patient == null)
+        {
+            throw new Exception("Patient not found");
+        }
+        var colors = await _colorRepository.GetAllColorsAsync();
+        return colors;
+    }
+
     public async Task PurchaseColorAsync(Guid patientId, Guid colorId)
     {
         var patient = await _patientRepository.GetPatientByIdAsync(patientId);
@@ -40,5 +50,6 @@ public class StoreService : IStoreService
         }
         patient.Coins -= color.Price;
         patient.Colors.Add(color);
+        await _patientRepository.UpdatePatientAsync(patient);
     }
 }

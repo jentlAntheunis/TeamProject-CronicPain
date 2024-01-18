@@ -11,7 +11,6 @@ using Pebbles.Models;
 using Pebbles.Services;
 using Pebbles.Repositories;
 
-
 [ApiController]
 [Route("store")]
 [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] // only authenticated users can access this controller
@@ -28,6 +27,13 @@ public class StoreController : ControllerBase
     {
         _configuration = configuration;
         _storeService = storeService;
+    }
+
+    [HttpGet("{patientId}")]
+    public async Task<IActionResult> GetPatientStoreAsync(Guid patientId)
+    {
+        var store = await _storeService.GetPatientStoreAsync(patientId);
+        return Ok(store);
     }
 
     [HttpGet("{patientId}/buy/{colorId}")]
