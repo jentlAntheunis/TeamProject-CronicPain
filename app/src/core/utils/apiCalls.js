@@ -13,7 +13,7 @@ const postTodo = async (todo) => request({
 })
 
 const getUser = async (email) => await request({
-  url: '/users/getbyemail',
+  url: '/users/loginbyemail',
   method: 'POST',
   data: email,
   headers: {
