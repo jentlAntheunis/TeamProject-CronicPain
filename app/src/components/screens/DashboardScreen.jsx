@@ -8,11 +8,13 @@ import Button from "../ui/Button/Button.jsx";
 import { useAuthState, useIdToken } from "react-firebase-hooks/auth";
 import { auth } from "../../core/services/firebase.js";
 import axios from "axios";
-import { useAuthContext } from "../app/auth/AuthProvider.jsx";
+import { useAuthContext, useUser } from "../app/auth/AuthProvider.jsx";
 
 const DashboardScreen = () => {
-  const [user] = useIdToken(auth);
   const { login } = useAuthContext();
+  const user = useUser();
+
+
 
   const handleClick = async () => {
     // axios

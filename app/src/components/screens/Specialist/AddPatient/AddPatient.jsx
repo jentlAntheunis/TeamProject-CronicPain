@@ -12,6 +12,14 @@ import PageHeading from "../../../ui/PageHeading/PageHeading";
 import { z } from "zod";
 
 import styles from "./AddPatient.module.css";
+import {
+  sendMailToPatient,
+  storePatient,
+} from "../../../../core/utils/apiCalls";
+import { useMutation } from "@tanstack/react-query";
+import { useUser } from "../../../app/auth/AuthProvider";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 const formSchema = z.object({
   lastName: z.string().min(2, { message: "Achternaam is te kort" }),
@@ -20,14 +28,30 @@ const formSchema = z.object({
 });
 
 const AddPatient = () => {
+  const { mutate, isError, isLoading } = useMutation(storePatient);
+  const [loading, setLoading] = useState(false);
+  const user = useUser();
+
   const defaultValues = {
     lastName: "",
     fistName: "",
     email: "",
   };
 
+  console.log(user);
+
   const handleSubmit = (data) => {
     console.log(data);
+    setLoading(true);
+    sendMailToPatient({ specialistId: user.id, ...data })
+      .then(() => {
+        setLoading(false);
+        toast.success("E-mail verstuurd");
+      })
+      .catch((error) => {
+        setLoading(false);
+        toast.error(error.message);
+      });
   };
 
   return (
