@@ -60,8 +60,8 @@
   /* Media queries */
   --phone: 600px;
   --tablet: 900px;
-  --desktop: 1200px;
-  --large-desktop: 1800px;
+  --desktop: 1024px;
+  --large-desktop: 1536px;
 
   /* Border radius */
   --border-radius: 0.5rem;
@@ -84,11 +84,13 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
-* , *:before, *:after{
-  box-sizing:border-box;
-  -moz-box-sizing:border-box;
-  -webkit-box-sizing:border-box;
-  -ms-box-sizing:border-box;
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
 }
 
 ::selection {
@@ -112,7 +114,11 @@ h6 {
   line-height: 1.2;
 }
 
-button, input, textarea, optgroup, select {
+button,
+input,
+textarea,
+optgroup,
+select {
   font-family: inherit;
 }
 
@@ -156,13 +162,11 @@ strong {
 }
 
 .screen-margin {
-  margin: var(--margin-top) var(--margin-side)
-    var(--margin-bottom);
+  margin: var(--margin-top) var(--margin-side) var(--margin-bottom);
 }
 
 .screen-padding {
-  padding: var(--margin-top) var(--margin-side)
-    var(--margin-bottom);
+  padding: var(--margin-top) var(--margin-side) var(--margin-bottom);
 }
 
 .error-message {
@@ -171,12 +175,36 @@ strong {
   margin-bottom: 0;
 }
 
-@media (min-width: var(--desktop)) {
+.mobile-only {
+  display: block;
+}
+
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 1024px) {
   :root {
-    --margin-side: 0rem;
-    --margin-top: 0rem;
-    --margin-bottom: 0rem;
-    /* waardes nog aanpassen */
+    .margins-desktop {
+      --margin-side: 5rem;
+      --margin-top: 10rem;
+      --margin-bottom: 0rem;
+    }
+  }
+
+  .mobile-only {
+    display: none;
+  }
+
+  .desktop-only {
+    display: block;
   }
 }
 
+@media (min-width: 1536px) {
+  :root {
+    .margins-desktop {
+      --margin-side: 7.5rem;
+    }
+  }
+}
