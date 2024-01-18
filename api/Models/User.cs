@@ -1,17 +1,11 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace Pebbles.Models;
 
 public class User : ISoftDelete
 {
-    public User()
-    {
-        Id = Guid.NewGuid();
-
-        PatientSpecialists = new List<PatientSpecialist>();
-        Questionnaires = new List<Questionnaire>();
-        MovementSuggestions = new List<MovementSuggestion>();
-    }
     public User(string firstName, string lastName, string email)
     {
         Id = Guid.NewGuid();
@@ -20,7 +14,6 @@ public class User : ISoftDelete
         Email = email;
 
         PatientSpecialists = new List<PatientSpecialist>();
-        Questionnaires = new List<Questionnaire>();
         MovementSuggestions = new List<MovementSuggestion>();
     }
 
@@ -40,11 +33,14 @@ public class User : ISoftDelete
     [StringLength(100)]
     public string LastName { get; set; }
 
+    [JsonIgnore]
     public List<PatientSpecialist> PatientSpecialists { get; set; }
-    public List<Questionnaire> Questionnaires { get; set; }
     public List<MovementSuggestion> MovementSuggestions { get; set; }
     public List<Login> Logins { get; set; }
 
     public bool IsDeleted { get; set; }
     public DateTimeOffset? DeletedAt { get; set; }
+
+    [NotMapped]
+    public string Role { get; set; }
 }

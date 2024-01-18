@@ -13,12 +13,22 @@ public class TestController : ControllerBase
 {
     private readonly IConfiguration _configuration;
     private readonly IUserService _userService;
+    private readonly IPatientService _patientService;
 
     public TestController(
         IConfiguration configuration, 
-        IUserService userService
+        IUserService userService,
+        IPatientService patientService
         )
     {
         _userService = userService;
+        _patientService = patientService;
+    }
+
+    [HttpGet("patientdetails/{patientId}")]
+    public async Task<IActionResult> GetPatientDetailsByIdAsync(Guid patientId)
+    {
+        var patient = await _patientService.GetPatientDetailsByIdAsync(patientId);
+        return Ok(JsonConvert.SerializeObject(patient));
     }
 }

@@ -21,6 +21,8 @@ public class PebblesContext : DbContext
     public DbSet<Scale> Scale { get; set; }
     public DbSet<User> User { get; set; }
     public DbSet<Login> Login { get; set; }
+    public DbSet<QuestionnaireQuestion> QuestionnaireQuestion { get; set; }
+    public DbSet<MovementSession> MovementSession { get; set; }
 
     private readonly IConfiguration _configuration;
 
@@ -45,6 +47,9 @@ public class PebblesContext : DbContext
 
         modelBuilder.Entity<PatientSpecialist>()
             .HasKey(ps => new { ps.PatientId, ps.SpecialistId });
+        
+        modelBuilder.Entity<QuestionnaireQuestion>()
+            .HasKey(qq => new { qq.QuestionnaireId, qq.QuestionId });
 
         //relations between tables
 
@@ -86,15 +91,9 @@ public class PebblesContext : DbContext
             .HasForeignKey(q => q.PatientId)
             .OnDelete(DeleteBehavior.NoAction);
         modelBuilder.Entity<Questionnaire>()
-            .HasOne(q => q.Specialist)
-            .WithMany(s => s.Questionnaires)
-            .HasForeignKey(q => q.SpecialistId)
-            .OnDelete(DeleteBehavior.NoAction);
-        modelBuilder.Entity<Questionnaire>()
             .HasMany(q => q.Questions)
-            .WithOne(a => a.Questionnaire)
-            .HasForeignKey(a => a.QuestionnaireId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .WithMany(a => a.Questionnaires)
+            .UsingEntity<QuestionnaireQuestion>();
 
         modelBuilder.Entity<Question>()
             .HasOne(q => q.Category)
@@ -141,6 +140,12 @@ public class PebblesContext : DbContext
             .HasForeignKey(l => l.UserId)
             .OnDelete(DeleteBehavior.NoAction);
 
+        modelBuilder.Entity<MovementSession>()
+            .HasOne(m => m.Patient)
+            .WithMany(p => p.MovementSessions)
+            .HasForeignKey(m => m.PatientId)
+            .OnDelete(DeleteBehavior.NoAction);
+
         //seed data
         modelBuilder.Entity<Specialist>().HasData(
             //specialists
@@ -150,7 +155,12 @@ public class PebblesContext : DbContext
         );
 
         modelBuilder.Entity<Color>().HasData(
-            new Color("Blue (Default)", "#3B82F6")
+            new Color("Blue (Default)", "#3B82F6"),
+            new Color("Red", "#F63B3B", 10),
+            new Color("Purple", "#AF3BF6", 10),
+            new Color("Pink", "#F14DD7", 10),
+            new Color("Orange", "#F7990C", 10),
+            new Color("Gold", "#F8D101", 50)
         );
     }
 }

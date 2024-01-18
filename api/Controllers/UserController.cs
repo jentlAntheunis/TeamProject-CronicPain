@@ -56,6 +56,7 @@ public class UserController : ControllerBase
         return Ok(JsonConvert.SerializeObject(user));
     }
 
+    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateUserAsync(Guid id, [FromBody] User user)
     {
@@ -84,14 +85,13 @@ public class UserController : ControllerBase
         return Ok();
     }
 
-    [HttpPost("login")]
+    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
+    [HttpPost("loginbyemail")]
     public async Task<IActionResult> LoginAsync([FromBody] string email)
     {
         var user = await _userService.LoginAsync(email);
-        if(user == null)
-        {
+        if (user == null)
             return NotFound();
-        }
-        return Ok(user);
+        return Ok(JsonConvert.SerializeObject(user));
     }
 }

@@ -12,19 +12,24 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication;
-
-
-
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddControllers();
+
+JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+{
+    Formatting = Formatting.Indented,
+    ContractResolver = new CamelCasePropertyNamesContractResolver()
+};
 
 //add services
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<ISpecialistService, SpecialistService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IStoreService, StoreService>();
 
 //add repositories
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
@@ -32,6 +37,9 @@ builder.Services.AddScoped<ISpecialistRepository, SpecialistRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAvatarRepository, AvatarRepository>();
 builder.Services.AddScoped<IColorRepository, ColorRepository>();
+builder.Services.AddScoped<IMovementSessionRepository, MovementSessionRepository>();
+builder.Services.AddScoped<IMovementSuggestionRepository, MovementSuggestionRepository>();
+builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -71,7 +79,7 @@ builder.Services.AddDbContext<PebblesContext>(options =>
 
 
 // Configure Firebase Authentication (right error codes)
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer("FirebaseAuthentication", options =>
     {
         var projectId = "pebbles-294c6";
@@ -94,8 +102,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             }
         };
     });
-    
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder =>
+    {
+        builder.WithOrigins("http://localhost:5173", "https://www.pebbles-health.be", "https://staging.pebbles-health.be")
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
 
 
 // Initialize Firebase Admin SDK
@@ -124,6 +140,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("CorsPolicy");
 
 app.UseMiddleware<FirebaseTokenValidatorMiddleware>();
 

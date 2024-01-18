@@ -1,0 +1,25 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 50svh;
+  margin-top: 1rem;
+}
+
+.btnContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.question {
+  font-size: var(--h4);
+}
+
+.sliderValue {
+  font-size: var(--h1);
+  text-align: center;
+}
+
+.button {
+  margin-top: 1.625rem;
+}

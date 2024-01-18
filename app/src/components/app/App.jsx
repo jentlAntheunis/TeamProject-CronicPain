@@ -6,11 +6,9 @@ import { UserRoles } from "../../core/config/userRoles";
 import LoginScreen from "../screens/LoginScreen/LoginScreen";
 import DashboardScreen from "../screens/DashboardScreen";
 import AddPatient from "../screens/Specialist/AddPatient/AddPatient";
-import {
-  AuthRoutes,
-  PatientRoutes,
-  SpecialistRoutes,
-} from "../../core/config/routes";
+import { AuthRoutes, PatientRoutes, SpecialistRoutes } from "../../core/config/routes";
+import WellDone from "../screens/Patient/WellDone/WellDone";
+import StreaksScreen from "../screens/Patient/StreaksScreen/StreaksScreen";
 import MovementSuggestions from "../screens/MovementSuggestions/MovementSuggestions";
 import TimeTracker from "../screens/TimeTracker/TimeTracker";
 
@@ -58,6 +56,9 @@ const App = () => (
         <Route path={PatientRoutes.Dashboard} element={<DashboardScreen />} />
         <Route path={PatientRoutes.MovementSuggestions} element={<MovementSuggestions />} />
         <Route path={PatientRoutes.TimeTracker} element={<TimeTracker />} />
+        <Route path={PatientRoutes.Streaks} element={<StreaksScreen />} />
+        <Route path={PatientRoutes.WellDone} element={<WellDone />} />
+
       </Route>
     </Route>
   </Routes>

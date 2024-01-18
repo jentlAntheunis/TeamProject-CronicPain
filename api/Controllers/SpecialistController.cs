@@ -106,4 +106,11 @@ public class SpecialistController : ControllerBase
             return StatusCode(500);
         }
     }
+
+    [HttpPost("{specialistId}/patients/{patientId}/movementsuggestions")]
+    public async Task<IActionResult> AddMovementSuggestionAsync(Guid specialistId, Guid patientId, [FromBody] MovementSuggestion movementSuggestion)
+    {
+        await _patientService.AddMovementSuggestion(specialistId, patientId, movementSuggestion);
+        return Ok();
+    }
 }
