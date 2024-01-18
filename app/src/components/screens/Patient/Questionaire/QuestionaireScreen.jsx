@@ -9,6 +9,10 @@ import { defaultAnswer } from "../../../../core/utils/questions";
 import { capitalize } from "../../../../core/utils/formatText";
 
 const QuestionaireScreen = () => {
+  // States
+  const [sliderValue, setSliderValue] = useState(0);
+
+  // Hooks
   const {
     questions,
     currentQuestion,
@@ -18,12 +22,18 @@ const QuestionaireScreen = () => {
   } = useStore();
 
   useEffect(() => {
-    console.log(defaultAnswer(questions[currentQuestion]));
     setSliderValue(defaultAnswer(questions[currentQuestion]));
-    console.log(questions);
-  }, [currentQuestion]);
+  }, [currentQuestion, questions]);
 
-  const [sliderValue, setSliderValue] = useState(0);
+  const handleNextQuestion = (e) => {
+    e.preventDefault();
+    if (currentQuestion === questions.length - 1) {
+      
+      return;
+    } else {
+      incrementCurrentQuestion();
+    }
+  }
 
   return (
     <FullHeightScreen>
@@ -52,11 +62,11 @@ const QuestionaireScreen = () => {
             }
           />
           <Button
-            onClick={incrementCurrentQuestion}
+            onClick={handleNextQuestion}
             size="full"
             className={styles.button}
           >
-            Volgende
+            {currentQuestion === questions.length - 1 ? "Verstuur" : "Volgende"}
           </Button>
         </div>
       </div>
