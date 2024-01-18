@@ -54,17 +54,23 @@ public class QuestionController : ControllerBase
 
     
 
-    [HttpGet("movementquestionnaire")] 
-    public async Task<IActionResult> GetAllMovementQuestionnaires()
+    [HttpGet("bonusquestionnaire/{userId}")]
+    public async Task<IActionResult> CreateBonusQuestionnaire(Guid userId)
     {
         try
         {
-            var questionnaires = await _questionnaireRepository.GetQuestionnairesAsync();
-            return Ok(questionnaires);
+            var questionnaireDTO = await _questionnaireRepository.AddBonusQuestionnaireAsync(userId);
+
+            if (questionnaireDTO == null)
+            {
+                return NotFound("Questionnaire not found.");
+            }
+
+            return Ok(questionnaireDTO);
         }
         catch (Exception ex)
         {
-            return BadRequest($"Failed to get all movement questionnaires: {ex.Message}");
+            return BadRequest($"Failed to create bonus questionnaire: {ex.Message}");
         }
     }
 

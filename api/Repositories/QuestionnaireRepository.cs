@@ -37,7 +37,6 @@ public class QuestionnaireRepository : IQuestionnaireRepository
     {
         Console.WriteLine($"AddMovementQuestionnaireAsync - Start: PatientId {patientId}");
 
-        // Create a new Questionnaire object
         var questionnaire = new Questionnaire
         {
             Id = Guid.NewGuid(),
@@ -46,7 +45,6 @@ public class QuestionnaireRepository : IQuestionnaireRepository
 
         try
         {
-            // Retrieve the category ID for "beweging"
             var categoryId = await _context.Category
                 .Where(c => c.Name == "beweging")
                 .Select(c => c.Id)
@@ -57,13 +55,12 @@ public class QuestionnaireRepository : IQuestionnaireRepository
                 throw new InvalidOperationException("Category 'beweging' not found.");
             }
 
-            // Retrieve a list of random questions from the specified category
             var randomQuestions = await _context.Question
                 .Where(q => q.CategoryId == categoryId)
                 .OrderBy(q => Guid.NewGuid()) // Shuffle the questions randomly
                 .Take(5)
-                .Include(q => q.Scale) // Include the scale
-                .ThenInclude(scale => scale.Options) // Include the options for the scale
+                .Include(q => q.Scale) 
+                .ThenInclude(scale => scale.Options)
                 .ToListAsync();
 
             var questionnaireQuestions = randomQuestions.Select(question => new QuestionnaireQuestion
@@ -101,7 +98,7 @@ public class QuestionnaireRepository : IQuestionnaireRepository
 
     public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
     {
-        /*
+        
         var questionnaire = new Questionnaire
         {
             Id= Guid.NewGuid(),
@@ -109,23 +106,20 @@ public class QuestionnaireRepository : IQuestionnaireRepository
             Date = null
         };
 
-        //Retrieve the category ID based on the provided category name
         var categoryId = await _context.Category
         .Where(c => c.Name == "bonus")
         .Select(c => c.Id)
         .FirstOrDefaultAsync();
 
 
-        // Retrieve a list of random question IDs from the specified category
         var randomQuestions = await _context.Question
         .Where(q => q.CategoryId == categoryId)
         .OrderBy(q => Guid.NewGuid()) // Shuffle the questions randomly
         .Take(5)
-        .Include(q => q.Scale) // Include the scale
-        .ThenInclude(scale => scale.Options) // Include the options for the scale
+        .Include(q => q.Scale) 
+        .ThenInclude(scale => scale.Options)
         .ToListAsync();
 
-        // Step 3: Create QuestionnaireQuestion objects for selected questions
         foreach (var question in randomQuestions)
         {
             var questionnaireQuestion = new QuestionnaireQuestion
@@ -134,15 +128,16 @@ public class QuestionnaireRepository : IQuestionnaireRepository
                 QuestionId = question.Id
             };
 
-            // Add the questionnaire item to the context (not saving yet)
             await _context.QuestionnaireQuestion.AddAsync(questionnaireQuestion);
         }
             
         await _context.Questionnaire.AddAsync(questionnaire);
         await _context.SaveChangesAsync();
-        return questionnaire;
-        */
-        throw new NotImplementedException();
+
+        // Map the created Questionnaire to QuestionnaireDTO (using AutoMapper)
+        var questionnaireDTO = _mapper.Map<QuestionnaireDTO>(questionnaire);
+
+        return questionnaireDTO;
     }
     
 
@@ -155,14 +150,12 @@ public class QuestionnaireRepository : IQuestionnaireRepository
 
     public async Task DeleteQuestionnaireAsync(Questionnaire questionnaire)
     {
-        //check if questionnaire has answers
         var answers = await _context.Answer.Where(a => a.QuestionnaireId == questionnaire.Id).ToListAsync();
         if (answers != null)
         {
-            //delete answers
+            
             _context.Answer.RemoveRange(answers);
         }
-        //delete questionnaire
         _context.Questionnaire.Remove(questionnaire);
         await _context.SaveChangesAsync();
     }
