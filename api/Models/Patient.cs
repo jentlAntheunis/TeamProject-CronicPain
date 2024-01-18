@@ -12,7 +12,7 @@ public class Patient : User
         AvatarId = Avatar.Id;
         Colors = new List<Color>();
         Questionnaires = new List<Questionnaire>();
-
+        Role = "PATIENT";
     }
 
     public int Streak { get; set; }

@@ -54,6 +54,6 @@ public class PatientController : ControllerBase
     public async Task<IActionResult> GetPebblesMoodAsync(Guid patientId)
     {
         var pebblesMood = await _patientService.GetPebblesMoodAsync(patientId);
-        return Ok(pebblesMood);
+        return BadRequest("not implemented");
     }
 }
