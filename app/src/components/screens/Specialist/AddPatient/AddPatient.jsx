@@ -13,6 +13,7 @@ import { z } from "zod";
 
 import styles from "./AddPatient.module.css";
 import {
+  checkIfUserExists,
   sendMailToPatient,
   storePatient,
 } from "../../../../core/utils/apiCalls";
@@ -20,6 +21,10 @@ import { useMutation } from "@tanstack/react-query";
 import { useUser } from "../../../app/auth/AuthProvider";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { set } from "react-hook-form";
+import { auth } from "../../../../core/services/firebase";
+import { useNavigate } from "react-router-dom";
+import { SpecialistRoutes } from "../../../../core/config/routes";
 
 const formSchema = z.object({
   lastName: z.string().min(2, { message: "Achternaam is te kort" }),
@@ -28,11 +33,17 @@ const formSchema = z.object({
 });
 
 const AddPatient = () => {
-  const storeMutation = useMutation(storePatient);
+  const storeMutation = useMutation({
+    mutationFn: storePatient,
+  });
   const sendMailMutation = useMutation({
     mutationFn: sendMailToPatient,
   });
   const user = useUser();
+
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
 
   const defaultValues = {
     lastName: "",
@@ -40,16 +51,33 @@ const AddPatient = () => {
     email: "",
   };
 
-  const handleSubmit = (data) => {
+  const handleSubmit = async (data) => {
     console.log(data);
-    sendMailMutation.mutate(
-      { specialistId: user.id, ...data },
-      {
-        onSuccess: () => {
-          toast.success("Mail verzonden");
-        },
+    setLoading(true);
+
+    try {
+      const response = await checkIfUserExists(data.email);
+
+      // if user doesn't exist, add user to database and send email
+      if (!response) {
+        const dataObject = { ...data, specialistId: user.id };
+
+        await storeMutation.mutateAsync(dataObject);
+
+        await sendMailMutation.mutateAsync(dataObject);
+
+        toast.success("Gebruiker toegevoegd en mail verzonden");
+        setLoading(false);
+        navigate(SpecialistRoutes.Index);
+      } else {
+        setLoading(false);
+        toast.error("Gebruiker met dit e-mailadres bestaat al");
       }
-    );
+    } catch (error) {
+      console.error(error);
+      toast.error("Er ging iets mis. Probeer het opnieuw.");
+      setLoading(false);
+    }
   };
 
   return (
@@ -84,10 +112,13 @@ const AddPatient = () => {
             <FormMessage />
           </FormItem>
         </div>
+        <Button size="full" variant="secondary" onClick={() => auth.signOut()}>
+          Uitloggen (debug)
+        </Button>
         <Button
           type="submit"
           size="full"
-          disabled={storeMutation.isLoading || sendMailMutation.isLoading}
+          disabled={loading}
           className={styles.submit}
         >
           Toevoegen

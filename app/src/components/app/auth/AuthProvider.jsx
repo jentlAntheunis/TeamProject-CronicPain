@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../../../core/services/firebase";
 import { getUser } from "../../../core/utils/apiCalls";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 // localstorage key
 const KEY = "PEBBLES_AUTH";
@@ -19,19 +20,31 @@ const saveAuthToLocalStorage = (user) => {
 };
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(getAuthFromLocalStorage());
+  const [localAuth, setLocalAuth] = useState(getAuthFromLocalStorage());
+  const [user, loading] = useAuthState(auth);
 
   useEffect(() => {
-    if (user) {
-      saveAuthToLocalStorage(user);
+    console.log("local auth check");
+    if (localAuth) {
+      console.log("local auth");
+      saveAuthToLocalStorage(localAuth);
     } else {
+      console.log("local no auth");
       localStorage.removeItem(KEY);
     }
-  }, [user]);
+  }, [localAuth]);
+
+  useEffect(() => {
+    console.log("firebase auth check");
+    if (!user && !loading) {
+      console.log("firebase no user");
+      setLocalAuth(null);
+    }
+  }, [user, loading]);
 
   const logout = () => {
     auth.signOut();
-    setUser(null);
+    setLocalAuth(null);
   };
 
   const login = (email) => {
@@ -39,7 +52,7 @@ const AuthProvider = ({ children }) => {
       getUser(email)
         .then(({ data }) => {
           console.log("res", data);
-          setUser(data);
+          setLocalAuth(data);
           resolve(data);
         })
         .catch((error) => {
@@ -49,9 +62,7 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider
-      value={{ user, login, logout }}
-    >
+    <AuthContext.Provider value={{ user: localAuth, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

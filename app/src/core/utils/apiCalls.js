@@ -26,8 +26,8 @@ const checkIfUserExists = async (email) => {
   return data
 }
 
-const storePatient = async ({ firstName, lastName, email }) => await request({
-  url: '/specialists/{specialistId}/patients',
+const storePatient = async ({ firstName, lastName, email, specialistId }) => await request({
+  url: `/specialists/${specialistId}/patients`,
   method: 'POST',
   data: { firstName, lastName, email }
 })

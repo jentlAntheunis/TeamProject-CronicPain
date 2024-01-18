@@ -72,6 +72,7 @@ const LoginForm = () => {
   }
 
   const onSubmit = async ({ email }) => {
+    setMessage("");
     setIsLoading(true);
     try {
       const response = await checkIfUserExists(email);
@@ -89,7 +90,7 @@ const LoginForm = () => {
       }
     } catch (error) {
       setIsLoading(false);
-      console.error(error)
+      console.error(error);
       toast("Er is iets fout gegaan, probeer opnieuw of neem contact op", {
         type: "error",
       });
@@ -101,7 +102,11 @@ const LoginForm = () => {
       <FormItem name="email">
         <FormLabel>E-mail</FormLabel>
         <FormControl>
-          <Input placeholder="dirkjanssens@voorbeeld.be" autoComplete="email" className={styling.emailInput} />
+          <Input
+            placeholder="dirkjanssens@voorbeeld.be"
+            autoComplete="email"
+            className={styling.emailInput}
+          />
         </FormControl>
         <FormMessage>{message}</FormMessage>
       </FormItem>
