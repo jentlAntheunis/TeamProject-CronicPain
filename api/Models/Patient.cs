@@ -11,6 +11,8 @@ public class Patient : User
         Avatar = new Avatar(Id);
         AvatarId = Avatar.Id;
         Colors = new List<Color>();
+        Questionnaires = new List<Questionnaire>();
+        Role = "PATIENT";
     }
 
     public int Streak { get; set; }
@@ -18,7 +20,10 @@ public class Patient : User
     public Guid AvatarId { get; set; }
     public Avatar Avatar { get; set; }
 
+    public List<Questionnaire> Questionnaires { get; set; }
+    [JsonIgnore]
     public List<Specialist> Specialists { get; set; }
+    [JsonIgnore]
     public List<Color> Colors { get; set; }
     [JsonIgnore]
     public List<MovementSession> MovementSessions { get; set; }

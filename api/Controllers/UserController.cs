@@ -82,14 +82,12 @@ public class UserController : ControllerBase
         return Ok();
     }
 
-    [HttpPost("getbyemail")]
+    [HttpPost("loginbyemail")]
     public async Task<IActionResult> LoginAsync([FromBody] string email)
     {
         var user = await _userService.LoginAsync(email);
         if (user == null)
-        {
             return NotFound();
-        }
-        return Ok(user);
+        return Ok(JsonConvert.SerializeObject(user));
     }
 }

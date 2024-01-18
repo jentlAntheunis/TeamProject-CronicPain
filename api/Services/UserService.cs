@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using Pebbles.Models;
 using Pebbles.Repositories;
 
@@ -19,21 +20,26 @@ public class UserService : IUserService
     private readonly IUserRepository _userRepository;
     private readonly IAvatarRepository _avatarRepository;
     private readonly IPatientRepository _patientRepository;
+    private readonly ISpecialistRepository _specialistRepository;
+    private readonly ILoginRepository _loginRepository;
 
     public UserService(
         IUserRepository userRepository,
         IAvatarRepository avatarRepository,
-        IPatientRepository patientRepository
+        IPatientRepository patientRepository,
+        ILoginRepository loginRepository,
+        ISpecialistRepository specialistRepository
         )
     {
         _userRepository = userRepository;
         _avatarRepository = avatarRepository;
         _patientRepository = patientRepository;
+        _loginRepository = loginRepository;
+        _specialistRepository = specialistRepository;
     }
 
     public async Task<List<User>> GetUsersAsync() => await _userRepository.GetUsersAsync();
     public async Task<User> GetUserByIdAsync(Guid id) => await _userRepository.GetUserByIdAsync(id);
-
     public async Task<User> UpdateUserAsync(User user) => await _userRepository.UpdateUserAsync(user);
 
     public async Task DeleteUserAsync(User user) => await _userRepository.DeleteUserAsync(user);
@@ -52,6 +58,7 @@ public class UserService : IUserService
         {
             throw new Exception("User not found");
         }
+        
         return user;
     }
 }
