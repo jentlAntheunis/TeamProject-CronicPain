@@ -22,7 +22,7 @@ import FullHeightScreen from "../../ui/FullHeightScreen/FullHeightScreen";
 
 const LoginScreen = () => {
   return (
-    <FullHeightScreen className={styling.mainContainer}>
+    <FullHeightScreen className={`margins-desktop ${styling.mainContainer}`}>
         {/* Top part */}
         <div className={styling.titleContainer}>
           <h1>Pebbles</h1>

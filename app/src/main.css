@@ -84,11 +84,13 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
-* , *:before, *:after{
-  box-sizing:border-box;
-  -moz-box-sizing:border-box;
-  -webkit-box-sizing:border-box;
-  -ms-box-sizing:border-box;
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
 }
 
 ::selection {
@@ -112,7 +114,11 @@ h6 {
   line-height: 1.2;
 }
 
-button, input, textarea, optgroup, select {
+button,
+input,
+textarea,
+optgroup,
+select {
   font-family: inherit;
 }
 
@@ -156,13 +162,11 @@ strong {
 }
 
 .screen-margin {
-  margin: var(--margin-top) var(--margin-side)
-    var(--margin-bottom);
+  margin: var(--margin-top) var(--margin-side) var(--margin-bottom);
 }
 
 .screen-padding {
-  padding: var(--margin-top) var(--margin-side)
-    var(--margin-bottom);
+  padding: var(--margin-top) var(--margin-side) var(--margin-bottom);
 }
 
 .error-message {
@@ -181,9 +185,11 @@ strong {
 
 @media (min-width: 1200px) {
   :root {
-    --margin-side: 7.5rem;
-    --margin-top: 10rem;
-    --margin-bottom: 0rem;
+    .margins-desktop {
+      --margin-side: 7.5rem;
+      --margin-top: 10rem;
+      --margin-bottom: 0rem;
+    }
   }
 
   .mobile-only {
@@ -194,4 +200,3 @@ strong {
     display: block;
   }
 }
-
