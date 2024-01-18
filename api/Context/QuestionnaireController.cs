@@ -37,9 +37,14 @@ public class QuestionController : ControllerBase
     {
         try
         {
-            var questionnaire = await _questionnaireRepository.AddMovementQuestionnaireAsync(userId);
+            var questionnaireDTO = await _questionnaireRepository.AddMovementQuestionnaireAsync(userId);
 
-            return Ok(questionnaire);
+            if (questionnaireDTO == null)
+            {
+                return NotFound("Questionnaire not found.");
+            }
+
+            return Ok(questionnaireDTO);
         }
         catch (Exception ex)
         {
@@ -47,19 +52,7 @@ public class QuestionController : ControllerBase
         }
     }
 
-    [HttpGet("bonusquestionnaire")]
-    public async Task<IActionResult> CreateBonusQuestionnaire(Guid userId)
-    {
-        try
-        {
-            var questionnaire = await _questionnaireRepository.AddBonusQuestionnaireAsync(userId);
-            return Ok(questionnaire);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Failed to create bonus questionnaire: {ex.Message}");
-        }
-    }   
+    
 
     [HttpGet("movementquestionnaire")] 
     public async Task<IActionResult> GetAllMovementQuestionnaires()

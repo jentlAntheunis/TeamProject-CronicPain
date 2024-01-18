@@ -20,6 +20,7 @@
     <PackageReference Include="Google.Apis.Auth" Version="1.66.0" />
     <PackageReference Include="Google.Cloud.Firestore" Version="3.4.0" />
     <PackageReference Include="FirebaseAuthentication.Net" Version="4.1.0" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
 
 
   </ItemGroup>
