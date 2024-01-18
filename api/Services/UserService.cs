@@ -58,7 +58,19 @@ public class UserService : IUserService
         {
             throw new Exception("User not found");
         }
-        
+        //check if user is a patient
+        var patient = await _patientRepository.GetPatientByIdAsync(user.Id);
+        if (patient != null)
+        {
+            user = patient;
+        }
+        //check if user is a specialist
+        var specialist = await _specialistRepository.GetSpecialistByIdAsync(user.Id);
+        if (specialist != null)
+        {
+            user = specialist;
+        }
+        await _loginRepository.CreateLoginByUserIdAsync(user.Id);
         return user;
     }
 }
