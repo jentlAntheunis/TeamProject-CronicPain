@@ -13,7 +13,6 @@ public class User : ISoftDelete
         Email = email;
 
         PatientSpecialists = new List<PatientSpecialist>();
-        Questionnaires = new List<Questionnaire>();
         MovementSuggestions = new List<MovementSuggestion>();
     }
 
@@ -35,8 +34,6 @@ public class User : ISoftDelete
 
     [JsonIgnore]
     public List<PatientSpecialist> PatientSpecialists { get; set; }
-    [JsonIgnore]
-    public List<Questionnaire> Questionnaires { get; set; }
     [JsonIgnore]
     public List<MovementSuggestion> MovementSuggestions { get; set; }
     public List<Login> Logins { get; set; }

@@ -8,7 +8,7 @@ public interface ILoginRepository
 {
     Task<Login> CreateLoginAsync(Login login);
     Task<Login> CreateLoginByUserIdAsync(Guid patientId);
-    Task<Login> GetLoginsByUserAsync(Guid userId);
+    Task<List<Login>> GetLoginsByUserAsync(Guid userId);
 }
 
 public class LoginRepository : ILoginRepository
@@ -38,9 +38,9 @@ public class LoginRepository : ILoginRepository
         return login;
     }
 
-    public async Task<Login> GetLoginsByUserAsync(Guid userId)
+    public async Task<List<Login>> GetLoginsByUserAsync(Guid userId)
     {
-        var login = await _context.Login.FirstOrDefaultAsync(l => l.UserId == userId);
-        return login;
+        var logins = await _context.Login.Where(l => l.UserId == userId).ToListAsync();
+        return logins;
     }
 }

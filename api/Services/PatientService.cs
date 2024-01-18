@@ -8,6 +8,7 @@ public interface IPatientService
 {
     Task<Patient> GetPatientByIdAsync(Guid id);
     Task<IEnumerable<Patient>> GetPatientsBySpecialistAsync(Guid SpecialistId);
+    Task<Patient> GetPatientDetailsByIdAsync(Guid id);
     Task<Guid> AddPatientBySpecialistAsync(Guid SpecialistId, Patient patient);
     Task AddPatientToSpecialistAsync(Guid PatientId, Guid SpecialistId);
     Task<Patient> UpdatePatientAsync(Patient patient);
@@ -26,12 +27,16 @@ public class PatientService : IPatientService
     private readonly IColorRepository _colorRepository;
     private readonly IMovementSessionRepository _movementSessionRepository;
     private readonly IMovementSuggestionRepository _movementSuggestionRepository;
+    private readonly IAvatarRepository _avatarRepository;
+    private readonly ILoginRepository _loginRepository;
     public PatientService(
         IPatientRepository patientRepository,
         ISpecialistRepository specialistRepository,
         IColorRepository colorRepository,
         IMovementSessionRepository movementSessionRepository,
-        IMovementSuggestionRepository movementSuggestionRepository
+        IMovementSuggestionRepository movementSuggestionRepository,
+        IAvatarRepository avatarRepository,
+        ILoginRepository loginRepository
         )
     {
         _patientRepository = patientRepository;
@@ -39,6 +44,8 @@ public class PatientService : IPatientService
         _colorRepository = colorRepository;
         _movementSessionRepository = movementSessionRepository;
         _movementSuggestionRepository = movementSuggestionRepository;
+        _avatarRepository = avatarRepository;
+        _loginRepository = loginRepository;
     }
 
     public async Task<Patient> GetPatientByIdAsync(Guid id) => await _patientRepository.GetPatientByIdAsync(id);
@@ -48,6 +55,18 @@ public class PatientService : IPatientService
         var patients = await _patientRepository.GetAllPatientsAsync();
         var patientSpecialists = patients.SelectMany(p => p.PatientSpecialists).Where(ps => ps.SpecialistId == SpecialistId);
         return patientSpecialists.Select(ps => ps.Patient);
+    }
+
+    public async Task<Patient> GetPatientDetailsByIdAsync(Guid id)
+    {
+        var patient = await _patientRepository.GetPatientByIdAsync(id);
+        patient.Avatar = await _avatarRepository.GetAvatarByIdAsync(patient.AvatarId);
+        patient.Avatar.Color = await _colorRepository.GetColorByIdAsync(patient.Avatar.ColorId);
+        patient.Logins = await _loginRepository.GetLoginsByUserAsync(id);
+        Console.WriteLine(JsonConvert.SerializeObject(patient));
+        if (patient == null)
+            throw new Exception("Patient does not exist");
+        return patient;
     }
 
     public async Task<Guid> AddPatientBySpecialistAsync(Guid SpecialistId, Patient patient)
