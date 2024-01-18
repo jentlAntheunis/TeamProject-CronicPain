@@ -12,7 +12,7 @@ public interface IPatientService
     Task<Guid> AddPatientBySpecialistAsync(Guid SpecialistId, Patient patient);
     Task AddPatientToSpecialistAsync(Guid PatientId, Guid SpecialistId);
     Task<Patient> UpdatePatientAsync(Patient patient);
-
+    Task AddCoinsAsync(Guid patientId, int amount);
     Task<Guid> StartMovementSessionAsync(Guid patientId);
     Task EndMovementSessionAsync(Guid movementSessionId);
     Task<List<MovementSuggestion>> GetMovementSuggestionsAsync(Guid patientId);
@@ -59,10 +59,7 @@ public class PatientService : IPatientService
 
     public async Task<Patient> GetPatientDetailsByIdAsync(Guid id)
     {
-        var patient = await _patientRepository.GetPatientByIdAsync(id);
-        patient.Avatar = await _avatarRepository.GetAvatarByIdAsync(patient.AvatarId);
-        patient.Avatar.Color = await _colorRepository.GetColorByIdAsync(patient.Avatar.ColorId);
-        patient.Logins = await _loginRepository.GetLoginsByUserAsync(id);
+        var patient = await _patientRepository.GetPatientDetailsByIdAsync(id);
         Console.WriteLine(JsonConvert.SerializeObject(patient));
         if (patient == null)
             throw new Exception("Patient does not exist");
@@ -151,5 +148,14 @@ public class PatientService : IPatientService
         Console.WriteLine(JsonConvert.SerializeObject(patient));
         string mood = "happy";
         return mood;
+    }
+
+    public async Task AddCoinsAsync(Guid patientId, int amount)
+    {
+        var patient = await _patientRepository.GetPatientByIdAsync(patientId);
+        if (patient == null)
+            throw new Exception("Patient does not exist");
+        patient.Coins += amount;
+        await _patientRepository.UpdatePatientAsync(patient);
     }
 }

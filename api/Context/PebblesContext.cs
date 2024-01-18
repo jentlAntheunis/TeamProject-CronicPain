@@ -155,7 +155,12 @@ public class PebblesContext : DbContext
         );
 
         modelBuilder.Entity<Color>().HasData(
-            new Color("Blue (Default)", "#3B82F6")
+            new Color("Blue (Default)", "#3B82F6"),
+            new Color("Red", "#F63B3B", 10),
+            new Color("Purple", "#AF3BF6", 10),
+            new Color("Pink", "#F14DD7", 10),
+            new Color("Orange", "#F7990C", 10),
+            new Color("Gold", "#F8D101", 50)
         );
     }
 }

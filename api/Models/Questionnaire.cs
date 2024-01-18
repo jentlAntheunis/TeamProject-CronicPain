@@ -6,7 +6,7 @@ namespace Pebbles.Models;
 public class Questionnaire
 {
     public Guid Id { get; set; }
-    public DateTime Date { get; set; }
+    public DateTime ? Date { get; set; }
 
     [Required]
     public Guid PatientId { get; set; }

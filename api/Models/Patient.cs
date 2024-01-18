@@ -17,14 +17,13 @@ public class Patient : User
 
     public int Streak { get; set; }
     public int Coins { get; set; }
+    [JsonIgnore]
     public Guid AvatarId { get; set; }
     public Avatar Avatar { get; set; }
 
     public List<Questionnaire> Questionnaires { get; set; }
     [JsonIgnore]
     public List<Specialist> Specialists { get; set; }
-    [JsonIgnore]
     public List<Color> Colors { get; set; }
-    [JsonIgnore]
     public List<MovementSession> MovementSessions { get; set; }
 }

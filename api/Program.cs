@@ -12,19 +12,24 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication;
-
-
-
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddControllers();
+
+JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+{
+    Formatting = Formatting.Indented,
+    ContractResolver = new CamelCasePropertyNamesContractResolver()
+};
 
 //add services
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<ISpecialistService, SpecialistService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IStoreService, StoreService>();
 
 //add repositories
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
@@ -74,7 +79,7 @@ builder.Services.AddDbContext<PebblesContext>(options =>
 
 
 // Configure Firebase Authentication (right error codes)
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer("FirebaseAuthentication", options =>
     {
         var projectId = "pebbles-294c6";
