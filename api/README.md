@@ -9,14 +9,12 @@ Hier zijn de mogelijke endpoints:
 ## Specialists
 
 GET
-
 - /specialists
   - gets all specialists
 - /specialists/{<span style="color: cornflowerblue">specialistId</span>}
   - gets specialist by id
 
 POST
-
 - /specialists
   - Adds a specialist
   - Body:
@@ -59,7 +57,6 @@ POST
     ```
 
 PUT
-
 - /specialists/{<span style="color: cornflowerblue">specialistId</span>}
   - Edits the specialist information
   - Body:
@@ -74,7 +71,6 @@ PUT
 ## Patients
 
 GET
-
 - /patients/{<span style="color: cornflowerblue">patientId</span>}
   - Gets patient by id
 - /patients/{<span style="color: cornflowerblue">patientId</span>}/movementsession/start
@@ -83,11 +79,13 @@ GET
 - /patients/{<span style="color: cornflowerblue">movementSessionId</span>}/end
   - Stops the movement session
   - <span style="color: red">Use Movement Id for end, not Patient Id</span>
+- /patients/{<span style="color: cornflowerblue">patientId</span>}/pebblesmood
+  - Gets the mood pebbles should be in right now
+  - NOT IMPLEMENTED YET
 
 ## Users (specialists and patients combined)
 
 GET
-
 - /users
   - Gets all users
 - /users/{<span style="color: cornflowerblue">userId</span>}
@@ -97,8 +95,15 @@ GET
   - Returns true if it finds the email in the user database
   - Returns false if the email is not in the database
 
-PUT
+POST
+- /users/loginbyemail
+  - Returns user object
+  - Body:
+    ```json
+    "email"
+    ```
 
+PUT
 - /users/{<span style="color: cornflowerblue">userId</span>}
   - Used to edit any user
   - Body:
@@ -111,6 +116,5 @@ PUT
     ```
 
 DELETE
-
 - /users/{<span style="color: cornflowerblue">userId</span>}
   - Used to soft-delete any user
