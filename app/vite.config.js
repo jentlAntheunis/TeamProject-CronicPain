@@ -8,7 +8,7 @@ const manifestForPlugin = {
   manifest: {
     name: "Pebbles",
     short_name: "Pebbles",
-    description: "Stap voor stap naar een pijnvrij leven vol energie",
+    description: "Pebbles - Stap voor stap naar een pijnvrij leven vol energie",
     theme_color: "#ffffff",
     icons: [
       {
