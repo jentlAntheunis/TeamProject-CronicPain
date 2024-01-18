@@ -25,7 +25,8 @@ public class ScaleDTO
 public class OptionDTO
 {
     public Guid Id { get; set; }
-    public ScaleDTO Scale { get; set; }
-    public string Content { get; set; }
+    //public ScaleDTO Scale { get; set; }
+    //public string Content { get; set; }
     public string Position { get; set; } 
+    public string Content { get; set; }
 }
