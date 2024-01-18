@@ -17,6 +17,7 @@ public class Patient : User
 
     public int Streak { get; set; }
     public int Coins { get; set; }
+    [JsonIgnore]
     public Guid AvatarId { get; set; }
     public Avatar Avatar { get; set; }
 
@@ -24,6 +25,5 @@ public class Patient : User
     [JsonIgnore]
     public List<Specialist> Specialists { get; set; }
     public List<Color> Colors { get; set; }
-    [JsonIgnore]
     public List<MovementSession> MovementSessions { get; set; }
 }

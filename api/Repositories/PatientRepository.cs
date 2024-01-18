@@ -30,17 +30,18 @@ public class PatientRepository : IPatientRepository
 
     public async Task<Patient> GetPatientByIdAsync(Guid id) => 
         await _context.Patient
-        .Where(p => p.IsDeleted == false)
+        .Include(p => p.Avatar)
+            .ThenInclude(a => a.Color)
         .FirstOrDefaultAsync(p => p.Id == id);
 
     public async Task<Patient> GetPatientDetailsByIdAsync(Guid id) => 
         await _context.Patient
         .Include(p => p.Avatar)
+            .ThenInclude(a => a.Color)
         .Include(p => p.Colors)
         .Include(p => p.MovementSessions)
         .Include(p => p.MovementSuggestions)
         .Include(p => p.Logins)
-        .Where(p => p.IsDeleted == false)
         .FirstOrDefaultAsync(p => p.Id == id);
 
     public async Task<Guid> CreatePatientAsync(Patient patient)

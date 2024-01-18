@@ -8,7 +8,6 @@ public interface IColorRepository
 {
     Task<List<Color>> GetAllColorsAsync();
     Task<Color> GetColorByIdAsync(Guid id);
-    Task<List<Color>> GetColorsByPatientIdAsync(Guid patientId);
     Task<Color> GetDefaultColorAsync();
     Task<Color> CreateColorAsync(Color color);
     Task<Color> UpdateColorAsync(Color color);
@@ -29,12 +28,6 @@ public class ColorRepository : IColorRepository
     public async Task<Color> GetColorByIdAsync(Guid id) => await _context.Color.FirstOrDefaultAsync(c => c.Id == id);
 
     public async Task<Color> GetDefaultColorAsync() => await _context.Color.FirstOrDefaultAsync(c => c.Name.Contains("Default"));
-
-    public async Task<List<Color>> GetColorsByPatientIdAsync(Guid patientId)
-    {
-        var patient = await _context.Patient.Include(p => p.Colors).FirstOrDefaultAsync(p => p.Id == patientId);
-        return patient.Colors;
-    }
 
     public async Task<Color> CreateColorAsync(Color color)
     {
