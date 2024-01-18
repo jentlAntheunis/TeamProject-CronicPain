@@ -8,8 +8,6 @@ const AuthContainer = () => {
   const location = useLocation();
   const user = useUser();
 
-  console.log("rerender authcontainer") 
-
   if (!user) {
     return (
       <Navigate to={AuthRoutes.Login} state={{ from: location }} replace />

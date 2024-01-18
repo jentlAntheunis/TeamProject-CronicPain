@@ -18,8 +18,6 @@ const OnboardingLayout = () => {
   const [loginLoading, setLoginLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  console.log("rerender onboardinglayout")
-
   useEffect(() => {
     const handleSignInWithEmailLink = async () => {
       let email = window.localStorage.getItem("emailForSignIn");

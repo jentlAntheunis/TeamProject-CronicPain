@@ -14,30 +14,27 @@ import BottomSheet from "../../../ui/BottomSheet/BottomSheet.jsx";
 import clsx from "clsx";
 import useStore from "../../../../core/hooks/useStore.jsx";
 import { ExampleQuestions } from "../../../../core/config/questions.js";
+import DailyPain from "../../../ui/DailyPain/DailyPain.jsx";
 
 const DashboardScreen = () => {
-  // get user
-  const [user] = useAuthState(auth);
   const [sheetOpen, setSheetOpen] = useState(false);
 
   const navigate = useNavigate();
 
   // state management
-  const { removeAnswers } = useStore();
+  const { removeAnswers, resetCurrentQuestion } = useStore();
   const setQuestions = useStore((state) => state.setQuestions);
-
-  user.getIdTokenResult().then((token) => {
-    console.log(token);
-  });
 
   const handleStartMovement = () => {
     removeAnswers();
+    resetCurrentQuestion();
     setQuestions(ExampleQuestions);
     navigate(PatientRoutes.Questionaire);
   };
 
   return (
     <FullHeightScreen>
+      <DailyPain />
       <div className={styles.screen}>
         <TopBar />
         <Avatar />
