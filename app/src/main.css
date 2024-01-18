@@ -84,11 +84,13 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
-* , *:before, *:after{
-  box-sizing:border-box;
-  -moz-box-sizing:border-box;
-  -webkit-box-sizing:border-box;
-  -ms-box-sizing:border-box;
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
 }
 
 ::selection {
@@ -112,12 +114,24 @@ h6 {
   line-height: 1.2;
 }
 
-button, input, textarea, optgroup, select {
+button,
+input,
+textarea,
+optgroup,
+select {
   font-family: inherit;
 }
 
 strong {
   font-weight: var(--semi-bold);
+}
+
+pre {
+  white-space: pre-wrap; /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
 }
 
 /* UTILS */
@@ -156,13 +170,11 @@ strong {
 }
 
 .screen-margin {
-  margin: var(--margin-top) var(--margin-side)
-    var(--margin-bottom);
+  margin: var(--margin-top) var(--margin-side) var(--margin-bottom);
 }
 
 .screen-padding {
-  padding: var(--margin-top) var(--margin-side)
-    var(--margin-bottom);
+  padding: var(--margin-top) var(--margin-side) var(--margin-bottom);
 }
 
 .error-message {
@@ -179,4 +191,3 @@ strong {
     /* waardes nog aanpassen */
   }
 }
-
