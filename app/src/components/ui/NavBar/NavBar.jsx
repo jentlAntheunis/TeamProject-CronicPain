@@ -6,10 +6,11 @@ import { auth } from "../../../core/services/firebase";
 import Modal from "../Modal/Modal.jsx";
 import { useState } from "react";
 import { useAuthContext } from "../../app/auth/AuthProvider.jsx";
+import { SpecialistRoutes } from "../../../core/config/routes.js";
 
 const NavBar = () => {
   const [showModal, setShowModal] = useState(false);
-  const { logout } = useAuthContext();
+  const { user, logout } = useAuthContext();
 
   const handleLogout = () => {
     setShowModal(false);
@@ -21,30 +22,42 @@ const NavBar = () => {
       <div className={styles.navBar}>
         <div className={styles.navBarLeft}>
           <div className={styles.navBarLogo}>Pebbles</div>
-          <div className={styles.navBarSpacer}></div>
-          <div className={styles.navBarSpecialist}>Willem Devriend</div>
+          {user && (
+            <>
+              <div className={styles.navBarSpacer}></div>
+              <div className={styles.navBarSpecialist}>
+                {user.firstName + " " + user.lastName}
+              </div>
+            </>
+          )}
         </div>
-        <div className={styles.navBarMenu}>
-          <NavLink
-            to="/patients"
-            className={({ isActive }) =>
-              clsx(isActive && styles.active, styles.navBarMenuItem)
-            }
-          >
-            Patiënten
-          </NavLink>
-          <NavLink
-            to="/questions"
-            className={({ isActive }) =>
-              clsx(isActive && styles.active, styles.navBarMenuItem)
-            }
-          >
-            Vragen
-          </NavLink>
-          <Button variant="tertiary" size="small" onClick={() => setShowModal(true)}>
-            Uitloggen
-          </Button>
-        </div>
+        {user && (
+          <div className={styles.navBarMenu}>
+            <NavLink
+              to={SpecialistRoutes.PatientOverview}
+              className={({ isActive }) =>
+                clsx(isActive && styles.active, styles.navBarMenuItem)
+              }
+            >
+              Patiënten
+            </NavLink>
+            <NavLink
+              to={SpecialistRoutes.QuestionOverview}
+              className={({ isActive }) =>
+                clsx(isActive && styles.active, styles.navBarMenuItem)
+              }
+            >
+              Vragen
+            </NavLink>
+            <Button
+              variant="tertiary"
+              size="small"
+              onClick={() => setShowModal(true)}
+            >
+              Uitloggen
+            </Button>
+          </div>
+        )}
       </div>
       <Modal showModal={showModal} setShowModal={setShowModal}>
         <div>
