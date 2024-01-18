@@ -97,8 +97,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             }
         };
     });
-    
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder =>
+    {
+        builder.WithOrigins("http://localhost:5173", "https://www.pebbles-health.be", "https://staging.pebbles-health.be")
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
 
 
 // Initialize Firebase Admin SDK
@@ -127,6 +135,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("CorsPolicy");
 
 app.UseMiddleware<FirebaseTokenValidatorMiddleware>();
 
