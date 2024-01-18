@@ -35,7 +35,6 @@ public class User : ISoftDelete
 
     [JsonIgnore]
     public List<PatientSpecialist> PatientSpecialists { get; set; }
-    [JsonIgnore]
     public List<MovementSuggestion> MovementSuggestions { get; set; }
     public List<Login> Logins { get; set; }
 
