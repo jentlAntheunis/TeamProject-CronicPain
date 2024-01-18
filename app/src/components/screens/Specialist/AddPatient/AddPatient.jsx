@@ -28,8 +28,10 @@ const formSchema = z.object({
 });
 
 const AddPatient = () => {
-  const { mutate, isError, isLoading } = useMutation(storePatient);
-  const [loading, setLoading] = useState(false);
+  const storeMutation = useMutation(storePatient);
+  const sendMailMutation = useMutation({
+    mutationFn: sendMailToPatient,
+  });
   const user = useUser();
 
   const defaultValues = {
@@ -38,20 +40,16 @@ const AddPatient = () => {
     email: "",
   };
 
-  console.log(user);
-
   const handleSubmit = (data) => {
     console.log(data);
-    setLoading(true);
-    sendMailToPatient({ specialistId: user.id, ...data })
-      .then(() => {
-        setLoading(false);
-        toast.success("E-mail verstuurd");
-      })
-      .catch((error) => {
-        setLoading(false);
-        toast.error(error.message);
-      });
+    sendMailMutation.mutate(
+      { specialistId: user.id, ...data },
+      {
+        onSuccess: () => {
+          toast.success("Mail verzonden");
+        },
+      }
+    );
   };
 
   return (
@@ -86,7 +84,12 @@ const AddPatient = () => {
             <FormMessage />
           </FormItem>
         </div>
-        <Button type="submit" size="full" className={styles.submit}>
+        <Button
+          type="submit"
+          size="full"
+          disabled={storeMutation.isLoading || sendMailMutation.isLoading}
+          className={styles.submit}
+        >
           Toevoegen
         </Button>
       </Form>
