@@ -25,10 +25,11 @@ public class QuestionController : ControllerBase
     private readonly IQuestionnaireRepository _questionnaireRepository;
 
 
-    public QuestionController(IQuestionService questionService, IConfiguration configuration)
+    public QuestionController(IQuestionService questionService, IConfiguration configuration, IQuestionnaireRepository questionnaireRepository)
     {
         _configuration = configuration;
         _questionService = questionService;
+        _questionnaireRepository = questionnaireRepository;
     }
 
     [HttpGet("movementquestionnaire")]

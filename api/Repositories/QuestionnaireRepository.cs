@@ -28,12 +28,16 @@ public class QuestionnaireRepository : IQuestionnaireRepository
 
     public async Task<Questionnaire> GetQuestionnaireByPatientIdAsync(Guid id) => await _context.Questionnaire.FirstOrDefaultAsync(q => q.PatientId == id);
 
+/*
     public async Task<Questionnaire> AddMovementQuestionnaireAsync(Guid id)
     {
+        
+        Console.WriteLine($"AddMovementQuestionnaireAsync - Start: PatientId {id}");
+
         var questionnaire = new Questionnaire
         {
             Id= Guid.NewGuid(),
-            PatientId = id,
+            PatientId = id
         };
 
         //Retrieve the category ID based on the provided category name
@@ -42,11 +46,6 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         .Select(c => c.Id)
         .FirstOrDefaultAsync();
 
-        if (categoryId == null)
-        {
-            // Handle the case where the category name does not exist
-            throw new ArgumentException("Category not found.");
-        }
 
         // Retrieve a list of random question IDs from the specified category
         var randomQuestions = await _context.Question
@@ -66,21 +65,104 @@ public class QuestionnaireRepository : IQuestionnaireRepository
                 QuestionId = question.Id
             };
 
+            Console.WriteLine($"Adding QuestionnaireQuestion - QuestionnaireId: {questionnaireQuestion.QuestionnaireId}, QuestionId: {questionnaireQuestion.QuestionId}");
+
+
             // Add the questionnaire item to the context (not saving yet)
             await _context.QuestionnaireQuestion.AddAsync(questionnaireQuestion);
         }
             
         await _context.Questionnaire.AddAsync(questionnaire);
-        await _context.SaveChangesAsync();
+
+        // Log entity states
+        foreach (var entry in _context.ChangeTracker.Entries())
+        {
+            Console.WriteLine($"Entity: {entry.Entity.GetType().Name}, State: {entry.State}");
+        }
+
+        foreach (var entry in _context.ChangeTracker.Entries())
+        {
+            if (entry.State == EntityState.Unchanged)
+            {
+                entry.State = EntityState.Detached;
+            }
+        }
+
+        foreach (var entry in _context.ChangeTracker.Entries<Question>())
+        {
+            entry.State = EntityState.Detached;
+        }
+
+
+        try
+        {
+            Console.WriteLine("AddMovementQuestionnaireAsync - Before SaveChangesAsync");
+            await _context.SaveChangesAsync();
+            Console.WriteLine($"AddMovementQuestionnaireAsync - Completed: QuestionnaireId {questionnaire.Id}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error during SaveChangesAsync: {ex.Message}");
+            if (ex.InnerException != null)
+            {
+                Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+            }
+            throw; // Rethrow the exception to maintain existing behavior
+        }
+
+
+
+        Console.WriteLine("AddBonusQuestionnaireAsync - Completed");
         return questionnaire;
+                
     }
+*/
+    
+
+    public async Task<Questionnaire> AddMovementQuestionnaireAsync(Guid patientId)
+{
+    Console.WriteLine($"AddSimpleQuestionnaireAsync - Start: PatientId {patientId}");
+
+    // Create a basic Questionnaire entity
+    var questionnaire = new Questionnaire
+    {
+        Id = Guid.NewGuid(),
+        PatientId = patientId
+        // Do not set any other properties or relationships
+    };
+
+    // Add the entity to the context
+    _context.Questionnaire.Add(questionnaire);
+
+    try
+    {
+        Console.WriteLine("AddSimpleQuestionnaireAsync - Before SaveChangesAsync");
+        await _context.SaveChangesAsync();
+        Console.WriteLine($"AddSimpleQuestionnaireAsync - Completed: QuestionnaireId {questionnaire.Id}");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error during SaveChangesAsync: {ex.Message}");
+        if (ex.InnerException != null)
+        {
+            Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+        }
+        throw; // Rethrow the exception
+    }
+
+    return questionnaire;
+}
+
+
 
     public async Task<Questionnaire> AddBonusQuestionnaireAsync(Guid userId)
     {
+        /*
         var questionnaire = new Questionnaire
         {
             Id= Guid.NewGuid(),
             PatientId = userId,
+            Date = null
         };
 
         //Retrieve the category ID based on the provided category name
@@ -89,11 +171,6 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         .Select(c => c.Id)
         .FirstOrDefaultAsync();
 
-        if (categoryId == null)
-        {
-            // Handle the case where the category name does not exist
-            throw new ArgumentException("Category not found.");
-        }
 
         // Retrieve a list of random question IDs from the specified category
         var randomQuestions = await _context.Question
@@ -120,7 +197,10 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         await _context.Questionnaire.AddAsync(questionnaire);
         await _context.SaveChangesAsync();
         return questionnaire;
+        */
+        throw new NotImplementedException();
     }
+    
 
     public async Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire)
     {
