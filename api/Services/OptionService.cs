@@ -27,16 +27,60 @@ public class OptionService : IOptionService
 
     public async Task<Guid> CreateOptionAsync(Option option)
     {
-        if (option.ScaleName == "oneens_eens")
+        // Get the associated Scale based on ScaleId
+        var scale = await _scaleRepository.GetScaleByIdAsync(option.ScaleId);
+
+        if (scale != null)
         {
-            option.Content = "xxx";
-            option.Position = 1;
+            if (scale.Name == "beweging")
+            {
+                switch (option.Position)
+                {
+                    case 1:
+                        option.Content = "heel oneens";
+                        break;
+                    case 2:
+                        option.Content = "oneens";
+                        break;
+                    case 3:
+                        option.Content = "eens";
+                        break;
+                    case 4:
+                        option.Content = "heel eens";
+                        break;
+                    default:
+                        return BadRequest("Invalid position");
+                        break;
+                }
+            }
+            else if (scale.Name == "bonus")
+            {
+                switch (option.Position)
+                {
+                    case 0:
+                        option.Content = "helemaal niet";
+                        break;
+                    case 1:
+                        option.Content = "in lichte mate";
+                        break;
+                    case 2:
+                        option.Content = "in zekere mate";
+                        break;
+                    case 3:
+                        option.Content = "in grote mate";
+                        break;
+                    case 4:
+                        option.Content = "altijd";
+                        break;
+                    default:
+                        return BadRequest("Invalid position");
+                        break;
+                }
+            }
         }
-        else if (option.ScaleName == "niet_altijd")
+        else
         {
-            // Customize the Content and Position for niet_altijd
-            option.Content = "xxx";
-            option.Position = 2;
+            return BadRequest("Invalid scale");
         }
 
         return await _optionRepository.CreateOptionAsync(option);
