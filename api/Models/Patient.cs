@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace Pebbles.Models;
 
@@ -19,5 +20,6 @@ public class Patient : User
 
     public List<Specialist> Specialists { get; set; }
     public List<Color> Colors { get; set; }
+    [JsonIgnore]
     public List<MovementSession> MovementSessions { get; set; }
 }
