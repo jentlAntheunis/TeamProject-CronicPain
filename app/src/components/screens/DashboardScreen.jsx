@@ -5,10 +5,6 @@ import { Play, ClipboardText } from "@phosphor-icons/react";
 import styles from "./DashboardScreen.module.css";
 import FullHeightScreen from "../ui/FullHeightScreen/FullHeightScreen.jsx";
 import Button from "../ui/Button/Button.jsx";
-import { useAuthState, useIdToken } from "react-firebase-hooks/auth";
-import { auth } from "../../core/services/firebase.js";
-import axios from "axios";
-import { useAuthContext, useUser } from "../app/auth/AuthProvider.jsx";
 
 const DashboardScreen = () => {
   const { login } = useAuthContext();
@@ -16,6 +12,7 @@ const DashboardScreen = () => {
 
   return (
     <FullHeightScreen>
+      <DailyPain />
       <div className={styles.screen}>
         <TopBar />
         <Avatar />

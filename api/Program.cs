@@ -34,6 +34,7 @@ builder.Services.AddScoped<IAvatarRepository, AvatarRepository>();
 builder.Services.AddScoped<IColorRepository, ColorRepository>();
 builder.Services.AddScoped<IMovementSessionRepository, MovementSessionRepository>();
 builder.Services.AddScoped<IMovementSuggestionRepository, MovementSuggestionRepository>();
+builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

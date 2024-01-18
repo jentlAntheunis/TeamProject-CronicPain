@@ -6,7 +6,6 @@ using FirebaseAdmin;
 using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Authorization;
 
-
 using Pebbles.Models;
 using Pebbles.Services;
 using Pebbles.Repositories;
@@ -48,6 +47,13 @@ public class PatientController : ControllerBase
     public async Task<IActionResult> GetMovementSuggestionsAsync(Guid patientId)
     {
         var movementSuggestions = await _patientService.GetMovementSuggestionsAsync(patientId);
-        return Ok(movementSuggestions);
+        return Ok(JsonConvert.SerializeObject(movementSuggestions));
+    }
+
+    [HttpGet("{patientId}/pebblesmood")]
+    public async Task<IActionResult> GetPebblesMoodAsync(Guid patientId)
+    {
+        var pebblesMood = await _patientService.GetPebblesMoodAsync(patientId);
+        return BadRequest("not implemented");
     }
 }

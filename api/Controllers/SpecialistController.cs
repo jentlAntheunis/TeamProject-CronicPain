@@ -110,6 +110,7 @@ public class SpecialistController : ControllerBase
     [HttpPost("{specialistId}/patients/{patientId}/movementsuggestions")]
     public async Task<IActionResult> AddMovementSuggestionAsync(Guid specialistId, Guid patientId, [FromBody] MovementSuggestion movementSuggestion)
     {
-        return BadRequest("Not implemented");
+        await _patientService.AddMovementSuggestion(specialistId, patientId, movementSuggestion);
+        return Ok();
     }
 }

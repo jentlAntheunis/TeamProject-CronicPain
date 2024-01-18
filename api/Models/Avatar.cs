@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace Pebbles.Models;
 
@@ -17,6 +18,7 @@ public class Avatar : ISoftDelete
 
     [Required]
     public Guid PatientId { get; set; }
+    [JsonIgnore]
     public Patient Patient { get; set; }
 
     [Required]

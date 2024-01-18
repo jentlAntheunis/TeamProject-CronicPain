@@ -24,21 +24,23 @@ import { checkIfUserExists } from "../../../core/utils/apiCalls";
 
 const LoginScreen = () => {
   return (
-    <FullHeightScreen className={styling.mainContainer}>
-      {/* Top part */}
-      <div className={styling.titleContainer}>
-        <h1>Pebbles</h1>
-      </div>
+    <FullHeightScreen className={`margins-desktop ${styling.mainContainer}`}>
+        {/* Top part */}
+        <div className={styling.titleContainer}>
+          <h1>Pebbles</h1>
+        </div>
 
-      {/* Bottom part */}
-      <div className={styling.formContainer}>
-        <LoginForm />
-      </div>
+        {/* Bottom part */}
+        <div className={styling.formContainer}>
+          <div className={`desktop-only ${styling.formTitle}`}>Inloggen</div>
+          <LoginForm />
+        </div>
 
-      {/* Pebbles */}
-      <div className={styling.pebbles}>
-        <Pebbles mood={PebblesMoods.Bubbles} size="13rem" />
-      </div>
+        {/* Pebbles */}
+        <div className={styling.pebbles}>
+          <Pebbles mood={PebblesMoods.Bubbles} size="13rem" className="mobile-only" />
+          <Pebbles size="28.5rem" className="desktop-only" />
+        </div>
 
       {/* Water */}
       <div className={styling.waterBackground}>

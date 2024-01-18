@@ -86,14 +86,12 @@ public class UserController : ControllerBase
     }
 
     [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
-    [HttpPost("getbyemail")]
+    [HttpPost("loginbyemail")]
     public async Task<IActionResult> LoginAsync([FromBody] string email)
     {
         var user = await _userService.LoginAsync(email);
         if (user == null)
-        {
             return NotFound();
-        }
-        return Ok(user);
+        return Ok(JsonConvert.SerializeObject(user));
     }
 }
