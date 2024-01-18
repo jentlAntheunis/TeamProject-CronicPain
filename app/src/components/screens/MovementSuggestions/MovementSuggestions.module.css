@@ -1,0 +1,28 @@
+.suggestions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 4rem;
+}
+
+.suggestion {
+  border: 1px solid var(--grey-200);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.selected {
+  border: 1px solid var(--blue-400);
+  background-color: var(--blue-50);
+  color: var(--blue-600);
+  font-weight: var(--medium);
+}

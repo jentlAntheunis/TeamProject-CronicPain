@@ -14,6 +14,8 @@ import QuestionaireScreen from "../screens/Patient/Questionaire/QuestionaireScre
 import DashboardScreen from "../screens/Patient/DashboardScreen/DashboardScreen";
 import WellDone from "../screens/Patient/WellDone/WellDone";
 import StreaksScreen from "../screens/Patient/StreaksScreen/StreaksScreen";
+import MovementSuggestions from "../screens/MovementSuggestions/MovementSuggestions";
+import TimeTracker from "../screens/TimeTracker/TimeTracker";
 
 const App = () => (
   <Routes>
@@ -61,6 +63,8 @@ const App = () => (
           path={PatientRoutes.Questionaire}
           element={<QuestionaireScreen />}
         />
+        <Route path={PatientRoutes.MovementSuggestions} element={<MovementSuggestions />} />
+        <Route path={PatientRoutes.TimeTracker} element={<TimeTracker />} />
         <Route path={PatientRoutes.Streaks} element={<StreaksScreen />} />
         <Route path={PatientRoutes.WellDone} element={<WellDone />} />
       </Route>

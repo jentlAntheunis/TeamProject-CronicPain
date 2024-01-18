@@ -9,6 +9,8 @@ const PatientRoutes = {
   Questionaire: '/questionaire',
   Streaks: "/streaks",
   WellDone: '/well-done',
+  MovementSuggestions: '/movement-suggestions',
+  TimeTracker: '/time-tracker',
 };
 
 const SpecialistRoutes = {
