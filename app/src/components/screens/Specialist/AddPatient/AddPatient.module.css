@@ -10,8 +10,45 @@
   padding-top: 1rem;
 }
 
-.screen{
+.screen {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+.csvImport {
+  position: absolute;
+  right: 0;
+  top: var(--margin-top);
+  margin-right: var(--margin-side);
+  font-size: var(--p);
+  border-width: 1px;
+  font-weight: var(--regular);
+}
+
+.removePadding {
+  padding: 0;
+}
+
+@media (min-width: 1024px) {
+  .formContainer {
+    justify-content: flex-start;
+    gap: 3rem;
+  }
+
+  .formItems {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 2;
+    row-gap: 1.25rem;
+    column-gap: 2rem;
+  }
+
+  .formItems > *:nth-child(3) {
+    grid-column: span 2;
+  }
+
+  .formItems > * + * {
+    padding-top: 0rem;
+  }
 }

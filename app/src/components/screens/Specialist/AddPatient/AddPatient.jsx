@@ -12,6 +12,7 @@ import PageHeading from "../../../ui/PageHeading/PageHeading";
 import { z } from "zod";
 
 import styles from "./AddPatient.module.css";
+import NavBar from "../../../ui/NavBar/NavBar";
 import {
   checkIfUserExists,
   sendMailToPatient,
@@ -84,8 +85,14 @@ const AddPatient = () => {
   };
 
   return (
-    <FullHeightScreen className={styles.screen}>
+    <FullHeightScreen className={`margins-desktop ${styles.screen}`}>
+      <NavBar />
       <PageHeading>Patiënt toevoegen</PageHeading>
+      <div className="desktop-only">
+        <Button variant="secondary" className={styles.csvImport}>
+          CSV importeren
+        </Button>
+      </div>
       <Form
         schema={formSchema}
         defaultValues={defaultValues}
@@ -115,17 +122,16 @@ const AddPatient = () => {
             <FormMessage />
           </FormItem>
         </div>
-        <Button size="full" variant="secondary" onClick={() => auth.signOut()}>
-          Uitloggen (debug)
-        </Button>
-        <Button
-          type="submit"
-          size="full"
-          disabled={loading}
-          className={styles.submit}
-        >
-          Toevoegen
-        </Button>
+        <div className={`mobile-only ${styles.removePadding}`}>
+          <Button type="submit" size="full">
+            Toevoegen
+          </Button>
+        </div>
+        <div className={`desktop-only ${styles.removePadding}`}>
+          <Button type="submit" size="default">
+            Toevoegen
+          </Button>
+        </div>
       </Form>
     </FullHeightScreen>
   );

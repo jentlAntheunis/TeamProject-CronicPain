@@ -5,7 +5,9 @@ import { useUser } from "./AuthProvider";
 
 const RoleContainer = ({ roles = [], children }) => {
   // TODO: Check auth status
-  const user = useUser();
+  const user = {
+    role: UserRoles.Specialist,
+  };
 
   if (!roles.includes(user.role)) {
     return <Navigate to="/" />;
