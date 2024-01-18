@@ -51,6 +51,7 @@
   position: absolute;
   bottom: 0;
   width: 100%;
+  left: 0;
   height: 70%;
   display: flex;
   flex-direction: column;
@@ -62,7 +63,7 @@
   flex-grow: 1;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   .titleContainer {
     height: 10%;
     justify-content: flex-start;
