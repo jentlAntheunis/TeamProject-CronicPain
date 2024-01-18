@@ -25,6 +25,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<ISpecialistService, SpecialistService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IStoreService, StoreService>();
 
 //add repositories
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
