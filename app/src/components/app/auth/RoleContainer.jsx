@@ -5,7 +5,7 @@ import { UserRoles } from "../../../core/config/userRoles";
 const RoleContainer = ({ roles = [], children }) => {
   // TODO: Check auth status
   const user = {
-    role: UserRoles.Patient,
+    role: UserRoles.Specialist,
   };
 
   if (!roles.includes(user.role)) {

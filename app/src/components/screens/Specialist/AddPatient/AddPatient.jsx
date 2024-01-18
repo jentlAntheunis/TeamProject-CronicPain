@@ -12,6 +12,7 @@ import PageHeading from "../../../ui/PageHeading/PageHeading";
 import { z } from "zod";
 
 import styles from "./AddPatient.module.css";
+import NavBar from "../../../ui/navBar/navBar";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -19,7 +20,8 @@ const formSchema = z.object({
 
 const AddPatient = () => {
   return (
-    <FullHeightScreen className={styles.screen}>
+    <FullHeightScreen className={`margins-desktop ${styles.screen}`}>
+      <NavBar />
       <PageHeading>Patiënt toevoegen</PageHeading>
       <Form schema={formSchema} className={styles.formContainer}>
         <div className={styles.formItems}>
