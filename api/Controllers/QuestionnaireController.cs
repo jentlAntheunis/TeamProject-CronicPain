@@ -19,7 +19,11 @@ using Pebbles.Repositories;
 public class QuestionController : ControllerBase
 {
     private readonly IConfiguration _configuration;
+    private readonly IQuestionRepository _questionRepository;
     private readonly IQuestionService _questionService;
+
+    private readonly IQuestionnaireRepository _questionnaireRepository;
+
 
     public QuestionController(IQuestionService questionService, IConfiguration configuration)
     {
@@ -27,61 +31,34 @@ public class QuestionController : ControllerBase
         _questionService = questionService;
     }
 
-    [HttpGet("bewegingsvragen")]
-    public async Task<IActionResult> GetBewegingsvragen(Guid userId)
+    [HttpGet("movementquestionnaire")]
+    public async Task<IActionResult> CreateMovementQuestionnaire(Guid userId)
     {
         try
         {
-            // Create a "bewegingsvragen" questionnaire for the user
-            var bewegingsvragenQuestionnaire = await _questionnaireService.AddQuestionnaireAsync(userId, "bewegingsvragen");
+            var questionnaire = await _questionnaireRepository.AddMovementQuestionnaireAsync(userId);
 
-            if (bewegingsvragenQuestionnaire != null)
-            {
-                //Retrieve the questionnaire's questions
-                var questions = await _questionService.GetQuestionsByQuestionnaireIdAsync(bewegingsvragenQuestionnaire.Id);
-
-                //return the questions and their linked scale and options
-
-            }
-            else
-            {
-                return BadRequest("Failed to create a 'bewegingsvragen' questionnaire.");
-            }
+            return Ok(questionnaire);
         }
         catch (Exception ex)
         {
-            // Handle exceptions and return an error response if necessary
-            return StatusCode(500, "Internal Server Error");
+            return BadRequest($"Failed to create movement questionnaire: {ex.Message}");
         }
     }
 
-    [HttpGet("bonusvragen")]
-    public async Task<IActionResult> GetBonusvragen(Guid userId)
+    [HttpGet("bonusquestionnaire")]
+    public async Task<IActionResult> CreateBonusQuestionnaire(Guid userId)
     {
         try
         {
-            //create a "bonusvragen" questionnaire for the user
-            var bonusvragenQuestionnaire = await _questionnaireService.AddQuestionnaireAsync(userId, "bonusvragen");
-
-            if (bonusvragenQuestionnaire != null)
-            {
-                //Retrieve the questionnaire's questions
-                var questions = await _questionService.GetQuestionsByQuestionnaireIdAsync(bonusvragenQuestionnaire.Id);
-
-                //return the questions and their linked scale and options
-
-            }
-            else
-            {
-                return BadRequest("Failed to create a 'bonusvragen' questionnaire.");
-            }GetBewegingsvragen
+            var questionnaire = await _questionnaireRepository.AddBonusQuestionnaireAsync(userId);
+            return Ok(questionnaire);
         }
         catch (Exception ex)
         {
-            // Handle exceptions and return an error response if necessary
-            return StatusCode(500, "Internal Server Error");
+            return BadRequest($"Failed to create bonus questionnaire: {ex.Message}");
         }
-    }
+    }    
 
     
 

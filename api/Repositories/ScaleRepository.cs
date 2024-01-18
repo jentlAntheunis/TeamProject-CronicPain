@@ -23,11 +23,11 @@ public class ScaleRepository : IScaleRepository
         _context = context;
     }
 
-    public async Task<List<Scale>> GetAllScalesAsync() => await _context.Scale.Where(s => s.IsDeleted == false).ToListAsync();
+    public async Task<List<Scale>> GetAllScalesAsync() => await _context.Scale.ToListAsync();
 
-    public async Task<Scale> GetScaleByIdAsync(Guid id) => await _context.Scale.Where(s => s.IsDeleted == false).FirstOrDefaultAsync(s => s.Id == id);
+    public async Task<Scale> GetScaleByIdAsync(Guid id) => await _context.Scale.FirstOrDefaultAsync(s => s.Id == id);
 
-    public async Task<Guid> GetScaleIdByNameAsync(string name) => await _context.Scale.Where(s => s.IsDeleted == false).Select(s => s.Id).FirstOrDefaultAsync(s => s.Name == name);
+    public async Task<Guid> GetScaleIdByNameAsync(string name) => await _context.Scale.Select(s => s.Id).FirstOrDefaultAsync(s => s.Name == name);
 
     public async Task<Guid> CreateScaleAsync(Scale scale)
     {

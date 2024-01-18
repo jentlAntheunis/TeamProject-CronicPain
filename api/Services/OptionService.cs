@@ -15,10 +15,12 @@ public interface IOptionService
 public class OptionService : IOptionService
 {
     private readonly IOptionRepository _optionRepository;
+    private readonly IScaleRepository _scaleRepository;
 
-    public OptionService(IOptionRepository optionRepository)
+    public OptionService(IOptionRepository optionRepository, IScaleRepository scaleRepository)
     {
         _optionRepository = optionRepository;
+        _scaleRepository = scaleRepository;
     }
 
     public async Task<Option> GetOptionByIdAsync(Guid id) => await _optionRepository.GetOptionByIdAsync(id);
@@ -36,52 +38,45 @@ public class OptionService : IOptionService
             {
                 switch (option.Position)
                 {
-                    case 1:
+                    case "1":
                         option.Content = "heel oneens";
                         break;
-                    case 2:
+                    case "2":
                         option.Content = "oneens";
                         break;
-                    case 3:
+                    case "3":
                         option.Content = "eens";
                         break;
-                    case 4:
+                    case "4":
                         option.Content = "heel eens";
                         break;
-                    default:
-                        return BadRequest("Invalid position");
-                        break;
+                    
                 }
             }
             else if (scale.Name == "bonus")
             {
                 switch (option.Position)
                 {
-                    case 0:
+                    case "0":
                         option.Content = "helemaal niet";
                         break;
-                    case 1:
+                    case "1":
                         option.Content = "in lichte mate";
                         break;
-                    case 2:
+                    case "2":
                         option.Content = "in zekere mate";
                         break;
-                    case 3:
+                    case "3":
                         option.Content = "in grote mate";
                         break;
-                    case 4:
+                    case "4":
                         option.Content = "altijd";
                         break;
-                    default:
-                        return BadRequest("Invalid position");
-                        break;
+                    
                 }
             }
         }
-        else
-        {
-            return BadRequest("Invalid scale");
-        }
+        
 
         return await _optionRepository.CreateOptionAsync(option);
     }

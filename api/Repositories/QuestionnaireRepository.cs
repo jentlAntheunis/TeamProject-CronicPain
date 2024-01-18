@@ -49,11 +49,12 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         }
 
         // Retrieve a list of random question IDs from the specified category
-        var randomQuestionIds = await _context.Question
+        var randomQuestions = await _context.Question
         .Where(q => q.CategoryId == categoryId)
         .OrderBy(q => Guid.NewGuid()) // Shuffle the questions randomly
-        .Take(5) 
-        .Select(q => q.Id)
+        .Take(5)
+        .Include(q => q.Scale) // Include the scale
+        .ThenInclude(scale => scale.Options) // Include the options for the scale
         .ToListAsync();
 
         // Step 3: Create QuestionnaireQuestion objects for selected questions
@@ -95,11 +96,12 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         }
 
         // Retrieve a list of random question IDs from the specified category
-        var randomQuestionIds = await _context.Question
+        var randomQuestions = await _context.Question
         .Where(q => q.CategoryId == categoryId)
         .OrderBy(q => Guid.NewGuid()) // Shuffle the questions randomly
-        .Take(5) 
-        .Select(q => q.Id)
+        .Take(5)
+        .Include(q => q.Scale) // Include the scale
+        .ThenInclude(scale => scale.Options) // Include the options for the scale
         .ToListAsync();
 
         // Step 3: Create QuestionnaireQuestion objects for selected questions

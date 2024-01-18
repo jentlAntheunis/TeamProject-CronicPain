@@ -1,4 +1,5 @@
 using Pebbles.Repositories;
+using Pebbles.Models;
 
 namespace Pebbles.Services;
 
@@ -19,16 +20,16 @@ public class AnswerService : IAnswerService
         _answerRepository = answerRepository;
     }
 
+    public async Task<Answer> GetAnswerByIdAsync(Guid id) => await _answerRepository.GetAnswerByIdAsync(id);
+
     public async Task<Answer> AddAnswerAsync(Answer answer)
     {
-        answer.QuestionId = someQuestionId;
-        answer.QuestionnaireId = someQuestionnaireId;
-        answer.OptionId = someOptionId;
+        answer.QuestionId = new Guid(); //dummy data
+        answer.QuestionnaireId = new Guid(); //dummy data
+        answer.OptionId = new Guid();    //dummy data
 
         return await _answerRepository.AddAnswerAsync(answer);
     }
-    public async Task<Answer> AddAnswerAsync(Answer answer) => await _answerRepository.AddAnswerAsync(answer);
-
     public async Task<Answer> UpdateAnswerAsync(Answer answer) => await _answerRepository.UpdateAnswerAsync(answer);
 
     public async Task DeleteAnswerAsync(Answer answer) => await _answerRepository.DeleteAnswerAsync(answer);

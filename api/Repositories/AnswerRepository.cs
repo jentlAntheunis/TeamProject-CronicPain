@@ -27,7 +27,7 @@ public class AnswerRepository : IAnswerRepository
             .Include(a => a.Question)
             .Include(a => a.Questionnaire)
             .Include(a => a.Option)
-            .FirstOrDefaultAsync(a => a.Id == id && !a.IsDeleted);
+            .FirstOrDefaultAsync(a => a.Id == id);
     }
     public async Task<Answer> AddAnswerAsync(Answer answer)
     {

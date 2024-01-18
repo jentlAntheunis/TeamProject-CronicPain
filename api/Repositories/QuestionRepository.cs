@@ -22,9 +22,9 @@ public class QuestionRepository : IQuestionRepository
         _context = context;
     }
 
-    public async Task<List<Question>> GetAllQuestionsAsync() => await _context.Question.Where(q => q.IsDeleted == false).ToListAsync();
+    public async Task<List<Question>> GetAllQuestionsAsync() => await _context.Question.ToListAsync();
 
-    public async Task<Question> GetQuestionByIdAsync(Guid id) => await _context.Question.Where(q => q.IsDeleted == false).FirstOrDefaultAsync(q => q.Id == id);
+    public async Task<Question> GetQuestionByIdAsync(Guid id) => await _context.Question.FirstOrDefaultAsync(q => q.Id == id);
 
     public async Task<Guid> CreateQuestionAsync(Question question)
     {
