@@ -32,7 +32,7 @@ public class QuestionController : ControllerBase
         _questionnaireRepository = questionnaireRepository;
     }
 
-    [HttpGet("movementquestionnaire")]
+    [HttpGet("movementquestionnaire/{userId}")]
     public async Task<IActionResult> CreateMovementQuestionnaire(Guid userId)
     {
         try
@@ -59,7 +59,21 @@ public class QuestionController : ControllerBase
         {
             return BadRequest($"Failed to create bonus questionnaire: {ex.Message}");
         }
-    }    
+    }   
+
+    [HttpGet("movementquestionnaire")] 
+    public async Task<IActionResult> GetAllMovementQuestionnaires()
+    {
+        try
+        {
+            var questionnaires = await _questionnaireRepository.GetQuestionnairesAsync();
+            return Ok(questionnaires);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Failed to get all movement questionnaires: {ex.Message}");
+        }
+    }
 
     
 
