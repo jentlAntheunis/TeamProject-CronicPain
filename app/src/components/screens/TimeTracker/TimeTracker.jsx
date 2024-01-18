@@ -3,19 +3,28 @@ import Button from "../../ui/Button/Button";
 import FullHeightScreen from "../../ui/FullHeightScreen/FullHeightScreen";
 import styles from "./TimeTracker.module.css";
 import { useStopwatch } from "react-timer-hook";
+import { Link } from "react-router-dom";
+import { PatientRoutes } from "../../../core/config/routes";
+import { useNavigate } from "react-router-dom";
+import useStore from "../../../core/hooks/useStore";
 
 const TimeTracker = () => {
   return (
     <FullHeightScreen className={styles.screen}>
-      <button className={`btn-reset ${styles.backBtn}`}>
+      <Link to={PatientRoutes.MovementSuggestions} className={`btn-reset ${styles.backBtn}`}>
         <ArrowLeft size={32} />
-      </button>
+      </Link>
       <MyStopwatch />
     </FullHeightScreen>
   );
 };
 
 function MyStopwatch() {
+  // state management
+  const setMovementTime = useStore((state) => state.setMovementTime);
+
+
+  const navigate = useNavigate();
   const {
     totalSeconds,
     seconds,
@@ -27,6 +36,7 @@ function MyStopwatch() {
     reset,
   } = useStopwatch();
 
+
   // https://www.npmjs.com/package/react-timer-hook
 
   const formatTime = (value) => {
@@ -36,6 +46,8 @@ function MyStopwatch() {
   const handleButtonClick = () => {
     if (isRunning) {
       pause();
+      setMovementTime(totalSeconds);
+      navigate(PatientRoutes.WellDone);
     } else {
       start();
     }

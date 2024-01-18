@@ -7,6 +7,8 @@ const useStore = create(
       questions: [],
       answers: [],
       currentQuestion: 0,
+      questionaireIndex: 0,
+      movementTime: 0,
       setQuestions: (questions) => set({ questions }),
       setAnswers: (answers) => set({ answers }),
       addAnswer: (answer) =>
@@ -18,6 +20,13 @@ const useStore = create(
         set((state) => ({ currentQuestion: state.currentQuestion + 1 })),
       decrementCurrentQuestion: () =>
         set((state) => ({ currentQuestion: state.currentQuestion - 1 })),
+      incrementQuestionaireIndex: () =>
+        set((state) => ({ questionaireIndex: state.questionaireIndex + 1 })),
+      decrementQuestionaireIndex: () =>
+        set((state) => ({ questionaireIndex: state.questionaireIndex - 1 })),
+      resetQuestionaireIndex: () => set({ questionaireIndex: 0 }),
+      setMovementTime: (time) => set({ movementTime: time }),
+      resetMovementTime: () => set({ movementTime: 0 }),
     }),
     {
       name: "questionaire-store",

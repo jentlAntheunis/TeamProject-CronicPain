@@ -3,13 +3,16 @@ import { CheckCircle, X, XCircle } from "@phosphor-icons/react";
 import Streaks from "../../../ui/Icons/Streaks";
 import Button from "../../../ui/Button/Button";
 import styles from "./StreaksScreen.module.css";
+import { Link } from "react-router-dom";
+import { PatientRoutes } from "../../../../core/config/routes";
 
 const StreaksScreen = () => {
   return (
     <FullHeightScreen className={styles.streaksContainer}>
-      <button className={`btn-reset ${styles.closeBtn}`}>
+
+      <Link to={PatientRoutes.Dashboard} className={`btn-reset ${styles.closeBtn}`}>
         <X size={32} />
-      </button>
+      </Link>
       <div className={styles.center}>
         <div>
           <div className={styles.streaks}>
@@ -55,7 +58,9 @@ const StreaksScreen = () => {
           </div>
         </div>
       </div>
-      <Button size="full">Begrepen</Button>
+      <Link to={PatientRoutes.Dashboard}>
+        <Button size="full">Begrepen</Button>
+      </Link>
     </FullHeightScreen>
   );
 };

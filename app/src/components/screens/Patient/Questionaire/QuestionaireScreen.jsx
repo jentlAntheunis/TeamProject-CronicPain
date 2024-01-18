@@ -7,19 +7,28 @@ import Slider from "../../../ui/Slider/Slider";
 import { useEffect, useState } from "react";
 import { defaultAnswer } from "../../../../core/utils/questions";
 import { capitalize } from "../../../../core/utils/formatText";
+import { useNavigate } from "react-router-dom";
+import { PatientRoutes } from "../../../../core/config/routes";
+import RecieveCoinsModal from "../../../ui/Modal/RecieveCoinsModal";
 
 const QuestionaireScreen = () => {
   // States
   const [sliderValue, setSliderValue] = useState(0);
+  const [showModal, setShowModal] = useState(false);
 
   // Hooks
   const {
     questions,
     currentQuestion,
+    questionaireIndex,
     incrementCurrentQuestion,
     decrementCurrentQuestion,
+    resetCurrentQuestion,
+    incrementQuestionaireIndex,
     addAnswer,
   } = useStore();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setSliderValue(defaultAnswer(questions[currentQuestion]));
@@ -27,13 +36,17 @@ const QuestionaireScreen = () => {
 
   const handleNextQuestion = (e) => {
     e.preventDefault();
+    console.log(questionaireIndex);
     if (currentQuestion === questions.length - 1) {
-      
-      return;
+      if (questionaireIndex === 0) {
+        navigate(PatientRoutes.MovementSuggestions);
+      } else {
+        setShowModal(true);
+      }
     } else {
       incrementCurrentQuestion();
     }
-  }
+  };
 
   return (
     <FullHeightScreen>
@@ -43,12 +56,15 @@ const QuestionaireScreen = () => {
             questionNumber={currentQuestion + 1}
             totalQuestions={questions.length}
             previousQuestion={decrementCurrentQuestion}
+            questionaireIndex={questionaireIndex}
           />
           <h1 className={styles.question}>
             {questions[currentQuestion].question}
           </h1>
         </div>
-        <div className={styles.sliderValue}>{capitalize(questions[currentQuestion].options[sliderValue].content)}</div>
+        <div className={styles.sliderValue}>
+          {capitalize(questions[currentQuestion].options[sliderValue].content)}
+        </div>
         <div>
           <Slider
             max={questions[currentQuestion].options.length - 1}
@@ -70,6 +86,7 @@ const QuestionaireScreen = () => {
           </Button>
         </div>
       </div>
+      <RecieveCoinsModal showModal={showModal} setShowModal={setShowModal} amount={10} linkTo={PatientRoutes.Streaks} />
     </FullHeightScreen>
   );
 };

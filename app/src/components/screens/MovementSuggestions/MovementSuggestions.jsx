@@ -4,12 +4,14 @@ import FullHeightScreen from "../../ui/FullHeightScreen/FullHeightScreen";
 import PageHeading from "../../ui/PageHeading/PageHeading";
 import styles from "./MovementSuggestions.module.css";
 import { suggestions } from "../../../core/config/movementSuggestions";
+import { PatientRoutes } from "../../../core/config/routes";
+import { useNavigate } from "react-router-dom";
 
 const MovementSuggestions = () => {
-
-
   const [selectedSuggestion, setSelectedSuggestion] = useState(null);
   const suggestionsContainerRef = useRef(null);
+
+  const navigate = useNavigate();
 
   const handleSuggestionClick = (index) => {
     setSelectedSuggestion(index);
@@ -34,7 +36,9 @@ const MovementSuggestions = () => {
   return (
     <FullHeightScreen className={styles.screen}>
       <div className={styles.layout}>
-        <PageHeading>Kies een activiteit</PageHeading>
+        <PageHeading backLink={PatientRoutes.Questionaire}>
+          Kies een activiteit
+        </PageHeading>
         <div className={styles.suggestions} ref={suggestionsContainerRef}>
           {suggestions.map((suggestion, index) => (
             <button
@@ -48,7 +52,11 @@ const MovementSuggestions = () => {
             </button>
           ))}
         </div>
-        <Button size="full" disabled={selectedSuggestion === null}>
+        <Button
+          size="full"
+          disabled={selectedSuggestion === null}
+          onClick={() => navigate(PatientRoutes.TimeTracker)}
+        >
           Volgende
         </Button>
       </div>

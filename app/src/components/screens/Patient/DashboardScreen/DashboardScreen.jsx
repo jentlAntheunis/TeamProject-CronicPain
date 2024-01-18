@@ -22,12 +22,15 @@ const DashboardScreen = () => {
   const navigate = useNavigate();
 
   // state management
-  const { removeAnswers, resetCurrentQuestion } = useStore();
+  const { removeAnswers, resetCurrentQuestion, resetQuestionaireIndex, resetMovementTime } =
+    useStore();
   const setQuestions = useStore((state) => state.setQuestions);
 
   const handleStartMovement = () => {
     removeAnswers();
     resetCurrentQuestion();
+    resetQuestionaireIndex();
+    resetMovementTime();
     setQuestions(ExampleQuestions);
     navigate(PatientRoutes.Questionaire);
   };

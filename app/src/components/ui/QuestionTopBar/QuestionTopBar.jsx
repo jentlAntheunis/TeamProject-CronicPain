@@ -4,14 +4,26 @@ import ProgressBar from "../ProgressBar/ProgressBar";
 import { useNavigate } from "react-router-dom";
 import { PatientRoutes } from "../../../core/config/routes";
 
-const QuestionTopBar = ({ questionNumber, totalQuestions, previousQuestion }) => {
+const QuestionTopBar = ({
+  questionNumber,
+  totalQuestions,
+  previousQuestion,
+  questionaireIndex = 0,
+}) => {
   const navigate = useNavigate();
 
-
   const handleBack = () => {
-    // if first question, go to dashboard, else go to previous question
-    questionNumber === 1 ? navigate(PatientRoutes.Dashboard) : previousQuestion();
-  }
+    // if first question, go to previous screen, else go to previous question
+    if (questionNumber === 1) {
+      if (questionaireIndex === 0) {
+        navigate(PatientRoutes.Dashboard);
+      } else {
+        navigate(PatientRoutes.WellDone);
+      }
+    } else {
+      previousQuestion();
+    }
+  };
 
   return (
     <div className={styles.container}>

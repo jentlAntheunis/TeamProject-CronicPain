@@ -1,10 +1,11 @@
-const Coin = () => (
+const Coin = ({ size = 20 }) => (
   <svg
     width="20"
     height="20"
     viewBox="0 0 20 20"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    style={{ width: size, height: size }}
   >
     <path
       d="M10.0001 20C15.5229 20 20.0003 15.5229 20.0003 9.99987C20.0003 4.47684 15.5229 0 10.0001 0C4.47736 0 0 4.4771 0 10.0001C0 15.5232 4.4771 20.0003 10.0001 20.0003V20Z"
