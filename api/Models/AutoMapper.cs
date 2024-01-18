@@ -8,5 +8,6 @@ public class AutoMapperProfile : Profile
         CreateMap<Question, QuestionDTO>();
         CreateMap<Scale, ScaleDTO>();
         CreateMap<Option, OptionDTO>();
+        CreateMap<Questionnaire, QuestionnaireDTO>();
     }
 }

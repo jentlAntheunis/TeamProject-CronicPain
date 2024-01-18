@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using AutoMapper;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -117,6 +119,9 @@ builder.Services.AddCors(options =>
                .AllowAnyMethod();
     });
 });
+
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
 
 
 // Initialize Firebase Admin SDK
