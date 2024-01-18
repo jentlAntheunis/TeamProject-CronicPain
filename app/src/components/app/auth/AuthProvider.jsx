@@ -1,4 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { auth } from "../../../core/services/firebase";
+import { getUser } from "../../../core/utils/apiCalls";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 // localstorage key
 const KEY = "PEBBLES_AUTH";
@@ -6,39 +9,54 @@ const KEY = "PEBBLES_AUTH";
 const AuthContext = createContext();
 
 const getAuthFromLocalStorage = () => {
-  const auth = localStorage.getItem(KEY);
+  const user = localStorage.getItem(KEY);
   // return auth in base64 encode
-  return auth ? JSON.parse(atob(auth)) : null;
+  return user ? JSON.parse(atob(user)) : null;
 };
 
-const saveAuthToLocalStorage = (auth) => {
+const saveAuthToLocalStorage = (user) => {
   // save auth in base64 decode
-  localStorage.setItem(KEY, btoa(JSON.stringify(auth)));
+  localStorage.setItem(KEY, btoa(JSON.stringify(user)));
 };
 
 const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState(getAuthFromLocalStorage());
+  const [localAuth, setLocalAuth] = useState(getAuthFromLocalStorage());
+  const [user, loading] = useAuthState(auth);
 
   useEffect(() => {
-    if (auth) {
-      saveAuthToLocalStorage(auth);
+    if (localAuth) {
+      saveAuthToLocalStorage(localAuth);
     } else {
       localStorage.removeItem(KEY);
     }
-  }, [auth]);
+  }, [localAuth]);
 
-  const handleLogout = () => {
-    setAuth(null);
+  useEffect(() => {
+    if (!user && !loading) {
+      setLocalAuth(null);
+    }
+  }, [user, loading]);
+
+  const logout = () => {
+    auth.signOut();
+    setLocalAuth(null);
   };
 
-  const handleLogin = (auth) => {
-    setAuth(auth);
+  const login = (email) => {
+    return new Promise((resolve, reject) => {
+      getUser(email)
+        .then(({ data }) => {
+          setLocalAuth(data);
+          resolve(data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
   };
 
   return (
-    <AuthContext.Provider
-      value={{ auth, saveAuth: handleLogin, removeAuth: handleLogout }}
-    >
+    <AuthContext.Provider value={{ user: localAuth, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
@@ -49,8 +67,8 @@ export const useAuthContext = () => {
 };
 
 export const useUser = () => {
-  const { auth } = useAuthContext();
-  return auth;
+  const { user } = useAuthContext();
+  return user;
 };
 
 export default AuthProvider;

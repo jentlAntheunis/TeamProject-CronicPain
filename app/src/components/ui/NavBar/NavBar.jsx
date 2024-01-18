@@ -5,13 +5,15 @@ import { NavLink } from "react-router-dom";
 import { auth } from "../../../core/services/firebase";
 import Modal from "../Modal/Modal.jsx";
 import { useState } from "react";
+import { useAuthContext } from "../../app/auth/AuthProvider.jsx";
 
 const NavBar = () => {
   const [showModal, setShowModal] = useState(false);
+  const { logout } = useAuthContext();
 
   const handleLogout = () => {
     setShowModal(false);
-    auth.signOut();
+    logout();
   };
 
   return (
