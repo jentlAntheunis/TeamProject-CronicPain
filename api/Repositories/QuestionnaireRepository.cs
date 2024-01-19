@@ -12,6 +12,8 @@ public interface IQuestionnaireRepository
     Task<Questionnaire> GetQuestionnaireByPatientIdAsync(Guid id);
     Task<QuestionnaireDTO> AddMovementQuestionnaireAsync(Guid id);
     Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId);
+
+    Task<QuestionDTO> AddDailyPainQuestionnaireAsync(Guid userId);
     Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire);
     Task DeleteQuestionnaireAsync(Questionnaire questionnaire);
     Task<List<Questionnaire>> GetQuestionnairesAsync();
@@ -139,6 +141,48 @@ public class QuestionnaireRepository : IQuestionnaireRepository
 
         return questionnaireDTO;
     }
+
+    public async Task<QuestionDTO> AddDailyPainQuestionnaireAsync(Guid userId)
+    {
+        var questionnaire = new Questionnaire
+        {
+            Id = Guid.NewGuid(),
+            PatientId = userId,
+            Date = null
+        };
+
+        var categoryId = await _context.Category
+            .Where(c => c.Name == "pijn")
+            .Select(c => c.Id)
+            .FirstOrDefaultAsync();
+
+        var question = await _context.Question
+            .Where(q => q.CategoryId == categoryId && q.Scale.Name == "1_10")
+            .Include(q => q.Scale)
+            .ThenInclude(scale => scale.Options)
+            .FirstOrDefaultAsync();
+
+        if (question != null)
+        {
+            var questionnaireQuestion = new QuestionnaireQuestion
+            {
+                QuestionnaireId = questionnaire.Id,
+                QuestionId = question.Id
+            };
+
+            await _context.QuestionnaireQuestion.AddAsync(questionnaireQuestion);
+            await _context.Questionnaire.AddAsync(questionnaire);
+            await _context.SaveChangesAsync();
+
+            // Map the selected Question to QuestionDTO (using AutoMapper)
+            var questionDTO = _mapper.Map<QuestionDTO>(question);
+            return questionDTO;
+        }
+
+        // Handle the case where no question is found
+        return null;
+    }
+
     
 
     public async Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire)
