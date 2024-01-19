@@ -74,6 +74,26 @@ public class QuestionController : ControllerBase
         }
     }
 
+    [HttpGet("dailypainquestionnaire/{userId}")]
+    public async Task<IActionResult> CreateDailyPainQuestionnaire(Guid userId)
+    {
+        try
+        {
+            var questionnaireDTO = await _questionnaireRepository.AddDailyPainQuestionnaireAsync(userId);
+
+            if (questionnaireDTO == null)
+            {
+                return NotFound("Questionnaire not found.");
+            }
+
+            return Ok(questionnaireDTO);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Failed to create daily pain questionnaire: {ex.Message}");
+        }
+    }
+
     
 
 }
