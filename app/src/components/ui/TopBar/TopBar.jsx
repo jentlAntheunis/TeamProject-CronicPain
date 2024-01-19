@@ -9,7 +9,7 @@ import Modal from "../Modal/Modal.jsx";
 import Button from "../Button/Button.jsx";
 import { useAuthContext } from "../../app/auth/AuthProvider.jsx";
 
-const TopBar = () => {
+const TopBar = ({ coins, streak }) => {
   const { logout } = useAuthContext();
   const [showMenu, setShowMenu] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -40,10 +40,10 @@ const TopBar = () => {
   return (
     <div className={styles.spaceBetween}>
       <div className={styles.flex}>
-        <RewardMetric number={300}>
+        <RewardMetric number={coins}>
           <Coin />
         </RewardMetric>
-        <RewardMetric number={2}>
+        <RewardMetric number={streak}>
           <Streaks />
         </RewardMetric>
       </div>

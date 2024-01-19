@@ -38,9 +38,15 @@ const sendMailToPatient = async ({ firstName, lastName, email, specialistId }) =
   data: { firstName, lastName, email }
 })
 
+const getUserData = async (userId) => await request({
+  url: '/users/' + userId,
+  method: 'GET',
+})
+
 export {
   getUser,
   checkIfUserExists,
   storePatient,
   sendMailToPatient,
+  getUserData,
 }
