@@ -126,12 +126,12 @@ const AddPatient = () => {
             </FormItem>
           </div>
           <div className={`mobile-only ${styles.removePadding}`}>
-            <Button type="submit" size="full">
+            <Button type="submit" size="full" disabled={loading}>
               Toevoegen
             </Button>
           </div>
           <div className={`desktop-only ${styles.removePadding}`}>
-            <Button type="submit" size="default">
+            <Button type="submit" size="default" disabled={loading}>
               Toevoegen
             </Button>
           </div>

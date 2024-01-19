@@ -1,32 +1,48 @@
+import { PatientRoutes } from "../../../../core/config/routes";
+import useStore from "../../../../core/hooks/useStore";
+import {
+  minutesSecondsToText,
+  secondsToMinutesSeconds,
+} from "../../../../core/utils/timeData";
 import Avatar from "../../../ui/Avatar/Avatar";
 import Button from "../../../ui/Button/Button";
 import FullHeightScreen from "../../../ui/FullHeightScreen/FullHeightScreen";
 import styles from "./WellDone.module.css";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+
+// TODO: Replace this with the actual value from the timer
+const totalSeconds = 846;
 
 const WellDone = () => {
-  const totalSeconds = 299; // Deze waarde krijgen we van de timer
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  const minutesText = minutes === 1 ? "minuut" : "minuten";
-  const timeText = `${minutes > 0 ? `${minutes} ${minutesText} en` : ''} ${seconds} seconden`;
-  let text;
-  let celebration;
-  let uitleg;
-  if (totalSeconds > 5 * 60) {
-    celebration = "Goed gedaan!";
-    text = `Je bewoog voor ${timeText}`;
-    uitleg = (
-      <>
-        Je zult nu opnieuw <strong>dezelfde vragen</strong> krijgen om een beter
-        inzicht te krijgen in de impact van deze bewegingssessie
-      </>
-    );
-  } else {
-    celebration = "Een goed begin!";
-    text =
-    `Je bewoog slechts ${timeText}, hierdoor zal je geen muntjes krijgen`;
-    uitleg = "";
-  }
+  // state management
+  const { movementTime, incrementQuestionaireIndex, resetCurrentQuestion } = useStore();
+
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  console.log(state);
+
+  const { minutes, seconds } = secondsToMinutesSeconds(movementTime);
+  const timeText = minutesSecondsToText({ minutes, seconds });
+
+  const isLongSession = movementTime > 5 * 60;
+  const celebration = isLongSession ? "Goed gedaan!" : "Een goed begin!";
+  const text = isLongSession
+    ? `Je bewoog voor ${timeText}`
+    : `Je bewoog slechts ${timeText}, hierdoor zal je geen muntjes krijgen`;
+
+  const uitleg = isLongSession ? (
+    <>
+      Je zult nu opnieuw <strong>dezelfde vragen</strong> krijgen om een beter
+      inzicht te krijgen in de impact van deze bewegingssessie
+    </>
+  ) : null;
+
+  const handleClick = () => {
+    incrementQuestionaireIndex();
+    resetCurrentQuestion();
+    navigate(PatientRoutes.Questionaire);
+  };
 
   return (
     <FullHeightScreen>
@@ -39,7 +55,9 @@ const WellDone = () => {
             <div className={styles.uitleg}>{uitleg}</div>
           </div>
         </div>
-        <Button size="full">Ik snap het</Button>
+        <Button size="full" onClick={handleClick}>
+          Ik snap het
+        </Button>
       </div>
     </FullHeightScreen>
   );

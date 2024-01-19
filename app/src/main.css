@@ -34,6 +34,7 @@
   --lime-900: #365314;
   --error: #dc2626;
   --transparent: #00000000;
+  --bg-overlay: rgba(0, 0, 0, 0.5);
 
   /* Font Family */
   --font-sans: "Outfit", sans-serif;
@@ -73,6 +74,11 @@
   --margin-side: 1.5rem;
   --margin-top: 4.5rem;
   --margin-bottom: 2.5rem;
+
+  /* Bezier */
+  --animate-in: cubic-bezier(0.32, 0.94, 0.6, 1);
+  --animate-ease: cubic-bezier(0.66, 0, 0.34, 1);
+  --animate-out: cubic-bezier(0.4, 0, 0.68, 0.06);
 }
 
 html {
