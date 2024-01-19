@@ -7,6 +7,11 @@ import { useUser } from "./AuthProvider";
 const AuthContainer = () => {
   const location = useLocation();
   const user = useUser();
+  const [_, loading] = useAuthState(auth);
+
+  if (loading) {
+    return null;
+  }
 
   if (!user) {
     return (

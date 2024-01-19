@@ -15,16 +15,38 @@ import clsx from "clsx";
 import useStore from "../../../../core/hooks/useStore.jsx";
 import { ExampleQuestions } from "../../../../core/config/questions.js";
 import DailyPain from "../../../ui/DailyPain/DailyPain.jsx";
+import { getUserData } from "../../../../core/utils/apiCalls.js";
+import { useUser } from "../../../app/auth/AuthProvider.jsx";
+import { toast } from "react-toastify";
+import { useQuery } from "@tanstack/react-query";
 
 const DashboardScreen = () => {
+  // state management
   const [sheetOpen, setSheetOpen] = useState(false);
+  const {
+    removeAnswers,
+    resetCurrentQuestion,
+    resetQuestionaireIndex,
+    resetMovementTime,
+  } = useStore();
+  const setQuestions = useStore((state) => state.setQuestions);
 
+  // hooks
+  const user = useUser();
   const navigate = useNavigate();
 
-  // state management
-  const { removeAnswers, resetCurrentQuestion, resetQuestionaireIndex, resetMovementTime } =
-    useStore();
-  const setQuestions = useStore((state) => state.setQuestions);
+  // fetch data
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getUserData(user.id),
+  });
+
+  if (isLoading) return null;
+
+  if (isError) {
+    toast.error("Er is iets misgegaan bij het ophalen van je gegevens.");
+    return null;
+  }
 
   const handleStartMovement = () => {
     removeAnswers();
@@ -39,7 +61,7 @@ const DashboardScreen = () => {
     <FullHeightScreen>
       <DailyPain />
       <div className={styles.screen}>
-        <TopBar />
+        <TopBar coins={data.data.coins} streak={data.data.streak} />
         <Avatar />
         <div className={styles.btnContainer}>
           <Button
