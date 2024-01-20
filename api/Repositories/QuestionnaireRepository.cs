@@ -61,7 +61,7 @@ public class QuestionnaireRepository : IQuestionnaireRepository
                 .Where(q => q.CategoryId == categoryId)
                 .OrderBy(q => Guid.NewGuid()) // Shuffle the questions randomly
                 .Take(5)
-                .Include(q => q.Scale) 
+                .Include(q => q.Scale)
                 .ThenInclude(scale => scale.Options)
                 .ToListAsync();
 
@@ -91,8 +91,8 @@ public class QuestionnaireRepository : IQuestionnaireRepository
             {
                 Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
             }
-            throw; 
-        }          
+            throw;
+        }
     }
 
 
@@ -100,7 +100,7 @@ public class QuestionnaireRepository : IQuestionnaireRepository
 
     public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
     {
-        
+
         var questionnaire = new Questionnaire
         {
             Id= Guid.NewGuid(),
@@ -117,8 +117,8 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         var randomQuestions = await _context.Question
         .Where(q => q.CategoryId == categoryId)
         .OrderBy(q => Guid.NewGuid()) // Shuffle the questions randomly
-        .Take(5)
-        .Include(q => q.Scale) 
+        .Take(10)
+        .Include(q => q.Scale)
         .ThenInclude(scale => scale.Options)
         .ToListAsync();
 
@@ -132,7 +132,7 @@ public class QuestionnaireRepository : IQuestionnaireRepository
 
             await _context.QuestionnaireQuestion.AddAsync(questionnaireQuestion);
         }
-            
+
         await _context.Questionnaire.AddAsync(questionnaire);
         await _context.SaveChangesAsync();
 
@@ -183,7 +183,7 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         return null;
     }
 
-    
+
 
     public async Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire)
     {
@@ -197,7 +197,7 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         var answers = await _context.Answer.Where(a => a.QuestionnaireId == questionnaire.Id).ToListAsync();
         if (answers != null)
         {
-            
+
             _context.Answer.RemoveRange(answers);
         }
         _context.Questionnaire.Remove(questionnaire);
