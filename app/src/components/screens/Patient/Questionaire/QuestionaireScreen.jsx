@@ -5,7 +5,7 @@ import Button from "../../../ui/Button/Button";
 import styles from "./QuestionaireScreen.module.css";
 import Slider from "../../../ui/Slider/Slider";
 import { useEffect, useState } from "react";
-import { defaultAnswer } from "../../../../core/utils/questions";
+import { defaultAnswer, orderOptions } from "../../../../core/utils/questions";
 import { capitalize } from "../../../../core/utils/formatText";
 import { useNavigate } from "react-router-dom";
 import { PatientRoutes } from "../../../../core/config/routes";
@@ -21,6 +21,7 @@ const QuestionaireScreen = () => {
     questions,
     currentQuestion,
     questionaireIndex,
+    questionaireId,
     incrementCurrentQuestion,
     decrementCurrentQuestion,
     resetCurrentQuestion,
@@ -44,6 +45,11 @@ const QuestionaireScreen = () => {
         setShowModal(true);
       }
     } else {
+      addAnswer({
+        questionId: questions[currentQuestion].id,
+        optionId: orderOptions(questions[currentQuestion].scale.options)[sliderValue].id,
+        questionaireId: questionaireId,
+      })
       incrementCurrentQuestion();
     }
   };
@@ -59,21 +65,26 @@ const QuestionaireScreen = () => {
             questionaireIndex={questionaireIndex}
           />
           <h1 className={styles.question}>
-            {questions[currentQuestion].question}
+            {questions[currentQuestion].content}
           </h1>
         </div>
         <div className={styles.sliderValue}>
-          {capitalize(questions[currentQuestion].options[sliderValue].content)}
+          {capitalize(
+            orderOptions(questions[currentQuestion].scale.options)[sliderValue]
+              .content
+          )}
         </div>
         <div>
           <Slider
-            max={questions[currentQuestion].options.length - 1}
+            max={questions[currentQuestion].scale.options.length - 1}
             value={sliderValue}
             setValue={setSliderValue}
-            minLabel={questions[currentQuestion].options[0].content}
+            minLabel={
+              orderOptions(questions[currentQuestion].scale.options)[0].content
+            }
             maxLabel={
-              questions[currentQuestion].options[
-                questions[currentQuestion].options.length - 1
+              orderOptions(questions[currentQuestion].scale.options)[
+                questions[currentQuestion].scale.options.length - 1
               ].content
             }
           />
@@ -86,7 +97,12 @@ const QuestionaireScreen = () => {
           </Button>
         </div>
       </div>
-      <RecieveCoinsModal showModal={showModal} setShowModal={setShowModal} amount={10} linkTo={PatientRoutes.Streaks} />
+      <RecieveCoinsModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        amount={10}
+        linkTo={PatientRoutes.Streaks}
+      />
     </FullHeightScreen>
   );
 };
