@@ -51,7 +51,7 @@ public class SpecialistService : ISpecialistService
             mail.Subject = "Uitnodiging voor Pebbles";
             mail.Body = "Beste " + patientName + " " + patientSurname + ",\n\n" +
                 "Je bent uitgenodigd door " + specialistName + " " + specialistSurname + " om deel te nemen aan Pebbles.\n" +
-                "Klik op de volgende link om je aan te melden: *link*\n\n" +
+                "Klik op de volgende link om je aan te melden: https://www.pebbles-health.be/login\n\n" +
                 "Met vriendelijke groeten,\n" +
                 "Het Pebbles-team";
 
