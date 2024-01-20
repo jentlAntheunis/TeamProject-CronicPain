@@ -68,6 +68,14 @@ const getDailyQuestionnaire = async (userId) => {
   return getQuestionnaire(userId, 'dailyquestionnaire', QuestionCategories.Daily);
 };
 
+/**
+ * Coins and Streaks API calls
+ */
+const addCoins = async (userId, amount) => await request({
+  url: `/patients/${userId}/addcoins/${amount}`,
+  method: 'PUT',
+})
+
 export {
   getUser,
   checkIfUserExists,
@@ -77,4 +85,5 @@ export {
   getMovementQuestionnaire,
   getBonusQuestionnaire,
   getDailyQuestionnaire,
+  addCoins,
 }

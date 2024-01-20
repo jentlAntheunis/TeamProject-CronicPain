@@ -32,6 +32,7 @@ const DashboardScreen = () => {
   } = useStore();
   const setQuestions = useStore((state) => state.setQuestions);
   const setQuestionaireId = useStore((state) => state.setQuestionaireId);
+  const setQuestionaireCategory = useStore((state) => state.setQuestionaireCategory);
 
   // hooks
   const user = useUser();
@@ -50,13 +51,13 @@ const DashboardScreen = () => {
     return null;
   }
 
-  const handleStartQuestionnaire = async (questionnaireType) => {
+  const handleStartQuestionnaire = async (questionnaireCategory) => {
     setLoading(true);
     try {
       let result;
-      if (questionnaireType === QuestionCategories.Movement) {
+      if (questionnaireCategory === QuestionCategories.Movement) {
         result = await getMovementQuestionnaire(user.id);
-      } else if (questionnaireType === QuestionCategories.Bonus) {
+      } else if (questionnaireCategory === QuestionCategories.Bonus) {
         result = await getBonusQuestionnaire(user.id);
       }
       const { data } = result;
@@ -67,6 +68,7 @@ const DashboardScreen = () => {
       resetQuestionaireIndex();
       resetMovementTime();
       setQuestionaireId(data.id);
+      setQuestionaireCategory(questionnaireCategory);
       setQuestions(data.questions);
       navigate(PatientRoutes.Questionaire);
     } catch (error) {

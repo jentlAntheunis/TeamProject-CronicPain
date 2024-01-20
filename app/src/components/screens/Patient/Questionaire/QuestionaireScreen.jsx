@@ -10,46 +10,93 @@ import { capitalize } from "../../../../core/utils/formatText";
 import { useNavigate } from "react-router-dom";
 import { PatientRoutes } from "../../../../core/config/routes";
 import RecieveCoinsModal from "../../../ui/Modal/RecieveCoinsModal";
+import QuestionCategories from "../../../../core/config/questionCategories";
+import { addCoins } from "../../../../core/utils/apiCalls";
+import { useUser } from "../../../app/auth/AuthProvider";
+import { toast } from "react-toastify";
 
 const QuestionaireScreen = () => {
   // States
   const [sliderValue, setSliderValue] = useState(0);
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  // amount of coins
+  const [amount, setAmount] = useState(0);
 
   // Hooks
+  const user = useUser();
   const {
     questions,
     currentQuestion,
     questionaireIndex,
     questionaireId,
+    questionaireType,
+    answers,
     incrementCurrentQuestion,
     decrementCurrentQuestion,
     resetCurrentQuestion,
     incrementQuestionaireIndex,
     addAnswer,
+    replaceLastAnswer,
   } = useStore();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    setSliderValue(defaultAnswer(questions[currentQuestion]));
-  }, [currentQuestion, questions]);
-
-  const handleNextQuestion = (e) => {
-    e.preventDefault();
-    console.log(questionaireIndex);
-    if (currentQuestion === questions.length - 1) {
-      if (questionaireIndex === 0) {
-        navigate(PatientRoutes.MovementSuggestions);
+    // If answer already exists, set slider to that value
+    if (answers[currentQuestion]) {
+      const selectedOption = questions[currentQuestion].scale.options.find(
+        (option) => option.id === answers[currentQuestion].optionId
+      );
+      if (selectedOption) {
+        setSliderValue(parseInt(selectedOption.position) - 1);
       } else {
-        setShowModal(true);
+        setSliderValue(defaultAnswer(questions[currentQuestion]));
       }
     } else {
-      addAnswer({
-        questionId: questions[currentQuestion].id,
-        optionId: orderOptions(questions[currentQuestion].scale.options)[sliderValue].id,
-        questionaireId: questionaireId,
-      })
+      setSliderValue(defaultAnswer(questions[currentQuestion]));
+    }
+  }, [currentQuestion, questions, answers]);
+
+  const handleNextQuestion = async () => {
+    // Add answer to answers array
+    const answer = {
+      questionId: questions[currentQuestion].id,
+      optionId: orderOptions(questions[currentQuestion].scale.options)[
+        sliderValue
+      ].id,
+      questionaireId: questionaireId,
+    };
+    addAnswer(answer, currentQuestion);
+    // Check if last question
+    if (currentQuestion === questions.length - 1) {
+      // Check if first questionaire from movement questionaire
+      if (
+        questionaireType === QuestionCategories.Movement &&
+        questionaireIndex === 0
+      ) {
+        navigate(PatientRoutes.MovementSuggestions);
+      } else {
+        // End of questionaire
+        const coins = questionaireType === QuestionCategories.Movement ? 10 : 5;
+        // TODO: send answers to backend
+        console.log(answers);
+        setLoading(true);
+        try {
+          setAmount(coins);
+          await addCoins(user.id, coins);
+          setLoading(false);
+          setShowModal(true);
+        } catch (error) {
+          setLoading(false);
+          console.log(error);
+          toast.error(
+            "Er is iets misgegaan bij het opslaan van je antwoorden."
+          );
+        }
+      }
+    } else {
+      // When not last question
       incrementCurrentQuestion();
     }
   };
@@ -92,6 +139,7 @@ const QuestionaireScreen = () => {
             onClick={handleNextQuestion}
             size="full"
             className={styles.button}
+            disabled={loading}
           >
             {currentQuestion === questions.length - 1 ? "Verstuur" : "Volgende"}
           </Button>
@@ -100,7 +148,7 @@ const QuestionaireScreen = () => {
       <RecieveCoinsModal
         showModal={showModal}
         setShowModal={setShowModal}
-        amount={10}
+        amount={amount}
         linkTo={PatientRoutes.Streaks}
       />
     </FullHeightScreen>
