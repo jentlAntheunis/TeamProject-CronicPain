@@ -65,9 +65,7 @@ const QuestionaireScreen = () => {
       optionId: orderOptions(questions[currentQuestion].scale.options)[
         sliderValue
       ].id,
-      questionaireId: questionaireId,
     };
-    addAnswer(answer, currentQuestion);
     // Check if last question
     if (currentQuestion === questions.length - 1) {
       // Check if first questionaire from movement questionaire
@@ -80,7 +78,12 @@ const QuestionaireScreen = () => {
         // End of questionaire
         const coins = questionaireType === QuestionCategories.Movement ? 10 : 5;
         // TODO: send answers to backend
-        console.log(answers);
+        const data = {
+          questionnaireId: questionaireId,
+          questionnaireIndex: questionaireIndex,
+          answers: [...answers, answer],
+        };
+        console.log(data);
         setLoading(true);
         try {
           setAmount(coins);
@@ -97,6 +100,7 @@ const QuestionaireScreen = () => {
       }
     } else {
       // When not last question
+      addAnswer(answer, currentQuestion);
       incrementCurrentQuestion();
     }
   };
