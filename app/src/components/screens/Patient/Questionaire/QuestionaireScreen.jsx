@@ -30,7 +30,7 @@ const QuestionaireScreen = () => {
     currentQuestion,
     questionaireIndex,
     questionaireId,
-    questionaireType,
+    questionaireCategory,
     answers,
     incrementCurrentQuestion,
     decrementCurrentQuestion,
@@ -70,13 +70,15 @@ const QuestionaireScreen = () => {
     if (currentQuestion === questions.length - 1) {
       // Check if first questionaire from movement questionaire
       if (
-        questionaireType === QuestionCategories.Movement &&
+        questionaireCategory === QuestionCategories.Movement &&
         questionaireIndex === 0
       ) {
+        addAnswer(answer, currentQuestion);
         navigate(PatientRoutes.MovementSuggestions);
       } else {
         // End of questionaire
-        const coins = questionaireType === QuestionCategories.Movement ? 10 : 5;
+        const coins =
+          questionaireCategory === QuestionCategories.Movement ? 10 : 5;
         // TODO: send answers to backend
         const data = {
           questionnaireId: questionaireId,

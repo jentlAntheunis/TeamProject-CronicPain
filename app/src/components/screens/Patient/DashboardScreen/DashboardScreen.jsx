@@ -25,10 +25,7 @@ const DashboardScreen = () => {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const {
-    removeAnswers,
-    resetCurrentQuestion,
-    resetQuestionaireIndex,
-    resetMovementTime,
+    resetEverything,
   } = useStore();
   const setQuestions = useStore((state) => state.setQuestions);
   const setQuestionaireId = useStore((state) => state.setQuestionaireId);
@@ -63,10 +60,7 @@ const DashboardScreen = () => {
       const { data } = result;
       setLoading(false);
       console.log(data);
-      removeAnswers();
-      resetCurrentQuestion();
-      resetQuestionaireIndex();
-      resetMovementTime();
+      resetEverything();
       setQuestionaireId(data.id);
       setQuestionaireCategory(questionnaireCategory);
       setQuestions(data.questions);

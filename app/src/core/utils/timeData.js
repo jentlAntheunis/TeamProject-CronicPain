@@ -17,4 +17,8 @@ const minutesSecondsToText = ({ minutes, seconds }) => {
   return result;
 }
 
-export { secondsToMinutesSeconds, minutesSecondsToText };
+const timeToStringValue = (value) => {
+  return value.toString().padStart(2, "0");
+}
+
+export { secondsToMinutesSeconds, minutesSecondsToText, timeToStringValue };
