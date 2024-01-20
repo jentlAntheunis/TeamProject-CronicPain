@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using AutoMapper;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +32,7 @@ builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<ISpecialistService, SpecialistService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IStoreService, StoreService>();
+builder.Services.AddScoped<IQuestionService, QuestionService>();
 
 //add repositories
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
@@ -40,6 +43,10 @@ builder.Services.AddScoped<IColorRepository, ColorRepository>();
 builder.Services.AddScoped<IMovementSessionRepository, MovementSessionRepository>();
 builder.Services.AddScoped<IMovementSuggestionRepository, MovementSuggestionRepository>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
+builder.Services.AddScoped<IQuestionnaireRepository, QuestionnaireRepository>();
+builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IScaleRepository, ScaleRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -112,6 +119,10 @@ builder.Services.AddCors(options =>
                .AllowAnyMethod();
     });
 });
+
+
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
 
 
 // Initialize Firebase Admin SDK
