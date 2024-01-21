@@ -6,34 +6,46 @@ import styles from "./Patients.module.css";
 import Search from "../../../ui/Search/Search";
 import ScrollableScreen from "../../../ui/ScrollableScreen/ScrollableScreen";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const Patients = () => {
   const patientData = [
-    { name: "Dirk Janssens" },
-    { name: "Jos Vermeiren" },
-    { name: "Rita Van de Velde" },
-    { name: "Luc De Vos" },
-    { name: "An Bari" },
-    { name: "John Doe" },
-    { name: "Jane Smith" },
-    { name: "Michael Johnson" },
-    { name: "Emily Davis" },
-    { name: "David Wilson" },
-    { name: "Olivia Taylor" },
-    { name: "Daniel Anderson" },
-    { name: "Sophia Martinez" },
-    { name: "Matthew Thompson" },
-    { name: "Ava Garcia" },
-    { name: "William Brown" },
-    { name: "Isabella Thomas" },
-    { name: "James Lee" },
-    { name: "Mia Clark" },
-    { name: "Benjamin Lewis" },
-    { name: "Charlotte Hall" },
-    { name: "Joseph Wright" },
-    { name: "Amelia Turner" },
-    { name: "Henry Adams" },
+    { name: "Janssens Dirk" },
+    { name: "Vermeiren Jos" },
+    { name: "Van de Velde Rita" },
+    { name: "De Vos Luc" },
+    { name: "Bari An" },
+    { name: "Doe John" },
+    { name: "Smith Jane" },
+    { name: "Johnson Michael" },
+    { name: "Davis Emily" },
+    { name: "Wilson David" },
+    { name: "Taylor Olivia" },
+    { name: "Anderson Daniel" },
+    { name: "Martinez Sophia" },
+    { name: "Thompson Matthew" },
+    { name: "Garcia Ava" },
+    { name: "Brown William" },
+    { name: "Thomas Isabella" },
+    { name: "Lee James" },
+    { name: "Clark Mia" },
+    { name: "Lewis Benjamin" },
+    { name: "Hall Charlotte" },
+    { name: "Wright Joseph" },
+    { name: "Turner Amelia" },
+    { name: "Adams Henry" },
   ];
+
+  const [searchInput, setSearchInput] = useState('');
+
+  const handleSearchChange = (event) => {
+    console.log("change");
+    setSearchInput(event.target.value);
+  };
+
+  const filteredPatients = patientData.filter(patient =>
+    patient.name.toLowerCase().includes(searchInput.toLowerCase())
+  );
 
   return (
     <ScrollableScreen>
@@ -41,7 +53,7 @@ const Patients = () => {
       <div className="container">
         <PageHeading>Patiënten</PageHeading>
         <div className={styles.searchAndAdd}>
-          <Search />
+          <Search name="fullNameSearch" value={searchInput} onChange={handleSearchChange} />
           <Link to="/add-patient">
             <Button>
               <Plus size={18} weight="bold" />
@@ -50,7 +62,7 @@ const Patients = () => {
           </Link>
         </div>
         <div className={styles.patients}>
-          {patientData.map((patient, index) => (
+          {filteredPatients.map((patient, index) => (
             <div className={styles.patient} key={index}>
               <div className={styles.patientName}>{patient.name}</div>
               <Button variant="tertiary" size="superSmall">
