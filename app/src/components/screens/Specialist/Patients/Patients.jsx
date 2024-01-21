@@ -47,6 +47,8 @@ const Patients = () => {
     patient.name.toLowerCase().includes(searchInput.toLowerCase())
   );
 
+  const sortedPatients = filteredPatients.sort((a, b) => a.name.localeCompare(b.name));
+
   return (
     <ScrollableScreen>
       <NavBar />
@@ -62,7 +64,7 @@ const Patients = () => {
           </Link>
         </div>
         <div className={styles.patients}>
-          {filteredPatients.map((patient, index) => (
+          {sortedPatients.map((patient, index) => (
             <div className={styles.patient} key={index}>
               <div className={styles.patientName}>{patient.name}</div>
               <Button variant="tertiary" size="superSmall">
