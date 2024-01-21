@@ -1,0 +1,42 @@
+.container {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  background-color: var(--bg-overlay);
+  z-index: -1;
+}
+
+.bottomSheet {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--white);
+  border-top-left-radius: var(--border-radius-2xl);
+  border-top-right-radius: var(--border-radius-2xl);
+  padding: 2rem;
+  z-index: 1;
+  animation: slideIn 0.2s var(--animate-in);
+}
+
+.bottomSheet .bottomSheetInner {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+/* animate in bottomsheet */
+@keyframes slideIn {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+

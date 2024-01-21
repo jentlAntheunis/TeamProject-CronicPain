@@ -1,0 +1,87 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy ASP.Net Core app to Azure Web App - pebbles-api
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "8.x"
+          include-prerelease: true
+
+      - name: Create appsettings.json
+        run: |
+          echo '{
+            "ConnectionStrings": {
+              "PebblesDB": "${{ secrets.CONNECTIONSTRINGS_PEBBLESDB }}"
+            },
+            "EmailSettings": {
+              "SmtpServer": "${{ secrets.EMAILSETTINGS_SMTPSERVER }}",
+              "SmtpPort": ${{ secrets.EMAILSETTINGS_SMTPPORT }},
+              "SmtpUsername": "${{ secrets.EMAILSETTINGS_SMTPUSERNAME }}",
+              "SmtpPassword": "${{ secrets.EMAILSETTINGS_SMTPPASSWORD }}"
+            }
+          }' > api/appsettings.json
+
+      - name: Create ServiceAccountCredentials.json
+        run: |
+          echo '{
+            "type": "${{ secrets.SAC_TYPE }}",
+            "project_id": "${{ secrets.SAC_PROJECTID }}",
+            "private_key_id": "${{ secrets.SAC_KEYID }}",
+            "private_key": "${{ secrets.SAC_KEY }}",
+            "client_email": "${{ secrets.SAC_CLIENTEMAIL }}",
+            "client_id": "${{ secrets.SAC_CLIENTID }}",
+            "auth_uri": "${{ secrets.SAC_AUTHURI }}",
+            "token_uri": "${{ secrets.SAC_TOKENURI }}",
+            "auth_provider_x509_cert_url": "${{ secrets.SAC_AUTHPROVIDER }}",
+            "client_x509_cert_url": "${{ secrets.SAC_CLIENTURL }}",
+            "universe_domain": "${{ secrets.SAC_UNIVERSEDOMAIN }}"
+          }' > api/ServiceAccountCredentials.json
+
+      - name: Build with dotnet
+        run: dotnet build --configuration Release ./api
+
+      - name: dotnet publish
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp ./api
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/myapp
+
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    environment:
+      name: "Production"
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: .net-app
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: "pebbles-api"
+          slot-name: "Production"
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8CDD68E4AB0948098AB1A40098DBFB53 }}
+          package: .

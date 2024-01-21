@@ -1,0 +1,73 @@
+.navBarContainer {
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-bottom: 1px solid var(--grey-200);
+  padding: 1.5rem var(--margin-side);
+  background-color: var(--white);
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navBarLeft {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navBarLogo {
+  color: var(--blue-500);
+  font-size: var(--h4);
+}
+
+.navBarSpacer {
+  width: 8px;
+  height: 1px;
+  background-color: var(--grey-400);
+}
+
+.navBarSpecialist {
+  color: var(--grey-400);
+  font-size: var(--p);
+}
+
+.navBarMenu {
+  display: flex;
+  align-items: center;
+  gap: 5.5rem;
+}
+
+.navBarMenuItem {
+  color: var(--grey-400);
+  font-size: var(--p);
+  text-decoration: none;
+}
+
+.navBarMenuItem:hover, .navBarMenuItem.active {
+  color: var(--black);
+}
+
+.modalText {
+  font-size: var(--h6);
+  margin-bottom: 2rem;
+}
+
+.modalButtons{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.modalButtons button {
+  flex-grow: 1;
+}

@@ -22,7 +22,8 @@ const DailyPain = () => {
         <div>
           <Slider
             max={10}
-            setSliderValue={setSliderValue}
+            value={sliderValue}
+            setValue={setSliderValue}
             minLabel="geen pijn"
             maxLabel="veel pijn"
           />

@@ -4,11 +4,19 @@ import AuthContainer from "./auth/AuthContainer";
 import RoleContainer from "./auth/RoleContainer";
 import { UserRoles } from "../../core/config/userRoles";
 import LoginScreen from "../screens/LoginScreen/LoginScreen";
-import DashboardScreen from "../screens/DashboardScreen";
 import AddPatient from "../screens/Specialist/AddPatient/AddPatient";
-import { AuthRoutes, PatientRoutes, SpecialistRoutes } from "../../core/config/routes";
+import {
+  AuthRoutes,
+  PatientRoutes,
+  SpecialistRoutes,
+} from "../../core/config/routes";
+import QuestionaireScreen from "../screens/Patient/Questionaire/QuestionaireScreen";
+import DashboardScreen from "../screens/Patient/DashboardScreen/DashboardScreen";
 import WellDone from "../screens/Patient/WellDone/WellDone";
 import StreaksScreen from "../screens/Patient/StreaksScreen/StreaksScreen";
+import MovementSuggestions from "../screens/MovementSuggestions/MovementSuggestions";
+import TimeTracker from "../screens/TimeTracker/TimeTracker";
+import Patients from "../screens/Specialist/Patients/Patients";
 
 const App = () => (
   <Routes>
@@ -39,7 +47,10 @@ const App = () => (
         }
       >
         {/* Specialist Paths */}
+        <Route index element={<Navigate to={SpecialistRoutes.PatientsOverview} />} />
+        <Route path={SpecialistRoutes.PatientsOverview} element={<Patients />} />
         <Route path={SpecialistRoutes.AddPatient} element={<AddPatient />} />
+        <Route path="*" element={<Navigate to={SpecialistRoutes.PatientsOverview} />} />
       </Route>
 
       {/* Patient */}
@@ -52,9 +63,15 @@ const App = () => (
       >
         {/* Patient Paths */}
         <Route path={PatientRoutes.Dashboard} element={<DashboardScreen />} />
+        <Route
+          path={PatientRoutes.Questionaire}
+          element={<QuestionaireScreen />}
+        />
+        <Route path={PatientRoutes.MovementSuggestions} element={<MovementSuggestions />} />
+        <Route path={PatientRoutes.TimeTracker} element={<TimeTracker />} />
         <Route path={PatientRoutes.Streaks} element={<StreaksScreen />} />
         <Route path={PatientRoutes.WellDone} element={<WellDone />} />
-
+        <Route path="*" element={<Navigate to={PatientRoutes.Dashboard} />} />
       </Route>
     </Route>
   </Routes>
