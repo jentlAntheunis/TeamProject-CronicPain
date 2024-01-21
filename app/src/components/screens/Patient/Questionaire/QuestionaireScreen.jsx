@@ -84,6 +84,7 @@ const QuestionaireScreen = () => {
           questionnaireIndex: questionaireIndex,
           answers: [...answers, answer],
         };
+        // TODO: add streaks to database
         setLoading(true);
         try {
           await sendAnswers(data);

@@ -80,6 +80,7 @@ const DashboardScreen = () => {
         result = await getBonusQuestionnaire(user.id);
       }
       const { data } = result;
+      // TODO: Check if first movement questionnaire of the day and store in zustand
       setLoading(false);
       console.log(data);
       resetEverything();
