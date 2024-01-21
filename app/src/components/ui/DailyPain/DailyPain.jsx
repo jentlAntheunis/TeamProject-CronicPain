@@ -18,8 +18,16 @@ const DailyPain = ({ question, setQuestion }) => {
     try {
       // TODO: send answer to backend
       const data = {
-        // TODO: add answer
-      }
+        questionnaireId: question.id,
+        "questionnaireIndex": 0,
+        answers: [
+          {
+            questionId: question.questions[0].id,
+            optionId: orderOptions(question.questions[0].scale.options)[sliderValue].id
+          }
+        ]
+      };
+      console.log(data);
       setLoading(false);
       localStorage.setItem("lastLaunch", new Date().getDate().toString());
     } catch (error) {
@@ -34,23 +42,19 @@ const DailyPain = ({ question, setQuestion }) => {
     <Modal showModal={question}>
       {question && (
         <div className={styles.layout}>
-          <div className={styles.question}>{question?.content}</div>
+          <div className={styles.question}>{question.questions[0].content}</div>
           <div className={styles.sliderValue}>
             {capitalize(
-              orderOptions(question.scale.options)[sliderValue].content
+              orderOptions(question.questions[0].scale.options)[sliderValue].content
             )}
           </div>
           <div>
             <Slider
-              max={question.scale.options.length - 1}
+              max={question.questions[0].scale.options.length - 1}
               value={sliderValue}
               setValue={setSliderValue}
-              minLabel={orderOptions(question.scale.options)[0].content}
-              maxLabel={
-                orderOptions(question.scale.options)[
-                  question.scale.options.length - 1
-                ].content
-              }
+              minLabel="Geen pijn"
+              maxLabel="Veel pijn"
             />
             <Button onClick={handleClick} disabled={loading} size="full" className={styles.button}>
               Ok
