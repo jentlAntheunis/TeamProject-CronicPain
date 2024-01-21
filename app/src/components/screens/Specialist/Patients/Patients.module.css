@@ -15,10 +15,14 @@
 
 .patientName {
   font-size: var(--h6);
-  color: var(--grey-800);
+  color: var(--black);
+}
+
+.patientName .match {
+  font-weight: var(--bold);
 }
 
 .patient {
-  padding: 1.25rem 0;
+  padding: 1rem 0;
   border-bottom: 1px solid var(--grey-200);
 }

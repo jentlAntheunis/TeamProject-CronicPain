@@ -19,46 +19,44 @@ const NavBar = () => {
 
   return (
     <div className={`desktop-only ${styles.navBarContainer}`}>
-      <div className={styles.navBar}>
-        <div className={styles.navBarLeft}>
-          <div className={styles.navBarLogo}>Pebbles</div>
-          {user && (
-            <>
-              <div className={styles.navBarSpacer}></div>
-              <div className={styles.navBarSpecialist}>
-                {user.firstName + " " + user.lastName}
-              </div>
-            </>
-          )}
-        </div>
+      <div className={styles.navBarLeft}>
+        <div className={styles.navBarLogo}>Pebbles</div>
         {user && (
-          <div className={styles.navBarMenu}>
-            <NavLink
-              to={SpecialistRoutes.PatientsOverview}
-              className={({ isActive }) =>
-                clsx(isActive && styles.active, styles.navBarMenuItem)
-              }
-            >
-              Patiënten
-            </NavLink>
-            <NavLink
-              to={SpecialistRoutes.QuestionsOverview}
-              className={({ isActive }) =>
-                clsx(isActive && styles.active, styles.navBarMenuItem)
-              }
-            >
-              Vragen
-            </NavLink>
-            <Button
-              variant="tertiary"
-              size="small"
-              onClick={() => setShowModal(true)}
-            >
-              Uitloggen
-            </Button>
-          </div>
+          <>
+            <div className={styles.navBarSpacer}></div>
+            <div className={styles.navBarSpecialist}>
+              {user.firstName + " " + user.lastName}
+            </div>
+          </>
         )}
       </div>
+      {user && (
+        <div className={styles.navBarMenu}>
+          <NavLink
+            to={SpecialistRoutes.PatientsOverview}
+            className={({ isActive }) =>
+              clsx(isActive && styles.active, styles.navBarMenuItem)
+            }
+          >
+            Patiënten
+          </NavLink>
+          <NavLink
+            to={SpecialistRoutes.QuestionsOverview}
+            className={({ isActive }) =>
+              clsx(isActive && styles.active, styles.navBarMenuItem)
+            }
+          >
+            Vragen
+          </NavLink>
+          <Button
+            variant="tertiary"
+            size="small"
+            onClick={() => setShowModal(true)}
+          >
+            Uitloggen
+          </Button>
+        </div>
+      )}
       <Modal showModal={showModal} setShowModal={setShowModal}>
         <div>
           <div className={styles.modalText}>

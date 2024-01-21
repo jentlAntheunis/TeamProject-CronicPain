@@ -1,5 +1,5 @@
 .navBarContainer {
-  width: 100%;
+  width: 100vw;
   position: fixed;
   top: 0;
   left: 0;
@@ -7,6 +7,9 @@
   padding: 1.5rem var(--margin-side);
   background-color: var(--white);
   z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .navBar {

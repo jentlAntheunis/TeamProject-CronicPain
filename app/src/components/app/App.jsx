@@ -47,8 +47,10 @@ const App = () => (
         }
       >
         {/* Specialist Paths */}
-        <Route path={SpecialistRoutes.AddPatient} element={<AddPatient />} />
+        <Route index element={<Navigate to={SpecialistRoutes.PatientsOverview} />} />
         <Route path={SpecialistRoutes.PatientsOverview} element={<Patients />} />
+        <Route path={SpecialistRoutes.AddPatient} element={<AddPatient />} />
+        <Route path="*" element={<Navigate to={SpecialistRoutes.PatientsOverview} />} />
       </Route>
 
       {/* Patient */}
@@ -69,6 +71,7 @@ const App = () => (
         <Route path={PatientRoutes.TimeTracker} element={<TimeTracker />} />
         <Route path={PatientRoutes.Streaks} element={<StreaksScreen />} />
         <Route path={PatientRoutes.WellDone} element={<WellDone />} />
+        <Route path="*" element={<Navigate to={PatientRoutes.Dashboard} />} />
       </Route>
     </Route>
   </Routes>

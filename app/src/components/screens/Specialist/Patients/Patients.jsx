@@ -7,6 +7,10 @@ import Search from "../../../ui/Search/Search";
 import ScrollableScreen from "../../../ui/ScrollableScreen/ScrollableScreen";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import {
+  PatientRoutes,
+  SpecialistRoutes,
+} from "../../../../core/config/routes";
 
 const Patients = () => {
   const patientData = [
@@ -36,18 +40,20 @@ const Patients = () => {
     { name: "Adams Henry" },
   ];
 
-  const [searchInput, setSearchInput] = useState('');
+  const [searchInput, setSearchInput] = useState("");
 
   const handleSearchChange = (event) => {
     console.log("change");
     setSearchInput(event.target.value);
   };
 
-  const filteredPatients = patientData.filter(patient =>
+  const filteredPatients = patientData.filter((patient) =>
     patient.name.toLowerCase().includes(searchInput.toLowerCase())
   );
 
-  const sortedPatients = filteredPatients.sort((a, b) => a.name.localeCompare(b.name));
+  const sortedPatients = filteredPatients.sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
 
   return (
     <ScrollableScreen>
@@ -55,8 +61,13 @@ const Patients = () => {
       <div className="container">
         <PageHeading>Patiënten</PageHeading>
         <div className={styles.searchAndAdd}>
-          <Search name="fullNameSearch" value={searchInput} onChange={handleSearchChange} />
-          <Link to="/add-patient">
+          <Search
+            name="fullNameSearch"
+            value={searchInput}
+            onChange={handleSearchChange}
+            placeholder="Zoek patient"
+          />
+          <Link to={SpecialistRoutes.AddPatient}>
             <Button>
               <Plus size={18} weight="bold" />
               Voeg patiënt toe
@@ -64,14 +75,26 @@ const Patients = () => {
           </Link>
         </div>
         <div className={styles.patients}>
-          {sortedPatients.map((patient, index) => (
-            <div className={styles.patient} key={index}>
-              <div className={styles.patientName}>{patient.name}</div>
-              <Button variant="tertiary" size="superSmall">
-                Details
-              </Button>
-            </div>
-          ))}
+          {sortedPatients.map((patient, index) => {
+            const indexMatch = patient.name
+              .toLowerCase()
+              .indexOf(searchInput.toLowerCase());
+            const nameBeforeMatch = patient.name.slice(0, indexMatch);
+            const nameMatch = patient.name.slice(indexMatch, indexMatch + searchInput.length);
+            const nameAfterMatch = patient.name.slice(indexMatch + searchInput.length);
+            return (
+              <div className={styles.patient} key={index}>
+                <div className={styles.patientName}>
+                  {nameBeforeMatch}
+                  <span className={styles.match}>{nameMatch}</span>
+                  {nameAfterMatch}
+                </div>
+                <Button variant="tertiary" size="superSmall">
+                  Details
+                </Button>
+              </div>
+            );
+          })}
         </div>
       </div>
     </ScrollableScreen>

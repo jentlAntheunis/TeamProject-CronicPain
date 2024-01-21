@@ -1,3 +1,5 @@
 .scrollableScreen {
-  margin-bottom: var(--margin-side);
+  padding-bottom: var(--margin-side);
+  position: relative;
+  width: 100vw;
 }
