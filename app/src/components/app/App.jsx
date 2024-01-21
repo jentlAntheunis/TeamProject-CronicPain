@@ -16,6 +16,7 @@ import WellDone from "../screens/Patient/WellDone/WellDone";
 import StreaksScreen from "../screens/Patient/StreaksScreen/StreaksScreen";
 import MovementSuggestions from "../screens/MovementSuggestions/MovementSuggestions";
 import TimeTracker from "../screens/TimeTracker/TimeTracker";
+import Patients from "../screens/Specialist/Patients/Patients";
 
 const App = () => (
   <Routes>
@@ -47,6 +48,7 @@ const App = () => (
       >
         {/* Specialist Paths */}
         <Route path={SpecialistRoutes.AddPatient} element={<AddPatient />} />
+        <Route path={SpecialistRoutes.PatientsOverview} element={<Patients />} />
       </Route>
 
       {/* Patient */}

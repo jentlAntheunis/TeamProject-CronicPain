@@ -34,7 +34,7 @@ const NavBar = () => {
         {user && (
           <div className={styles.navBarMenu}>
             <NavLink
-              to={SpecialistRoutes.PatientOverview}
+              to={SpecialistRoutes.PatientsOverview}
               className={({ isActive }) =>
                 clsx(isActive && styles.active, styles.navBarMenuItem)
               }
@@ -42,7 +42,7 @@ const NavBar = () => {
               Patiënten
             </NavLink>
             <NavLink
-              to={SpecialistRoutes.QuestionOverview}
+              to={SpecialistRoutes.QuestionsOverview}
               className={({ isActive }) =>
                 clsx(isActive && styles.active, styles.navBarMenuItem)
               }

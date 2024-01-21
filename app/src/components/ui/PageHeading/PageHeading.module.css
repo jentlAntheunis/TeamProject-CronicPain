@@ -7,6 +7,7 @@
 .backBtn {
   position: absolute;
   left: var(--margin-side);
+  text-decoration: none;
 }
 
 .heading {
