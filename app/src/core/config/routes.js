@@ -18,6 +18,7 @@ const SpecialistRoutes = {
   PatientsOverview: "/patients",
   AddPatient: "/patients/add",
   QuestionsOverview: "/questions",
+  AddQuestion: "/questions/add",
 };
 
 export { AuthRoutes, PatientRoutes, SpecialistRoutes };

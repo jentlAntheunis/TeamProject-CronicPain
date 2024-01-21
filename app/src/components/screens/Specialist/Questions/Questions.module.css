@@ -1,0 +1,28 @@
+.searchAndAdd,
+.question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.searchAndAdd {
+  margin-top: 1rem;
+}
+
+.questions {
+  margin-top: 2.5rem;
+}
+
+.questionName {
+  font-size: var(--h6);
+  color: var(--black);
+}
+
+.questionName .match {
+  font-weight: var(--bold);
+}
+
+.question {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--grey-200);
+}
