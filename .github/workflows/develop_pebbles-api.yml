@@ -22,6 +22,36 @@ jobs:
           dotnet-version: "8.x"
           include-prerelease: true
 
+      - name: Create appsettings.json
+        run: 
+          echo '{
+            "ConnectionStrings": {
+              "PebblesDB": "${{ secrets.CONNECTIONSTRINGS_PEBBLESDB }}"
+            },
+            "EmailSettings": {
+              "SmtpServer": "${{ secrets.EMAILSETTINGS_SMTPSERVER }}",
+              "SmtpPort": ${{ secrets.EMAILSETTINGS_SMTPPORT }},
+              "SmtpUsername": "${{ secrets.EMAILSETTINGS_SMTPUSERNAME }}",
+              "SmtpPassword": "${{ secrets.EMAILSETTINGS_SMTPPASSWORD }}"
+            }
+          }'
+
+      - name: Create ServiceAccountCredentials.json
+        run: 
+          echo '{
+            "type": "${{ secrets.SAC_TYPE }}",
+            "project_id": "${{ secrets.SAC_PROJECTID }}",
+            "private_key_id": "${{ secrets.SAC_KEYID }}",
+            "private_key": "${{ secrets.SAC_KEY }}",
+            "client_email": "${{ secrets.SAC_CLIENTEMAIL }}",
+            "client_id": "${{ secrets.SAC_CLIENTID }}",
+            "auth_uri": "${{ secrets.SAC_AUTHURI }}",
+            "token_uri": "${{ secrets.SAC_TOKENURI }}",
+            "auth_provider_x509_cert_url": "${{ secrets.SAC_AUTHPROVIDER }}",
+            "client_x509_cert_url": "${{ secrets.SAC_CLIENTURL }}",
+            "universe_domain": "${{ secrets.SAC_UNIVERSEDOMAIN }}"
+          }' > ServiceAccountCredentials.json
+
       - name: Build with dotnet
         run: dotnet build --configuration Release ./api
 
