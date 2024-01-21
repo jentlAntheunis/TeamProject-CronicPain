@@ -1,0 +1,14 @@
+.inputContainer {
+  position: relative;
+}
+
+.input {
+  padding-left: 2.875rem;
+}
+
+.icon {
+  position: absolute;
+  top: 1.125rem;
+  left: 1rem;
+  color: var(--grey-400);
+}

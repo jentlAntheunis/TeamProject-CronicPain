@@ -4,6 +4,7 @@ import FullHeightScreen from "../../../ui/FullHeightScreen/FullHeightScreen";
 import NavBar from "../../../ui/NavBar/NavBar";
 import PageHeading from "../../../ui/PageHeading/PageHeading";
 import styles from "./Patients.module.css";
+import Search from "../../../ui/Search/Search";
 
 const Patients = () => {
   const patientData = [
@@ -20,7 +21,7 @@ const Patients = () => {
       <div className="container">
         <PageHeading>Patiënten</PageHeading>
         <div className={styles.searchAndAdd}>
-          <div>Searchfield</div>
+          <Search />
           <Button>
             <Plus size={18} weight="bold" />
             Voeg patiënt toe
