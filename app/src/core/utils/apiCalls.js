@@ -65,7 +65,7 @@ const getBonusQuestionnaire = async (userId) => {
 };
 
 const getDailyQuestionnaire = async (userId) => {
-  return getQuestionnaire(userId, 'dailyquestionnaire', QuestionCategories.Daily);
+  return getQuestionnaire(userId, 'dailypainquestionnaire', QuestionCategories.Daily);
 };
 
 /**

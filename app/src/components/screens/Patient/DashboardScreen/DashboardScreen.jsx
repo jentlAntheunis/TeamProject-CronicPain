@@ -9,12 +9,12 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../../core/services/firebase.js";
 import { useNavigate } from "react-router-dom";
 import { PatientRoutes } from "../../../../core/config/routes.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BottomSheet from "../../../ui/BottomSheet/BottomSheet.jsx";
 import clsx from "clsx";
 import useStore from "../../../../core/hooks/useStore.jsx";
 import DailyPain from "../../../ui/DailyPain/DailyPain.jsx";
-import { getBonusQuestionnaire, getMovementQuestionnaire, getUserData } from "../../../../core/utils/apiCalls.js";
+import { getBonusQuestionnaire, getDailyQuestionnaire, getMovementQuestionnaire, getUserData } from "../../../../core/utils/apiCalls.js";
 import { useUser } from "../../../app/auth/AuthProvider.jsx";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
@@ -24,12 +24,13 @@ const DashboardScreen = () => {
   // state management
   const [sheetOpen, setSheetOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const {
-    resetEverything,
-  } = useStore();
+  const [dailyQuestion, setDailyQuestion] = useState(null);
+  const { resetEverything } = useStore();
   const setQuestions = useStore((state) => state.setQuestions);
   const setQuestionaireId = useStore((state) => state.setQuestionaireId);
-  const setQuestionaireCategory = useStore((state) => state.setQuestionaireCategory);
+  const setQuestionaireCategory = useStore(
+    (state) => state.setQuestionaireCategory
+  );
 
   // hooks
   const user = useUser();
@@ -40,6 +41,31 @@ const DashboardScreen = () => {
     queryKey: ["user"],
     queryFn: () => getUserData(user.id),
   });
+
+  // check if first launch of the day
+  useEffect(() => {
+    if (!data) return;
+
+    const dailyQuestionnaire = async () => {
+      const lastLaunch = localStorage.getItem("lastLaunch");
+      const today = new Date().getDate();
+      if (lastLaunch !== today.toString()) {
+        try {
+          const { data } = await getDailyQuestionnaire(user.id);
+          setDailyQuestion(data);
+          console.log(data);
+        } catch (error) {
+          toast.error("Er is iets misgegaan bij het ophalen van de vragenlijst.");
+        }
+
+
+
+        // localStorage.setItem("lastLaunch", today.toString());
+      }
+    }
+
+    dailyQuestionnaire();
+  }, [data, user.id]);
 
   if (isLoading) return null;
 
@@ -81,7 +107,7 @@ const DashboardScreen = () => {
 
   return (
     <FullHeightScreen>
-      <DailyPain />
+      <DailyPain question={dailyQuestion} setQuestion={setDailyQuestion} />
       <div className={styles.screen}>
         <TopBar coins={data.data.coins} streak={data.data.streak} />
         <Avatar />
@@ -94,7 +120,12 @@ const DashboardScreen = () => {
           >
             Ik wil bewegen! <Play size={22} weight="bold" />
           </Button>
-          <Button variant="secondary" size="full" onClick={handleStartBonus} disabled={loading}>
+          <Button
+            variant="secondary"
+            size="full"
+            onClick={handleStartBonus}
+            disabled={loading}
+          >
             Vul bonusvragen in <ClipboardText size={22} weight="bold" />
           </Button>
         </div>

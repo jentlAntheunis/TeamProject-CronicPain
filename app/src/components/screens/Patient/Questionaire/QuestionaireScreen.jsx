@@ -85,7 +85,7 @@ const QuestionaireScreen = () => {
           questionnaireIndex: questionaireIndex,
           answers: [...answers, answer],
         };
-        console.log(data);
+        console.log(JSON.stringify(data));
         setLoading(true);
         try {
           setAmount(coins);
