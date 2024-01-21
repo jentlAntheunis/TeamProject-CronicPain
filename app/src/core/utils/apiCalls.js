@@ -22,7 +22,9 @@ const getUser = async (email) => await request({
 })
 
 const checkIfUserExists = async (email) => {
+  console.log('checkIfUserExists', email)
   const { data } = await axios.get(import.meta.env.VITE_API_URL + '/users/exists/' + email)
+  console.log(data)
   return data
 }
 
