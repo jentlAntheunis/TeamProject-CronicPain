@@ -5,31 +5,30 @@
   align-items: center;
 }
 
-.questionTypes {
-  margin-top: 1.875rem;
-  position: relative;
-}
-
-.questionTypes::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  border-bottom: 2px solid var(--grey-200);
-  z-index: -1;
-}
-
-.questionType {
-  padding: 0.625rem 1.5rem;
-}
-
-.active {
-  border-bottom: 3px solid var(--blue-500);
-}
-
 .searchAndAdd {
-  margin-top: 3rem;
+  margin-top: 1rem;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-top: .75rem;
+}
+
+.filters button {
+  padding: .5rem 1rem;
+  border-radius: 100rem;
+  background-color: var(--grey-200);
+  color: var(--black);
+  font-size: var(--small);
+  font-weight: var(--medium);
+  cursor: pointer;
+}
+
+.filters button.active {
+  background-color: var(--black);
+  color: var(--white);
 }
 
 .questions {
@@ -48,4 +47,11 @@
 .question {
   padding: 1rem 0;
   border-bottom: 1px solid var(--grey-200);
+}
+
+.noQuestions {
+  text-align: center;
+  padding-top: 1.25rem;
+  font-size: var(--h6);
+  color: var(--grey-400);
 }

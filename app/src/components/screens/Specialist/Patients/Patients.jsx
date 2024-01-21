@@ -94,6 +94,11 @@ const Patients = () => {
               </div>
             );
           })}
+          {sortedPatients.length === 0 && (
+            <div className={styles.noQuestions}>
+              Geen patiënten gevonden met de naam &quot;{searchInput}&quot;
+            </div>
+          )}
         </div>
       </div>
     </ScrollableScreen>
