@@ -23,6 +23,7 @@ public class QuestionController : ControllerBase
     private readonly IQuestionService _questionService;
 
     private readonly IQuestionnaireRepository _questionnaireRepository;
+    private readonly IQuestionnaireService _questionnaireService;
 
 
     public QuestionController(IQuestionService questionService, IConfiguration configuration, IQuestionnaireRepository questionnaireRepository)
@@ -93,6 +94,24 @@ public class QuestionController : ControllerBase
             return BadRequest($"Failed to create daily pain questionnaire: {ex.Message}");
         }
     }
+
+    [HttpGet("isfirstquestionnaireoftheday/{userId}")]
+    public async Task<IActionResult> IsFirstQuestionnaireOfTheDay(Guid userId)
+    {
+        try
+        {
+            var isFirstQuestionnaire = await _questionnaireService.CheckIfFirstQuestionnaireOfTheDay(userId);
+
+            return Ok(isFirstQuestionnaire);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Failed to check if it's the first questionnaire of the day: {ex.Message}");
+        }
+    }
+
+
+
 
     
 
