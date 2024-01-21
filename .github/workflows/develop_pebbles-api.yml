@@ -34,7 +34,7 @@ jobs:
               "SmtpUsername": "${{ secrets.EMAILSETTINGS_SMTPUSERNAME }}",
               "SmtpPassword": "${{ secrets.EMAILSETTINGS_SMTPPASSWORD }}"
             }
-          }' > appsettings.json
+          }' > api/appsettings.json
 
       - name: Create ServiceAccountCredentials.json
         run: |
@@ -50,7 +50,7 @@ jobs:
             "auth_provider_x509_cert_url": "${{ secrets.SAC_AUTHPROVIDER }}",
             "client_x509_cert_url": "${{ secrets.SAC_CLIENTURL }}",
             "universe_domain": "${{ secrets.SAC_UNIVERSEDOMAIN }}"
-          }' > ServiceAccountCredentials.json
+          }' > api/ServiceAccountCredentials.json
 
       - name: Show directory to confirm files have been created
         run: ls
