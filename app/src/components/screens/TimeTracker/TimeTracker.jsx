@@ -9,6 +9,9 @@ import { useNavigate } from "react-router-dom";
 import useStore from "../../../core/hooks/useStore";
 import { timeToStringValue } from "../../../core/utils/timeData";
 import { useWakeLock } from "react-screen-wake-lock";
+import { toast } from "react-toastify";
+import { sendAnswers } from "../../../core/utils/apiCalls";
+import { useState } from "react";
 
 const TimeTracker = () => {
   return (
@@ -36,6 +39,7 @@ const MyStopwatch = () => {
     removeAnswers,
   } = useStore();
   const setMovementTime = useStore((state) => state.setMovementTime);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const {
@@ -48,34 +52,48 @@ const MyStopwatch = () => {
     pause,
     reset,
   } = useStopwatch();
-  const { isSupported, request, release } = useWakeLock();
+  const { isSupported, request, release } = useWakeLock({
+    onRequest: () => console.log("Wake Lock was requested"),
+    onRelease: () => console.log("Wake Lock was released"),
+    onError: (err) => console.error("Wake Lock request failed", err),
+  });
 
   // https://www.npmjs.com/package/react-timer-hook
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     if (isRunning) {
       release();
       pause();
 
       if (minutes >= 5) {
         setMovementTime(totalSeconds);
+        setLoading(true);
         // TODO: store time in database
-        // TODO: store questionaire in database
         const data = {
           questionnaireId: questionaireId,
           questionnaireIndex: questionaireIndex,
           answers: [...answers],
         };
         console.log(data);
-        removeAnswers();
-        incrementQuestionaireIndex();
+        try {
+          await sendAnswers(data);
+          setLoading(false);
+          removeAnswers();
+          incrementQuestionaireIndex();
+        } catch (error) {
+          setLoading(false);
+          toast.error("Er ging iets mis bij het opslaan van je antwoorden.");
+          console.error(error);
+          resetEverything();
+          navigate(PatientRoutes.Dashboard);
+        }
       } else {
         resetEverything();
       }
       resetCurrentQuestion();
       navigate(PatientRoutes.WellDone);
     } else {
-      !isSupported && console.warn("Wake Lock API not supported");
+      !isSupported ? console.warn("Wake Lock API not supported") : console.log("Wake Lock API supported");
       request();
       start();
     }
@@ -92,6 +110,7 @@ const MyStopwatch = () => {
         size="full"
         onClick={handleButtonClick}
         className={isRunning ? styles.startStopBtn : ""}
+        disabled={loading}
       >
         {isRunning ? "Stop met bewegen" : "Start met bewegen"}
         {isRunning ? (

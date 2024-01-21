@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { PatientRoutes } from "../../../../core/config/routes";
 import RecieveCoinsModal from "../../../ui/Modal/RecieveCoinsModal";
 import QuestionCategories from "../../../../core/config/questionCategories";
-import { addCoins } from "../../../../core/utils/apiCalls";
+import { addCoins, sendAnswers } from "../../../../core/utils/apiCalls";
 import { useUser } from "../../../app/auth/AuthProvider";
 import { toast } from "react-toastify";
 
@@ -79,15 +79,14 @@ const QuestionaireScreen = () => {
         // End of questionaire
         const coins =
           questionaireCategory === QuestionCategories.Movement ? 10 : 5;
-        // TODO: send answers to backend
         const data = {
           questionnaireId: questionaireId,
           questionnaireIndex: questionaireIndex,
           answers: [...answers, answer],
         };
-        console.log(JSON.stringify(data));
         setLoading(true);
         try {
+          await sendAnswers(data);
           setAmount(coins);
           await addCoins(user.id, coins);
           setLoading(false);

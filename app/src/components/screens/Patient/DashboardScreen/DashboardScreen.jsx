@@ -57,10 +57,6 @@ const DashboardScreen = () => {
         } catch (error) {
           toast.error("Er is iets misgegaan bij het ophalen van de vragenlijst.");
         }
-
-
-
-        // localStorage.setItem("lastLaunch", today.toString());
       }
     }
 

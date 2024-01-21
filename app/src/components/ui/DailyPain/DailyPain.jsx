@@ -8,6 +8,7 @@ import { useState } from "react";
 import { orderOptions } from "../../../core/utils/questions";
 import { capitalize } from "../../../core/utils/formatText";
 import { toast } from "react-toastify";
+import { sendAnswers } from "../../../core/utils/apiCalls";
 
 const DailyPain = ({ question, setQuestion }) => {
   const [sliderValue, setSliderValue] = useState(0);
@@ -16,7 +17,6 @@ const DailyPain = ({ question, setQuestion }) => {
   const handleClick = async () => {
     setLoading(true);
     try {
-      // TODO: send answer to backend
       const data = {
         questionnaireId: question.id,
         "questionnaireIndex": 0,
@@ -28,6 +28,7 @@ const DailyPain = ({ question, setQuestion }) => {
         ]
       };
       console.log(data);
+      await sendAnswers(data);
       setLoading(false);
       localStorage.setItem("lastLaunch", new Date().getDate().toString());
     } catch (error) {

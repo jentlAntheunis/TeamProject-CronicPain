@@ -68,6 +68,12 @@ const getDailyQuestionnaire = async (userId) => {
   return getQuestionnaire(userId, 'dailypainquestionnaire', QuestionCategories.Daily);
 };
 
+const sendAnswers = async (data) => await request({
+  url: '/answers',
+  method: 'POST',
+  data: data,
+})
+
 /**
  * Coins and Streaks API calls
  */
@@ -85,5 +91,6 @@ export {
   getMovementQuestionnaire,
   getBonusQuestionnaire,
   getDailyQuestionnaire,
+  sendAnswers,
   addCoins,
 }
