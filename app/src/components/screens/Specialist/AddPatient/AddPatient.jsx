@@ -6,7 +6,6 @@ import {
   FormMessage,
 } from "../../../app/form/Form";
 import Button from "../../../ui/Button/Button";
-import FullHeightScreen from "../../../ui/FullHeightScreen/FullHeightScreen";
 import Input from "../../../ui/Input/Input";
 import PageHeading from "../../../ui/PageHeading/PageHeading";
 import { z } from "zod";
@@ -22,10 +21,9 @@ import { useMutation } from "@tanstack/react-query";
 import { useUser } from "../../../app/auth/AuthProvider";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { set } from "react-hook-form";
-import { auth } from "../../../../core/services/firebase";
 import { useNavigate } from "react-router-dom";
 import { SpecialistRoutes } from "../../../../core/config/routes";
+import ScrollableScreen from "../../../ui/ScrollableScreen/ScrollableScreen";
 
 const formSchema = z.object({
   lastName: z.string().min(2, { message: "Achternaam is te kort" }),
@@ -85,11 +83,11 @@ const AddPatient = () => {
   };
 
   return (
-    <FullHeightScreen className={`margins-desktop ${styles.screen}`}>
+    <ScrollableScreen>
       <NavBar />
       <div className="container">
         <div className={styles.header}>
-          <PageHeading>Patiënt toevoegen</PageHeading>
+          <PageHeading backLink={SpecialistRoutes.PatientsOverview}>Patiënt toevoegen</PageHeading>
           <div className="desktop-only">
             <Button variant="secondary" className={styles.csvImport}>
               CSV importeren
@@ -137,7 +135,7 @@ const AddPatient = () => {
           </div>
         </Form>
       </div>
-    </FullHeightScreen>
+    </ScrollableScreen>
   );
 };
 

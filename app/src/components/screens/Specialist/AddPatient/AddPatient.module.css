@@ -10,11 +10,12 @@
   padding-top: 1rem;
 }
 
-.screen {
+/* this code is for mobile view */
+/* .screen {
   display: flex;
   flex-direction: column;
   height: 100%;
-}
+} */
 
 .header {
   display: flex;
