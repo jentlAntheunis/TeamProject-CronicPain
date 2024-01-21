@@ -14,7 +14,7 @@ public interface IPatientService
     Task<Patient> UpdatePatientAsync(Patient patient);
     Task AddCoinsAsync(Guid patientId, int amount);
     Task<Guid> StartMovementSessionAsync(Guid patientId);
-    Task EndMovementSessionAsync(Guid movementSessionId);
+    Task EndMovementSessionAsync(Guid movementSessionId, int seconds);
     Task<List<MovementSuggestion>> GetMovementSuggestionsAsync(Guid patientId);
     Task AddMovementSuggestion(Guid specialistId, Guid patientId, MovementSuggestion movementSuggestionId);
     Task<string> GetPebblesMoodAsync(Guid patientId);
@@ -100,18 +100,16 @@ public class PatientService : IPatientService
         var movementSession = new MovementSession
         {
             PatientId = patient.Id,
-            StartTime = DateTime.Now
         };
         return await _movementSessionRepository.CreateMovementSessionAsync(movementSession);
     }
 
-    public async Task EndMovementSessionAsync(Guid movementSessionId)
+    public async Task EndMovementSessionAsync(Guid movementSessionId, int seconds)
     {
         var movementSession = await _movementSessionRepository.GetMovementSessionByIdAsync(movementSessionId);
         if (movementSession == null)
             throw new Exception("Movement session does not exist");
-        movementSession.EndTime = DateTime.Now;
-        movementSession.timeSpan = movementSession.EndTime - movementSession.StartTime;
+        movementSession.Seconds = seconds;
         await _movementSessionRepository.UpdateMovementSessionAsync(movementSession);
     }
 
