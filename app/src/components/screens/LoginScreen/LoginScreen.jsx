@@ -80,7 +80,6 @@ const LoginForm = () => {
       const response = await checkIfUserExists(email);
       setIsLoading(false);
       if (response) {
-        console.log(actionCodeSettings);
         const success = await sendSignInLink(email, actionCodeSettings);
         if (success) {
           window.localStorage.setItem("emailForSignIn", email);

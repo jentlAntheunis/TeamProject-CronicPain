@@ -47,7 +47,6 @@ const App = () => (
         }
       >
         {/* Specialist Paths */}
-        <Route index element={<Navigate to={SpecialistRoutes.PatientsOverview} />} />
         <Route path={SpecialistRoutes.PatientsOverview} element={<Patients />} />
         <Route path={SpecialistRoutes.AddPatient} element={<AddPatient />} />
         <Route path="*" element={<Navigate to={SpecialistRoutes.PatientsOverview} />} />
