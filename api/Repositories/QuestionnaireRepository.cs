@@ -9,7 +9,7 @@ namespace Pebbles.Repositories;
 public interface IQuestionnaireRepository
 {
     Task<Questionnaire> GetQuestionnaireByIdAsync(Guid id);
-    Task<Questionnaire> GetQuestionnaireByPatientIdAsync(Guid id);
+    Task<List<Questionnaire>> GetQuestionnairesByPatientIdAsync(Guid id);
     Task<QuestionnaireDTO> AddMovementQuestionnaireAsync(Guid id);
     Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId);
 
@@ -33,8 +33,7 @@ public class QuestionnaireRepository : IQuestionnaireRepository
 
     public async Task<Questionnaire> GetQuestionnaireByIdAsync(Guid id) => await _context.Questionnaire.FirstOrDefaultAsync(q => q.Id == id);
 
-    public async Task<Questionnaire> GetQuestionnaireByPatientIdAsync(Guid id) => await _context.Questionnaire.FirstOrDefaultAsync(q => q.PatientId == id);
-
+    public async Task<List<Questionnaire>> GetQuestionnairesByPatientIdAsync(Guid id) => await _context.Questionnaire.Where(q => q.PatientId == id).ToListAsync();
 
     public async Task<QuestionnaireDTO> AddMovementQuestionnaireAsync(Guid patientId)
     {
