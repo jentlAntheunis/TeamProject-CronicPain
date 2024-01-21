@@ -88,6 +88,7 @@ html {
   box-sizing: border-box;
   -werbkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 *,
@@ -103,10 +104,6 @@ html {
   background-color: var(--blue-500);
   color: var(--white);
   text-shadow: none;
-}
-
-body {
-  min-height: 100svh;
 }
 
 h1,
@@ -201,6 +198,12 @@ strong {
 
 .desktop-only {
   display: none;
+}
+
+@media (max-width: 1023px) {
+  body {
+    min-height: 100svh;
+  }
 }
 
 @media (min-width: 1024px) {

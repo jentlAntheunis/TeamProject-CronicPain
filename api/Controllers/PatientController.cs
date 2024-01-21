@@ -36,12 +36,12 @@ public class PatientController : ControllerBase
     return Ok(movementSessionId);
   }
 
-  [HttpGet("{movementSessionId}/movementsession/end")]
-  public async Task<IActionResult> EndMovementSessionAsync(Guid movementSessionId)
-  {
-    await _patientService.EndMovementSessionAsync(movementSessionId);
-    return Ok();
-  }
+    [HttpGet("{movementSessionId}/movementsession/end/{seconds}")]
+    public async Task<IActionResult> EndMovementSessionAsync(Guid movementSessionId, int seconds)
+    {
+        await _patientService.EndMovementSessionAsync(movementSessionId, seconds);
+        return Ok();
+    }
 
   [HttpGet("{patientId}/movementsuggestions")]
   public async Task<IActionResult> GetMovementSuggestionsAsync(Guid patientId)
