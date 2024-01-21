@@ -10,7 +10,7 @@ import { Plus } from "@phosphor-icons/react";
 import { useState } from "react";
 
 const Questions = () => {
-  const questionData = [
+  const bewegingsvragen = [
     "Hoe lang ervaart u al chronische pijn?",
     "Welke behandelingen heeft u al geprobeerd?",
     "Hoe beïnvloedt chronische pijn uw dagelijks leven?",
@@ -22,6 +22,9 @@ const Questions = () => {
     "Wat zijn uw belangrijkste triggers voor pijnverergering?",
     "Hoe beïnvloedt chronische pijn uw werk of studie?",
     "Heeft u ervaring met mindfulness of ontspanningstechnieken?",
+  ];
+
+  const bonusvragen = [
     "Welke hulpmiddelen gebruikt u om met de pijn om te gaan?",
     "Heeft u last van sociale isolatie door de pijn?",
     "Hoe beïnvloedt chronische pijn uw stemming en mentale gezondheid?",
@@ -34,15 +37,20 @@ const Questions = () => {
     setSearchInput(event.target.value);
   };
 
-  const filteredQuestions = questionData.filter((question) =>
-    question.toLowerCase().includes(searchInput.toLowerCase())
-  );
-
   const [activeButton, setActiveButton] = useState("bewegingsvragen");
 
   const handleButtonClick = (button) => {
     setActiveButton(button);
   };
+
+  const filteredQuestions =
+    activeButton === "bewegingsvragen"
+      ? bewegingsvragen.filter((question) =>
+          question.toLowerCase().includes(searchInput.toLowerCase())
+        )
+      : bonusvragen.filter((question) =>
+          question.toLowerCase().includes(searchInput.toLowerCase())
+        );
 
   return (
     <ScrollableScreen>
