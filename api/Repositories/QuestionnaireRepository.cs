@@ -15,6 +15,7 @@ public interface IQuestionnaireRepository
 
     Task<QuestionDTO> AddDailyPainQuestionnaireAsync(Guid userId);
     Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire);
+    Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex);
     Task DeleteQuestionnaireAsync(Questionnaire questionnaire);
     Task<List<Questionnaire>> GetQuestionnairesAsync();
 }
@@ -191,6 +192,18 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         await _context.SaveChangesAsync();
         return questionnaire;
     }
+
+    public async Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex)
+    {
+        var questionnaire = await _context.Questionnaire.SingleOrDefaultAsync(q => q.Id == questionnaireId);
+
+        if (questionnaire != null)
+        {
+            questionnaire.QuestionnaireIndex = questionnaireIndex;
+            await _context.SaveChangesAsync();
+        }
+    }
+
 
     public async Task DeleteQuestionnaireAsync(Questionnaire questionnaire)
     {

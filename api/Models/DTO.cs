@@ -1,5 +1,6 @@
 namespace Pebbles.Models;
 
+
 public class QuestionnaireDTO
 {
     public Guid Id { get; set; }
@@ -29,4 +30,18 @@ public class OptionDTO
     //public string Content { get; set; }
     public string Position { get; set; } 
     public string Content { get; set; }
+}
+
+public class AnswerInputDTO
+{
+    public List<AnswerDTO> Answers { get; set; }
+    public Guid QuestionnaireId { get; set; }
+    public int QuestionnaireIndex { get; set; }
+}
+
+public class AnswerDTO
+{
+    public Guid QuestionId { get; set; }
+    public Guid OptionId { get; set; }
+    public int QuestionnaireIndex { get; set; }
 }
