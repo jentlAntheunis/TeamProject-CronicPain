@@ -87,7 +87,7 @@ const AddPatient = () => {
       <NavBar />
       <div className="container">
         <div className={styles.header}>
-          <PageHeading>Patiënt toevoegen</PageHeading>
+          <PageHeading backLink={"/patients"}>Patiënt toevoegen</PageHeading>
           <div className="desktop-only">
             <Button variant="secondary" className={styles.csvImport}>
               CSV importeren

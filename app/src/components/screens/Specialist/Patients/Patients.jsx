@@ -5,6 +5,7 @@ import PageHeading from "../../../ui/PageHeading/PageHeading";
 import styles from "./Patients.module.css";
 import Search from "../../../ui/Search/Search";
 import ScrollableScreen from "../../../ui/ScrollableScreen/ScrollableScreen";
+import { Link } from "react-router-dom";
 
 const Patients = () => {
   const patientData = [
@@ -41,10 +42,12 @@ const Patients = () => {
         <PageHeading>Patiënten</PageHeading>
         <div className={styles.searchAndAdd}>
           <Search />
-          <Button>
-            <Plus size={18} weight="bold" />
-            Voeg patiënt toe
-          </Button>
+          <Link to="/add-patient">
+            <Button>
+              <Plus size={18} weight="bold" />
+              Voeg patiënt toe
+            </Button>
+          </Link>
         </div>
         <div className={styles.patients}>
           {patientData.map((patient, index) => (
