@@ -33,6 +33,13 @@ public class StoreService : IStoreService
             throw new Exception("Patient not found");
         }
         var colors = await _colorRepository.GetAllColorsAsync();
+        foreach(var color in colors)
+        {
+            if(patient.Colors.Contains(color))
+            {
+                color.Owned = true;
+            }
+        }
         return colors;
     }
 
