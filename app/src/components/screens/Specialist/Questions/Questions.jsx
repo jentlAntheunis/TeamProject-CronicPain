@@ -38,11 +38,35 @@ const Questions = () => {
     question.toLowerCase().includes(searchInput.toLowerCase())
   );
 
+  const [activeButton, setActiveButton] = useState("bewegingsvragen");
+
+  const handleButtonClick = (button) => {
+    setActiveButton(button);
+  };
+
   return (
     <ScrollableScreen>
       <NavBar />
       <div className="container">
         <PageHeading>Vragen</PageHeading>
+        <div className={styles.questionTypes}>
+          <button
+            className={`btn-reset ${styles.questionType} ${
+              activeButton === "bewegingsvragen" ? styles.active : ""
+            }`}
+            onClick={() => handleButtonClick("bewegingsvragen")}
+          >
+            Bewegingsvragen
+          </button>
+          <button
+            className={`btn-reset ${styles.questionType} ${
+              activeButton === "bonusvragen" ? styles.active : ""
+            }`}
+            onClick={() => handleButtonClick("bonusvragen")}
+          >
+            Bonusvragen
+          </button>
+        </div>
         <div className={styles.searchAndAdd}>
           <Search
             name="QuestionSearch"

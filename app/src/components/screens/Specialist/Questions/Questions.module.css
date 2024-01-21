@@ -5,8 +5,31 @@
   align-items: center;
 }
 
+.questionTypes {
+  margin-top: 1.875rem;
+  position: relative;
+}
+
+.questionTypes::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-bottom: 2px solid var(--grey-200);
+  z-index: -1;
+}
+
+.questionType {
+  padding: 0.625rem 1.5rem;
+}
+
+.active {
+  border-bottom: 3px solid var(--blue-500);
+}
+
 .searchAndAdd {
-  margin-top: 1rem;
+  margin-top: 3rem;
 }
 
 .questions {
