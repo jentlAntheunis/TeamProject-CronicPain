@@ -105,10 +105,6 @@ html {
   text-shadow: none;
 }
 
-body {
-  min-height: 100svh;
-}
-
 h1,
 h2,
 h3,
@@ -201,6 +197,12 @@ strong {
 
 .desktop-only {
   display: none;
+}
+
+@media (max-width: 1023px) {
+  body {
+    min-height: 100svh;
+  }
 }
 
 @media (min-width: 1024px) {
