@@ -23,7 +23,7 @@ jobs:
           include-prerelease: true
 
       - name: Create appsettings.json
-        run: 
+        run: |
           echo '{
             "ConnectionStrings": {
               "PebblesDB": "${{ secrets.CONNECTIONSTRINGS_PEBBLESDB }}"
@@ -34,10 +34,10 @@ jobs:
               "SmtpUsername": "${{ secrets.EMAILSETTINGS_SMTPUSERNAME }}",
               "SmtpPassword": "${{ secrets.EMAILSETTINGS_SMTPPASSWORD }}"
             }
-          }'
+          }' > appsettings.json
 
       - name: Create ServiceAccountCredentials.json
-        run: 
+        run: |
           echo '{
             "type": "${{ secrets.SAC_TYPE }}",
             "project_id": "${{ secrets.SAC_PROJECTID }}",
