@@ -16,7 +16,7 @@ public interface IQuestionnaireService
     Task<QuestionnaireDTO> AddMovementQuestionnaireAsync(Guid id);
     Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId);
 
-    Task<QuestionDTO> AddDailyPainQuestionnaireAsync(Guid userId);
+    Task<QuestionnaireDTO> AddDailyPainQuestionnaireAsync(Guid userId);
     Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire);
     Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex);
     Task DeleteQuestionnaireAsync(Questionnaire questionnaire);
@@ -55,7 +55,7 @@ public class QuestionnaireService : IQuestionnaireService
 
     public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId) => throw new NotImplementedException();
     
-    public async Task<QuestionDTO> AddDailyPainQuestionnaireAsync(Guid userId) => throw new NotImplementedException();
+    public async Task<QuestionnaireDTO> AddDailyPainQuestionnaireAsync(Guid userId) => throw new NotImplementedException();
     public async Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire) => throw new NotImplementedException();
     public async Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex) => throw new NotImplementedException();
     public async Task DeleteQuestionnaireAsync(Questionnaire questionnaire) => throw new NotImplementedException();
@@ -72,8 +72,9 @@ public class QuestionnaireService : IQuestionnaireService
 
         var today = DateTime.Now.Date;
 
-        var hasIndex0Today = questionnaires.Any(q => q.Date.HasValue && q.Date.Value.Date == today && q.QuestionnaireIndex == 0);
-        var hasIndex1Today = questionnaires.Any(q => q.Date.HasValue && q.Date.Value.Date == today && q.QuestionnaireIndex == 1);
+        var hasIndex0Today = questionnaires.Any(q => q != null && q.Date.HasValue && q.Date.Value.Date == today && q.QuestionnaireIndex == 0);
+        var hasIndex1Today = questionnaires.Any(q => q != null && q.Date.HasValue && q.Date.Value.Date == today && q.QuestionnaireIndex == 1);
+
 
         return !(hasIndex0Today && hasIndex1Today);
     }
