@@ -1,5 +1,22 @@
+.titleAndTooltipContainer {
+  font-size: var(--h5);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .h5 {
   font-size: var(--h5);
+}
+
+.nameAndStreaksContainer {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.streaks {
+  font-size: var(--paragraph);
 }
 
 .movingInfluenceContainer {
@@ -11,7 +28,8 @@
   width: 100%;
   height: 7.75rem;
   gap: 1.5rem;
-  margin: 1.875rem 0;
+  margin-top: 0.5rem;
+  margin-bottom: 1.875rem;
 }
 
 .graphs {

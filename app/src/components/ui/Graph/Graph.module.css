@@ -2,9 +2,15 @@
   width: 100%;
 }
 
+.titleContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
 .graphTitle {
   font-size: var(--h5);
-  margin-bottom: .5rem;
 }
 
 .graph {
@@ -12,5 +18,5 @@
   height: 18.75rem;
   border-radius: var(--border-radius-xl);
   border: 1px solid var(--grey-200);
-  padding: 1.4375rem 1rem .75rem 1rem;
+  padding: 1.4375rem 1rem 0.75rem 1rem;
 }

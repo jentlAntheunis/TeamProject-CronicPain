@@ -7,6 +7,10 @@ import styles from "./PatientDetails.module.css";
 import MovingInfluenceCard from "../../../ui/MovingInfluenceCard/MovingInfluanceCard";
 import Graph from "../../../ui/Graph/Graph";
 import Button from "../../../ui/Button/Button";
+import RewardMetric from "../../../ui/RewardMetric/RewardMetric";
+import Streaks from "../../../ui/Icons/Streaks";
+import { Info } from "@phosphor-icons/react";
+import InfoTooltip from "../../../ui/InfoTooltip/InfoTooltip";
 
 const PatientDetails = () => {
   let { id } = useParams();
@@ -65,10 +69,18 @@ const PatientDetails = () => {
       <NavBar />
       <div className="container">
         <PageHeading backLink={SpecialistRoutes.PatientsOverview}>
-          {id}
+          <div className={styles.nameAndStreaksContainer}>
+            {id}
+            <RewardMetric number={5} className={styles.streaks}>
+              <Streaks />
+            </RewardMetric>
+          </div>
         </PageHeading>
         <div className={styles.movingInfluenceContainer}>
-          <div className={styles.h5}>Invloed van bewegen</div>
+          <div className={styles.titleAndTooltipContainer}>
+            Invloed van bewegen
+            <InfoTooltip text="Deze kaartjes geven de invloed weer van het bewegen op de pijn" />
+          </div>
           <div className={styles.movingInfluenceCardsContainer}>
             <MovingInfluenceCard variant={"positive"} />
             <MovingInfluenceCard variant={"neutral"} />
@@ -78,7 +90,7 @@ const PatientDetails = () => {
         <div className={styles.graphs}>
           <Graph
             variant={"bar"}
-            title={"Overzicht tijdsduur beweging voorbije week"}
+            title={"Duur bewegingssessies voorbije week"}
           ></Graph>
           <Graph
             variant={"line"}
@@ -87,7 +99,7 @@ const PatientDetails = () => {
         </div>
         <div className={styles.questionnairesContainer}>
           <div className={styles.titleAndSearchContainer}>
-            <div className={styles.h5}>Vragenlijsten</div>
+            <div className={styles.h5}>Antwoorden</div>
             <input
               type="date"
               name="date"
@@ -99,9 +111,14 @@ const PatientDetails = () => {
             {sortedQuestionnaires.map((questionnaire, index) => (
               <div key={index} className={styles.questionnaire}>
                 <div>
-                  <div className={styles.datetime}>{questionnaire.datetime}</div>
-                  <div className={styles.category}>{questionnaire.category}</div>
+                  <div className={styles.datetime}>
+                    {questionnaire.datetime}
+                  </div>
+                  <div className={styles.category}>
+                    {questionnaire.category}
+                  </div>
                 </div>
+                {/* TODO: changeroute */}
                 <Link to={"/nogintevullen"}>
                   <Button variant="tertiary" size="superSmall">
                     Details

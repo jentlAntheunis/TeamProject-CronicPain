@@ -10,6 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { LineChart, Line } from "recharts";
+import InfoTooltip from "../InfoTooltip/InfoTooltip";
 const lineData = [];
 
 for (let i = 0; i < 30; i++) {
@@ -78,8 +79,11 @@ const graphVariants = cva(styles.graph, {
 
 const Graph = ({ title, variant }) => {
   let graphComponent;
+  let graphInfo;
 
   if (variant === "bar") {
+    graphInfo =
+      "Deze grafiek geeft de duur van de bewegingssessies weer per dag van de week uitgedrukt in minuten.";
     graphComponent = (
       <ResponsiveContainer width={"100%"} height={"100%"}>
         <BarChart
@@ -103,17 +107,14 @@ const Graph = ({ title, variant }) => {
             stroke="#94a3b8"
             width={axisWidth}
           />
-          <Tooltip />
-          <Bar
-            dataKey="Tijdsduur"
-            fill="#3b82f6"
-            activeBar={<Rectangle fill="#2563eb" />}
-            radius={[8, 8, 0, 0]}
-          />
+          <Tooltip cursor={{ fill: "#f1f5f9" }} />
+          <Bar dataKey="Tijdsduur" fill="#3b82f6" radius={[8, 8, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     );
   } else if (variant === "line") {
+    graphInfo =
+      "Deze grafiek geeft de pijnervaring weer op een schaal van 0 tot 10.";
     graphComponent = (
       <ResponsiveContainer width={"100%"} height={"100%"}>
         <LineChart width={500} height={300} data={lineData}>
@@ -146,7 +147,10 @@ const Graph = ({ title, variant }) => {
 
   return (
     <div className={styles.graphContainer}>
-      <div className={styles.graphTitle}>{title}</div>
+      <div className={styles.titleContainer}>
+        <div className={styles.graphTitle}>{title}</div>
+        <InfoTooltip text={graphInfo} />
+      </div>
       <div className={graphVariants({ variant })}>{graphComponent}</div>
     </div>
   );
