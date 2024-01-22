@@ -42,4 +42,11 @@ public class StoreController : ControllerBase
         await _storeService.PurchaseColorAsync(patientId, colorId);
         return Ok();
     }
+
+    [HttpGet("{patientId}/use/{colorId}")]
+    public async Task<IActionResult> UseColorAsync(Guid patientId, Guid colorId)
+    {
+        await _storeService.UseColorAsync(patientId, colorId);
+        return Ok();
+    }
 }

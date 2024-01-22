@@ -9,7 +9,7 @@ public interface IStoreService
 {
     Task<List<Color>> GetPatientStoreAsync(Guid patientId);
     Task PurchaseColorAsync(Guid patientId, Guid colorId);
-
+    Task UseColorAsync(Guid patientId, Guid colorId);
 }
 
 public class StoreService : IStoreService
@@ -40,6 +40,10 @@ public class StoreService : IStoreService
             {
                 color.Owned = true;
             }
+            if(patient.Avatar.ColorId == color.Id)
+            {
+                color.Active = true;
+            }
         }
         return colors;
     }
@@ -56,8 +60,33 @@ public class StoreService : IStoreService
         {
             throw new Exception("Patient does not have enough coins");
         }
+        if(patient.Colors.Contains(color))
+        {
+            throw new Exception("Patient already owns this color");
+        }
         patient.Coins -= color.Price;
         patient.Colors.Add(color);
+        await _patientRepository.UpdatePatientAsync(patient);
+    }
+
+    public async Task UseColorAsync(Guid patientId, Guid colorId)
+    {
+        var patient = await _patientRepository.GetPatientDetailsByIdAsync(patientId);
+        var color = await _colorRepository.GetColorByIdAsync(colorId);
+        if(patient == null || color == null)
+        {
+            throw new Exception("Patient or color not found");
+        }
+        if(!patient.Colors.Contains(color))
+        {
+            throw new Exception("Patient does not own this color");
+        }
+        if(patient.Avatar.ColorId == color.Id)
+        {
+            throw new Exception("Patient already uses this color");
+        }
+        patient.Avatar.ColorId = color.Id;
+        patient.Avatar.Color = color;
         await _patientRepository.UpdatePatientAsync(patient);
     }
 }
