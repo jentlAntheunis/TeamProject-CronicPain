@@ -13,8 +13,8 @@ public interface IPatientService
     Task AddPatientToSpecialistAsync(Guid PatientId, Guid SpecialistId);
     Task<Patient> UpdatePatientAsync(Patient patient);
     Task AddCoinsAsync(Guid patientId, int amount);
-    Task<Guid> StartMovementSessionAsync(Guid patientId);
-    Task EndMovementSessionAsync(Guid movementSessionId, int seconds);
+    Task<MovementSession> AddMovementSessionAsync(Guid patientId, MovementSession movementSession);
+    Task<List<MovementSession>> GetMovementSessionsAsync(Guid patientId);
     Task<List<MovementSuggestion>> GetMovementSuggestionsAsync(Guid patientId);
     Task AddMovementSuggestion(Guid specialistId, Guid patientId, MovementSuggestion movementSuggestionId);
     Task<string> GetPebblesMoodAsync(Guid patientId);
@@ -92,25 +92,20 @@ public class PatientService : IPatientService
 
     public async Task<Patient> UpdatePatientAsync(Patient patient) => await _patientRepository.UpdatePatientAsync(patient);
 
-    public async Task<Guid> StartMovementSessionAsync(Guid patientId)
+    public async Task<MovementSession> AddMovementSessionAsync(Guid patientId, MovementSession movementSession)
+    {
+        movementSession.PatientId = patientId;
+        await _movementSessionRepository.CreateMovementSessionAsync(movementSession);
+        return movementSession;
+    }
+
+    public async Task<List<MovementSession>> GetMovementSessionsAsync(Guid patientId)
     {
         var patient = await _patientRepository.GetPatientByIdAsync(patientId);
         if (patient == null)
             throw new Exception("Patient does not exist");
-        var movementSession = new MovementSession
-        {
-            PatientId = patient.Id,
-        };
-        return await _movementSessionRepository.CreateMovementSessionAsync(movementSession);
-    }
-
-    public async Task EndMovementSessionAsync(Guid movementSessionId, int seconds)
-    {
-        var movementSession = await _movementSessionRepository.GetMovementSessionByIdAsync(movementSessionId);
-        if (movementSession == null)
-            throw new Exception("Movement session does not exist");
-        movementSession.Seconds = seconds;
-        await _movementSessionRepository.UpdateMovementSessionAsync(movementSession);
+        var movementSessions = await _movementSessionRepository.GetMovementSessionsByPatientIdAsync(patientId);
+        return movementSessions;
     }
 
     public async Task<List<MovementSuggestion>> GetMovementSuggestionsAsync(Guid patientId)

@@ -34,7 +34,8 @@ public class PebblesContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder
-            .UseSqlServer(_configuration.GetConnectionString("PebblesDB"))
+            // .UseSqlServer(_configuration.GetConnectionString("PebblesDB"))
+            .UseSqlServer(_configuration.GetConnectionString("PebblesDBAzure"))
             .AddInterceptors(new SoftDeleteInterceptor());
     }
 
