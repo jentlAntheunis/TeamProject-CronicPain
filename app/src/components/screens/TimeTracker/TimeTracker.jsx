@@ -10,8 +10,9 @@ import useStore from "../../../core/hooks/useStore";
 import { timeToStringValue } from "../../../core/utils/timeData";
 import { useWakeLock } from "react-screen-wake-lock";
 import { toast } from "react-toastify";
-import { sendAnswers } from "../../../core/utils/apiCalls";
+import { sendAnswers, storeMovement } from "../../../core/utils/apiCalls";
 import { useState } from "react";
+import { useUser } from "../../app/auth/AuthProvider";
 
 const TimeTracker = () => {
   return (
@@ -52,6 +53,7 @@ const MyStopwatch = () => {
     pause,
     reset,
   } = useStopwatch();
+  const user = useUser();
   const { isSupported, request, release } = useWakeLock({
     onRequest: () => console.log("Wake Lock was requested"),
     onRelease: () => console.log("Wake Lock was released"),
@@ -68,7 +70,6 @@ const MyStopwatch = () => {
       if (minutes >= 5) {
         setMovementTime(totalSeconds);
         setLoading(true);
-        // TODO: store time in database
         const data = {
           questionnaireId: questionaireId,
           questionnaireIndex: questionaireIndex,
@@ -76,6 +77,7 @@ const MyStopwatch = () => {
         };
         console.log(data);
         try {
+          await storeMovement(user.id, totalSeconds)
           await sendAnswers(data);
           setLoading(false);
           removeAnswers();

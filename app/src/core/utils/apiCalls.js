@@ -82,6 +82,15 @@ const addCoins = async (userId, amount) => await request({
   method: 'PUT',
 })
 
+/**
+ * Movement API calls
+ */
+const storeMovement = async (userId, totalTime) => await request({
+  url: `/patients/${userId}/movementsessions`,
+  method: 'POST',
+  data: { seconds: totalTime }
+})
+
 export {
   getUser,
   checkIfUserExists,
@@ -93,4 +102,5 @@ export {
   getDailyQuestionnaire,
   sendAnswers,
   addCoins,
+  storeMovement,
 }

@@ -18,6 +18,7 @@ import MovementSuggestions from "../screens/MovementSuggestions/MovementSuggesti
 import TimeTracker from "../screens/TimeTracker/TimeTracker";
 import Patients from "../screens/Specialist/Patients/Patients";
 import Questions from "../screens/Specialist/Questions/Questions";
+import QuestionnaireContainer from "./questionnaire/QuestionnaireContainer";
 
 const App = () => (
   <Routes>
@@ -48,11 +49,20 @@ const App = () => (
         }
       >
         {/* Specialist Paths */}
-        <Route path={SpecialistRoutes.PatientsOverview} element={<Patients />} />
+        <Route
+          path={SpecialistRoutes.PatientsOverview}
+          element={<Patients />}
+        />
         <Route path={SpecialistRoutes.AddPatient} element={<AddPatient />} />
-        <Route path={SpecialistRoutes.QuestionsOverview} element={<Questions />} />
+        <Route
+          path={SpecialistRoutes.QuestionsOverview}
+          element={<Questions />}
+        />
         {/* <Route path={SpecialistRoutes.AddQuestion} element={<AddQuestion />} /> */}
-        <Route path="*" element={<Navigate to={SpecialistRoutes.PatientsOverview} />} />
+        <Route
+          path="*"
+          element={<Navigate to={SpecialistRoutes.PatientsOverview} />}
+        />
       </Route>
 
       {/* Patient */}
@@ -65,15 +75,28 @@ const App = () => (
       >
         {/* Patient Paths */}
         <Route path={PatientRoutes.Dashboard} element={<DashboardScreen />} />
-        <Route
-          path={PatientRoutes.Questionaire}
-          element={<QuestionaireScreen />}
-        />
-        <Route path={PatientRoutes.MovementSuggestions} element={<MovementSuggestions />} />
-        <Route path={PatientRoutes.TimeTracker} element={<TimeTracker />} />
         <Route path={PatientRoutes.Streaks} element={<StreaksScreen />} />
-        <Route path={PatientRoutes.WellDone} element={<WellDone />} />
         <Route path="*" element={<Navigate to={PatientRoutes.Dashboard} />} />
+
+        {/* Questionnaire Paths */}
+        <Route
+          element={
+            <QuestionnaireContainer>
+              <Outlet />
+            </QuestionnaireContainer>
+          }
+        >
+          <Route
+            path={PatientRoutes.Questionaire}
+            element={<QuestionaireScreen />}
+          />
+          <Route
+            path={PatientRoutes.MovementSuggestions}
+            element={<MovementSuggestions />}
+          />
+          <Route path={PatientRoutes.TimeTracker} element={<TimeTracker />} />
+          <Route path={PatientRoutes.WellDone} element={<WellDone />} />
+        </Route>
       </Route>
     </Route>
   </Routes>
