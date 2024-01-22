@@ -47,10 +47,10 @@ public class SpecialistController : ControllerBase
         return Ok(JsonConvert.SerializeObject(response));
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetSpecialistByIdAsync(Guid id)
+    [HttpGet("{specialistId}")]
+    public async Task<IActionResult> GetSpecialistByIdAsync(Guid specialistId)
     {
-        var specialist = await _specialistService.GetSpecialistByIdAsync(id);
+        var specialist = await _specialistService.GetSpecialistByIdAsync(specialistId);
         if(specialist == null)
         {
             return NotFound();
@@ -65,10 +65,10 @@ public class SpecialistController : ControllerBase
         return Ok(JsonConvert.SerializeObject(newSpecialist));
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateSpecialistAsync(Guid id, [FromBody] Specialist specialist)
+    [HttpPut("{specialistId}")]
+    public async Task<IActionResult> UpdateSpecialistAsync(Guid specialistId, [FromBody] Specialist specialist)
     {
-        specialist.Id = id;
+        specialist.Id = specialistId;
         var updatedSpecialist = await _specialistService.UpdateSpecialistAsync(specialist);
         return Ok(JsonConvert.SerializeObject(updatedSpecialist));
     }

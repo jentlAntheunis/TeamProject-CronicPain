@@ -37,6 +37,7 @@ public class PatientRepository : IPatientRepository
         return await _context.Patient
             .Include(p => p.Avatar)
             .ThenInclude(a => a.Color)
+            .Include(p => p.Colors)
             .FirstOrDefaultAsync(p => p.Id == id);
     }
 
