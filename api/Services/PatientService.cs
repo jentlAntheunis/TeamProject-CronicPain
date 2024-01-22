@@ -69,6 +69,7 @@ public class PatientService : IPatientService
         patient.PatientSpecialists.Add(new PatientSpecialist { PatientId = patient.Id, SpecialistId = SpecialistId });
 
         var color = await _colorRepository.GetDefaultColorAsync();
+        patient.Colors.Add(color);
         patient.Avatar.ColorId = color.Id;
         return await _patientRepository.CreatePatientAsync(patient);
     }

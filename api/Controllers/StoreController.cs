@@ -33,7 +33,7 @@ public class StoreController : ControllerBase
     public async Task<IActionResult> GetPatientStoreAsync(Guid patientId)
     {
         var store = await _storeService.GetPatientStoreAsync(patientId);
-        return Ok(store);
+        return Ok(JsonConvert.SerializeObject(store));
     }
 
     [HttpGet("{patientId}/buy/{colorId}")]

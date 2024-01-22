@@ -1,6 +1,7 @@
 using Pebbles.Repositories;
 using Pebbles.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Pebbles.Services;
 
@@ -27,7 +28,7 @@ public class StoreService : IStoreService
 
     public async Task<List<Color>> GetPatientStoreAsync(Guid patientId)
     {
-        var patient = await _patientRepository.GetPatientByIdAsync(patientId);
+        var patient = await _patientRepository.GetPatientDetailsByIdAsync(patientId);
         if(patient == null)
         {
             throw new Exception("Patient not found");
