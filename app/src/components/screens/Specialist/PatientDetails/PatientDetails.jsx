@@ -5,6 +5,7 @@ import PageHeading from "../../../ui/PageHeading/PageHeading";
 import { SpecialistRoutes } from "../../../../core/config/routes";
 import styles from "./PatientDetails.module.css";
 import MovingInfluenceCard from "../../../ui/MovingInfluenceCard/MovingInfluanceCard";
+import Graph from "../../../ui/Graph/Graph";
 
 const PatientDetails = () => {
   let { id } = useParams();
@@ -26,13 +27,8 @@ const PatientDetails = () => {
           </div>
         </div>
         <div className={styles.graphs}>
-          <div className={styles.graph}>
-            <div className={styles.h5}>
-              Overzicht tijdsduur beweging voorbije week
-            </div>
-            <div className={styles.h5}>Pijn ervaring voorbije maand</div>
-          </div>
-          <div className={styles.graph}></div>
+            <Graph variant={"bar"} title={"Overzicht tijdsduur beweging voorbije week"}></Graph>
+            <Graph variant={"line"} title={"Pijn ervaring voorbije maand"}></Graph>
         </div>
         <div className={styles.questionnairesContainer}>
           <div>
