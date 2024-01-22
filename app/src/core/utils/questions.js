@@ -1,8 +1,13 @@
 const defaultAnswer = (question) => {
-  if (question.options.length % 2 === 0) {
+  if (question.scale.options.length % 2 === 0) {
     return 0;
   }
-  return Math.floor(question.options.length / 2);
+  return Math.floor(question.scale.options.length / 2);
 }
 
-export { defaultAnswer }
+const orderOptions = (options) => {
+  options.sort((a, b) => parseInt(a.position) - parseInt(b.position));
+  return options;
+}
+
+export { defaultAnswer, orderOptions }

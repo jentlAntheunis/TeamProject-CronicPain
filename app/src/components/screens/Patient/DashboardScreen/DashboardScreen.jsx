@@ -9,27 +9,28 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../../core/services/firebase.js";
 import { useNavigate } from "react-router-dom";
 import { PatientRoutes } from "../../../../core/config/routes.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BottomSheet from "../../../ui/BottomSheet/BottomSheet.jsx";
 import clsx from "clsx";
 import useStore from "../../../../core/hooks/useStore.jsx";
-import { ExampleQuestions } from "../../../../core/config/questions.js";
 import DailyPain from "../../../ui/DailyPain/DailyPain.jsx";
-import { getUserData } from "../../../../core/utils/apiCalls.js";
+import { getBonusQuestionnaire, getDailyQuestionnaire, getMovementQuestionnaire, getUserData } from "../../../../core/utils/apiCalls.js";
 import { useUser } from "../../../app/auth/AuthProvider.jsx";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
+import QuestionCategories from "../../../../core/config/questionCategories.js";
 
 const DashboardScreen = () => {
   // state management
   const [sheetOpen, setSheetOpen] = useState(false);
-  const {
-    removeAnswers,
-    resetCurrentQuestion,
-    resetQuestionaireIndex,
-    resetMovementTime,
-  } = useStore();
+  const [loading, setLoading] = useState(false);
+  const [dailyQuestion, setDailyQuestion] = useState(null);
+  const { resetEverything } = useStore();
   const setQuestions = useStore((state) => state.setQuestions);
+  const setQuestionaireId = useStore((state) => state.setQuestionaireId);
+  const setQuestionaireCategory = useStore(
+    (state) => state.setQuestionaireCategory
+  );
 
   // hooks
   const user = useUser();
@@ -41,6 +42,27 @@ const DashboardScreen = () => {
     queryFn: () => getUserData(user.id),
   });
 
+  // check if first launch of the day
+  useEffect(() => {
+    if (!data) return;
+
+    const dailyQuestionnaire = async () => {
+      const lastLaunch = localStorage.getItem("lastLaunch");
+      const today = new Date().getDate();
+      if (lastLaunch !== today.toString()) {
+        try {
+          const { data } = await getDailyQuestionnaire(user.id);
+          setDailyQuestion(data);
+          console.log(data);
+        } catch (error) {
+          toast.error("Er is iets misgegaan bij het ophalen van de vragenlijst.");
+        }
+      }
+    }
+
+    dailyQuestionnaire();
+  }, [data, user.id]);
+
   if (isLoading) return null;
 
   if (isError) {
@@ -48,18 +70,41 @@ const DashboardScreen = () => {
     return null;
   }
 
+  const handleStartQuestionnaire = async (questionnaireCategory) => {
+    setLoading(true);
+    try {
+      let result;
+      if (questionnaireCategory === QuestionCategories.Movement) {
+        result = await getMovementQuestionnaire(user.id);
+      } else if (questionnaireCategory === QuestionCategories.Bonus) {
+        result = await getBonusQuestionnaire(user.id);
+      }
+      const { data } = result;
+      // TODO: Check if first movement questionnaire of the day and store in zustand
+      setLoading(false);
+      console.log(data);
+      resetEverything();
+      setQuestionaireId(data.id);
+      setQuestionaireCategory(questionnaireCategory);
+      setQuestions(data.questions);
+      navigate(PatientRoutes.Questionaire);
+    } catch (error) {
+      setLoading(false);
+      toast.error("Er is iets misgegaan bij het ophalen van de vragenlijst.");
+    }
+  };
+
   const handleStartMovement = () => {
-    removeAnswers();
-    resetCurrentQuestion();
-    resetQuestionaireIndex();
-    resetMovementTime();
-    setQuestions(ExampleQuestions);
-    navigate(PatientRoutes.Questionaire);
+    handleStartQuestionnaire(QuestionCategories.Movement);
+  };
+
+  const handleStartBonus = () => {
+    handleStartQuestionnaire(QuestionCategories.Bonus);
   };
 
   return (
     <FullHeightScreen>
-      <DailyPain />
+      <DailyPain question={dailyQuestion} setQuestion={setDailyQuestion} />
       <div className={styles.screen}>
         <TopBar coins={data.data.coins} streak={data.data.streak} />
         <Avatar />
@@ -68,10 +113,16 @@ const DashboardScreen = () => {
             variant="primary"
             size="full"
             onClick={() => setSheetOpen(true)}
+            disabled={loading}
           >
             Ik wil bewegen! <Play size={22} weight="bold" />
           </Button>
-          <Button variant="secondary" size="full">
+          <Button
+            variant="secondary"
+            size="full"
+            onClick={handleStartBonus}
+            disabled={loading}
+          >
             Vul bonusvragen in <ClipboardText size={22} weight="bold" />
           </Button>
         </div>
@@ -92,6 +143,7 @@ const DashboardScreen = () => {
           variant="primary"
           size="full"
           onClick={() => handleStartMovement()}
+          disabled={loading}
         >
           Start vragenlijst
         </Button>
