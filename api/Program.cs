@@ -53,8 +53,6 @@ builder.Services.AddScoped<IScaleRepository, ScaleRepository>();
 builder.Services.AddScoped<ISpecialistRepository, SpecialistRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt =>
@@ -89,8 +87,7 @@ builder.Services.AddSwaggerGen(opt =>
 
 builder.Services.AddDbContext<PebblesContext>(options =>
     // options.UseSqlServer(builder.Configuration.GetConnectionString("PebblesDB")));
-    options.UseSqlServer(builder.Configuration.GetConnectionString("PebblesDBAzure")));
-
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PebblesDB")));
 
 
 // Configure Firebase Authentication (right error codes)

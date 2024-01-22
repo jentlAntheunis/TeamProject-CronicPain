@@ -35,7 +35,7 @@ public class PebblesContext : DbContext
     {
         optionsBuilder
             // .UseSqlServer(_configuration.GetConnectionString("PebblesDB"))
-            .UseSqlServer(_configuration.GetConnectionString("PebblesDBAzure"))
+            .UseSqlServer(_configuration.GetConnectionString("PebblesDB"))
             .AddInterceptors(new SoftDeleteInterceptor());
     }
 

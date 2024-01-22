@@ -26,8 +26,7 @@ jobs:
         run: |
           echo '{
             "ConnectionStrings": {
-              // "PebblesDB": "${{ secrets.CONNECTIONSTRINGS_PEBBLESDB }}"
-              "PebblesDB": "${{ secrets.CONNECTIONSTRINGS_AZURE }}"
+              "PebblesDB": "${{ secrets.CONNECTIONSTRINGS_PEBBLESDB }}"
             },
             "EmailSettings": {
               "SmtpServer": "${{ secrets.EMAILSETTINGS_SMTPSERVER }}",
