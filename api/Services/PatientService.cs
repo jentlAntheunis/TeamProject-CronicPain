@@ -10,7 +10,6 @@ public interface IPatientService
     Task<IEnumerable<Patient>> GetPatientsBySpecialistAsync(Guid SpecialistId);
     Task<Patient> GetPatientDetailsByIdAsync(Guid id);
     Task<Guid> AddPatientBySpecialistAsync(Guid SpecialistId, Patient patient);
-    Task AddPatientToSpecialistAsync(Guid PatientId, Guid SpecialistId);
     Task AddPatientListToSpecialistAsync(Guid SpecialistId, List<Patient> patients);
     Task<Patient> UpdatePatientAsync(Patient patient);
     Task AddCoinsAsync(Guid patientId, int amount);
@@ -69,7 +68,13 @@ public class PatientService : IPatientService
             throw new Exception("Specialist does not exist");
 
         var patients = await _patientRepository.GetAllPatientsAsync();
-        var existingPatient = patients.FirstOrDefault(p => p.Email == patient.Email);
+
+        //check by email, then lastname, then firstname
+        var existingPatient = patients
+            .Where(p => p.Email == patient.Email)
+            .Where(p => p.LastName == patient.LastName)
+            .Where(p => p.FirstName == patient.FirstName)
+            .FirstOrDefault();
         if (existingPatient != null)
         {
             existingPatient.PatientSpecialists.Add(new PatientSpecialist { PatientId = existingPatient.Id, SpecialistId = SpecialistId });

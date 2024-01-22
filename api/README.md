@@ -7,13 +7,16 @@ Door het gebruik van EntityFramework zijn de json bodies niet case sensitive.
 Hier zijn de mogelijke endpoints:
 
 ## Default
+
 GET
+
 - /
   - Default endpoint dat aangeeft of de backend werkt
 
 ## Specialists
 
 GET
+
 - /specialists
   - gets all specialists
 - /specialists/{<span style="color: cornflowerblue">specialistId</span>}
@@ -22,6 +25,7 @@ GET
   - Gets a list of Patients for the specialist
 
 POST
+
 - /specialists
   - Adds a specialist
   - Body:
@@ -43,7 +47,7 @@ POST
     }
     ```
 - /specialists/{<span style="color: cornflowerblue">specialistId</span>}/patients
-  - Adds a new patient to the specialist
+  - Adds a new patient to the specialist. If the patient is already present in the database (checked by email, then lastname, then firstname), it adds a new relation between the specialist and patient, but no new patient.
   - Body:
     ```json
     {
@@ -51,6 +55,24 @@ POST
       "lastName": "string",
       "email": "string"
     }
+    ```
+- /specialists/{<span style="color: cornflowerblue">specialistId</span>}/patients/addlist
+  - Adds a list of patients
+  - Body:
+    ```json
+    [
+      {
+        "firstName": "string",
+        "lastName": "string",
+        "email": "string"
+      },
+      {
+        "firstName": "string",
+        "lastName": "string",
+        "email": "string"
+      },
+      ...
+    ]
     ```
 - /specialists/{<span style="color: cornflowerblue">specialistId</span>}/patients/{<span style="color: cornflowerblue">patientId</span>}/movementSuggestions
   - Add movement suggestion to patient
@@ -64,6 +86,7 @@ POST
     ```
 
 PUT
+
 - /specialists/{<span style="color: cornflowerblue">specialistId</span>}
   - Edits the specialist information
   - Body:
@@ -78,6 +101,7 @@ PUT
 ## Patients
 
 GET
+
 - /patients/{<span style="color: cornflowerblue">patientId</span>}
   - Gets patient by id
 - /patients/{<span style="color: cornflowerblue">patientId</span>}/details
@@ -92,6 +116,7 @@ GET
   - NOT IMPLEMENTED YET
 
 POST
+
 - /patients/{<span style="color: cornflowerblue">patientId</span>}/movementsessions
   - Post a movement session
   - Body:
@@ -102,12 +127,14 @@ POST
     ```
 
 PUT
+
 - /patients/{<span style="color: cornflowerblue">patientId</span>}/addcoins/{<span style="color: cornflowerblue">amount</span>}
 - Add coins to the patient
 
 ## Users (specialists and patients combined)
 
 GET
+
 - /users
   - Gets all users
 - /users/exists/{<span style="color: cornflowerblue">email</span>}
@@ -115,6 +142,7 @@ GET
   - Returns false if the email is not in the database
 
 POST
+
 - /users/loginbyemail
   - Returns user object
   - Body:
@@ -123,6 +151,7 @@ POST
     ```
 
 PUT
+
 - /users/{<span style="color: cornflowerblue">userId</span>}
   - Used to edit any user
   - Body:
@@ -135,11 +164,14 @@ PUT
     ```
 
 DELETE
+
 - /users/{<span style="color: cornflowerblue">userId</span>}
   - Used to soft-delete any user
 
 ## Store
+
 GET
+
 - /store/{<span style="color: cornflowerblue">patientId</span>}
   - Gets a complete list of all store items, with info on owned and active
 - /store/{<span style="color: cornflowerblue">patientId</span>}/buy/{<span style="color: cornflowerblue">colorId</span>}
