@@ -4,3 +4,4 @@ migrations/
 appsettings.json
 appsettings.Development.json
 ServiceAccountCredentials.json
+*.http
