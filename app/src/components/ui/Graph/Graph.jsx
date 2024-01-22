@@ -3,7 +3,6 @@ import styles from "./Graph.module.css";
 import {
   BarChart,
   Bar,
-  Rectangle,
   XAxis,
   YAxis,
   Tooltip,

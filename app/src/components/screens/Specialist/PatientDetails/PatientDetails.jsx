@@ -9,7 +9,6 @@ import Graph from "../../../ui/Graph/Graph";
 import Button from "../../../ui/Button/Button";
 import RewardMetric from "../../../ui/RewardMetric/RewardMetric";
 import Streaks from "../../../ui/Icons/Streaks";
-import { Info } from "@phosphor-icons/react";
 import InfoTooltip from "../../../ui/InfoTooltip/InfoTooltip";
 
 const PatientDetails = () => {
