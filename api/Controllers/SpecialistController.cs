@@ -110,6 +110,21 @@ public class SpecialistController : ControllerBase
         }
     }
 
+    [HttpPost("{specialistId}/patients/addlist")]
+    public async Task<IActionResult> AddPatientListBySpecialistAsync(Guid specialistId, [FromBody] List<Patient> patients)
+    {
+        try
+        {
+            await _patientService.AddPatientListToSpecialistAsync(specialistId, patients);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return StatusCode(500);
+        }
+    }
+
     [HttpGet("{specialistId}/patients")]
     public async Task<IActionResult> GetPatientsBySpecialistAsync(Guid specialistId)
     {
