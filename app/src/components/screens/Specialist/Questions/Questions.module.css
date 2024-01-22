@@ -1,0 +1,57 @@
+.searchAndAdd,
+.question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.searchAndAdd {
+  margin-top: 1rem;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-top: .75rem;
+}
+
+.filters button {
+  padding: .5rem 1rem;
+  border-radius: 100rem;
+  background-color: var(--grey-200);
+  color: var(--black);
+  font-size: var(--small);
+  font-weight: var(--medium);
+  cursor: pointer;
+}
+
+.filters button.active {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+.questions {
+  margin-top: 2.5rem;
+}
+
+.questionName {
+  font-size: var(--h6);
+  color: var(--black);
+}
+
+.questionName .match {
+  font-weight: var(--bold);
+}
+
+.question {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--grey-200);
+}
+
+.noQuestions {
+  text-align: center;
+  padding-top: 1.25rem;
+  font-size: var(--h6);
+  color: var(--grey-400);
+}

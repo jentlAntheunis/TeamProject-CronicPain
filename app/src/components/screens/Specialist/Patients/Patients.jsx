@@ -7,53 +7,47 @@ import Search from "../../../ui/Search/Search";
 import ScrollableScreen from "../../../ui/ScrollableScreen/ScrollableScreen";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import {
-  PatientRoutes,
-  SpecialistRoutes,
-} from "../../../../core/config/routes";
+import { SpecialistRoutes } from "../../../../core/config/routes";
 
 const Patients = () => {
   const patientData = [
-    { name: "Janssens Dirk" },
-    { name: "Vermeiren Jos" },
-    { name: "Van de Velde Rita" },
-    { name: "De Vos Luc" },
-    { name: "Bari An" },
-    { name: "Doe John" },
-    { name: "Smith Jane" },
-    { name: "Johnson Michael" },
-    { name: "Davis Emily" },
-    { name: "Wilson David" },
-    { name: "Taylor Olivia" },
-    { name: "Anderson Daniel" },
-    { name: "Martinez Sophia" },
-    { name: "Thompson Matthew" },
-    { name: "Garcia Ava" },
-    { name: "Brown William" },
-    { name: "Thomas Isabella" },
-    { name: "Lee James" },
-    { name: "Clark Mia" },
-    { name: "Lewis Benjamin" },
-    { name: "Hall Charlotte" },
-    { name: "Wright Joseph" },
-    { name: "Turner Amelia" },
-    { name: "Adams Henry" },
+    "Janssens Dirk",
+    "Vermeiren Jos",
+    "Van de Velde Rita",
+    "De Vos Luc",
+    "Bari An",
+    "Doe John",
+    "Smith Jane",
+    "Johnson Michael",
+    "Davis Emily",
+    "Wilson David",
+    "Taylor Olivia",
+    "Anderson Daniel",
+    "Martinez Sophia",
+    "Thompson Matthew",
+    "Garcia Ava",
+    "Brown William",
+    "Thomas Isabella",
+    "Lee James",
+    "Clark Mia",
+    "Lewis Benjamin",
+    "Hall Charlotte",
+    "Wright Joseph",
+    "Turner Amelia",
+    "Adams Henry",
   ];
 
   const [searchInput, setSearchInput] = useState("");
 
   const handleSearchChange = (event) => {
-    console.log("change");
     setSearchInput(event.target.value);
   };
 
   const filteredPatients = patientData.filter((patient) =>
-    patient.name.toLowerCase().includes(searchInput.toLowerCase())
+    patient.toLowerCase().includes(searchInput.toLowerCase())
   );
 
-  const sortedPatients = filteredPatients.sort((a, b) =>
-    a.name.localeCompare(b.name)
-  );
+  const sortedPatients = filteredPatients.sort((a, b) => a.localeCompare(b));
 
   return (
     <ScrollableScreen>
@@ -76,12 +70,17 @@ const Patients = () => {
         </div>
         <div className={styles.patients}>
           {sortedPatients.map((patient, index) => {
-            const indexMatch = patient.name
+            const indexMatch = patient
               .toLowerCase()
               .indexOf(searchInput.toLowerCase());
-            const nameBeforeMatch = patient.name.slice(0, indexMatch);
-            const nameMatch = patient.name.slice(indexMatch, indexMatch + searchInput.length);
-            const nameAfterMatch = patient.name.slice(indexMatch + searchInput.length);
+            const nameBeforeMatch = patient.slice(0, indexMatch);
+            const nameMatch = patient.slice(
+              indexMatch,
+              indexMatch + searchInput.length
+            );
+            const nameAfterMatch = patient.slice(
+              indexMatch + searchInput.length
+            );
             return (
               <div className={styles.patient} key={index}>
                 <div className={styles.patientName}>
@@ -95,6 +94,11 @@ const Patients = () => {
               </div>
             );
           })}
+          {sortedPatients.length === 0 && (
+            <div className={styles.noQuestions}>
+              Geen patiënten gevonden met de naam &quot;{searchInput}&quot;
+            </div>
+          )}
         </div>
       </div>
     </ScrollableScreen>
