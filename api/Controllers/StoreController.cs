@@ -33,13 +33,20 @@ public class StoreController : ControllerBase
     public async Task<IActionResult> GetPatientStoreAsync(Guid patientId)
     {
         var store = await _storeService.GetPatientStoreAsync(patientId);
-        return Ok(store);
+        return Ok(JsonConvert.SerializeObject(store));
     }
 
     [HttpGet("{patientId}/buy/{colorId}")]
     public async Task<IActionResult> BuyColorAsync(Guid patientId, Guid colorId)
     {
         await _storeService.PurchaseColorAsync(patientId, colorId);
+        return Ok();
+    }
+
+    [HttpGet("{patientId}/use/{colorId}")]
+    public async Task<IActionResult> UseColorAsync(Guid patientId, Guid colorId)
+    {
+        await _storeService.UseColorAsync(patientId, colorId);
         return Ok();
     }
 }

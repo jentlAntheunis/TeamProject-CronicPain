@@ -29,19 +29,38 @@ public class PatientController : ControllerBase
     _patientService = patientService;
   }
 
-  [HttpGet("{patientId}/movementsession/start")]
-  public async Task<IActionResult> StartMovementSessionAsync(Guid patientId)
+  [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
+  [HttpGet("{patientId}")]
+  public async Task<IActionResult> GetPatientAsync(Guid patientId)
   {
-    var movementSessionId = await _patientService.StartMovementSessionAsync(patientId);
-    return Ok(movementSessionId);
+    var patient = await _patientService.GetPatientByIdAsync(patientId);
+    if (patient == null)
+    {
+      return NotFound();
+    }
+    return Ok(JsonConvert.SerializeObject(patient));
   }
 
-    [HttpGet("{movementSessionId}/movementsession/end/{seconds}")]
-    public async Task<IActionResult> EndMovementSessionAsync(Guid movementSessionId, int seconds)
-    {
-        await _patientService.EndMovementSessionAsync(movementSessionId, seconds);
-        return Ok();
-    }
+  [HttpGet("{patientId}/details")]
+  public async Task<IActionResult> GetPatientDetailsByIdAsync(Guid patientId)
+  {
+    var patient = await _patientService.GetPatientDetailsByIdAsync(patientId);
+    return Ok(JsonConvert.SerializeObject(patient));
+  }
+
+  [HttpGet("{patientId}/movementsessions")]
+  public async Task<IActionResult> GetMovementSessionsAsync(Guid patientId)
+  {
+    var movementSessions = await _patientService.GetMovementSessionsAsync(patientId);
+    return Ok(JsonConvert.SerializeObject(movementSessions));
+  }
+
+  [HttpPost("{patientId}/movementsessions")]
+  public async Task<IActionResult> AddMovementSessionAsync(Guid patientId, [FromBody] MovementSession movementSession)
+  {
+    var movementSessionId = await _patientService.AddMovementSessionAsync(patientId, movementSession);
+    return Ok(JsonConvert.SerializeObject(movementSessionId));
+  }
 
   [HttpGet("{patientId}/movementsuggestions")]
   public async Task<IActionResult> GetMovementSuggestionsAsync(Guid patientId)

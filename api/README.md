@@ -6,6 +6,11 @@ Door het gebruik van EntityFramework zijn de json bodies niet case sensitive.
 
 Hier zijn de mogelijke endpoints:
 
+## Default
+GET
+- /
+  - Default endpoint dat aangeeft of de backend werkt
+
 ## Specialists
 
 GET
@@ -13,6 +18,8 @@ GET
   - gets all specialists
 - /specialists/{<span style="color: cornflowerblue">specialistId</span>}
   - gets specialist by id
+- /specialists/{<span style="color: cornflowerblue">specialistId</span>}/patients
+  - Gets a list of Patients for the specialist
 
 POST
 - /specialists
@@ -73,24 +80,36 @@ PUT
 GET
 - /patients/{<span style="color: cornflowerblue">patientId</span>}
   - Gets patient by id
-- /patients/{<span style="color: cornflowerblue">patientId</span>}/movementsession/start
-  - Starts movement session for the patient
-  - Movement session id will be returned
-- /patients/{<span style="color: cornflowerblue">movementSessionId</span>}/end
-  - Stops the movement session
-  - <span style="color: red">Use Movement Id for end, not Patient Id</span>
+- /patients/{<span style="color: cornflowerblue">patientId</span>}/details
+  - Gets patient by id with more detail
+    - such as logins, movement sessions and suggestions
+- /patients/{<span style="color: cornflowerblue">patientId</span>}/movementsessions
+  - Gets all movement sessions of the patient
+- /patients/{<span style="color: cornflowerblue">patientId</span>}/movementsuggestions
+  - Gets all movement suggestions of the patient
 - /patients/{<span style="color: cornflowerblue">patientId</span>}/pebblesmood
   - Gets the mood pebbles should be in right now
   - NOT IMPLEMENTED YET
+
+POST
+- /patients/{<span style="color: cornflowerblue">patientId</span>}/movementsessions
+  - Post a movement session
+  - Body:
+    ```json
+      {
+        "seconds": int
+      }
+    ```
+
+PUT
+- /patients/{<span style="color: cornflowerblue">patientId</span>}/addcoins/{<span style="color: cornflowerblue">amount</span>}
+- Add coins to the patient
 
 ## Users (specialists and patients combined)
 
 GET
 - /users
   - Gets all users
-- /users/{<span style="color: cornflowerblue">userId</span>}
-  - Gets user by id
-  - Can be used to get a user that has been soft-deleted
 - /users/exists/{<span style="color: cornflowerblue">email</span>}
   - Returns true if it finds the email in the user database
   - Returns false if the email is not in the database
@@ -118,3 +137,12 @@ PUT
 DELETE
 - /users/{<span style="color: cornflowerblue">userId</span>}
   - Used to soft-delete any user
+
+## Store
+GET
+- /store/{<span style="color: cornflowerblue">patientId</span>}
+  - Gets a complete list of all store items, with info on owned and active
+- /store/{<span style="color: cornflowerblue">patientId</span>}/buy/{<span style="color: cornflowerblue">colorId</span>}
+  - Subtracts patient coins if they have enough and adds the color to their account
+- /store/{<span style="color: cornflowerblue">patientId</span>}/use/{<span style="color: cornflowerblue">colorId</span>}
+  - Adds the color if owned to the patients avatar, and sets the color as active in the store endpoint

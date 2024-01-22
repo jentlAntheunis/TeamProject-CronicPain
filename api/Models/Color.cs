@@ -48,4 +48,6 @@ public class Color : ISoftDelete
 
     [NotMapped]
     public bool Owned { get; set; }
+    [NotMapped]
+    public bool Active { get; set; }
 }

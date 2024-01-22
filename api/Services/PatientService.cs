@@ -13,8 +13,8 @@ public interface IPatientService
     Task AddPatientToSpecialistAsync(Guid PatientId, Guid SpecialistId);
     Task<Patient> UpdatePatientAsync(Patient patient);
     Task AddCoinsAsync(Guid patientId, int amount);
-    Task<Guid> StartMovementSessionAsync(Guid patientId);
-    Task EndMovementSessionAsync(Guid movementSessionId, int seconds);
+    Task<MovementSession> AddMovementSessionAsync(Guid patientId, MovementSession movementSession);
+    Task<List<MovementSession>> GetMovementSessionsAsync(Guid patientId);
     Task<List<MovementSuggestion>> GetMovementSuggestionsAsync(Guid patientId);
     Task AddMovementSuggestion(Guid specialistId, Guid patientId, MovementSuggestion movementSuggestionId);
     Task<string> GetPebblesMoodAsync(Guid patientId);
@@ -50,12 +50,7 @@ public class PatientService : IPatientService
 
     public async Task<Patient> GetPatientByIdAsync(Guid id) => await _patientRepository.GetPatientByIdAsync(id);
 
-    public async Task<IEnumerable<Patient>> GetPatientsBySpecialistAsync(Guid SpecialistId)
-    {
-        var patients = await _patientRepository.GetAllPatientsAsync();
-        var patientSpecialists = patients.SelectMany(p => p.PatientSpecialists).Where(ps => ps.SpecialistId == SpecialistId);
-        return patientSpecialists.Select(ps => ps.Patient);
-    }
+    public async Task<IEnumerable<Patient>> GetPatientsBySpecialistAsync(Guid SpecialistId) => await _patientRepository.GetPatientsBySpecialistIdAsync(SpecialistId);
 
     public async Task<Patient> GetPatientDetailsByIdAsync(Guid id)
     {
@@ -74,6 +69,7 @@ public class PatientService : IPatientService
         patient.PatientSpecialists.Add(new PatientSpecialist { PatientId = patient.Id, SpecialistId = SpecialistId });
 
         var color = await _colorRepository.GetDefaultColorAsync();
+        patient.Colors.Add(color);
         patient.Avatar.ColorId = color.Id;
         return await _patientRepository.CreatePatientAsync(patient);
     }
@@ -92,25 +88,20 @@ public class PatientService : IPatientService
 
     public async Task<Patient> UpdatePatientAsync(Patient patient) => await _patientRepository.UpdatePatientAsync(patient);
 
-    public async Task<Guid> StartMovementSessionAsync(Guid patientId)
+    public async Task<MovementSession> AddMovementSessionAsync(Guid patientId, MovementSession movementSession)
+    {
+        movementSession.PatientId = patientId;
+        await _movementSessionRepository.CreateMovementSessionAsync(movementSession);
+        return movementSession;
+    }
+
+    public async Task<List<MovementSession>> GetMovementSessionsAsync(Guid patientId)
     {
         var patient = await _patientRepository.GetPatientByIdAsync(patientId);
         if (patient == null)
             throw new Exception("Patient does not exist");
-        var movementSession = new MovementSession
-        {
-            PatientId = patient.Id,
-        };
-        return await _movementSessionRepository.CreateMovementSessionAsync(movementSession);
-    }
-
-    public async Task EndMovementSessionAsync(Guid movementSessionId, int seconds)
-    {
-        var movementSession = await _movementSessionRepository.GetMovementSessionByIdAsync(movementSessionId);
-        if (movementSession == null)
-            throw new Exception("Movement session does not exist");
-        movementSession.Seconds = seconds;
-        await _movementSessionRepository.UpdateMovementSessionAsync(movementSession);
+        var movementSessions = await _movementSessionRepository.GetMovementSessionsByPatientIdAsync(patientId);
+        return movementSessions;
     }
 
     public async Task<List<MovementSuggestion>> GetMovementSuggestionsAsync(Guid patientId)
