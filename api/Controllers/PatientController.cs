@@ -29,19 +29,19 @@ public class PatientController : ControllerBase
     _patientService = patientService;
   }
 
-  [HttpGet("{patientId}/movementsession/start")]
-  public async Task<IActionResult> StartMovementSessionAsync(Guid patientId)
+  [HttpGet("{patientId}/movementsessions")]
+  public async Task<IActionResult> GetMovementSessionsAsync(Guid patientId)
   {
-    var movementSessionId = await _patientService.StartMovementSessionAsync(patientId);
-    return Ok(movementSessionId);
+    var movementSessions = await _patientService.GetMovementSessionsAsync(patientId);
+    return Ok(JsonConvert.SerializeObject(movementSessions));
   }
 
-    [HttpGet("{movementSessionId}/movementsession/end/{seconds}")]
-    public async Task<IActionResult> EndMovementSessionAsync(Guid movementSessionId, int seconds)
-    {
-        await _patientService.EndMovementSessionAsync(movementSessionId, seconds);
-        return Ok();
-    }
+  [HttpPost("{patientId}/movementsessions")]
+  public async Task<IActionResult> AddMovementSessionAsync(Guid patientId, [FromBody] MovementSession movementSession)
+  {
+    var movementSessionId = await _patientService.AddMovementSessionAsync(patientId, movementSession);
+    return Ok(JsonConvert.SerializeObject(movementSessionId));
+  }
 
   [HttpGet("{patientId}/movementsuggestions")]
   public async Task<IActionResult> GetMovementSuggestionsAsync(Guid patientId)

@@ -28,33 +28,30 @@ JsonConvert.DefaultSettings = () => new JsonSerializerSettings
 };
 
 //add services
-builder.Services.AddScoped<IPatientService, PatientService>();
-builder.Services.AddScoped<ISpecialistService, SpecialistService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IStoreService, StoreService>();
-builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IAnswerService, AnswerService>();
 builder.Services.AddScoped<IOptionService, OptionService>();
-
-
+builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IQuestionnaireService, QuestionnaireService>();
+builder.Services.AddScoped<IQuestionService, QuestionService>();
+builder.Services.AddScoped<ISpecialistService, SpecialistService>();
+builder.Services.AddScoped<IStoreService, StoreService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 //add repositories
-builder.Services.AddScoped<IPatientRepository, PatientRepository>();
-builder.Services.AddScoped<ISpecialistRepository, SpecialistRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAnswerRepository, AnswerRepository>();
 builder.Services.AddScoped<IAvatarRepository, AvatarRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IColorRepository, ColorRepository>();
+builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 builder.Services.AddScoped<IMovementSessionRepository, MovementSessionRepository>();
 builder.Services.AddScoped<IMovementSuggestionRepository, MovementSuggestionRepository>();
-builder.Services.AddScoped<ILoginRepository, LoginRepository>();
+builder.Services.AddScoped<IOptionRepository, OptionRepository>();
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IQuestionnaireRepository, QuestionnaireRepository>();
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IScaleRepository, ScaleRepository>();
-builder.Services.AddScoped<IAnswerRepository, AnswerRepository>();
-builder.Services.AddScoped<IOptionRepository, OptionRepository>();
-
-
+builder.Services.AddScoped<ISpecialistRepository, SpecialistRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -89,8 +86,8 @@ builder.Services.AddSwaggerGen(opt =>
 
 
 builder.Services.AddDbContext<PebblesContext>(options =>
+    // options.UseSqlServer(builder.Configuration.GetConnectionString("PebblesDB")));
     options.UseSqlServer(builder.Configuration.GetConnectionString("PebblesDB")));
-
 
 
 // Configure Firebase Authentication (right error codes)
