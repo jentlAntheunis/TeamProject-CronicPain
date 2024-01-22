@@ -26,11 +26,13 @@ public class QuestionController : ControllerBase
     private readonly IQuestionnaireService _questionnaireService;
 
 
-    public QuestionController(IQuestionService questionService, IConfiguration configuration, IQuestionnaireRepository questionnaireRepository)
+    public QuestionController(IQuestionService questionService, IConfiguration configuration, IQuestionnaireRepository questionnaireRepository, IQuestionnaireService questionnaireService, IQuestionRepository questionRepository)
     {
         _configuration = configuration;
         _questionService = questionService;
         _questionnaireRepository = questionnaireRepository;
+        _questionnaireService = questionnaireService;
+        _questionRepository = questionRepository;
     }
 
     [HttpGet("movementquestionnaire/{userId}")]
@@ -95,6 +97,8 @@ public class QuestionController : ControllerBase
         }
     }
 
+    /*
+
     [HttpGet("isfirstquestionnaireoftheday/{userId}")]
     public async Task<IActionResult> IsFirstQuestionnaireOfTheDay(Guid userId)
     {
@@ -109,6 +113,8 @@ public class QuestionController : ControllerBase
             return BadRequest($"Failed to check if it's the first questionnaire of the day: {ex.Message}");
         }
     }
+
+    */
 
 
 

@@ -1,5 +1,6 @@
 using Pebbles.Models;
 using Pebbles.Repositories;
+using Pebbles.Context;
 
 namespace Pebbles.Services;
 
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+
 
 public interface IQuestionnaireService
 {
@@ -21,7 +23,7 @@ public interface IQuestionnaireService
     Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex);
     Task DeleteQuestionnaireAsync(Questionnaire questionnaire);
     Task<List<Questionnaire>> GetQuestionnairesAsync();
-    Task<bool> CheckIfFirstQuestionnaireOfTheDay(Guid patientId);
+
 }
 
 public class QuestionnaireService : IQuestionnaireService
@@ -32,12 +34,15 @@ public class QuestionnaireService : IQuestionnaireService
     private readonly IAnswerRepository _answerRepository;
     private readonly IAnswerService _answerService;
 
+    private readonly PebblesContext _context;
+
     public QuestionnaireService(
         IQuestionnaireRepository questionnaireRepository,
         IQuestionRepository questionRepository,
         IOptionRepository optionRepository,
         IAnswerRepository answerRepository,
-        IAnswerService answerService
+        IAnswerService answerService,
+        PebblesContext context
         )
     {
         _questionnaireRepository = questionnaireRepository;
@@ -45,6 +50,7 @@ public class QuestionnaireService : IQuestionnaireService
         _optionRepository = optionRepository;
         _answerRepository = answerRepository;
         _answerService = answerService;
+        _context = context;
     }
 
     public async Task<Questionnaire> GetQuestionnaireByIdAsync(Guid id) => await _questionnaireRepository.GetQuestionnaireByIdAsync(id);
@@ -61,23 +67,11 @@ public class QuestionnaireService : IQuestionnaireService
     public async Task DeleteQuestionnaireAsync(Questionnaire questionnaire) => throw new NotImplementedException();
     public async Task<List<Questionnaire>> GetQuestionnairesAsync() => throw new NotImplementedException();
 
-    public async Task<bool> CheckIfFirstQuestionnaireOfTheDay(Guid patientId)
-    {
-        var questionnaires = await _questionnaireRepository.GetQuestionnairesByPatientIdAsync(patientId);
-
-        if (questionnaires == null || questionnaires.Count == 0)
-        {
-            return true;
-        }
-
-        var today = DateTime.Now.Date;
-
-        var hasIndex0Today = questionnaires.Any(q => q != null && q.Date.HasValue && q.Date.Value.Date == today && q.QuestionnaireIndex == 0);
-        var hasIndex1Today = questionnaires.Any(q => q != null && q.Date.HasValue && q.Date.Value.Date == today && q.QuestionnaireIndex == 1);
 
 
-        return !(hasIndex0Today && hasIndex1Today);
-    }
+
+
+    
 
 
 }

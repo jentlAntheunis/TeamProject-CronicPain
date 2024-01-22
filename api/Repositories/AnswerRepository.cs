@@ -1,6 +1,8 @@
 using Pebbles.Models;
 using Pebbles.Context;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+
 
 namespace Pebbles.Repositories;
 
@@ -27,6 +29,10 @@ public class AnswerRepository : IAnswerRepository
     {
         await _context.Answer.AddAsync(answer);
         await _context.SaveChangesAsync();
+
+        // Log the saved answer
+        Console.WriteLine($"Saved Answer: {JsonConvert.SerializeObject(answer)}");
+
         return answer;
     }
 

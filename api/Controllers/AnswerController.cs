@@ -21,6 +21,7 @@ public class AnswerController: ControllerBase
     private readonly IAnswerService _answerService;
     private readonly IOptionService _optionService;
 
+
     public AnswerController(IAnswerService answerService, IConfiguration configuration, IOptionService optionService)
     {
         _configuration = configuration;
@@ -29,23 +30,24 @@ public class AnswerController: ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> SaveAnswers([FromBody] AnswerInputDTO answerInputDTO)
+public async Task<IActionResult> SaveAnswers([FromBody] AnswerInputDTO answerInputDTO, [FromServices] IQuestionnaireService questionnaireService)
+{
+    if (!ModelState.IsValid)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
-        try
-        {
-            await _answerService.ProcessAnswers(answerInputDTO.Answers, answerInputDTO.QuestionnaireId, answerInputDTO.QuestionnaireIndex);
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, "An error occurred while processing your request to save answers.");
-        }
+        return BadRequest(ModelState);
     }
+
+    try
+    {
+        await _answerService.ProcessAnswers(answerInputDTO.Answers, answerInputDTO.QuestionnaireId, answerInputDTO.QuestionnaireIndex, questionnaireService);            
+        return Ok();
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, "An error occurred while processing your request to save answers: " + ex.Message);
+    }
+}
+
 
     
 }

@@ -15,9 +15,11 @@ public interface IQuestionnaireRepository
 
     Task<QuestionnaireDTO> AddDailyPainQuestionnaireAsync(Guid userId);
     Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire);
-    Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex);
     Task DeleteQuestionnaireAsync(Questionnaire questionnaire);
     Task<List<Questionnaire>> GetQuestionnairesAsync();
+
+
+    
 }
 
 public class QuestionnaireRepository : IQuestionnaireRepository
@@ -42,20 +44,27 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         var questionnaire = new Questionnaire
         {
             Id = Guid.NewGuid(),
-            PatientId = patientId
+            PatientId = patientId,
+            Date = null
         };
 
         try
         {
+            var categoryName = "beweging"; 
+            var scaleName = "oneens_eens"; 
+
             var categoryId = await _context.Category
-                .Where(c => c.Name == "beweging")
+                .Where(c => c.Name == categoryName)
                 .Select(c => c.Id)
                 .FirstOrDefaultAsync();
+            
+            var scaleId= await _context.Scale
+                .Where(s => s.Name == scaleName)
+                .Select(s => s.Id)
+                .FirstOrDefaultAsync();
 
-            if (categoryId == Guid.Empty)
-            {
-                throw new InvalidOperationException("Category 'beweging' not found.");
-            }
+
+            Console.WriteLine($"AddMovementQuestionnaireAsync - CategoryId: {categoryId}");
 
             var randomQuestions = await _context.Question
                 .Where(q => q.CategoryId == categoryId)
@@ -65,20 +74,35 @@ public class QuestionnaireRepository : IQuestionnaireRepository
                 .ThenInclude(scale => scale.Options)
                 .ToListAsync();
 
-            var questionnaireQuestions = randomQuestions.Select(question => new QuestionnaireQuestion
-            {
-                QuestionnaireId = questionnaire.Id,
-                QuestionId = question.Id
-            }).ToList();
+            Console.WriteLine($"AddMovementQuestionnaireAsync - RandomQuestions: {randomQuestions.Count}");
 
             await _context.Questionnaire.AddAsync(questionnaire);
-            await _context.QuestionnaireQuestion.AddRangeAsync(questionnaireQuestions);
+            await _context.SaveChangesAsync();
+
+            foreach (var question in randomQuestions)
+            {
+                var option = await _context.Option
+                    .Where(o => o.ScaleId == scaleId)
+                    .FirstOrDefaultAsync();
+
+                if (option == null)
+                {
+                    throw new InvalidOperationException($"Option scale '{scaleName}' not found.");
+                }
+
+                var questionnaireQuestion = new QuestionnaireQuestion
+                {
+                    QuestionnaireId = questionnaire.Id,
+                    QuestionId = question.Id
+                };
+
+                await _context.QuestionnaireQuestion.AddAsync(questionnaireQuestion);
+            }
 
             await _context.SaveChangesAsync();
 
             // Map the created Questionnaire to QuestionnaireDTO (using AutoMapper)
             var questionnaireDTO = _mapper.Map<QuestionnaireDTO>(questionnaire);
-
 
             Console.WriteLine($"AddMovementQuestionnaireAsync - Completed: QuestionnaireId {questionnaire.Id}");
 
@@ -95,52 +119,88 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         }
     }
 
-
-
-
-    public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
+public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
     {
+        Console.WriteLine($"AddBonusQuestionnaireAsync - Start: UserId {userId}");
 
         var questionnaire = new Questionnaire
         {
-            Id= Guid.NewGuid(),
+            Id = Guid.NewGuid(),
             PatientId = userId,
             Date = null
         };
 
-        var categoryId = await _context.Category
-        .Where(c => c.Name == "bonus")
-        .Select(c => c.Id)
-        .FirstOrDefaultAsync();
-
-
-        var randomQuestions = await _context.Question
-        .Where(q => q.CategoryId == categoryId)
-        .OrderBy(q => Guid.NewGuid()) // Shuffle the questions randomly
-        .Take(10)
-        .Include(q => q.Scale)
-        .ThenInclude(scale => scale.Options)
-        .ToListAsync();
-
-        foreach (var question in randomQuestions)
+        try
         {
-            var questionnaireQuestion = new QuestionnaireQuestion
-            {
-                QuestionnaireId = questionnaire.Id,
-                QuestionId = question.Id
-            };
+            var categoryName = "bonus"; 
+            var scaleName = "nooit_altijd"; 
 
-            await _context.QuestionnaireQuestion.AddAsync(questionnaireQuestion);
+            var categoryId = await _context.Category
+                .Where(c => c.Name == categoryName)
+                .Select(c => c.Id)
+                .FirstOrDefaultAsync();
+            
+            var scaleId= await _context.Scale
+                .Where(s => s.Name == scaleName)
+                .Select(s => s.Id)
+                .FirstOrDefaultAsync();
+
+            if (categoryId == Guid.Empty)
+            {
+                throw new InvalidOperationException($"Category '{categoryName}' not found.");
+            }
+
+            Console.WriteLine($"AddBonusQuestionnaireAsync - CategoryId: {categoryId}");
+
+            var randomQuestions = await _context.Question
+                .Where(q => q.CategoryId == categoryId)
+                .OrderBy(q => Guid.NewGuid()) // Shuffle the questions randomly
+                .Take(10)
+                .Include(q => q.Scale)
+                .ThenInclude(scale => scale.Options)
+                .ToListAsync();
+
+            Console.WriteLine($"AddBonusQuestionnaireAsync - RandomQuestions: {randomQuestions.Count}");
+
+            await _context.Questionnaire.AddAsync(questionnaire);
+            await _context.SaveChangesAsync();
+
+            foreach (var question in randomQuestions)
+            {
+                var option = await _context.Option
+                    .Where(o => o.ScaleId == scaleId)
+                    .FirstOrDefaultAsync();
+
+                if (option == null)
+                {
+                    throw new InvalidOperationException($"Option scale '{scaleName}' not found.");
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            // Map the created Questionnaire to QuestionnaireDTO (using AutoMapper)
+            var questionnaireDTO = _mapper.Map<QuestionnaireDTO>(questionnaire);
+
+            Console.WriteLine($"AddBonusQuestionnaireAsync - Completed: QuestionnaireId {questionnaire.Id}");
+
+            return questionnaireDTO;
         }
 
-        await _context.Questionnaire.AddAsync(questionnaire);
-        await _context.SaveChangesAsync();
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error during AddMovementQuestionnaireAsync: {ex.Message}");
+            if (ex.InnerException != null)
+            {
+                Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+            }
+            throw;
+        }
 
-        // Map the created Questionnaire to QuestionnaireDTO (using AutoMapper)
-        var questionnaireDTO = _mapper.Map<QuestionnaireDTO>(questionnaire);
+        }
 
-        return questionnaireDTO;
-    }
+
+
 
     public async Task<QuestionnaireDTO> AddDailyPainQuestionnaireAsync(Guid userId)
     {
@@ -151,38 +211,78 @@ public class QuestionnaireRepository : IQuestionnaireRepository
             Date = null
         };
 
-        var categoryId = await _context.Category
-            .Where(c => c.Name == "pijn")
-            .Select(c => c.Id)
-            .FirstOrDefaultAsync();
-
-        var questions = await _context.Question
-            .Where(q => q.CategoryId == categoryId)
-            .Include(q => q.Scale)
-            .ThenInclude(scale => scale.Options)
-            .ToListAsync();
-
-        foreach (var question in questions)
+        try
         {
-            var questionnaireQuestion = new QuestionnaireQuestion
-            {
-                QuestionnaireId = questionnaire.Id,
-                QuestionId = question.Id
-            };
+            var categoryName = "pijn"; // Category name for "pijn"
+            var scaleName = "1_10"; // Scale name for "1_10"
 
-            await _context.QuestionnaireQuestion.AddAsync(questionnaireQuestion);
-        }
+            // Get the CategoryId for the specified category name
+            var categoryId = await _context.Category
+                .Where(c => c.Name == categoryName)
+                .Select(c => c.Id)
+                .FirstOrDefaultAsync();
             
-        await _context.Questionnaire.AddAsync(questionnaire);
-        await _context.SaveChangesAsync();
+            var scaleId= await _context.Scale
+                .Where(s => s.Name == scaleName)
+                .Select(s => s.Id)
+                .FirstOrDefaultAsync();
 
-        // Map the created Questionnaire to QuestionnaireDTO (using AutoMapper)
-        var questionnaireDTO = _mapper.Map<QuestionnaireDTO>(questionnaire);
+            if (categoryId == Guid.Empty)
+            {
+                throw new InvalidOperationException($"Category '{categoryName}' not found.");
+            }
 
-        return questionnaireDTO;
+            Console.WriteLine($"AddDailyPainQuestionnaireAsync - CategoryId: {categoryId}");
+
+            var questions = await _context.Question
+                .Where(q => q.CategoryId == categoryId)
+                .Include(q => q.Scale)
+                .ThenInclude(scale => scale.Options)
+                .ToListAsync();
+
+            Console.WriteLine($"AddDailyPainQuestionnaireAsync - Questions Count: {questions.Count}");
+
+            foreach (var question in questions)
+            {
+                var option = await _context.Option
+                    .Where(o => o.ScaleId == scaleId)
+                    .FirstOrDefaultAsync();
+
+                if (option == null)
+                {
+                    throw new InvalidOperationException($"Option '{scaleName}' not found in category '{categoryName}'.");
+                }
+
+                var questionnaireQuestion = new QuestionnaireQuestion
+                {
+                    QuestionnaireId = questionnaire.Id,
+                    QuestionId = question.Id
+                };
+
+                await _context.QuestionnaireQuestion.AddAsync(questionnaireQuestion);
+            }
+
+            await _context.SaveChangesAsync();
+
+            // Map the created Questionnaire to QuestionnaireDTO (using AutoMapper)
+            var questionnaireDTO = _mapper.Map<QuestionnaireDTO>(questionnaire);
+
+            Console.WriteLine($"AddDailyPainQuestionnaireAsync - Completed: QuestionnaireId {questionnaire.Id}");
+
+            return questionnaireDTO;
         }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error during AddDailyPainQuestionnaireAsync: {ex.Message}");
+            if (ex.InnerException != null)
+            {
+                Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+            }
+            throw;
+        }
+    }
 
-    
+
 
 
 
@@ -193,16 +293,6 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         return questionnaire;
     }
 
-    public async Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex)
-    {
-        var questionnaire = await _context.Questionnaire.SingleOrDefaultAsync(q => q.Id == questionnaireId);
-
-        if (questionnaire != null)
-        {
-            questionnaire.QuestionnaireIndex = questionnaireIndex;
-            await _context.SaveChangesAsync();
-        }
-    }
 
 
     public async Task DeleteQuestionnaireAsync(Questionnaire questionnaire)
