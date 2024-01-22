@@ -165,4 +165,9 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Default}"
+);
+
 app.Run();

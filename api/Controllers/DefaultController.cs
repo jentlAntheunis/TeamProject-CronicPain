@@ -13,7 +13,7 @@ using Pebbles.Repositories;
 
 [ApiController]
 
-public class DefaultController: ControllerBase
+public class DefaultController : ControllerBase
 {
     private readonly IConfiguration _configuration;
 
@@ -22,5 +22,11 @@ public class DefaultController: ControllerBase
         _configuration = configuration;
     }
 
+    [HttpGet]
+    [Route("/")]
+    public IActionResult Index()
+    {
+        return Ok("Ja hoor, de backend werkt");
+    }
 
 }
