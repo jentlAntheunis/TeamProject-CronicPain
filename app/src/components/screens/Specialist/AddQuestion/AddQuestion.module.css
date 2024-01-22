@@ -1,21 +1,6 @@
-.formContainer {
-  padding-top: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
+.screenContainer {
+  padding-bottom: 4rem;
 }
-
-.formItems > * + * {
-  padding-top: 1rem;
-}
-
-/* this code is for mobile view */
-/* .screen {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-} */
 
 .header {
   display: flex;
@@ -30,6 +15,18 @@
   font-weight: var(--regular);
 }
 
+.formContainer {
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.formItems > * + * {
+  padding-top: 1rem;
+}
+
 .removePadding {
   padding: 0;
 }
@@ -42,14 +39,18 @@
 
   .formItems {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 2;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 3;
     row-gap: 1.25rem;
     column-gap: 2rem;
   }
 
+  .formItems > *:nth-child(1) {
+    grid-column: span 3;
+  }
+
   .formItems > *:nth-child(3) {
-    grid-column: span 2;
+    grid-row-start: 3;
   }
 
   .formItems > * + * {
