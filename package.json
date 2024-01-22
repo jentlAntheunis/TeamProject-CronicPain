@@ -1,6 +1,7 @@
 {
 	"dependencies": {
 		"@radix-ui/react-slot": "^1.0.2",
+		"papaparse": "^5.4.1",
 		"react-screen-wake-lock": "^3.0.2"
 	}
 }
