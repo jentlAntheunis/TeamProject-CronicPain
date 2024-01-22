@@ -67,8 +67,16 @@ public class PatientService : IPatientService
         var specialist = await _specialistRepository.GetSpecialistByIdAsync(SpecialistId);
         if (specialist == null)
             throw new Exception("Specialist does not exist");
-        patient.PatientSpecialists.Add(new PatientSpecialist { PatientId = patient.Id, SpecialistId = SpecialistId });
 
+        var patients = await _patientRepository.GetAllPatientsAsync();
+        var existingPatient = patients.FirstOrDefault(p => p.Email == patient.Email);
+        if (existingPatient != null)
+        {
+            existingPatient.PatientSpecialists.Add(new PatientSpecialist { PatientId = existingPatient.Id, SpecialistId = SpecialistId });
+            await _patientRepository.UpdatePatientAsync(existingPatient);
+            return patient.Id;
+        }
+        patient.PatientSpecialists.Add(new PatientSpecialist { PatientId = patient.Id, SpecialistId = SpecialistId });
         var color = await _colorRepository.GetDefaultColorAsync();
         patient.Colors.Add(color);
         patient.Avatar.ColorId = color.Id;
@@ -82,18 +90,6 @@ public class PatientService : IPatientService
             await AddPatientBySpecialistAsync(SpecialistId, patient);
         }
         return;
-    }
-
-    public async Task AddPatientToSpecialistAsync(Guid PatientId, Guid SpecialistId)
-    {
-        var patient = await _patientRepository.GetPatientByIdAsync(PatientId);
-        var specialist = await _specialistRepository.GetSpecialistByIdAsync(SpecialistId);
-        if (patient == null)
-            throw new Exception("Patient does not exist");
-        if (specialist == null)
-            throw new Exception("Specialist does not exist");
-        patient.PatientSpecialists.Add(new PatientSpecialist { PatientId = PatientId, SpecialistId = SpecialistId });
-        await _patientRepository.UpdatePatientAsync(patient);
     }
 
     public async Task<Patient> UpdatePatientAsync(Patient patient) => await _patientRepository.UpdatePatientAsync(patient);
@@ -139,7 +135,7 @@ public class PatientService : IPatientService
     public async Task<string> GetPebblesMoodAsync(Guid patientId)
     {
         var patient = await _patientRepository.GetPatientByIdAsync(patientId);
-        
+
         if (patient == null)
             throw new Exception("Patient does not exist");
 
