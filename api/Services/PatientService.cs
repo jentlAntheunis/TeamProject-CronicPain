@@ -50,12 +50,7 @@ public class PatientService : IPatientService
 
     public async Task<Patient> GetPatientByIdAsync(Guid id) => await _patientRepository.GetPatientByIdAsync(id);
 
-    public async Task<IEnumerable<Patient>> GetPatientsBySpecialistAsync(Guid SpecialistId)
-    {
-        var patients = await _patientRepository.GetAllPatientsAsync();
-        var patientSpecialists = patients.SelectMany(p => p.PatientSpecialists).Where(ps => ps.SpecialistId == SpecialistId);
-        return patientSpecialists.Select(ps => ps.Patient);
-    }
+    public async Task<IEnumerable<Patient>> GetPatientsBySpecialistAsync(Guid SpecialistId) => await _patientRepository.GetPatientsBySpecialistIdAsync(SpecialistId);
 
     public async Task<Patient> GetPatientDetailsByIdAsync(Guid id)
     {

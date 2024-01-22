@@ -41,7 +41,10 @@ public class SpecialistController : ControllerBase
         {
             return StatusCode(500);
         }
-        return Ok(JsonConvert.SerializeObject(specialists));
+        var response = new {
+            specialists = specialists
+        };
+        return Ok(JsonConvert.SerializeObject(response));
     }
 
     [HttpGet("{id}")]
@@ -105,6 +108,17 @@ public class SpecialistController : ControllerBase
             Console.WriteLine(ex);
             return StatusCode(500);
         }
+    }
+
+    [HttpGet("{specialistId}/patients")]
+    public async Task<IActionResult> GetPatientsBySpecialistAsync(Guid specialistId)
+    {
+        var patients = await _patientService.GetPatientsBySpecialistAsync(specialistId);
+        if(patients == null)
+        {
+            return StatusCode(500);
+        }
+        return Ok(JsonConvert.SerializeObject(patients));
     }
 
     [HttpPost("{specialistId}/patients/{patientId}/movementsuggestions")]
