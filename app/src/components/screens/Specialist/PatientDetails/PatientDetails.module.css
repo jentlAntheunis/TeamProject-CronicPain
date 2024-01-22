@@ -1,0 +1,15 @@
+.h5 {
+  font-size: var(--h5);
+}
+
+.movingInfluenceContainer {
+  margin-top: 1.25rem;
+}
+
+.movingInfluenceCardsContainer {
+  display: flex;
+  width: 100%;
+  height: 7.75rem;
+  gap: 1.5rem;
+  margin-top: 1.875rem;
+}

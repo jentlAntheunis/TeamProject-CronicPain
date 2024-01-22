@@ -59,7 +59,7 @@ const Patients = () => {
             name="fullNameSearch"
             value={searchInput}
             onChange={handleSearchChange}
-            placeholder="Zoek patient"
+            placeholder="Zoek patiënt"
           />
           <Link to={SpecialistRoutes.AddPatient}>
             <Button>
@@ -88,9 +88,11 @@ const Patients = () => {
                   <span className={styles.match}>{nameMatch}</span>
                   {nameAfterMatch}
                 </div>
-                <Button variant="tertiary" size="superSmall">
-                  Details
-                </Button>
+                <Link to={SpecialistRoutes.PatientDetails}>
+                  <Button variant="tertiary" size="superSmall">
+                    Details
+                  </Button>
+                </Link>
               </div>
             );
           })}

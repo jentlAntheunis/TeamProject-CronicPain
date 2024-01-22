@@ -1,0 +1,54 @@
+.movingInfluanceCard {
+  position: relative;
+  width: 100%;
+  background-color: var(--card-background-color);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+}
+
+.wave {
+  background-color: var(--card-foreground-color);
+}
+
+.positive {
+  --h6-color: var(--lime-800);
+  --small-color: var(--lime-900);
+  --card-background-color: var(--lime-300);
+  --card-foreground-color: var(--lime-400);
+}
+
+.neutral {
+  --h6-color: #854D0E;
+  --small-color: #713F12;
+  --card-background-color: #FDE047;
+  --card-foreground-color: #FACC15;
+}
+
+.negative {
+  --h6-color: #991B1B;
+  --small-color: #7F1D1D;
+  --card-background-color: #FCA5A5;
+  --card-foreground-color: #F87171;
+}
+
+.h6 {
+  font-weight: var(--semi-bold);
+  font-size: var(--h6);
+  color: var(--h6-color);
+}
+
+.small {
+  font-weight: var(--extra-light);
+  font-size: var(--small);
+  color: var(--small-color);
+}
+
+.percentage {
+  position: absolute;
+  bottom: 0;
+  right: -3px;
+  font-weight: var(--bold);
+  font-size: var(--h1);
+  color: var(--white);
+  line-height: .74;
+}
