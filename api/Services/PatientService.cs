@@ -11,6 +11,7 @@ public interface IPatientService
     Task<Patient> GetPatientDetailsByIdAsync(Guid id);
     Task<Guid> AddPatientBySpecialistAsync(Guid SpecialistId, Patient patient);
     Task AddPatientToSpecialistAsync(Guid PatientId, Guid SpecialistId);
+    Task AddPatientListToSpecialistAsync(Guid SpecialistId, List<Patient> patients);
     Task<Patient> UpdatePatientAsync(Patient patient);
     Task AddCoinsAsync(Guid patientId, int amount);
     Task<MovementSession> AddMovementSessionAsync(Guid patientId, MovementSession movementSession);
@@ -72,6 +73,15 @@ public class PatientService : IPatientService
         patient.Colors.Add(color);
         patient.Avatar.ColorId = color.Id;
         return await _patientRepository.CreatePatientAsync(patient);
+    }
+
+    public async Task AddPatientListToSpecialistAsync(Guid SpecialistId, List<Patient> patients)
+    {
+        foreach (var patient in patients)
+        {
+            await AddPatientBySpecialistAsync(SpecialistId, patient);
+        }
+        return;
     }
 
     public async Task AddPatientToSpecialistAsync(Guid PatientId, Guid SpecialistId)
