@@ -1,0 +1,36 @@
+.searchAndAdd,
+.patient {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.searchAndAdd {
+  margin-top: 1rem;
+}
+
+.patients {
+  margin-top: 2.5rem;
+}
+
+.patientName {
+  font-size: var(--h6);
+  color: var(--black);
+}
+
+.patientName .match {
+  font-weight: var(--bold);
+}
+
+.patient {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--grey-200);
+}
+
+.noQuestions {
+  text-align: center;
+  padding-top: 1.25rem;
+  font-size: var(--h6);
+  color: var(--grey-400);
+}
+

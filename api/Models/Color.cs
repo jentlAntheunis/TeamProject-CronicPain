@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
 namespace Pebbles.Models;
@@ -44,4 +45,7 @@ public class Color : ISoftDelete
     public List<Patient> Patients { get; set; }
     [JsonIgnore]
     public List<Avatar> Avatars { get; set; }
+
+    [NotMapped]
+    public bool Owned { get; set; }
 }

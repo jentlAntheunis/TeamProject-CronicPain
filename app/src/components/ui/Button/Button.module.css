@@ -59,3 +59,10 @@
   font-weight: var(--medium);
   width: auto;
 }
+
+.superSmall {
+  font-size: var(--small);
+  font-weight: var(--medium);
+  width: auto;
+  padding: .625rem 1.25rem;
+}

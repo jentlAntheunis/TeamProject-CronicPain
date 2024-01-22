@@ -9,12 +9,13 @@ namespace Pebbles.Repositories;
 public interface IQuestionnaireRepository
 {
     Task<Questionnaire> GetQuestionnaireByIdAsync(Guid id);
-    Task<Questionnaire> GetQuestionnaireByPatientIdAsync(Guid id);
+    Task<List<Questionnaire>> GetQuestionnairesByPatientIdAsync(Guid id);
     Task<QuestionnaireDTO> AddMovementQuestionnaireAsync(Guid id);
     Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId);
 
-    Task<QuestionDTO> AddDailyPainQuestionnaireAsync(Guid userId);
+    Task<QuestionnaireDTO> AddDailyPainQuestionnaireAsync(Guid userId);
     Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire);
+    Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex);
     Task DeleteQuestionnaireAsync(Questionnaire questionnaire);
     Task<List<Questionnaire>> GetQuestionnairesAsync();
 }
@@ -32,8 +33,7 @@ public class QuestionnaireRepository : IQuestionnaireRepository
 
     public async Task<Questionnaire> GetQuestionnaireByIdAsync(Guid id) => await _context.Questionnaire.FirstOrDefaultAsync(q => q.Id == id);
 
-    public async Task<Questionnaire> GetQuestionnaireByPatientIdAsync(Guid id) => await _context.Questionnaire.FirstOrDefaultAsync(q => q.PatientId == id);
-
+    public async Task<List<Questionnaire>> GetQuestionnairesByPatientIdAsync(Guid id) => await _context.Questionnaire.Where(q => q.PatientId == id).ToListAsync();
 
     public async Task<QuestionnaireDTO> AddMovementQuestionnaireAsync(Guid patientId)
     {
@@ -61,7 +61,7 @@ public class QuestionnaireRepository : IQuestionnaireRepository
                 .Where(q => q.CategoryId == categoryId)
                 .OrderBy(q => Guid.NewGuid()) // Shuffle the questions randomly
                 .Take(5)
-                .Include(q => q.Scale) 
+                .Include(q => q.Scale)
                 .ThenInclude(scale => scale.Options)
                 .ToListAsync();
 
@@ -91,8 +91,8 @@ public class QuestionnaireRepository : IQuestionnaireRepository
             {
                 Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
             }
-            throw; 
-        }          
+            throw;
+        }
     }
 
 
@@ -100,7 +100,7 @@ public class QuestionnaireRepository : IQuestionnaireRepository
 
     public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
     {
-        
+
         var questionnaire = new Questionnaire
         {
             Id= Guid.NewGuid(),
@@ -117,12 +117,52 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         var randomQuestions = await _context.Question
         .Where(q => q.CategoryId == categoryId)
         .OrderBy(q => Guid.NewGuid()) // Shuffle the questions randomly
-        .Take(5)
-        .Include(q => q.Scale) 
+        .Take(10)
+        .Include(q => q.Scale)
         .ThenInclude(scale => scale.Options)
         .ToListAsync();
 
         foreach (var question in randomQuestions)
+        {
+            var questionnaireQuestion = new QuestionnaireQuestion
+            {
+                QuestionnaireId = questionnaire.Id,
+                QuestionId = question.Id
+            };
+
+            await _context.QuestionnaireQuestion.AddAsync(questionnaireQuestion);
+        }
+
+        await _context.Questionnaire.AddAsync(questionnaire);
+        await _context.SaveChangesAsync();
+
+        // Map the created Questionnaire to QuestionnaireDTO (using AutoMapper)
+        var questionnaireDTO = _mapper.Map<QuestionnaireDTO>(questionnaire);
+
+        return questionnaireDTO;
+    }
+
+    public async Task<QuestionnaireDTO> AddDailyPainQuestionnaireAsync(Guid userId)
+    {
+        var questionnaire = new Questionnaire
+        {
+            Id = Guid.NewGuid(),
+            PatientId = userId,
+            Date = null
+        };
+
+        var categoryId = await _context.Category
+            .Where(c => c.Name == "pijn")
+            .Select(c => c.Id)
+            .FirstOrDefaultAsync();
+
+        var questions = await _context.Question
+            .Where(q => q.CategoryId == categoryId)
+            .Include(q => q.Scale)
+            .ThenInclude(scale => scale.Options)
+            .ToListAsync();
+
+        foreach (var question in questions)
         {
             var questionnaireQuestion = new QuestionnaireQuestion
             {
@@ -140,50 +180,11 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         var questionnaireDTO = _mapper.Map<QuestionnaireDTO>(questionnaire);
 
         return questionnaireDTO;
-    }
-
-    public async Task<QuestionDTO> AddDailyPainQuestionnaireAsync(Guid userId)
-    {
-        var questionnaire = new Questionnaire
-        {
-            Id = Guid.NewGuid(),
-            PatientId = userId,
-            Date = null
-        };
-
-        var categoryId = await _context.Category
-            .Where(c => c.Name == "pijn")
-            .Select(c => c.Id)
-            .FirstOrDefaultAsync();
-
-        var question = await _context.Question
-            .Where(q => q.CategoryId == categoryId && q.Scale.Name == "1_10")
-            .Include(q => q.Scale)
-            .ThenInclude(scale => scale.Options)
-            .FirstOrDefaultAsync();
-
-        if (question != null)
-        {
-            var questionnaireQuestion = new QuestionnaireQuestion
-            {
-                QuestionnaireId = questionnaire.Id,
-                QuestionId = question.Id
-            };
-
-            await _context.QuestionnaireQuestion.AddAsync(questionnaireQuestion);
-            await _context.Questionnaire.AddAsync(questionnaire);
-            await _context.SaveChangesAsync();
-
-            // Map the selected Question to QuestionDTO (using AutoMapper)
-            var questionDTO = _mapper.Map<QuestionDTO>(question);
-            return questionDTO;
         }
 
-        // Handle the case where no question is found
-        return null;
-    }
-
     
+
+
 
     public async Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire)
     {
@@ -192,12 +193,24 @@ public class QuestionnaireRepository : IQuestionnaireRepository
         return questionnaire;
     }
 
+    public async Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex)
+    {
+        var questionnaire = await _context.Questionnaire.SingleOrDefaultAsync(q => q.Id == questionnaireId);
+
+        if (questionnaire != null)
+        {
+            questionnaire.QuestionnaireIndex = questionnaireIndex;
+            await _context.SaveChangesAsync();
+        }
+    }
+
+
     public async Task DeleteQuestionnaireAsync(Questionnaire questionnaire)
     {
         var answers = await _context.Answer.Where(a => a.QuestionnaireId == questionnaire.Id).ToListAsync();
         if (answers != null)
         {
-            
+
             _context.Answer.RemoveRange(answers);
         }
         _context.Questionnaire.Remove(questionnaire);

@@ -7,11 +7,19 @@ import { Link } from "react-router-dom";
 import { PatientRoutes } from "../../../core/config/routes";
 import { useNavigate } from "react-router-dom";
 import useStore from "../../../core/hooks/useStore";
+import { timeToStringValue } from "../../../core/utils/timeData";
+import { useWakeLock } from "react-screen-wake-lock";
+import { toast } from "react-toastify";
+import { sendAnswers } from "../../../core/utils/apiCalls";
+import { useState } from "react";
 
 const TimeTracker = () => {
   return (
     <FullHeightScreen className={styles.screen}>
-      <Link to={PatientRoutes.MovementSuggestions} className={`btn-reset ${styles.backBtn}`}>
+      <Link
+        to={PatientRoutes.MovementSuggestions}
+        className={`btn-reset ${styles.backBtn}`}
+      >
         <ArrowLeft size={32} />
       </Link>
       <MyStopwatch />
@@ -19,10 +27,19 @@ const TimeTracker = () => {
   );
 };
 
-function MyStopwatch() {
+const MyStopwatch = () => {
   // state management
+  const {
+    questionaireId,
+    questionaireIndex,
+    answers,
+    incrementQuestionaireIndex,
+    resetCurrentQuestion,
+    resetEverything,
+    removeAnswers,
+  } = useStore();
   const setMovementTime = useStore((state) => state.setMovementTime);
-
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const {
@@ -35,20 +52,49 @@ function MyStopwatch() {
     pause,
     reset,
   } = useStopwatch();
-
+  const { isSupported, request, release } = useWakeLock({
+    onRequest: () => console.log("Wake Lock was requested"),
+    onRelease: () => console.log("Wake Lock was released"),
+    onError: (err) => console.error("Wake Lock request failed", err),
+  });
 
   // https://www.npmjs.com/package/react-timer-hook
 
-  const formatTime = (value) => {
-    return value.toString().padStart(2, "0");
-  };
-
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     if (isRunning) {
+      release();
       pause();
-      setMovementTime(totalSeconds);
+
+      if (minutes >= 5) {
+        setMovementTime(totalSeconds);
+        setLoading(true);
+        // TODO: store time in database
+        const data = {
+          questionnaireId: questionaireId,
+          questionnaireIndex: questionaireIndex,
+          answers: [...answers],
+        };
+        console.log(data);
+        try {
+          await sendAnswers(data);
+          setLoading(false);
+          removeAnswers();
+          incrementQuestionaireIndex();
+        } catch (error) {
+          setLoading(false);
+          toast.error("Er ging iets mis bij het opslaan van je antwoorden.");
+          console.error(error);
+          resetEverything();
+          navigate(PatientRoutes.Dashboard);
+        }
+      } else {
+        resetEverything();
+      }
+      resetCurrentQuestion();
       navigate(PatientRoutes.WellDone);
     } else {
+      !isSupported ? console.warn("Wake Lock API not supported") : console.log("Wake Lock API supported");
+      request();
       start();
     }
   };
@@ -56,13 +102,15 @@ function MyStopwatch() {
   return (
     <>
       <div className={styles.counter}>
-        <span>{formatTime(hours)}</span>:<span>{formatTime(minutes)}</span>:
-        <span>{formatTime(seconds)}</span>
+        <span>{timeToStringValue(hours)}</span>:
+        <span>{timeToStringValue(minutes)}</span>:
+        <span>{timeToStringValue(seconds)}</span>
       </div>
       <Button
         size="full"
         onClick={handleButtonClick}
         className={isRunning ? styles.startStopBtn : ""}
+        disabled={loading}
       >
         {isRunning ? "Stop met bewegen" : "Start met bewegen"}
         {isRunning ? (
@@ -73,6 +121,6 @@ function MyStopwatch() {
       </Button>
     </>
   );
-}
+};
 
 export default TimeTracker;

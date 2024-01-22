@@ -15,9 +15,10 @@ const PatientRoutes = {
 
 const SpecialistRoutes = {
   Index: "/",
-  AddPatient: "/add-patient",
-  PatientOverview: "/patients",
-  QuestionOverview: "/questions",
+  PatientsOverview: "/patients",
+  AddPatient: "/patients/add",
+  QuestionsOverview: "/questions",
+  AddQuestion: "/questions/add",
 };
 
 export { AuthRoutes, PatientRoutes, SpecialistRoutes };
