@@ -73,15 +73,21 @@ PUT
 GET
 - /patients/{<span style="color: cornflowerblue">patientId</span>}
   - Gets patient by id
-- /patients/{<span style="color: cornflowerblue">patientId</span>}/movementsession/start
-  - Starts movement session for the patient
-  - Movement session id will be returned
-- /patients/{<span style="color: cornflowerblue">movementSessionId</span>}/end
-  - Stops the movement session
-  - <span style="color: red">Use Movement Id for end, not Patient Id</span>
+- /patients/{<span style="color: cornflowerblue">patientId</span>}/movementsessions
+  - Gets all movement sessions of the patient
 - /patients/{<span style="color: cornflowerblue">patientId</span>}/pebblesmood
   - Gets the mood pebbles should be in right now
   - NOT IMPLEMENTED YET
+
+POST
+- /patients/{<span style="color: cornflowerblue">patientId</span>}/movementsessions
+  - Post a movement session
+  - Body:
+    ```json
+      {
+        "seconds": int
+      }
+    ```
 
 ## Users (specialists and patients combined)
 
