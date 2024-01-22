@@ -17,6 +17,7 @@ const SpecialistRoutes = {
   Index: "/",
   PatientsOverview: "/patients",
   AddPatient: "/patients/add",
+  AddPatientCsv: "/patients/add/csv",
   QuestionsOverview: "/questions",
   AddQuestion: "/questions/add",
 };
