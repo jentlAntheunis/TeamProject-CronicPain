@@ -19,3 +19,31 @@
   width: 100%;
   gap: 1.5rem;
 }
+
+.questionnairesContainer {
+  margin-top: 3rem;
+}
+
+.titleAndSearchContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.questionnaire {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid var(--grey-200);
+}
+
+.datetime {
+  font-size: var(--h6);
+}
+
+.category {
+  font-size: var(--paragraph);
+  color: var(--grey-500);
+}
