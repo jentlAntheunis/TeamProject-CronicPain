@@ -29,6 +29,18 @@ public class PatientController : ControllerBase
     _patientService = patientService;
   }
 
+  [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
+  [HttpGet("{id}")]
+  public async Task<IActionResult> GetPatientAsync(Guid id)
+  {
+    var patient = await _patientService.GetPatientByIdAsync(id);
+    if (patient == null)
+    {
+      return NotFound();
+    }
+    return Ok(JsonConvert.SerializeObject(patient));
+  }
+
   [HttpGet("{patientId}/movementsessions")]
   public async Task<IActionResult> GetMovementSessionsAsync(Guid patientId)
   {
