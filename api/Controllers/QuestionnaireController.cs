@@ -97,10 +97,9 @@ public class QuestionController : ControllerBase
         }
     }
 
-    /*
 
-    [HttpGet("isfirstquestionnaireoftheday/{userId}")]
-    public async Task<IActionResult> IsFirstQuestionnaireOfTheDay(Guid userId)
+    [HttpGet("checkIfFirstQuestionnaireOfTheDay/{userId}")]
+    public async Task<IActionResult> CheckIfFirstQuestionnaireOfTheDay(Guid userId)
     {
         try
         {
@@ -114,7 +113,7 @@ public class QuestionController : ControllerBase
         }
     }
 
-    */
+    
 
 
 

@@ -24,6 +24,8 @@ public interface IQuestionnaireService
     Task DeleteQuestionnaireAsync(Questionnaire questionnaire);
     Task<List<Questionnaire>> GetQuestionnairesAsync();
 
+    Task<bool> CheckIfFirstQuestionnaireOfTheDay(Guid userId);
+
 }
 
 public class QuestionnaireService : IQuestionnaireService
@@ -66,6 +68,18 @@ public class QuestionnaireService : IQuestionnaireService
     public async Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex) => throw new NotImplementedException();
     public async Task DeleteQuestionnaireAsync(Questionnaire questionnaire) => throw new NotImplementedException();
     public async Task<List<Questionnaire>> GetQuestionnairesAsync() => throw new NotImplementedException();
+
+
+    public async Task<bool> CheckIfFirstQuestionnaireOfTheDay(Guid userId)
+    {
+        DateTime currentDate = DateTime.Now.Date;
+
+        var questionnaireExists = await _context.Questionnaire
+            .AnyAsync(q => q.PatientId == userId && q.Date.HasValue && q.Date.Value.Date == currentDate);
+
+        return !questionnaireExists;
+    }
+
 
 
 
