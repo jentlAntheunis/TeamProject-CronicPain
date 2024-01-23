@@ -39,9 +39,11 @@ public class AnswerInputDTO
     public int QuestionnaireIndex { get; set; }
 }
 
+
 public class AnswerDTO
 {
     public Guid QuestionId { get; set; }
     public Guid OptionId { get; set; }
     public int QuestionnaireIndex { get; set; }
 }
+

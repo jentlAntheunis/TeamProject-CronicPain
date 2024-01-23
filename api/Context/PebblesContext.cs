@@ -52,6 +52,8 @@ public class PebblesContext : DbContext
         modelBuilder.Entity<QuestionnaireQuestion>()
             .HasKey(qq => new { qq.QuestionnaireId, qq.QuestionId });
 
+
+
         //relations between tables
 
         modelBuilder.Entity<Specialist>()
@@ -95,6 +97,8 @@ public class PebblesContext : DbContext
             .HasMany(q => q.Questions)
             .WithMany(a => a.Questionnaires)
             .UsingEntity<QuestionnaireQuestion>();
+        
+        
 
         modelBuilder.Entity<Question>()
             .HasOne(q => q.Category)
@@ -117,6 +121,11 @@ public class PebblesContext : DbContext
             .WithMany(o => o.Answers)
             .HasForeignKey(a => a.OptionId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Answer>()
+            .Property(a => a.QuestionnaireIndex)
+            .IsRequired();
+
 
         modelBuilder.Entity<Option>()
             .HasOne(o => o.Scale)
@@ -154,6 +163,8 @@ public class PebblesContext : DbContext
             new Specialist("Johan", "Van der Auwera", "johan.van.der.auwera@ziekenhuis.be"),
             new Specialist("Rita", "Coonincks", "rita.coonincks@ziekenhuis.be")
         );
+
+
 
         modelBuilder.Entity<Color>().HasData(
             new Color("Blue (Default)", "#3B82F6"),
