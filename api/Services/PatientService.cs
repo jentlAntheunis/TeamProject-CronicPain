@@ -18,6 +18,8 @@ public interface IPatientService
     Task<List<MovementSuggestion>> GetMovementSuggestionsAsync(Guid patientId);
     Task AddMovementSuggestion(Guid specialistId, Guid patientId, MovementSuggestion movementSuggestionId);
     Task<string> GetPebblesMoodAsync(Guid patientId);
+    Task CheckStreakAsync(Guid patientId);
+    Task<MovementTimeWeekDTO> GetMovementTimeWeekAsync(Guid patientId);
 }
 
 public class PatientService : IPatientService
@@ -29,6 +31,7 @@ public class PatientService : IPatientService
     private readonly IMovementSuggestionRepository _movementSuggestionRepository;
     private readonly IAvatarRepository _avatarRepository;
     private readonly ILoginRepository _loginRepository;
+    private readonly IQuestionnaireRepository _questionnaireRepository;
     public PatientService(
         IPatientRepository patientRepository,
         ISpecialistRepository specialistRepository,
@@ -36,7 +39,8 @@ public class PatientService : IPatientService
         IMovementSessionRepository movementSessionRepository,
         IMovementSuggestionRepository movementSuggestionRepository,
         IAvatarRepository avatarRepository,
-        ILoginRepository loginRepository
+        ILoginRepository loginRepository,
+        IQuestionnaireRepository questionnaireRepository
         )
     {
         _patientRepository = patientRepository;
@@ -46,6 +50,7 @@ public class PatientService : IPatientService
         _movementSuggestionRepository = movementSuggestionRepository;
         _avatarRepository = avatarRepository;
         _loginRepository = loginRepository;
+        _questionnaireRepository = questionnaireRepository;
     }
 
     public async Task<Patient> GetPatientByIdAsync(Guid id) => await _patientRepository.GetPatientByIdAsync(id);
@@ -140,14 +145,28 @@ public class PatientService : IPatientService
     public async Task<string> GetPebblesMoodAsync(Guid patientId)
     {
         var patient = await _patientRepository.GetPatientByIdAsync(patientId);
-
         if (patient == null)
             throw new Exception("Patient does not exist");
+        if (patient.Streak >= 3) return "HAPPY";
 
-        //look at past 5 days and see when patient has logged in
-        Console.WriteLine(JsonConvert.SerializeObject(patient));
-        string mood = "happy";
-        return mood;
+        var logins = await _loginRepository.GetLoginsByUserAsync(patientId);
+        var firstLogin = logins.OrderBy(l => l.Timestamp).FirstOrDefault();
+        var isNewPatient = firstLogin.Timestamp > DateTime.Now.AddDays(-3);
+
+        var questionnaires = await _questionnaireRepository.GetQuestionnairesByPatientIdAsync(patientId);
+        var questionnairesByDate = questionnaires
+            .Where(q => q.Date.HasValue)
+            .GroupBy(q => q.Date.Value.Date)
+            .Select(g => g.First())
+            .ToList();
+        if (!isNewPatient)
+        {
+            if (questionnairesByDate.Count >= 3) return "HAPPY";
+            if (questionnairesByDate.Count >= 1) return "NEUTRAL";
+            return "SAD";
+        }
+        if (questionnairesByDate.Count >= 1) return "HAPPY";
+        return "NEUTRAL";
     }
 
     public async Task AddCoinsAsync(Guid patientId, int amount)
@@ -157,5 +176,42 @@ public class PatientService : IPatientService
             throw new Exception("Patient does not exist");
         patient.Coins += amount;
         await _patientRepository.UpdatePatientAsync(patient);
+    }
+
+    public async Task CheckStreakAsync(Guid patientId)
+    {
+        var patient = await _patientRepository.GetPatientByIdAsync(patientId);
+        if (patient == null)
+            throw new Exception("Patient does not exist");
+        var questionnaires = await _questionnaireRepository.GetQuestionnairesByPatientIdAsync(patientId);
+        var questionnairesYesterday = questionnaires.Where(q => q.Date.HasValue && q.Date.Value.Date == DateTime.Now.AddDays(-1).Date);
+        var questionnairesToday = questionnaires.Where(q => q.Date.HasValue && q.Date.Value.Date == DateTime.Now.Date);
+        if (!questionnairesYesterday.Any() && !questionnairesToday.Any())
+        {
+            patient.Streak = 0;
+            await _patientRepository.UpdatePatientAsync(patient);
+            return;
+        }
+    }
+
+    public async Task<MovementTimeWeekDTO> GetMovementTimeWeekAsync(Guid patientId)
+    {
+        var patient = await _patientRepository.GetPatientByIdAsync(patientId);
+        if (patient == null)
+            throw new Exception("Patient does not exist");
+        var movementSessions = await _movementSessionRepository.GetMovementSessionsByPatientIdAsync(patientId);
+        var movementTimeWeekDTO = new MovementTimeWeekDTO
+        {
+            Days = movementSessions
+                .Where(m => m.StartTime.Date >= DateTime.Now.AddDays(-7).Date)
+                .GroupBy(m => m.StartTime.Date)
+                .Select(g => new MovementTimeDayDTO
+                {
+                    Date = g.Key,
+                    Total = g.Sum(m => m.Seconds)
+                })
+                .ToList()
+        };
+        return movementTimeWeekDTO;
     }
 }

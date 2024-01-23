@@ -73,7 +73,7 @@ public class PatientController : ControllerBase
   public async Task<IActionResult> GetPebblesMoodAsync(Guid patientId)
   {
     var pebblesMood = await _patientService.GetPebblesMoodAsync(patientId);
-    return BadRequest("not implemented");
+    return Ok(pebblesMood);
   }
 
   [HttpPut("{patientId}/addcoins/{amount}")]
@@ -81,5 +81,19 @@ public class PatientController : ControllerBase
   {
     await _patientService.AddCoinsAsync(patientId, amount);
     return Ok();
+  }
+
+  [HttpPut("{patientId}/checkstreak")]
+  public async Task<IActionResult> CheckStreakAsync(Guid patientId)
+  {
+    await _patientService.CheckStreakAsync(patientId);
+    return Ok();
+  }
+
+  [HttpGet("{patientId}/movementtimeweek")]
+  public async Task<IActionResult> GetMovementTimeWeekAsync(Guid patientId)
+  {
+    var movementTimeWeek = await _patientService.GetMovementTimeWeekAsync(patientId);
+    return Ok(movementTimeWeek);
   }
 }

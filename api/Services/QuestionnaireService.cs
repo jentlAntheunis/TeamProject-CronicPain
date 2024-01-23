@@ -62,7 +62,7 @@ public class QuestionnaireService : IQuestionnaireService
     public async Task<QuestionnaireDTO> AddMovementQuestionnaireAsync(Guid id) => throw new NotImplementedException();
 
     public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId) => throw new NotImplementedException();
-    
+
     public async Task<QuestionnaireDTO> AddDailyPainQuestionnaireAsync(Guid userId) => throw new NotImplementedException();
     public async Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire) => throw new NotImplementedException();
     public async Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex) => throw new NotImplementedException();
@@ -77,7 +77,16 @@ public class QuestionnaireService : IQuestionnaireService
         var questionnaireExists = await _context.Questionnaire
             .AnyAsync(q => q.PatientId == userId && q.Date.HasValue && q.Date.Value.Date == currentDate);
 
-        return !questionnaireExists;
+        bool isFirstQuestionnaire = !questionnaireExists;
+        if (isFirstQuestionnaire)
+        {
+            var patient = await _context.Patient
+                .FirstOrDefaultAsync(p => p.Id == userId);
+
+            patient.Streak += 1;
+            await _context.SaveChangesAsync();
+        }
+        return isFirstQuestionnaire;
     }
 
 
@@ -85,7 +94,7 @@ public class QuestionnaireService : IQuestionnaireService
 
 
 
-    
+
 
 
 }

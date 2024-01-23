@@ -104,6 +104,7 @@ public class QuestionController : ControllerBase
         try
         {
             var isFirstQuestionnaire = await _questionnaireService.CheckIfFirstQuestionnaireOfTheDay(patientId);
+            
 
             return Ok(isFirstQuestionnaire);
         }
@@ -112,14 +113,4 @@ public class QuestionController : ControllerBase
             return BadRequest($"Failed to check if it's the first questionnaire of the day: {ex.Message}");
         }
     }
-
-
-
-
-
-
-
-
-
-
 }
