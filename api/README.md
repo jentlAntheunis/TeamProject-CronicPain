@@ -131,6 +131,21 @@ GET
         ]
       }
     ```
+- /patients/{<span style="color: cornflowerblue">patientId</span>}/streakhistory
+  - Gets the amount of questionnaires filled in in the last 7 days
+  - Output:
+    ```json
+      {
+        "days": [
+          {
+            "date": "DateTime",
+            "total": int
+          },
+          ... *7
+        ]
+      }
+
+    ```
 
 POST
 

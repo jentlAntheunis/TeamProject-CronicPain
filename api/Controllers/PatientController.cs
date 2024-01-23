@@ -96,4 +96,11 @@ public class PatientController : ControllerBase
     var movementTimeWeek = await _patientService.GetMovementTimeWeekAsync(patientId);
     return Ok(movementTimeWeek);
   }
+
+  [HttpGet("{patientId}/streakhistory")]
+  public async Task<IActionResult> GetStreakHistoryAsync(Guid patientId)
+  {
+    var streakHistory = await _patientService.GetStreakHistoryAsync(patientId);
+    return Ok(streakHistory);
+  }
 }

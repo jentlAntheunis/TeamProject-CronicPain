@@ -1,3 +1,4 @@
+using Google.Cloud.Firestore.V1;
 using Newtonsoft.Json;
 using Pebbles.Models;
 using Pebbles.Repositories;
@@ -19,7 +20,8 @@ public interface IPatientService
     Task AddMovementSuggestion(Guid specialistId, Guid patientId, MovementSuggestion movementSuggestionId);
     Task<string> GetPebblesMoodAsync(Guid patientId);
     Task CheckStreakAsync(Guid patientId);
-    Task<MovementTimeWeekDTO> GetMovementTimeWeekAsync(Guid patientId);
+    Task<WeekDTO> GetMovementTimeWeekAsync(Guid patientId);
+    Task<WeekDTO> GetStreakHistoryAsync(Guid patientId);
 }
 
 public class PatientService : IPatientService
@@ -194,24 +196,45 @@ public class PatientService : IPatientService
         }
     }
 
-    public async Task<MovementTimeWeekDTO> GetMovementTimeWeekAsync(Guid patientId)
+    public async Task<WeekDTO> GetMovementTimeWeekAsync(Guid patientId)
     {
         var patient = await _patientRepository.GetPatientByIdAsync(patientId);
         if (patient == null)
             throw new Exception("Patient does not exist");
         var movementSessions = await _movementSessionRepository.GetMovementSessionsByPatientIdAsync(patientId);
-        var movementTimeWeekDTO = new MovementTimeWeekDTO
+        var weekDTO = new WeekDTO
         {
             Days = movementSessions
                 .Where(m => m.StartTime.Date >= DateTime.Now.AddDays(-7).Date)
                 .GroupBy(m => m.StartTime.Date)
-                .Select(g => new MovementTimeDayDTO
+                .Select(g => new DayTDO
                 {
                     Date = g.Key,
                     Total = g.Sum(m => m.Seconds)
                 })
                 .ToList()
         };
-        return movementTimeWeekDTO;
+        return weekDTO;
+    }
+
+    public async Task<WeekDTO> GetStreakHistoryAsync(Guid patientId)
+    {
+        var patient = await _patientRepository.GetPatientByIdAsync(patientId);
+        if (patient == null)
+            throw new Exception("Patient does not exist");
+        var questionnaires = await _questionnaireRepository.GetQuestionnairesByPatientIdAsync(patientId);
+        var weekDTO = new WeekDTO
+        {
+            Days = questionnaires
+                .Where(q => q.Date.HasValue && q.Date.Value.Date >= DateTime.Now.AddDays(-7).Date)
+                .GroupBy(q => q.Date.Value.Date)
+                .Select(g => new DayTDO
+                {
+                    Date = g.Key,
+                    Total = g.Count()
+                })
+                .ToList()
+        };
+        return weekDTO;
     }
 }

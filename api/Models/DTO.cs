@@ -47,12 +47,12 @@ public class AnswerDTO
     public int QuestionnaireIndex { get; set; }
 }
 
-public class MovementTimeWeekDTO
+public class WeekDTO
 {
-    public List<MovementTimeDayDTO> Days { get; set; }
+    public List<DayTDO> Days { get; set; }
 }
 
-public class MovementTimeDayDTO
+public class DayTDO
 {
     public DateTime Date { get; set; }
     public int Total { get; set; }
