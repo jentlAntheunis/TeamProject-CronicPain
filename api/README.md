@@ -298,4 +298,20 @@ POST
     }
     ```
 
+## Scale
+
+GET
+
+- /all
+  - Returns an array with all the scales (id and name)
+
+
+## Category
+
+GET
+
+- /all
+  - Returns an array with all the categories (id and name)
+
+
 
