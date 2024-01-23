@@ -7,6 +7,8 @@ namespace Pebbles.Services;
 public interface IAnswerService
 {
     Task ProcessAnswers(List<AnswerDTO> answers, Guid questionnaireId, int questionnaireIndex, IQuestionnaireService questionnaireService);
+    Task<MovementImpact> CompareAnswersAndCalculateScore(Guid questionnaireId);
+
 }
 
 public class AnswerService : IAnswerService
@@ -78,5 +80,69 @@ public class AnswerService : IAnswerService
             throw;
         }
     }
+
+    public async Task<MovementImpact> CompareAnswersAndCalculateScore(Guid questionnaireId)
+    {
+        var beforeAnswers = await _answerRepository.GetAnswersByQuestionnaireIdAndIndex(questionnaireId, 0);
+        var afterAnswers = await _answerRepository.GetAnswersByQuestionnaireIdAndIndex(questionnaireId, 1);
+
+        int totalScore = 0;
+        foreach(var beforeAnswer in beforeAnswers)
+        {
+            var afterAnswer = afterAnswers.FirstOrDefault(a => a.QuestionId == beforeAnswer.QuestionId);
+            if(afterAnswer != null)
+            {
+                int score = CompareAnswerPair(beforeAnswer, afterAnswer);
+                totalScore += score;
+            }
+        }
+
+        return DetermineMovementImpact(totalScore);
+    }
+
+    private int CompareAnswerPair(Answer beforeAnswer, Answer afterAnswer)
+    {
+        // Map OptionId to scores (1-4)
+        var optionScores = new Dictionary<Guid, int>
+        {
+            { new Guid("first-option-id"), 1 },
+            { new Guid("second-option-id"), 2 },
+            { new Guid("third-option-id"), 3 },
+            { new Guid("fourth-option-id"), 4 }
+        };
+
+        int beforeScore = optionScores[beforeAnswer.OptionId];
+        int afterScore = optionScores[afterAnswer.OptionId];
+
+        // Scoring logic: Each point of improvement gets a score of +1
+        int score = afterScore - beforeScore;
+
+        return score;
+    }
+
+    public enum MovementImpact
+    {
+        Negative,
+        Neutral,
+        Positive
+    }
+
+    public MovementImpact DetermineMovementImpact(int totalScore)
+    {
+        // Define thresholds
+        const int NegativeThreshold = -5;
+        const int PositiveThreshold = 5;
+
+        if (totalScore < NegativeThreshold)
+            return MovementImpact.Negative;
+        else if (totalScore > PositiveThreshold)
+            return MovementImpact.Positive;
+        else
+            return MovementImpact.Neutral;
+    }
+
+
+
+
 }
 

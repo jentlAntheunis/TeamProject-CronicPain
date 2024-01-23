@@ -9,6 +9,7 @@ namespace Pebbles.Repositories;
 public interface IAnswerRepository
 {
     Task<Answer> GetAnswerByIdAsync(Guid id);
+    Task<List<AnswerRepository>>GetAnswersByQuestionnaireIdAndIndex(Guid questionnaireId, int questionnaireIndex);
     Task<Answer> AddAnswerAsync(Answer answer);
     Task<Answer> UpdateAnswerAsync(Answer answer);
     Task DeleteAnswerAsync(Answer answer);
@@ -24,6 +25,8 @@ public class AnswerRepository : IAnswerRepository
     }
 
     public async Task<Answer> GetAnswerByIdAsync(Guid id) => await _context.Answer.FirstOrDefaultAsync(a => a.Id == id);
+
+    public async Task<List<Answer>> GetAnswersByQuestionnaireIdAndIndex(Guid questionnaireId, int questionnaireIndex) => await _context.Answer.Where(a => a.QuestionnaireId == questionnaireId && a.QuestionnaireIndex == questionnaireIndex).ToListAsync();
 
     public async Task<Answer> AddAnswerAsync(Answer answer)
     {
