@@ -15,7 +15,7 @@ using Pebbles.Repositories;
 [Route("answers")]
 [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] // only authenticated users can access this controller
 
-public class AnswerController: ControllerBase
+public class AnswerController : ControllerBase
 {
     private readonly IConfiguration _configuration;
     private readonly IAnswerService _answerService;
@@ -30,24 +30,24 @@ public class AnswerController: ControllerBase
     }
 
     [HttpPost]
-public async Task<IActionResult> SaveAnswers([FromBody] AnswerInputDTO answerInputDTO, [FromServices] IQuestionnaireService questionnaireService)
-{
-    if (!ModelState.IsValid)
+    public async Task<IActionResult> SaveAnswers([FromBody] AnswerInputDTO answerInputDTO, [FromServices] IQuestionnaireService questionnaireService)
     {
-        return BadRequest(ModelState);
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            await _answerService.ProcessAnswers(answerInputDTO.Answers, answerInputDTO.QuestionnaireId, answerInputDTO.QuestionnaireIndex, questionnaireService);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "An error occurred while processing your request to save answers: " + ex.Message);
+        }
     }
 
-    try
-    {
-        await _answerService.ProcessAnswers(answerInputDTO.Answers, answerInputDTO.QuestionnaireId, answerInputDTO.QuestionnaireIndex, questionnaireService);            
-        return Ok();
-    }
-    catch (Exception ex)
-    {
-        return StatusCode(500, "An error occurred while processing your request to save answers: " + ex.Message);
-    }
-}
 
 
-    
 }

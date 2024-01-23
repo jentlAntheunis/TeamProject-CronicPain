@@ -86,7 +86,6 @@ builder.Services.AddSwaggerGen(opt =>
 
 
 builder.Services.AddDbContext<PebblesContext>(options =>
-    // options.UseSqlServer(builder.Configuration.GetConnectionString("PebblesDB")));
     options.UseSqlServer(builder.Configuration.GetConnectionString("PebblesDB")));
 
 
