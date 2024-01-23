@@ -8,6 +8,8 @@ public interface IAnswerService
 {
     Task ProcessAnswers(List<AnswerDTO> answers, Guid questionnaireId, int questionnaireIndex, IQuestionnaireService questionnaireService);
     Task<MovementImpact> CompareAnswersAndCalculateScore(Guid questionnaireId);
+    Task<Dictionary<Guid, MovementImpact>> GetQuestionnaireImpactsByUserId(Guid userId);
+
 
 }
 
@@ -140,6 +142,37 @@ public class AnswerService : IAnswerService
         else
             return MovementImpact.Neutral;
     }
+
+    public async Task<Dictionary<Guid, MovementImpact>> GetQuestionnaireImpactsByUserId(Guid userId)
+    {
+        var questionnaireIds = await _questionnaireRepository.GetQuestionnaireIdsByUserId(userId);
+
+        var impacts = new Dictionary<Guid, MovementImpact>();
+        foreach (var questionnaireId in questionnaireIds)
+        {
+            var impact = await CompareAnswersAndCalculateScore(questionnaireId);
+            impacts.Add(questionnaireId, impact);
+        }
+
+        return impacts;
+    }
+
+    public async Task<Dictionary<Guid, MovementImpact>> GetQuestionnaireImpactsByUserId(Guid userId)
+    {
+        // Logic to fetch all questionnaire IDs for the given user ID
+        var questionnaireIds = await _questionnaireRepository.GetQuestionnaireIdsByUserId(userId);
+
+        var impacts = new Dictionary<Guid, MovementImpact>();
+        foreach (var questionnaireId in questionnaireIds)
+        {
+            var impact = await CompareAnswersAndCalculateScore(questionnaireId);
+            impacts.Add(questionnaireId, impact);
+        }
+
+        return impacts;
+    }
+
+
 
 
 

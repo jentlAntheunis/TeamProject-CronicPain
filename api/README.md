@@ -178,3 +178,85 @@ GET
   - Subtracts patient coins if they have enough and adds the color to their account
 - /store/{<span style="color: cornflowerblue">patientId</span>}/use/{<span style="color: cornflowerblue">colorId</span>}
   - Adds the color if owned to the patients avatar, and sets the color as active in the store endpoint
+
+
+## Question
+
+GET
+
+- /questionnaires/movementquestionnaire/{userId}
+  - Returns a questionnaire with 5 random questions in it of the movement catgory, together with the answer option id's
+- /questionnaires/bonusquestionnaire/{userId}
+  - Returns a questionnaire with 5 random questions in it of the movement catgory, together with the answer option id's
+- /questionnaires/dailypainquestionnaire/{userId}
+  - Returns the dauly pain questionnaire, together with the answer option id's
+- /questionnaire/checkifFirstquestionnaireoftheday
+  - Returns true if it's the first answered questionnaire of the day
+  - Returns false if it's not the fist answered questionnaire of the day
+
+## Answer
+
+POST
+
+- /answers
+  - Saves the answers from the questionnaire before and after a movement session
+  - Body:
+    ```json
+    {
+      "questionnaireId": "string",
+      "answers": [
+        {
+          "questionId": "string",
+          "optionId": "string",
+          "questionnaireIndex": "0"
+        },
+        {
+          "questionId": "string",
+          "optionId": "string",
+          "questionnaireIndex": "0"
+        },
+        {
+          "questionId": "string",
+          "optionId": "string",
+          "questionnaireIndex": "0"
+        },
+        {
+          "questionId": "string",
+          "optionId": "string",
+          "questionnaireIndex": "0"
+        },
+        {
+          "questionId": "string",
+          "optionId": "string",
+          "questionnaireIndex": "0"
+        },
+        {
+          "questionId": "string",
+          "optionId": "string",
+          "questionnaireIndex": "1"
+        },
+        {
+          "questionId": "string",
+          "optionId": "string",
+          "questionnaireIndex": "1"
+        },
+        {
+          "questionId": "string",
+          "optionId": "string",
+          "questionnaireIndex": "1"
+        },
+        {
+          "questionId": "string",
+          "optionId": "string",
+          "questionnaireIndex": "1"
+        },
+        {
+          "questionId": "string",
+          "optionId": "string",
+          "questionnaireIndex": "1"
+        }
+      ]
+    }
+    ```
+
+
