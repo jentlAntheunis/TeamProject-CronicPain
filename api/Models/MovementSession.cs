@@ -8,5 +8,6 @@ public class MovementSession
     public Guid PatientId { get; set; }
     [JsonIgnore]
     public Patient Patient { get; set; }
+    public DateTime StartTime { get; set; }
     public int Seconds { get; set; }
 }

@@ -1,0 +1,165 @@
+.dayPicker {
+  padding: 0.25rem;
+}
+
+.months {
+  display: flex;
+  flex-direction: column;
+}
+
+.caption {
+  display: flex;
+  justify-content: center;
+  padding-top: 0.25rem;
+  position: relative;
+  align-items: center;
+}
+
+.captionLabel {
+  font-size: 1rem;
+  font-weight: var(--medium);
+}
+
+.nav {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.navButton {
+  height: 1.75rem;
+  width: 1.75rem;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--border-radius-sm);
+  padding: 0;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+  border: 1px solid var(--grey-100);
+  color: var(--grey-500);
+}
+
+.navButton:hover {
+  opacity: 1;
+  background-color: var(--grey-100);
+}
+
+.navButtonPrevious {
+  position: absolute;
+  left: 0.25rem;
+}
+
+.navButtonNext {
+  position: absolute;
+  right: 0.25rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  text-indent: 0;
+}
+
+.headRow {
+  display: flex;
+}
+
+.headCell {
+  color: var(--grey-500);
+  border-radius: 0.375rem;
+  flex-grow: 1;
+  font-weight: normal;
+  font-size: var(--small);
+}
+
+.row {
+  display: flex;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.cell {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  text-align: center;
+  padding: 0;
+  position: relative;
+}
+
+.cell[aria-selected]:has(.day-range-end) {
+  border-radius: 0 0.375rem 0.375rem 0;
+}
+
+.cell[aria-selected]:has(.day-outside) {
+  background-color: rgba(255, 184, 0, 0.5); /* Adjust color as needed */
+}
+
+.cell[aria-selected] {
+  background-color: rgba(255, 184, 0, 1); /* Adjust color as needed */
+}
+
+.cell:first-child[aria-selected] {
+  border-radius: 0.375rem 0 0 0.375rem;
+}
+
+.cell:last-child[aria-selected] {
+  border-radius: 0 0.375rem 0.375rem 0;
+}
+
+.cell:focus-within {
+  position: relative;
+  z-index: 20;
+}
+
+.day {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  font-weight: normal;
+  border-radius: var(--border-radius-sm);
+  color: var(--black);
+}
+
+.day:hover {
+  background-color: var(--grey-100);
+}
+
+.dayToday {
+  background-color: var(--blue-100);
+}
+
+.dayToday:hover {
+  background-color: var(--blue-100);
+}
+
+.daySelected {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+.daySelected:hover {
+  background-color: var(--black);
+}
+
+.dayOutside {
+  color: var(--grey-400);
+  opacity: 0.5;
+}
+
+.dayOutside.daySelected {
+  opacity: .5;
+  background-color: var(--grey-300);
+  color: var(--grey-100);
+}
+
+.dayDisabled {
+  color: var(--grey-400);
+  opacity: 0.5;
+}
+
+.dayHidden {
+  visibility: hidden;
+}

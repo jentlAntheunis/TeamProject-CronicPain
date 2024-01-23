@@ -19,9 +19,14 @@ import TimeTracker from "../screens/TimeTracker/TimeTracker";
 import Patients from "../screens/Specialist/Patients/Patients";
 import Questions from "../screens/Specialist/Questions/Questions";
 import QuestionnaireContainer from "./questionnaire/QuestionnaireContainer";
+import PatientDetails from "../screens/Specialist/PatientDetails/PatientDetails";
+import AddQuestion from "../screens/Specialist/AddQuestion/AddQuestion";
+import QuestionnaireDetails from "../screens/Specialist/QuestionnaireDetails/QuestionnaireDetails";
+import RoleRouter from "./auth/RoleRouter";
 
 const App = () => (
   <Routes>
+    <Route path="*" element={<RoleRouter />} />
     {/* Authentication Paths */}
     <Route path={AuthRoutes.Login} element={<OnboardingLayout />}>
       <Route index element={<LoginScreen />} />
@@ -60,9 +65,18 @@ const App = () => (
         />
         {/* <Route path={SpecialistRoutes.AddQuestion} element={<AddQuestion />} /> */}
         <Route
-          path="*"
-          element={<Navigate to={SpecialistRoutes.PatientsOverview} />}
+          path={SpecialistRoutes.PatientDetails}
+          element={<PatientDetails />}
         />
+        <Route
+          path={SpecialistRoutes.QuestionsOverview}
+          element={<Questions />}
+        />
+        <Route
+          path={SpecialistRoutes.QuestionnaireDetails}
+          element={<QuestionnaireDetails />}
+        />
+        <Route path={SpecialistRoutes.AddQuestion} element={<AddQuestion />} />
       </Route>
 
       {/* Patient */}
@@ -76,8 +90,6 @@ const App = () => (
         {/* Patient Paths */}
         <Route path={PatientRoutes.Dashboard} element={<DashboardScreen />} />
         <Route path={PatientRoutes.Streaks} element={<StreaksScreen />} />
-        <Route path="*" element={<Navigate to={PatientRoutes.Dashboard} />} />
-
         {/* Questionnaire Paths */}
         <Route
           element={

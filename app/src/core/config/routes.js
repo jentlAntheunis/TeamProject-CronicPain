@@ -3,22 +3,24 @@ const AuthRoutes = {
 };
 
 const PatientRoutes = {
-  Dashboard: "/",
-  Progress: "/progress",
-  Shop: "/shop",
-  Questionaire: '/questionaire',
-  Streaks: "/streaks",
-  WellDone: '/well-done',
-  MovementSuggestions: '/movement-suggestions',
-  TimeTracker: '/time-tracker',
+  Dashboard: "/patient/",
+  Progress: "/patient/progress",
+  Shop: "/patient/shop",
+  Questionaire: '/patient/questionaire',
+  Streaks: "/patient/streaks",
+  WellDone: '/patient/well-done',
+  MovementSuggestions: '/patient/movement-suggestions',
+  TimeTracker: '/patient/time-tracker',
 };
 
 const SpecialistRoutes = {
-  Index: "/",
-  PatientsOverview: "/patients",
-  AddPatient: "/patients/add",
-  QuestionsOverview: "/questions",
-  AddQuestion: "/questions/add",
+  Index: "/specialist/",
+  PatientsOverview: "/specialist/patients",
+  AddPatient: "/specialist/patients/add",
+  PatientDetails: "/specialist/patients/:id",
+  QuestionsOverview: "/specialist/questions",
+  AddQuestion: "/specialist/questions/add",
+  QuestionnaireDetails: "/questionnaire/details",
 };
 
 export { AuthRoutes, PatientRoutes, SpecialistRoutes };

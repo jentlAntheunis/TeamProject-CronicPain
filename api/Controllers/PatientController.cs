@@ -19,14 +19,17 @@ public class PatientController : ControllerBase
 {
   private readonly IConfiguration _configuration;
   private readonly IPatientService _patientService;
+  private readonly IQuestionnaireService _questionnaireService;
 
   public PatientController(
       IPatientService patientService,
-      IConfiguration configuration
+      IConfiguration configuration,
+      IQuestionnaireService questionnaireService
       )
   {
     _configuration = configuration;
     _patientService = patientService;
+    _questionnaireService = questionnaireService;
   }
 
   [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
@@ -73,7 +76,7 @@ public class PatientController : ControllerBase
   public async Task<IActionResult> GetPebblesMoodAsync(Guid patientId)
   {
     var pebblesMood = await _patientService.GetPebblesMoodAsync(patientId);
-    return BadRequest("not implemented");
+    return Ok(pebblesMood);
   }
 
   [HttpPut("{patientId}/addcoins/{amount}")]
@@ -82,4 +85,50 @@ public class PatientController : ControllerBase
     await _patientService.AddCoinsAsync(patientId, amount);
     return Ok();
   }
+
+  [HttpPut("{patientId}/checkstreak")]
+  public async Task<IActionResult> CheckStreakAsync(Guid patientId)
+  {
+    await _patientService.CheckStreakAsync(patientId);
+    return Ok();
+  }
+
+  [HttpGet("{patientId}/movementtimeweek")]
+  public async Task<IActionResult> GetMovementTimeWeekAsync(Guid patientId)
+  {
+    var movementTimeWeek = await _patientService.GetMovementTimeWeekAsync(patientId);
+    return Ok(movementTimeWeek);
+  }
+
+  [HttpGet("{patientId}/streakhistory")]
+  public async Task<IActionResult> GetStreakHistoryAsync(Guid patientId)
+  {
+    var streakHistory = await _patientService.GetStreakHistoryAsync(patientId);
+    return Ok(streakHistory);
+  }
+
+  [HttpGet("{patientId}/painhistory")]
+  public async Task<IActionResult> GetPainHistoryAsync(Guid patientId)
+  {
+    var painHistory = await _patientService.GetPainHistoryAsync(patientId);
+    return Ok(painHistory);
+  }
+
+  [HttpGet("{patientId}/questionnaires")]
+  public async Task<IActionResult> GetAllQuestionnairesFromPatientAsync(Guid patientId)
+  {
+    try
+    {
+      var categories = new List<string> { "beweging", "bonus" };
+      var questionnaires = await _questionnaireService.GetQuestionnairesWithDetailsByPatientIdAsync(patientId, categories);
+      return Ok(questionnaires);
+    }
+    catch (Exception ex)
+    {
+      // Handle exceptions
+      return StatusCode(500, "Internal Server Error: " + ex.Message);
+    }
+  }
 }
+
+

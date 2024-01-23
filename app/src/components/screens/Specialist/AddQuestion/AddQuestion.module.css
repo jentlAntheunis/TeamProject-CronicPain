@@ -1,0 +1,59 @@
+.screenContainer {
+  padding-bottom: 4rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  padding: 1rem 0;
+}
+
+.csvImport {
+  font-size: var(--p);
+  border-width: 1px;
+  font-weight: var(--regular);
+}
+
+.formContainer {
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.formItems > * + * {
+  padding-top: 1rem;
+}
+
+.removePadding {
+  padding: 0;
+}
+
+@media (min-width: 1024px) {
+  .formContainer {
+    justify-content: flex-start;
+    gap: 3rem;
+  }
+
+  .formItems {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 3;
+    row-gap: 1.25rem;
+    column-gap: 2rem;
+  }
+
+  .formItems > *:nth-child(1) {
+    grid-column: span 3;
+  }
+
+  .formItems > *:nth-child(3) {
+    grid-row-start: 3;
+  }
+
+  .formItems > * + * {
+    padding-top: 0rem;
+  }
+}

@@ -70,21 +70,14 @@ const MyStopwatch = () => {
       if (minutes >= 5) {
         setMovementTime(totalSeconds);
         setLoading(true);
-        const data = {
-          questionnaireId: questionaireId,
-          questionnaireIndex: questionaireIndex,
-          answers: [...answers],
-        };
-        console.log(data);
+
         try {
           await storeMovement(user.id, totalSeconds)
-          await sendAnswers(data);
           setLoading(false);
-          removeAnswers();
           incrementQuestionaireIndex();
         } catch (error) {
           setLoading(false);
-          toast.error("Er ging iets mis bij het opslaan van je antwoorden.");
+          toast.error("Er ging iets mis bij het opslaan van je bewegingssessie.");
           console.error(error);
           resetEverything();
           navigate(PatientRoutes.Dashboard);

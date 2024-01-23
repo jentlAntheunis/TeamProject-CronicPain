@@ -1,0 +1,47 @@
+.select {
+  width: 100%;
+  position: relative;
+}
+
+.chevron {
+  position: absolute;
+  color: var(--grey-400);
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.selectItem {
+  appearance: none;
+  /* safari */
+  -webkit-appearance: none;
+  /* other styles for aesthetics */
+  width: 100%;
+  outline: none;
+  border: none;
+  display: flex;
+  width: 100%;
+  border-radius: var(--border-radius);
+  padding: 1.125rem 1rem;
+  background: var(--grey-100);
+  cursor: pointer;
+}
+
+.selectItem:focus {
+  outline: 1px solid var(--blue-500);
+}
+
+.selectItem:disabled {
+  cursor: not-allowed;
+  opacity: 50%;
+}
+
+.selectItem:has(> option:checked:disabled) {
+  color: var(--grey-400);
+}
+
+.selectItem option {
+  color: var(--black);
+  padding: 2rem;
+}
