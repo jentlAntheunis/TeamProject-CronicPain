@@ -29,6 +29,17 @@ const storePatient = async ({ firstName, lastName, email, specialistId }) =>
     data: { firstName, lastName, email },
   });
 
+const storePatientList = async ({ patients, specialistId }) => {
+  console.log(patients)
+  console.log(specialistId)
+
+  return await request({
+    url: `/specialists/${specialistId}/patients/addlist`,
+    method: "POST",
+    data: patients,
+  })
+};
+
 const sendMailToPatient = async ({
   firstName,
   lastName,
@@ -125,6 +136,7 @@ export {
   getUser,
   checkIfUserExists,
   storePatient,
+  storePatientList,
   sendMailToPatient,
   getUserData,
   getPatients,

@@ -1,3 +1,9 @@
 .infoText {
-  color: var(--grey-500)
+  color: var(--grey-500);
+  margin-bottom: 1.5rem;
+}
+
+.submitBtn {
+  padding-top: 0;
+  margin-top: 2.5rem;
 }

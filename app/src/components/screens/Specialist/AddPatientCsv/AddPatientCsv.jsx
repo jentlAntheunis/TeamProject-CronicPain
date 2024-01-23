@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SpecialistRoutes } from "../../../../core/config/routes";
 import {
   Form,
@@ -15,6 +15,12 @@ import styles from "./AddPatientCsv.module.css";
 import { z } from "zod";
 import Papa from "papaparse";
 import { validatePatientCsv } from "../../../../core/utils/csv";
+import clsx from "clsx";
+import { storePatientList } from "../../../../core/utils/apiCalls";
+import { useMutation } from "@tanstack/react-query";
+import { useUser } from "../../../app/auth/AuthProvider";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
   csv: z
@@ -39,19 +45,23 @@ const formSchema = z.object({
 });
 
 const AddPatientCsv = () => {
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const { mutateAsync, isLoading } = useMutation({
+    mutationFn: storePatientList,
+  });
+  const user = useUser();
+  const navigate = useNavigate();
 
   const defaultValues = {
     csv: "",
   };
 
-  const handleSubmit = ({ csv }) => {
-    setLoading(true);
+  const handleSubmit = async ({ csv }) => {
     setError(null);
     const file = csv[0];
     Papa.parse(file, {
-      complete: function (results) {
+      complete: async function (results) {
         console.log(results);
         const data = results.data;
 
@@ -59,7 +69,6 @@ const AddPatientCsv = () => {
           validatePatientCsv(data);
         } catch (error) {
           setError(error.message);
-          setLoading(false);
           return;
         }
 
@@ -74,7 +83,17 @@ const AddPatientCsv = () => {
 
         // TODO: send to backend
         console.log(patients);
-        setLoading(false);
+        try {
+          await mutateAsync({
+            patients,
+            specialistId: user.id,
+          });
+          toast.success("Patiënten toegevoegd");
+          navigate(SpecialistRoutes.PatientsOverview);
+        } catch (error) {
+          console.error(error);
+          toast.error("Er ging iets mis. Probeer het opnieuw.");
+        }
       },
     });
   };
@@ -103,13 +122,13 @@ const AddPatientCsv = () => {
             </FormControl>
             <FormMessage>{error}</FormMessage>
           </FormItem>
-          <div className={`mobile-only ${styles.removePadding}`}>
-            <Button type="submit" size="full" disabled={loading}>
+          <div className={`mobile-only`}>
+            <Button type="submit" size="full" disabled={isLoading}>
               Toevoegen
             </Button>
           </div>
-          <div className={`desktop-only ${styles.removePadding}`}>
-            <Button type="submit" size="default" disabled={loading}>
+          <div className={clsx("desktop-only", styles.submitBtn)}>
+            <Button type="submit" size="default" disabled={isLoading}>
               Toevoegen
             </Button>
           </div>

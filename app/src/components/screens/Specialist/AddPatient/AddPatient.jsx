@@ -68,11 +68,11 @@ const AddPatient = () => {
         await sendMailMutation.mutateAsync(dataObject);
         toast.success("Gebruiker toegevoegd en mail verzonden");
         setLoading(false);
-        navigate(SpecialistRoutes.Index);
+        navigate(SpecialistRoutes.PatientsOverview);
       } else {
         toast.success("Gebruiker toegevoegd");
         setLoading(false);
-        navigate(SpecialistRoutes.Index);
+        navigate(SpecialistRoutes.PatientsOverview);
       }
     } catch (error) {
       console.error(error);
