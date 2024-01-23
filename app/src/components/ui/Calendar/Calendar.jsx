@@ -3,6 +3,7 @@ import { DayPicker } from "react-day-picker";
 import clsx from "clsx";
 import styles from "./Calendar.module.css";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
+import { nlBE } from "date-fns/locale";
 
 function Calendar({ className, classNames, showOutsideDays = true, ...props }) {
   return (
@@ -38,6 +39,7 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }) {
 
         IconRight: ({ ...props }) => <CaretRight size={16} />,
       }}
+      locale={nlBE}
       {...props}
     />
   );
