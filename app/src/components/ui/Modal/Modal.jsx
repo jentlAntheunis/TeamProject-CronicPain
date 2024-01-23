@@ -1,19 +1,23 @@
+import { useEffect } from "react";
 import styles from "./Modal.module.css";
 
 const Modal = ({ showModal, setShowModal, children }) => {
   const handleCloseModal = () => {
-    document.body.style.overflowY = "";
-    document.body.style.height = "";
-    document.body.style.position = "";
+    document.body.classList.remove("modal-open");
+    console.log("close modal");
     setShowModal(false);
   };
 
+  useEffect(() => {
+    if (!showModal) {
+      document.body.classList.remove("modal-open");
+    } else {
+      document.body.classList.add("modal-open");
+    }
+  }, [showModal]);
+
   if (!showModal) {
     return null;
-  } else {
-    document.body.style.overflowY = "hidden";
-    document.body.style.height = "100svh";
-    document.body.style.position = "fixed";
   }
 
   return (

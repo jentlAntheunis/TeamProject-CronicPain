@@ -41,3 +41,36 @@
   font-size: var(--h5);
   font-weight: var(--medium);
 }
+
+.closeBtn {
+  color: var(--grey-400);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.modalTitle {
+  color: var(--grey-500);
+  font-size: var(--paragraph);
+}
+
+.modalColorTitle {
+  color: var(--black);
+  font-size: var(--h4);
+}
+
+.pebbles{
+  margin: 0.90625rem 0;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+}
