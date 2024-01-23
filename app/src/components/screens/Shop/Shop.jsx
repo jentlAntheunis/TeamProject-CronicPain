@@ -28,6 +28,7 @@ const Shop = () => {
     data: userData,
     isLoading: userLoading,
     isError: userError,
+    refetch: refetchUserData,
   } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUserData(user.id),
@@ -46,7 +47,6 @@ const Shop = () => {
   useEffect(() => {
     if (modalContent.id) {
       const updatedItem = shopData.data.find(item => item.id === modalContent.id);
-      console.log(updatedItem);
       if (updatedItem) {
         setModalContent({
           id: updatedItem.id,
@@ -58,7 +58,7 @@ const Shop = () => {
         });
       }
     }
-  }, [shopData]);
+  }, [shopData, modalContent.id]);
 
   if (!userData || !shopData) return;
   if (userLoading || shopLoading) return null;
@@ -69,11 +69,16 @@ const Shop = () => {
   }
 
   const handleBuyColor = async (colorId) => {
-    console.log("buy " + colorId);
+    try {
+      await buyColor(user.id, colorId);
+      refetchShopData();
+      refetchUserData();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleActivateColor = async (colorId) => {
-    console.log("use " + colorId);
     try {
       await activateColor(user.id, colorId);
       refetchShopData();
