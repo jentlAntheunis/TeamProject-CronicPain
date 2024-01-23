@@ -19,6 +19,8 @@ const SpecialistRoutes = {
   AddPatient: "/patients/add",
   QuestionsOverview: "/questions",
   AddQuestion: "/questions/add",
+  // TODO: change route to "/questionnaire/:id"
+  QuestionnaireDetails: "/questionnaire/details",
 };
 
 export { AuthRoutes, PatientRoutes, SpecialistRoutes };

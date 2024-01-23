@@ -19,6 +19,7 @@ import TimeTracker from "../screens/TimeTracker/TimeTracker";
 import Patients from "../screens/Specialist/Patients/Patients";
 import Questions from "../screens/Specialist/Questions/Questions";
 import AddQuestion from "../screens/Specialist/AddQuestion/AddQuestion";
+import QuestionnaireDetails from "../screens/Specialist/QuestionnaireDetails/QuestionnaireDetails";
 
 const App = () => (
   <Routes>
@@ -52,6 +53,7 @@ const App = () => (
         <Route path={SpecialistRoutes.PatientsOverview} element={<Patients />} />
         <Route path={SpecialistRoutes.AddPatient} element={<AddPatient />} />
         <Route path={SpecialistRoutes.QuestionsOverview} element={<Questions />} />
+        <Route path={SpecialistRoutes.QuestionnaireDetails} element={<QuestionnaireDetails />} />
         <Route path={SpecialistRoutes.AddQuestion} element={<AddQuestion />} />
         <Route path="*" element={<Navigate to={SpecialistRoutes.PatientsOverview} />} />
       </Route>

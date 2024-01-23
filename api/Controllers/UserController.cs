@@ -45,22 +45,10 @@ public class UserController : ControllerBase
     }
 
     [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetUserAsync(Guid id)
+    [HttpPut("{userId}")]
+    public async Task<IActionResult> UpdateUserAsync(Guid userId, [FromBody] User user)
     {
-        var user = await _userService.GetUserByIdAsync(id);
-        if (user == null)
-        {
-            return NotFound();
-        }
-        return Ok(JsonConvert.SerializeObject(user));
-    }
-
-    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateUserAsync(Guid id, [FromBody] User user)
-    {
-        user.Id = id;
+        user.Id = userId;
         var updatedUser = await _userService.UpdateUserAsync(user);
         return Ok(JsonConvert.SerializeObject(updatedUser));
     }
@@ -73,10 +61,10 @@ public class UserController : ControllerBase
     }
 
     [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteUserAsync(Guid id)
+    [HttpDelete("{userId}")]
+    public async Task<IActionResult> DeleteUserAsync(Guid userId)
     {
-        var user = await _userService.GetUserByIdAsync(id);
+        var user = await _userService.GetUserByIdAsync(userId);
         if (user == null)
         {
             return NotFound();
