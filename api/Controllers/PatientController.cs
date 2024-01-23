@@ -117,16 +117,17 @@ public class PatientController : ControllerBase
   [HttpGet("{patientId}/questionnaires")]
   public async Task<IActionResult> GetAllQuestionnairesFromPatientAsync(Guid patientId)
   {
-      try
-      {
-          var questionnaires = await _questionnaireService.GetQuestionnairesWithDetailsByPatientIdAsync(patientId);
-          return Ok(questionnaires);
-      }
-      catch (Exception ex)
-      {
-          // Handle exceptions
-          return StatusCode(500, "Internal Server Error: " + ex.Message);
-      }
+    try
+    {
+      var categories = new List<string> { "beweging", "bonus" };
+      var questionnaires = await _questionnaireService.GetQuestionnairesWithDetailsByPatientIdAsync(patientId, categories);
+      return Ok(questionnaires);
+    }
+    catch (Exception ex)
+    {
+      // Handle exceptions
+      return StatusCode(500, "Internal Server Error: " + ex.Message);
+    }
   }
 }
 

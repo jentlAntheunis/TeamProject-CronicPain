@@ -36,7 +36,9 @@ public class PatientService : IPatientService
     private readonly IAvatarRepository _avatarRepository;
     private readonly ILoginRepository _loginRepository;
     private readonly IQuestionnaireRepository _questionnaireRepository;
+    private readonly IQuestionnaireService _questionnaireService;
     private readonly ICategoryRepository _categoryRepository;
+    private readonly IOptionRepository _optionRepository;
     public PatientService(
         IPatientRepository patientRepository,
         ISpecialistRepository specialistRepository,
@@ -46,7 +48,9 @@ public class PatientService : IPatientService
         IAvatarRepository avatarRepository,
         ILoginRepository loginRepository,
         IQuestionnaireRepository questionnaireRepository,
-        ICategoryRepository categoryRepository  
+        ICategoryRepository categoryRepository,
+        IQuestionnaireService questionnaireService,
+        IOptionRepository optionRepository
         )
     {
         _patientRepository = patientRepository;
@@ -58,6 +62,8 @@ public class PatientService : IPatientService
         _loginRepository = loginRepository;
         _questionnaireRepository = questionnaireRepository;
         _categoryRepository = categoryRepository;
+        _questionnaireService = questionnaireService;
+        _optionRepository = optionRepository;
     }
 
     public async Task<Patient> GetPatientByIdAsync(Guid id) => await _patientRepository.GetPatientByIdAsync(id);
@@ -245,13 +251,24 @@ public class PatientService : IPatientService
 
     public async Task<IntOverDaysDTO> GetPainHistoryAsync(Guid patientId)
     {
-        var patient = await _patientRepository.GetPatientByIdAsync(patientId);
-        if (patient == null)
-            throw new Exception("Patient does not exist");
-        var questionnaires = await _questionnaireRepository.GetQuestionnairesByPatientIdAsync(patientId);
-        var categories = await _categoryRepository.GetAllCategoriesAsync();
-
-        
-        return null;
+        var categories = new List<string>() { "pijn" };
+        var questionnaires = await _questionnaireService.GetQuestionnairesWithDetailsByPatientIdAsync(patientId, categories);
+        var intOverDaysTDO = new IntOverDaysDTO
+        {
+            Days = new List<DayTDO>()
+        };
+        foreach (var questionnaire in questionnaires)
+        {
+            var question = questionnaire.Questions.FirstOrDefault();
+            var answer = question.Answers.FirstOrDefault();
+            var option = await _optionRepository.GetOptionByIdAsync(answer.OptionId);
+            var dayTDO = new DayTDO
+            {
+                Date = questionnaire.Date.Value.Date,
+                Int = int.TryParse(option.Position, out int result) ? result : 0
+            };
+            intOverDaysTDO.Days.Add(dayTDO);
+        }
+        return intOverDaysTDO;
     }
 }
