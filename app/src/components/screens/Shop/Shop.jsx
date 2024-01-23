@@ -21,8 +21,8 @@ let apiResponse = [
     price: 10,
     isDeleted: false,
     deletedAt: null,
-    owned: false,
-    active: false,
+    owned: true,
+    active: true,
   },
 
   {
@@ -76,13 +76,14 @@ let apiResponse = [
     price: 50,
     isDeleted: false,
     deletedAt: null,
-    owned: true,
-    active: true,
+    owned: false,
+    active: false,
   },
 ];
 
 const Shop = () => {
   const [showModal, setShowModal] = useState(false);
+  const [modalContent, setModalContent] = useState("");
 
   apiResponse.sort((a, b) => a.price - b.price);
 
@@ -106,14 +107,16 @@ const Shop = () => {
     console.log(data);
   }, [data]);
 
-  const handleBuy = () => {
-    console.log("buy");
+  const handleClickShopItem = ({
+    colorName = "",
+    price = 0,
+    hex = "",
+    owned = false,
+    active = false,
+  }) => {
+    colorName = colorName.replace(" (Default)", "");
     setShowModal(true);
-  };
-
-  const handleUse = () => {
-    console.log("use");
-    setShowModal(true);
+    setModalContent({ colorName, price, hex, owned });
   };
 
   if (isLoading) return null;
@@ -131,7 +134,7 @@ const Shop = () => {
             <div className={styles.modalText}>
               <div className={styles.modalTitle}>Kleur</div>
               <div className={styles.modalColorTitle}>
-                {apiResponse.find((item) => item.active)?.name}
+                {modalContent.colorName}
               </div>
             </div>
             <button
@@ -143,23 +146,29 @@ const Shop = () => {
           </div>
           <Pebbles
             size={"12rem"}
-            shieldColor={apiResponse.find((item) => item.active)?.hex}
+            shieldColor={modalContent.hex}
             className={styles.pebbles}
           />
         </div>
-        <div className={styles.buttonContainer}>
-          <Button
-            variant="tertiary"
-            size="full"
-            onClick={() => setShowModal(false)}
-          >
-            Annuleer
-          </Button>
-          <Button size="full">
-            <Coin size={20} />
-            300
-          </Button>
-        </div>
+        {modalContent.owned ? (
+          <div className={styles.buttonContainer}>
+            <Button size="full">Gebruik</Button>
+          </div>
+        ) : (
+          <div className={styles.buttonContainer}>
+            <Button
+              variant="tertiary"
+              size="full"
+              onClick={() => setShowModal(false)}
+            >
+              Annuleer
+            </Button>
+            <Button size="full">
+              <Coin size={20} />
+              {modalContent.price}
+            </Button>
+          </div>
+        )}
       </Modal>
       <TopBar coins={data.data.coins} streak={data.data.streak} />
       <div className={styles.center}>
@@ -182,12 +191,29 @@ const Shop = () => {
                   size="shop"
                   variants="shop"
                   disabled={item.active}
-                  onClick={handleUse}
+                  onClick={() =>
+                    handleClickShopItem({
+                      colorName: item.name,
+                      hex: item.hex,
+                      owned: item.owned,
+                    })
+                  }
                 >
                   {item.active ? "Actief" : "Gebruik"}
                 </Button>
               ) : (
-                <Button size="shop" variants="shop" onClick={handleBuy}>
+                <Button
+                  size="shop"
+                  variants="shop"
+                  onClick={() =>
+                    handleClickShopItem({
+                      colorName: item.name,
+                      price: item.price,
+                      hex: item.hex,
+                      owned: item.owned,
+                    })
+                  }
+                >
                   <Coin size={18} />
                   {item.price}
                 </Button>

@@ -26,9 +26,8 @@ const TabBarNav = () => {
         <NavLink
           to={item.href}
           key={item.label}
-          // className={`${styles.navBtn}`}
           className={({ isActive }) =>
-            clsx(isActive && styles.active, styles.navBtn)
+            clsx(isActive && styles.active, styles.navBtn, styles.btnPadding)
           }
         >
           {({ isActive }) => (

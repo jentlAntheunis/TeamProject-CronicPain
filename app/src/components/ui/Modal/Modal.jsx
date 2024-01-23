@@ -4,7 +4,6 @@ import styles from "./Modal.module.css";
 const Modal = ({ showModal, setShowModal, children }) => {
   const handleCloseModal = () => {
     document.body.classList.remove("modal-open");
-    console.log("close modal");
     setShowModal(false);
   };
 

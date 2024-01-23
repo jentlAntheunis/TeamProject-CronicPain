@@ -9,8 +9,11 @@
   background-color: var(--white);
 }
 
-.navBtn {
+.btnPadding {
   padding: 1.3125rem 0 1.625rem 0;
+}
+
+.navBtn {
   display: grid;
   place-items: center;
   color: var(--grey-400);
