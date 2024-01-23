@@ -73,7 +73,7 @@ public class PatientController : ControllerBase
   public async Task<IActionResult> GetPebblesMoodAsync(Guid patientId)
   {
     var pebblesMood = await _patientService.GetPebblesMoodAsync(patientId);
-    return BadRequest("not implemented");
+    return Ok(pebblesMood);
   }
 
   [HttpPut("{patientId}/addcoins/{amount}")]

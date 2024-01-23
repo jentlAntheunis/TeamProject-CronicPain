@@ -146,14 +146,26 @@ public class PatientService : IPatientService
         var patient = await _patientRepository.GetPatientByIdAsync(patientId);
         if (patient == null)
             throw new Exception("Patient does not exist");
-        if(patient.Streak >= 3) {
-            return "HAPPY";
-        }
+        if (patient.Streak >= 3) return "HAPPY";
+
         var logins = await _loginRepository.GetLoginsByUserAsync(patientId);
-        Console.WriteLine(JsonConvert.SerializeObject(patient));
-        Console.WriteLine(JsonConvert.SerializeObject(logins));
-        
-        return "SAD";
+        var firstLogin = logins.OrderBy(l => l.Timestamp).FirstOrDefault();
+        var isNewPatient = firstLogin.Timestamp > DateTime.Now.AddDays(-3);
+
+        var questionnaires = await _questionnaireRepository.GetQuestionnairesByPatientIdAsync(patientId);
+        var questionnairesByDate = questionnaires
+            .Where(q => q.Date.HasValue)
+            .GroupBy(q => q.Date.Value.Date)
+            .Select(g => g.First())
+            .ToList();        
+        if (!isNewPatient)
+        {
+            if (questionnairesByDate.Count >= 3) return "HAPPY";
+            if (questionnairesByDate.Count >= 1) return "NEUTRAL";
+            return "SAD";
+        }
+        if (questionnairesByDate.Count >= 1) return "HAPPY";
+        return "NEUTRAL";
     }
 
     public async Task AddCoinsAsync(Guid patientId, int amount)
@@ -168,12 +180,13 @@ public class PatientService : IPatientService
     public async Task CheckStreakAsync(Guid patientId)
     {
         var patient = await _patientRepository.GetPatientByIdAsync(patientId);
-        if (patient == null) 
+        if (patient == null)
             throw new Exception("Patient does not exist");
         var questionnaires = await _questionnaireRepository.GetQuestionnairesByPatientIdAsync(patientId);
         var questionnairesYesterday = questionnaires.Where(q => q.Date.HasValue && q.Date.Value.Date == DateTime.Now.AddDays(-1).Date);
         var questionnairesToday = questionnaires.Where(q => q.Date.HasValue && q.Date.Value.Date == DateTime.Now.Date);
-        if(!questionnairesYesterday.Any() && !questionnairesToday.Any()) {
+        if (!questionnairesYesterday.Any() && !questionnairesToday.Any())
+        {
             patient.Streak = 0;
             await _patientRepository.UpdatePatientAsync(patient);
             return;
