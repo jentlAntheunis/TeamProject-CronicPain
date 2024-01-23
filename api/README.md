@@ -313,3 +313,35 @@ POST
       ]
     }
     ```
+
+## Scale
+
+GET
+
+- /all
+  - Returns an array with all the scales (id and name)
+
+
+## Category
+
+GET
+
+- /all
+  - Returns an array with all the categories (id and name)
+
+
+## Category
+
+POST
+
+- /question/addquestion
+  - Adds a question by a specialist
+  - Body:
+  ```json
+    {
+    "categoryId": "string",
+    "specialistId": "string",
+    "scaleId": "string",
+    "content": "string"
+    }
+  ```
