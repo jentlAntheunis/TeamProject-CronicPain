@@ -18,6 +18,7 @@ public interface IPatientService
     Task<List<MovementSuggestion>> GetMovementSuggestionsAsync(Guid patientId);
     Task AddMovementSuggestion(Guid specialistId, Guid patientId, MovementSuggestion movementSuggestionId);
     Task<string> GetPebblesMoodAsync(Guid patientId);
+    Task CheckStreakAsync(Guid patientId);
 }
 
 public class PatientService : IPatientService
@@ -29,6 +30,7 @@ public class PatientService : IPatientService
     private readonly IMovementSuggestionRepository _movementSuggestionRepository;
     private readonly IAvatarRepository _avatarRepository;
     private readonly ILoginRepository _loginRepository;
+    private readonly IQuestionnaireRepository _questionnaireRepository;
     public PatientService(
         IPatientRepository patientRepository,
         ISpecialistRepository specialistRepository,
@@ -36,7 +38,8 @@ public class PatientService : IPatientService
         IMovementSessionRepository movementSessionRepository,
         IMovementSuggestionRepository movementSuggestionRepository,
         IAvatarRepository avatarRepository,
-        ILoginRepository loginRepository
+        ILoginRepository loginRepository,
+        IQuestionnaireRepository questionnaireRepository
         )
     {
         _patientRepository = patientRepository;
@@ -46,6 +49,7 @@ public class PatientService : IPatientService
         _movementSuggestionRepository = movementSuggestionRepository;
         _avatarRepository = avatarRepository;
         _loginRepository = loginRepository;
+        _questionnaireRepository = questionnaireRepository;
     }
 
     public async Task<Patient> GetPatientByIdAsync(Guid id) => await _patientRepository.GetPatientByIdAsync(id);
@@ -140,14 +144,16 @@ public class PatientService : IPatientService
     public async Task<string> GetPebblesMoodAsync(Guid patientId)
     {
         var patient = await _patientRepository.GetPatientByIdAsync(patientId);
-
         if (patient == null)
             throw new Exception("Patient does not exist");
-
-        //look at past 5 days and see when patient has logged in
+        if(patient.Streak >= 3) {
+            return "HAPPY";
+        }
+        var logins = await _loginRepository.GetLoginsByUserAsync(patientId);
         Console.WriteLine(JsonConvert.SerializeObject(patient));
-        string mood = "happy";
-        return mood;
+        Console.WriteLine(JsonConvert.SerializeObject(logins));
+        
+        return "SAD";
     }
 
     public async Task AddCoinsAsync(Guid patientId, int amount)
@@ -157,5 +163,20 @@ public class PatientService : IPatientService
             throw new Exception("Patient does not exist");
         patient.Coins += amount;
         await _patientRepository.UpdatePatientAsync(patient);
+    }
+
+    public async Task CheckStreakAsync(Guid patientId)
+    {
+        var patient = await _patientRepository.GetPatientByIdAsync(patientId);
+        if (patient == null) 
+            throw new Exception("Patient does not exist");
+        var questionnaires = await _questionnaireRepository.GetQuestionnairesByPatientIdAsync(patientId);
+        var questionnairesYesterday = questionnaires.Where(q => q.Date.HasValue && q.Date.Value.Date == DateTime.Now.AddDays(-1).Date);
+        var questionnairesToday = questionnaires.Where(q => q.Date.HasValue && q.Date.Value.Date == DateTime.Now.Date);
+        if(!questionnairesYesterday.Any() && !questionnairesToday.Any()) {
+            patient.Streak = 0;
+            await _patientRepository.UpdatePatientAsync(patient);
+            return;
+        }
     }
 }

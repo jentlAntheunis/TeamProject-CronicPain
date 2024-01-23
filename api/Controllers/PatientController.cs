@@ -82,4 +82,11 @@ public class PatientController : ControllerBase
     await _patientService.AddCoinsAsync(patientId, amount);
     return Ok();
   }
+
+  [HttpPut("{patientId}/checkstreak")]
+  public async Task<IActionResult> CheckStreakAsync(Guid patientId)
+  {
+    await _patientService.CheckStreakAsync(patientId);
+    return Ok();
+  }
 }
