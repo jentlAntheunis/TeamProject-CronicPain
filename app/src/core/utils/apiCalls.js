@@ -122,7 +122,7 @@ const buyColor = async (userId, itemId) =>
     method: "GET",
   });
 
-const useColor = async (userId, itemId) =>
+const activateColor = async (userId, itemId) =>
   await request({
     url: `/store/${userId}/use/${itemId}`,
     method: "GET",
@@ -141,5 +141,5 @@ export {
   addCoins,
   getShopItems,
   buyColor,
-  useColor,
+  activateColor,
 };

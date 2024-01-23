@@ -10,9 +10,10 @@ import styles from "./Shop.module.css";
 import { useEffect, useState } from "react";
 import { useUser } from "../../app/auth/AuthProvider.jsx";
 import {
-  buyColor,
   getShopItems,
   getUserData,
+  activateColor,
+  buyColor,
 } from "../../../core/utils/apiCalls.js";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -36,11 +37,28 @@ const Shop = () => {
     data: shopData,
     isLoading: shopLoading,
     isError: shopError,
+    refetch: refetchShopData,
   } = useQuery({
     queryKey: ["shop"],
     queryFn: () => getShopItems(user.id),
   });
-  useEffect(() => {}, [userData, shopData]);
+
+  useEffect(() => {
+    if (modalContent.id) {
+      const updatedItem = shopData.data.find(item => item.id === modalContent.id);
+      console.log(updatedItem);
+      if (updatedItem) {
+        setModalContent({
+          id: updatedItem.id,
+          colorName: updatedItem.name.replace(" (Default)", ""),
+          price: updatedItem.price,
+          hex: updatedItem.hex,
+          owned: updatedItem.owned,
+          active: updatedItem.active,
+        });
+      }
+    }
+  }, [shopData]);
 
   if (!userData || !shopData) return;
   if (userLoading || shopLoading) return null;
@@ -54,8 +72,14 @@ const Shop = () => {
     console.log("buy " + colorId);
   };
 
-  const handleUseColor = async (colorId) => {
+  const handleActivateColor = async (colorId) => {
     console.log("use " + colorId);
+    try {
+      await activateColor(user.id, colorId);
+      refetchShopData();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleClickShopItem = ({
@@ -64,10 +88,12 @@ const Shop = () => {
     price = 0,
     hex = "",
     owned = false,
+    active = false,
   }) => {
     colorName = colorName.replace(" (Default)", "");
     setShowModal(true);
-    setModalContent({ id, colorName, price, hex, owned });
+    setModalContent({ id, colorName, price, hex, owned, active });
+    console.log(modalContent);
   };
 
   return (
@@ -96,9 +122,18 @@ const Shop = () => {
         </div>
         {modalContent.owned ? (
           <div className={styles.buttonContainer}>
-            <Button size="full" onClick={() => handleUseColor(modalContent.id)}>
-              Gebruik
-            </Button>
+            {modalContent.active ? (
+              <Button size="full" disabled>
+                Actief
+              </Button>
+            ) : (
+              <Button
+                size="full"
+                onClick={() => handleActivateColor(modalContent.id)}
+              >
+                Gebruik
+              </Button>
+            )}
           </div>
         ) : (
           <div className={styles.buttonContainer}>
@@ -143,6 +178,7 @@ const Shop = () => {
                       colorName: item.name,
                       hex: item.hex,
                       owned: item.owned,
+                      active: item.active,
                     })
                   }
                 >
@@ -159,6 +195,7 @@ const Shop = () => {
                       price: item.price,
                       hex: item.hex,
                       owned: item.owned,
+                      active: item.active,
                     })
                   }
                 >
