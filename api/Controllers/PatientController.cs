@@ -19,14 +19,17 @@ public class PatientController : ControllerBase
 {
   private readonly IConfiguration _configuration;
   private readonly IPatientService _patientService;
+  private readonly IQuestionnaireService _questionnaireService;
 
   public PatientController(
       IPatientService patientService,
-      IConfiguration configuration
+      IConfiguration configuration,
+      IQuestionnaireService questionnaireService
       )
   {
     _configuration = configuration;
     _patientService = patientService;
+    _questionnaireService = questionnaireService;
   }
 
   [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
@@ -103,4 +106,21 @@ public class PatientController : ControllerBase
     var streakHistory = await _patientService.GetStreakHistoryAsync(patientId);
     return Ok(streakHistory);
   }
+  [HttpGet("{patientId}/questionnaires")]
+  public async Task<IActionResult> GetAllQuestionnairesFromPatientAsync(Guid patientId)
+  {
+      try
+      {
+          var questionnaires = await _questionnaireService.GetQuestionnairesWithDetailsByPatientIdAsync(patientId);
+          return Ok(questionnaires);
+      }
+      catch (Exception ex)
+      {
+          // Handle exceptions
+          return StatusCode(500, "Internal Server Error: " + ex.Message);
+      }
+  }
+
 }
+
+
