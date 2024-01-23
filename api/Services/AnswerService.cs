@@ -1,12 +1,19 @@
 using Pebbles.Models;
 using Pebbles.Repositories;
+
 using Newtonsoft.Json;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Pebbles.Services;
 
 public interface IAnswerService
 {
     Task ProcessAnswers(List<AnswerDTO> answers, Guid questionnaireId, int questionnaireIndex, IQuestionnaireService questionnaireService);
+    Task<MovementImpact> CompareAnswersAndCalculateScore(Guid questionnaireId);
+    Task<Dictionary<Guid, string>> GetQuestionnaireImpactsByUserId(Guid userId);
+
+
 }
 
 public class AnswerService : IAnswerService
@@ -78,5 +85,73 @@ public class AnswerService : IAnswerService
             throw;
         }
     }
+
+    public async Task<MovementImpact> CompareAnswersAndCalculateScore(Guid questionnaireId)
+    {
+        var beforeAnswers = await _answerRepository.GetAnswersByQuestionnaireIdAndIndex(questionnaireId, 0);
+        var afterAnswers = await _answerRepository.GetAnswersByQuestionnaireIdAndIndex(questionnaireId, 1);
+
+        int totalScore = 0;
+        foreach(var beforeAnswer in beforeAnswers)
+        {
+            var afterAnswer = afterAnswers.FirstOrDefault(a => a.QuestionId == beforeAnswer.QuestionId);
+            if(afterAnswer != null)
+            {
+                int score = await CompareAnswerPairAsync(beforeAnswer, afterAnswer);
+                totalScore += score;
+            }
+        }
+
+        return DetermineMovementImpact(totalScore);
+    }
+
+    private async Task<int> CompareAnswerPairAsync(Answer beforeAnswer, Answer afterAnswer)
+    {
+        var optionScores = await _optionRepository.GetOptionScoresAsync();
+
+        int beforeScore = optionScores.ContainsKey(beforeAnswer.OptionId) ? optionScores[beforeAnswer.OptionId] : 0;
+        int afterScore = optionScores.ContainsKey(afterAnswer.OptionId) ? optionScores[afterAnswer.OptionId] : 0;
+
+        // Scoring logic: Each point of improvement gets a score of +1
+        int score = afterScore - beforeScore;
+
+        return score;
+    }
+
+
+    public MovementImpact DetermineMovementImpact(int totalScore)
+    {
+        // Define thresholds
+        const int NegativeThreshold = -1;
+        const int PositiveThreshold = 1;
+
+        if (totalScore < NegativeThreshold)
+            return MovementImpact.Positive;
+        else if (totalScore > PositiveThreshold)
+            return MovementImpact.Negative;
+        else
+            return MovementImpact.Neutral;
+    }
+
+    public async Task<Dictionary<Guid, string>> GetQuestionnaireImpactsByUserId(Guid userId)
+    {
+        var questionnaireIds = await _questionnaireRepository.GetQuestionnaireIdsByUserId(userId);
+
+        var impacts = new Dictionary<Guid, string>();
+        foreach (var questionnaireId in questionnaireIds)
+        {
+            var impact = await CompareAnswersAndCalculateScore(questionnaireId);
+            impacts.Add(questionnaireId, impact.ToString());
+        }
+
+        return impacts;
+    }
+
+
+
+
+
+
+
 }
 

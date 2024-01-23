@@ -18,6 +18,8 @@ public interface IQuestionnaireRepository
     Task DeleteQuestionnaireAsync(Questionnaire questionnaire);
     Task<List<Questionnaire>> GetQuestionnairesAsync();
 
+    Task<List<Guid>> GetQuestionnaireIdsByUserId(Guid userId);
+
 
     
 }
@@ -319,4 +321,14 @@ public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
     }
 
     public async Task<List<Questionnaire>> GetQuestionnairesAsync() => await _context.Questionnaire.ToListAsync();
+
+    public async Task<List<Guid>> GetQuestionnaireIdsByUserId(Guid userId)
+    {
+        var questionnaireIds = await _context.Questionnaire
+            .Where(q => q.PatientId == userId)
+            .Select(q => q.Id)
+            .ToListAsync();
+
+        return questionnaireIds;
+    }
 }
