@@ -84,7 +84,14 @@ const TopBar = ({ coins, streak }) => {
 
 const Menu = forwardRef(({ showMenu, setShowMenu, setShowModal }, ref) => {
   if (!showMenu) {
+    document.body.style.overflowY = "";
+    document.body.style.height = "";
+    document.body.style.position = "";
     return null;
+  } else {
+    document.body.style.overflowY = "hidden";
+    document.body.style.height = "100svh";
+    document.body.style.position = "fixed";
   }
 
   return (

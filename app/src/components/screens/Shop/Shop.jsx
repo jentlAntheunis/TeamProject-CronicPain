@@ -89,7 +89,7 @@ const Shop = () => {
 
   return (
     <ScrollableScreen>
-      <Modal showModal="true"></Modal>
+      <Modal ></Modal>
       <TopBar coins={69} streak={420} />
       <div className={styles.center}>
         <Pebbles
