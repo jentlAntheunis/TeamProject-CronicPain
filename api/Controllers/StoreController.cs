@@ -21,7 +21,7 @@ public class StoreController : ControllerBase
     private readonly IStoreService _storeService;
 
     public StoreController(
-        IStoreService storeService, 
+        IStoreService storeService,
         IConfiguration configuration
         )
     {

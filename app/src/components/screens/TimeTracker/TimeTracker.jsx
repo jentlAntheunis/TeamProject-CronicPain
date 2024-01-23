@@ -69,16 +69,10 @@ const MyStopwatch = () => {
         setMovementTime(totalSeconds);
         setLoading(true);
         // TODO: store time in database
-        const data = {
-          questionnaireId: questionaireId,
-          questionnaireIndex: questionaireIndex,
-          answers: [...answers],
-        };
-        console.log(data);
         try {
-          await sendAnswers(data);
+          // await sendAnswers(data);
           setLoading(false);
-          removeAnswers();
+          // removeAnswers();
           incrementQuestionaireIndex();
         } catch (error) {
           setLoading(false);

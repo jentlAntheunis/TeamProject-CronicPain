@@ -14,7 +14,7 @@ using Pebbles.Repositories;
 
 [ApiController]
 [Route("questionnaires")]
-[Authorize(AuthenticationSchemes = "FirebaseAuthentication")] // only authenticated users can access this controller
+[Authorize(AuthenticationSchemes = "FirebaseAuthentication")] // only authenticated patients can access this controller
 
 public class QuestionController : ControllerBase
 {
@@ -26,19 +26,21 @@ public class QuestionController : ControllerBase
     private readonly IQuestionnaireService _questionnaireService;
 
 
-    public QuestionController(IQuestionService questionService, IConfiguration configuration, IQuestionnaireRepository questionnaireRepository)
+    public QuestionController(IQuestionService questionService, IConfiguration configuration, IQuestionnaireRepository questionnaireRepository, IQuestionnaireService questionnaireService, IQuestionRepository questionRepository)
     {
         _configuration = configuration;
         _questionService = questionService;
         _questionnaireRepository = questionnaireRepository;
+        _questionnaireService = questionnaireService;
+        _questionRepository = questionRepository;
     }
 
-    [HttpGet("movementquestionnaire/{userId}")]
-    public async Task<IActionResult> CreateMovementQuestionnaire(Guid userId)
+    [HttpGet("movementquestionnaire/{patientId}")]
+    public async Task<IActionResult> CreateMovementQuestionnaire(Guid patientId)
     {
         try
         {
-            var questionnaireDTO = await _questionnaireRepository.AddMovementQuestionnaireAsync(userId);
+            var questionnaireDTO = await _questionnaireRepository.AddMovementQuestionnaireAsync(patientId);
 
             if (questionnaireDTO == null)
             {
@@ -53,14 +55,14 @@ public class QuestionController : ControllerBase
         }
     }
 
-    
 
-    [HttpGet("bonusquestionnaire/{userId}")]
-    public async Task<IActionResult> CreateBonusQuestionnaire(Guid userId)
+
+    [HttpGet("bonusquestionnaire/{patientId}")]
+    public async Task<IActionResult> CreateBonusQuestionnaire(Guid patientId)
     {
         try
         {
-            var questionnaireDTO = await _questionnaireRepository.AddBonusQuestionnaireAsync(userId);
+            var questionnaireDTO = await _questionnaireRepository.AddBonusQuestionnaireAsync(patientId);
 
             if (questionnaireDTO == null)
             {
@@ -75,12 +77,12 @@ public class QuestionController : ControllerBase
         }
     }
 
-    [HttpGet("dailypainquestionnaire/{userId}")]
-    public async Task<IActionResult> CreateDailyPainQuestionnaire(Guid userId)
+    [HttpGet("dailypainquestionnaire/{patientId}")]
+    public async Task<IActionResult> CreateDailyPainQuestionnaire(Guid patientId)
     {
         try
         {
-            var questionnaireDTO = await _questionnaireRepository.AddDailyPainQuestionnaireAsync(userId);
+            var questionnaireDTO = await _questionnaireRepository.AddDailyPainQuestionnaireAsync(patientId);
 
             if (questionnaireDTO == null)
             {
@@ -95,12 +97,14 @@ public class QuestionController : ControllerBase
         }
     }
 
-    [HttpGet("isfirstquestionnaireoftheday/{userId}")]
-    public async Task<IActionResult> IsFirstQuestionnaireOfTheDay(Guid userId)
+
+    [HttpGet("checkIfFirstQuestionnaireOfTheDay/{patientId}")]
+    public async Task<IActionResult> CheckIfFirstQuestionnaireOfTheDay(Guid patientId)
     {
         try
         {
-            var isFirstQuestionnaire = await _questionnaireService.CheckIfFirstQuestionnaireOfTheDay(userId);
+            var isFirstQuestionnaire = await _questionnaireService.CheckIfFirstQuestionnaireOfTheDay(patientId);
+            
 
             return Ok(isFirstQuestionnaire);
         }
@@ -109,10 +113,4 @@ public class QuestionController : ControllerBase
             return BadRequest($"Failed to check if it's the first questionnaire of the day: {ex.Message}");
         }
     }
-
-
-
-
-    
-
 }
