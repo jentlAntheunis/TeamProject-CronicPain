@@ -47,7 +47,7 @@ public class AnswerDTO
     public int QuestionnaireIndex { get; set; }
 }
 
-public class WeekDTO
+public class IntOverDaysDTO
 {
     public List<DayTDO> Days { get; set; }
 }
@@ -55,7 +55,7 @@ public class WeekDTO
 public class DayTDO
 {
     public DateTime Date { get; set; }
-    public int Total { get; set; }
+    public int Int { get; set; }
 }
 
 public class QuestionnaireDetailDTO

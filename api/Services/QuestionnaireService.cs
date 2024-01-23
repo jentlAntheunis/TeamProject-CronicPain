@@ -26,7 +26,7 @@ public interface IQuestionnaireService
 
     Task<bool> CheckIfFirstQuestionnaireOfTheDay(Guid userId);
 
-    Task<List<QuestionnaireDetailDTO>> GetQuestionnairesWithDetailsByPatientIdAsync(Guid patientId);
+    Task<List<QuestionnaireDetailDTO>> GetQuestionnairesWithDetailsByPatientIdAsync(Guid patientId, List<string> categories);
 
 
 }
@@ -92,7 +92,7 @@ public class QuestionnaireService : IQuestionnaireService
         return isFirstQuestionnaire;
     }
 
-    public async Task<List<QuestionnaireDetailDTO>> GetQuestionnairesWithDetailsByPatientIdAsync(Guid patientId)
+    public async Task<List<QuestionnaireDetailDTO>> GetQuestionnairesWithDetailsByPatientIdAsync(Guid patientId, List<string> categories)
     {
         var questionnaires = await _questionnaireRepository.GetFullQuestionnairesByPatientIdAsync(patientId);
         var detailedQuestionnaires = new List<QuestionnaireDetailDTO>();
@@ -104,7 +104,7 @@ public class QuestionnaireService : IQuestionnaireService
             foreach (var question in questionnaire.Questions)
             {
                 // Check if the question's category is "beweging" or "bonus"
-                if (question.Category.Name == "beweging" || question.Category.Name == "bonus")
+                if (categories.Contains(question.Category.Name))
                 {
                     var filteredAnswers = question.Answers
                         .Where(a => a.QuestionnaireId == questionnaire.Id && (a.QuestionnaireIndex == 0 || a.QuestionnaireIndex == 1))
@@ -138,17 +138,4 @@ public class QuestionnaireService : IQuestionnaireService
 
         return detailedQuestionnaires;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

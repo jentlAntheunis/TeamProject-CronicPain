@@ -132,8 +132,10 @@ GET
       }
     ```
 - /patients/{<span style="color: cornflowerblue">patientId</span>}/streakhistory
+
   - Gets the amount of questionnaires filled in in the last 7 days
   - Output:
+
     ```json
       {
         "days": [
@@ -146,8 +148,23 @@ GET
       }
 
     ```
-- /patients/{patientid}/questionnaires
+
+- /patients/{<span style="color: cornflowerblue">patientId</span>}/questionnaires
   - Returns a json with all the questionnaires (incl their date), their questions and their answers (before and after the movement in the case of a movement questionnaire)
+- /patients/{<span style="color: cornflowerblue">patientId</span>}/painhistory
+  - Returns a list of pain values of each day in the last month
+  - Output:
+    ```json
+      {
+        "days": [
+          {
+            "date": "DateTime",
+            "total": int
+          },
+          ... *7
+        ]
+      }
+    ```
 
 POST
 
@@ -212,7 +229,6 @@ GET
   - Subtracts patient coins if they have enough and adds the color to their account
 - /store/{<span style="color: cornflowerblue">patientId</span>}/use/{<span style="color: cornflowerblue">colorId</span>}
   - Adds the color if owned to the patients avatar, and sets the color as active in the store endpoint
-
 
 ## Question
 
@@ -297,5 +313,3 @@ POST
       ]
     }
     ```
-
-

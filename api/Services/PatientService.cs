@@ -2,6 +2,7 @@ using Google.Cloud.Firestore.V1;
 using Newtonsoft.Json;
 using Pebbles.Models;
 using Pebbles.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Pebbles.Services;
 
@@ -20,8 +21,9 @@ public interface IPatientService
     Task AddMovementSuggestion(Guid specialistId, Guid patientId, MovementSuggestion movementSuggestionId);
     Task<string> GetPebblesMoodAsync(Guid patientId);
     Task CheckStreakAsync(Guid patientId);
-    Task<WeekDTO> GetMovementTimeWeekAsync(Guid patientId);
-    Task<WeekDTO> GetStreakHistoryAsync(Guid patientId);
+    Task<IntOverDaysDTO> GetMovementTimeWeekAsync(Guid patientId);
+    Task<IntOverDaysDTO> GetStreakHistoryAsync(Guid patientId);
+    Task<IntOverDaysDTO> GetPainHistoryAsync(Guid patientId);
 }
 
 public class PatientService : IPatientService
@@ -34,6 +36,9 @@ public class PatientService : IPatientService
     private readonly IAvatarRepository _avatarRepository;
     private readonly ILoginRepository _loginRepository;
     private readonly IQuestionnaireRepository _questionnaireRepository;
+    private readonly IQuestionnaireService _questionnaireService;
+    private readonly ICategoryRepository _categoryRepository;
+    private readonly IOptionRepository _optionRepository;
     public PatientService(
         IPatientRepository patientRepository,
         ISpecialistRepository specialistRepository,
@@ -42,7 +47,10 @@ public class PatientService : IPatientService
         IMovementSuggestionRepository movementSuggestionRepository,
         IAvatarRepository avatarRepository,
         ILoginRepository loginRepository,
-        IQuestionnaireRepository questionnaireRepository
+        IQuestionnaireRepository questionnaireRepository,
+        ICategoryRepository categoryRepository,
+        IQuestionnaireService questionnaireService,
+        IOptionRepository optionRepository
         )
     {
         _patientRepository = patientRepository;
@@ -53,6 +61,9 @@ public class PatientService : IPatientService
         _avatarRepository = avatarRepository;
         _loginRepository = loginRepository;
         _questionnaireRepository = questionnaireRepository;
+        _categoryRepository = categoryRepository;
+        _questionnaireService = questionnaireService;
+        _optionRepository = optionRepository;
     }
 
     public async Task<Patient> GetPatientByIdAsync(Guid id) => await _patientRepository.GetPatientByIdAsync(id);
@@ -196,13 +207,13 @@ public class PatientService : IPatientService
         }
     }
 
-    public async Task<WeekDTO> GetMovementTimeWeekAsync(Guid patientId)
+    public async Task<IntOverDaysDTO> GetMovementTimeWeekAsync(Guid patientId)
     {
         var patient = await _patientRepository.GetPatientByIdAsync(patientId);
         if (patient == null)
             throw new Exception("Patient does not exist");
         var movementSessions = await _movementSessionRepository.GetMovementSessionsByPatientIdAsync(patientId);
-        var weekDTO = new WeekDTO
+        var IntOverDaysDTO = new IntOverDaysDTO
         {
             Days = movementSessions
                 .Where(m => m.StartTime.Date >= DateTime.Now.AddDays(-7).Date)
@@ -210,20 +221,20 @@ public class PatientService : IPatientService
                 .Select(g => new DayTDO
                 {
                     Date = g.Key,
-                    Total = g.Sum(m => m.Seconds)
+                    Int = g.Sum(m => m.Seconds)
                 })
                 .ToList()
         };
-        return weekDTO;
+        return IntOverDaysDTO;
     }
 
-    public async Task<WeekDTO> GetStreakHistoryAsync(Guid patientId)
+    public async Task<IntOverDaysDTO> GetStreakHistoryAsync(Guid patientId)
     {
         var patient = await _patientRepository.GetPatientByIdAsync(patientId);
         if (patient == null)
             throw new Exception("Patient does not exist");
         var questionnaires = await _questionnaireRepository.GetQuestionnairesByPatientIdAsync(patientId);
-        var weekDTO = new WeekDTO
+        var IntOverDaysDTO = new IntOverDaysDTO
         {
             Days = questionnaires
                 .Where(q => q.Date.HasValue && q.Date.Value.Date >= DateTime.Now.AddDays(-7).Date)
@@ -231,10 +242,34 @@ public class PatientService : IPatientService
                 .Select(g => new DayTDO
                 {
                     Date = g.Key,
-                    Total = g.Count()
+                    Int = g.Count()
                 })
                 .ToList()
         };
-        return weekDTO;
+        return IntOverDaysDTO;
+    }
+
+    public async Task<IntOverDaysDTO> GetPainHistoryAsync(Guid patientId)
+    {
+        var categories = new List<string>() { "pijn" };
+        var questionnaires = await _questionnaireService.GetQuestionnairesWithDetailsByPatientIdAsync(patientId, categories);
+        questionnaires = questionnaires.Where(q => q.Date.HasValue && q.Date.Value.Date >= DateTime.Now.AddDays(-30).Date).ToList();
+        var intOverDaysTDO = new IntOverDaysDTO
+        {
+            Days = new List<DayTDO>()
+        };
+        foreach (var questionnaire in questionnaires)
+        {
+            var question = questionnaire.Questions.FirstOrDefault();
+            var answer = question.Answers.FirstOrDefault();
+            var option = await _optionRepository.GetOptionByIdAsync(answer.OptionId);
+            var dayTDO = new DayTDO
+            {
+                Date = questionnaire.Date.Value.Date,
+                Int = int.TryParse(option.Position, out int result) ? result : 0
+            };
+            intOverDaysTDO.Days.Add(dayTDO);
+        }
+        return intOverDaysTDO;
     }
 }

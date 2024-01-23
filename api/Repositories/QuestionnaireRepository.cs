@@ -12,18 +12,12 @@ public interface IQuestionnaireRepository
     Task<List<Questionnaire>> GetQuestionnairesByPatientIdAsync(Guid id);
     Task<QuestionnaireDTO> AddMovementQuestionnaireAsync(Guid id);
     Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId);
-
     Task<QuestionnaireDTO> AddDailyPainQuestionnaireAsync(Guid userId);
     Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire);
     Task DeleteQuestionnaireAsync(Questionnaire questionnaire);
     Task<List<Questionnaire>> GetQuestionnairesAsync();
-
     Task<List<Guid>> GetQuestionnaireIdsByUserId(Guid userId);
     Task<List<Questionnaire>> GetFullQuestionnairesByPatientIdAsync(Guid patientId);
-
-
-
-    
 }
 
 public class QuestionnaireRepository : IQuestionnaireRepository
@@ -297,10 +291,6 @@ public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
         }
     }
 
-
-
-
-
     public async Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire)
     {
         _context.Questionnaire.Update(questionnaire);
@@ -353,10 +343,4 @@ public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
 
         return questionnaires;
     }
-
-
-
-
-
-
 }

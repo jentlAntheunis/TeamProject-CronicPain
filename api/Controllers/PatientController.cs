@@ -106,21 +106,29 @@ public class PatientController : ControllerBase
     var streakHistory = await _patientService.GetStreakHistoryAsync(patientId);
     return Ok(streakHistory);
   }
+
+  [HttpGet("{patientId}/painhistory")]
+  public async Task<IActionResult> GetPainHistoryAsync(Guid patientId)
+  {
+    var painHistory = await _patientService.GetPainHistoryAsync(patientId);
+    return Ok(painHistory);
+  }
+
   [HttpGet("{patientId}/questionnaires")]
   public async Task<IActionResult> GetAllQuestionnairesFromPatientAsync(Guid patientId)
   {
-      try
-      {
-          var questionnaires = await _questionnaireService.GetQuestionnairesWithDetailsByPatientIdAsync(patientId);
-          return Ok(questionnaires);
-      }
-      catch (Exception ex)
-      {
-          // Handle exceptions
-          return StatusCode(500, "Internal Server Error: " + ex.Message);
-      }
+    try
+    {
+      var categories = new List<string> { "beweging", "bonus" };
+      var questionnaires = await _questionnaireService.GetQuestionnairesWithDetailsByPatientIdAsync(patientId, categories);
+      return Ok(questionnaires);
+    }
+    catch (Exception ex)
+    {
+      // Handle exceptions
+      return StatusCode(500, "Internal Server Error: " + ex.Message);
+    }
   }
-
 }
 
 
