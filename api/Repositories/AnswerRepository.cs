@@ -9,7 +9,7 @@ namespace Pebbles.Repositories;
 public interface IAnswerRepository
 {
     Task<Answer> GetAnswerByIdAsync(Guid id);
-    Task<List<AnswerRepository>>GetAnswersByQuestionnaireIdAndIndex(Guid questionnaireId, int questionnaireIndex);
+    Task<List<Answer>>GetAnswersByQuestionnaireIdAndIndex(Guid questionnaireId, int questionnaireIndex);
     Task<Answer> AddAnswerAsync(Answer answer);
     Task<Answer> UpdateAnswerAsync(Answer answer);
     Task DeleteAnswerAsync(Answer answer);

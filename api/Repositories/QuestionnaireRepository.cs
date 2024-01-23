@@ -18,7 +18,7 @@ public interface IQuestionnaireRepository
     Task DeleteQuestionnaireAsync(Questionnaire questionnaire);
     Task<List<Questionnaire>> GetQuestionnairesAsync();
 
-    Task<List<Guid>> GetQuestionnaireIdsByUserId(userId)
+    Task<List<Guid>> GetQuestionnaireIdsByUserId(Guid userId);
 
 
     

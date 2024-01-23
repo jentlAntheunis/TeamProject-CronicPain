@@ -1,6 +1,9 @@
 using Pebbles.Models;
 using Pebbles.Repositories;
+
 using Newtonsoft.Json;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Pebbles.Services;
 
@@ -8,7 +11,7 @@ public interface IAnswerService
 {
     Task ProcessAnswers(List<AnswerDTO> answers, Guid questionnaireId, int questionnaireIndex, IQuestionnaireService questionnaireService);
     Task<MovementImpact> CompareAnswersAndCalculateScore(Guid questionnaireId);
-    Task<Dictionary<Guid, MovementImpact>> GetQuestionnaireImpactsByUserId(Guid userId);
+    Task<Dictionary<Guid, string>> GetQuestionnaireImpactsByUserId(Guid userId);
 
 
 }
@@ -94,7 +97,7 @@ public class AnswerService : IAnswerService
             var afterAnswer = afterAnswers.FirstOrDefault(a => a.QuestionId == beforeAnswer.QuestionId);
             if(afterAnswer != null)
             {
-                int score = CompareAnswerPair(beforeAnswer, afterAnswer);
+                int score = await CompareAnswerPairAsync(beforeAnswer, afterAnswer);
                 totalScore += score;
             }
         }
@@ -102,19 +105,12 @@ public class AnswerService : IAnswerService
         return DetermineMovementImpact(totalScore);
     }
 
-    private int CompareAnswerPair(Answer beforeAnswer, Answer afterAnswer)
+    private async Task<int> CompareAnswerPairAsync(Answer beforeAnswer, Answer afterAnswer)
     {
-        // Map OptionId to scores (1-4)
-        var optionScores = new Dictionary<Guid, int>
-        {
-            { new Guid("first-option-id"), 1 },
-            { new Guid("second-option-id"), 2 },
-            { new Guid("third-option-id"), 3 },
-            { new Guid("fourth-option-id"), 4 }
-        };
+        var optionScores = await _optionRepository.GetOptionScoresAsync();
 
-        int beforeScore = optionScores[beforeAnswer.OptionId];
-        int afterScore = optionScores[afterAnswer.OptionId];
+        int beforeScore = optionScores.ContainsKey(beforeAnswer.OptionId) ? optionScores[beforeAnswer.OptionId] : 0;
+        int afterScore = optionScores.ContainsKey(afterAnswer.OptionId) ? optionScores[afterAnswer.OptionId] : 0;
 
         // Scoring logic: Each point of improvement gets a score of +1
         int score = afterScore - beforeScore;
@@ -122,55 +118,35 @@ public class AnswerService : IAnswerService
         return score;
     }
 
-    public enum MovementImpact
-    {
-        Negative,
-        Neutral,
-        Positive
-    }
 
     public MovementImpact DetermineMovementImpact(int totalScore)
     {
         // Define thresholds
-        const int NegativeThreshold = -5;
-        const int PositiveThreshold = 5;
+        const int NegativeThreshold = -1;
+        const int PositiveThreshold = 1;
 
         if (totalScore < NegativeThreshold)
-            return MovementImpact.Negative;
-        else if (totalScore > PositiveThreshold)
             return MovementImpact.Positive;
+        else if (totalScore > PositiveThreshold)
+            return MovementImpact.Negative;
         else
             return MovementImpact.Neutral;
     }
 
-    public async Task<Dictionary<Guid, MovementImpact>> GetQuestionnaireImpactsByUserId(Guid userId)
+    public async Task<Dictionary<Guid, string>> GetQuestionnaireImpactsByUserId(Guid userId)
     {
         var questionnaireIds = await _questionnaireRepository.GetQuestionnaireIdsByUserId(userId);
 
-        var impacts = new Dictionary<Guid, MovementImpact>();
+        var impacts = new Dictionary<Guid, string>();
         foreach (var questionnaireId in questionnaireIds)
         {
             var impact = await CompareAnswersAndCalculateScore(questionnaireId);
-            impacts.Add(questionnaireId, impact);
+            impacts.Add(questionnaireId, impact.ToString());
         }
 
         return impacts;
     }
 
-    public async Task<Dictionary<Guid, MovementImpact>> GetQuestionnaireImpactsByUserId(Guid userId)
-    {
-        // Logic to fetch all questionnaire IDs for the given user ID
-        var questionnaireIds = await _questionnaireRepository.GetQuestionnaireIdsByUserId(userId);
-
-        var impacts = new Dictionary<Guid, MovementImpact>();
-        foreach (var questionnaireId in questionnaireIds)
-        {
-            var impact = await CompareAnswersAndCalculateScore(questionnaireId);
-            impacts.Add(questionnaireId, impact);
-        }
-
-        return impacts;
-    }
 
 
 
