@@ -1,6 +1,0 @@
-{
-	"dependencies": {
-		"@radix-ui/react-slot": "^1.0.2",
-		"react-screen-wake-lock": "^3.0.2"
-	}
-}

@@ -48,6 +48,20 @@ public class AnswerController : ControllerBase
         }
     }
 
+    [HttpGet("user/{userId}/impacts")]
+    public async Task<IActionResult> GetQuestionnaireImpactsByUserId(Guid userId)
+    {
+        try
+        {
+            var impacts = await _answerService.GetQuestionnaireImpactsByUserId(userId);
+            return Ok(impacts);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "An error occurred while processing your request: " + ex.Message);
+        }
+    }
+
 
 
 }

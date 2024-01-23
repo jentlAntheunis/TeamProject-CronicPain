@@ -113,7 +113,58 @@ GET
   - Gets all movement suggestions of the patient
 - /patients/{<span style="color: cornflowerblue">patientId</span>}/pebblesmood
   - Gets the mood pebbles should be in right now
-  - NOT IMPLEMENTED YET
+  - Output:
+    ```
+      HAPPY | NEUTRAL | SAD
+    ```
+- /patients/{<span style="color: cornflowerblue">patientId</span>}/movementtimeweek
+  - Gets the movement times of the last 7 days
+  - Output:
+    ```json
+      {
+        "days": [
+          {
+            "date": "DateTime",
+            "total": int
+          },
+          ... *7
+        ]
+      }
+    ```
+- /patients/{<span style="color: cornflowerblue">patientId</span>}/streakhistory
+
+  - Gets the amount of questionnaires filled in in the last 7 days
+  - Output:
+
+    ```json
+      {
+        "days": [
+          {
+            "date": "DateTime",
+            "total": int
+          },
+          ... *7
+        ]
+      }
+
+    ```
+
+- /patients/{<span style="color: cornflowerblue">patientId</span>}/questionnaires
+  - Returns a json with all the questionnaires (incl their date), their questions and their answers (before and after the movement in the case of a movement questionnaire)
+- /patients/{<span style="color: cornflowerblue">patientId</span>}/painhistory
+  - Returns a list of pain values of each day in the last month
+  - Output:
+    ```json
+      {
+        "days": [
+          {
+            "date": "DateTime",
+            "total": int
+          },
+          ... *7
+        ]
+      }
+    ```
 
 POST
 
@@ -178,3 +229,119 @@ GET
   - Subtracts patient coins if they have enough and adds the color to their account
 - /store/{<span style="color: cornflowerblue">patientId</span>}/use/{<span style="color: cornflowerblue">colorId</span>}
   - Adds the color if owned to the patients avatar, and sets the color as active in the store endpoint
+
+## Question
+
+GET
+
+- /questionnaires/movementquestionnaire/{userId}
+  - Returns a questionnaire with 5 random questions in it of the movement catgory, together with the answer option id's
+- /questionnaires/bonusquestionnaire/{userId}
+  - Returns a questionnaire with 5 random questions in it of the movement catgory, together with the answer option id's
+- /questionnaires/dailypainquestionnaire/{userId}
+  - Returns the dauly pain questionnaire, together with the answer option id's
+- /questionnaire/checkifFirstquestionnaireoftheday
+  - Returns true if it's the first answered questionnaire of the day
+  - Returns false if it's not the fist answered questionnaire of the day
+
+## Answer
+
+GET
+
+- /answers/user/{userId}/impacts
+  - Returns a list of all the questionnaires and their impact (the score of the comparison of all the questions in a questionnaire)
+
+POST
+
+- /answers
+  - Saves the answers from the questionnaire before and after a movement session
+  - Body:
+    ```json
+    {
+      "questionnaireId": "string",
+      "answers": [
+        {
+          "questionId": "string",
+          "optionId": "string",
+          "questionnaireIndex": "0"
+        },
+        {
+          "questionId": "string",
+          "optionId": "string",
+          "questionnaireIndex": "0"
+        },
+        {
+          "questionId": "string",
+          "optionId": "string",
+          "questionnaireIndex": "0"
+        },
+        {
+          "questionId": "string",
+          "optionId": "string",
+          "questionnaireIndex": "0"
+        },
+        {
+          "questionId": "string",
+          "optionId": "string",
+          "questionnaireIndex": "0"
+        },
+        {
+          "questionId": "string",
+          "optionId": "string",
+          "questionnaireIndex": "1"
+        },
+        {
+          "questionId": "string",
+          "optionId": "string",
+          "questionnaireIndex": "1"
+        },
+        {
+          "questionId": "string",
+          "optionId": "string",
+          "questionnaireIndex": "1"
+        },
+        {
+          "questionId": "string",
+          "optionId": "string",
+          "questionnaireIndex": "1"
+        },
+        {
+          "questionId": "string",
+          "optionId": "string",
+          "questionnaireIndex": "1"
+        }
+      ]
+    }
+    ```
+
+## Scale
+
+GET
+
+- /all
+  - Returns an array with all the scales (id and name)
+
+
+## Category
+
+GET
+
+- /all
+  - Returns an array with all the categories (id and name)
+
+
+## Category
+
+POST
+
+- /question/addquestion
+  - Adds a question by a specialist
+  - Body:
+  ```json
+    {
+    "categoryId": "string",
+    "specialistId": "string",
+    "scaleId": "string",
+    "content": "string"
+    }
+  ```

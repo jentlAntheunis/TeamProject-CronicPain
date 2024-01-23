@@ -8,46 +8,14 @@ import ScrollableScreen from "../../../ui/ScrollableScreen/ScrollableScreen";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { SpecialistRoutes } from "../../../../core/config/routes";
+import PatientList from "../../../app/patients/PatientList";
 
 const Patients = () => {
-  const patientData = [
-    "Janssens Dirk",
-    "Vermeiren Jos",
-    "Van de Velde Rita",
-    "De Vos Luc",
-    "Bari An",
-    "Doe John",
-    "Smith Jane",
-    "Johnson Michael",
-    "Davis Emily",
-    "Wilson David",
-    "Taylor Olivia",
-    "Anderson Daniel",
-    "Martinez Sophia",
-    "Thompson Matthew",
-    "Garcia Ava",
-    "Brown William",
-    "Thomas Isabella",
-    "Lee James",
-    "Clark Mia",
-    "Lewis Benjamin",
-    "Hall Charlotte",
-    "Wright Joseph",
-    "Turner Amelia",
-    "Adams Henry",
-  ];
-
   const [searchInput, setSearchInput] = useState("");
 
   const handleSearchChange = (event) => {
     setSearchInput(event.target.value);
   };
-
-  const filteredPatients = patientData.filter((patient) =>
-    patient.toLowerCase().includes(searchInput.toLowerCase())
-  );
-
-  const sortedPatients = filteredPatients.sort((a, b) => a.localeCompare(b));
 
   return (
     <ScrollableScreen>
@@ -59,7 +27,7 @@ const Patients = () => {
             name="fullNameSearch"
             value={searchInput}
             onChange={handleSearchChange}
-            placeholder="Zoek patient"
+            placeholder="Zoek patiënt"
           />
           <Link to={SpecialistRoutes.AddPatient}>
             <Button>
@@ -68,38 +36,7 @@ const Patients = () => {
             </Button>
           </Link>
         </div>
-        <div className={styles.patients}>
-          {sortedPatients.map((patient, index) => {
-            const indexMatch = patient
-              .toLowerCase()
-              .indexOf(searchInput.toLowerCase());
-            const nameBeforeMatch = patient.slice(0, indexMatch);
-            const nameMatch = patient.slice(
-              indexMatch,
-              indexMatch + searchInput.length
-            );
-            const nameAfterMatch = patient.slice(
-              indexMatch + searchInput.length
-            );
-            return (
-              <div className={styles.patient} key={index}>
-                <div className={styles.patientName}>
-                  {nameBeforeMatch}
-                  <span className={styles.match}>{nameMatch}</span>
-                  {nameAfterMatch}
-                </div>
-                <Button variant="tertiary" size="superSmall">
-                  Details
-                </Button>
-              </div>
-            );
-          })}
-          {sortedPatients.length === 0 && (
-            <div className={styles.noQuestions}>
-              Geen patiënten gevonden met de naam &quot;{searchInput}&quot;
-            </div>
-          )}
-        </div>
+        <PatientList search={searchInput} />
       </div>
     </ScrollableScreen>
   );

@@ -26,6 +26,9 @@ public interface IQuestionnaireService
 
     Task<bool> CheckIfFirstQuestionnaireOfTheDay(Guid userId);
 
+    Task<List<QuestionnaireDetailDTO>> GetQuestionnairesWithDetailsByPatientIdAsync(Guid patientId, List<string> categories);
+
+
 }
 
 public class QuestionnaireService : IQuestionnaireService
@@ -62,7 +65,7 @@ public class QuestionnaireService : IQuestionnaireService
     public async Task<QuestionnaireDTO> AddMovementQuestionnaireAsync(Guid id) => throw new NotImplementedException();
 
     public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId) => throw new NotImplementedException();
-    
+
     public async Task<QuestionnaireDTO> AddDailyPainQuestionnaireAsync(Guid userId) => throw new NotImplementedException();
     public async Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire) => throw new NotImplementedException();
     public async Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex) => throw new NotImplementedException();
@@ -77,15 +80,62 @@ public class QuestionnaireService : IQuestionnaireService
         var questionnaireExists = await _context.Questionnaire
             .AnyAsync(q => q.PatientId == userId && q.Date.HasValue && q.Date.Value.Date == currentDate);
 
-        return !questionnaireExists;
+        bool isFirstQuestionnaire = !questionnaireExists;
+        if (isFirstQuestionnaire)
+        {
+            var patient = await _context.Patient
+                .FirstOrDefaultAsync(p => p.Id == userId);
+
+            patient.Streak += 1;
+            await _context.SaveChangesAsync();
+        }
+        return isFirstQuestionnaire;
     }
 
+    public async Task<List<QuestionnaireDetailDTO>> GetQuestionnairesWithDetailsByPatientIdAsync(Guid patientId, List<string> categories)
+    {
+        var questionnaires = await _questionnaireRepository.GetFullQuestionnairesByPatientIdAsync(patientId);
+        var detailedQuestionnaires = new List<QuestionnaireDetailDTO>();
 
+        foreach (var questionnaire in questionnaires)
+        {
+            var detailedQuestions = new List<QuestionDetailDTO>();
 
+            foreach (var question in questionnaire.Questions)
+            {
+                // Check if the question's category is "beweging" or "bonus"
+                if (categories.Contains(question.Category.Name))
+                {
+                    var filteredAnswers = question.Answers
+                        .Where(a => a.QuestionnaireId == questionnaire.Id && (a.QuestionnaireIndex == 0 || a.QuestionnaireIndex == 1))
+                        .Select(a => new AnswerDTO
+                        {
+                            QuestionId = a.QuestionId,
+                            OptionId = a.OptionId,
+                            QuestionnaireIndex = a.QuestionnaireIndex
+                        }).ToList();
 
+                    detailedQuestions.Add(new QuestionDetailDTO
+                    {
+                        Id = question.Id,
+                        Content = question.Content,
+                        Answers = filteredAnswers
+                    });
+                }
+            }
 
+            // Add the questionnaire to the list only if it contains relevant questions
+            if (detailedQuestions.Any())
+            {
+                detailedQuestionnaires.Add(new QuestionnaireDetailDTO
+                {
+                    Id = questionnaire.Id,
+                    Date = questionnaire.Date,
+                    Questions = detailedQuestions
+                });
+            }
+        }
 
-    
-
-
+        return detailedQuestionnaires;
+    }
 }

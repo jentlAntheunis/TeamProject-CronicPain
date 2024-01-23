@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import styles from "./Modal.module.css";
 
-const Modal = ({ showModal, setShowModal, children }) => {
+const Modal = ({ showModal, setShowModal, children, easyClose = true }) => {
+
   const handleCloseModal = () => {
     document.body.classList.remove("modal-open");
     setShowModal(false);
@@ -21,7 +22,7 @@ const Modal = ({ showModal, setShowModal, children }) => {
 
   return (
     <div className={styles.modal}>
-      <div className={styles.modalBackground} onClick={handleCloseModal}></div>
+      <div className={styles.modalBackground} onClick={easyClose && handleCloseModal}></div>
       <div className={styles.modalContent}>{children}</div>
     </div>
   );

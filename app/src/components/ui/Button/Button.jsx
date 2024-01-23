@@ -10,6 +10,7 @@ const buttonVariants = cva(styling.button, {
       secondary: styling.secondary,
       tertiary: styling.tertiary,
       shop: styling.shop,
+      input: styling.input,
     },
     size: {
       default: styling.defaultSize,
@@ -17,6 +18,7 @@ const buttonVariants = cva(styling.button, {
       small: styling.small,
       superSmall: styling.superSmall,
       shop: styling.shop,
+      input: styling.inputSize,
     },
   },
   defaultVariants: {

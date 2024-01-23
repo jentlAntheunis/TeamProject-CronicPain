@@ -16,7 +16,7 @@ using Pebbles.Repositories;
 [Route("questionnaires")]
 [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] // only authenticated patients can access this controller
 
-public class QuestionController : ControllerBase
+public class QuestionnaireController : ControllerBase
 {
     private readonly IConfiguration _configuration;
     private readonly IQuestionRepository _questionRepository;
@@ -26,7 +26,7 @@ public class QuestionController : ControllerBase
     private readonly IQuestionnaireService _questionnaireService;
 
 
-    public QuestionController(IQuestionService questionService, IConfiguration configuration, IQuestionnaireRepository questionnaireRepository, IQuestionnaireService questionnaireService, IQuestionRepository questionRepository)
+    public QuestionnaireController(IQuestionService questionService, IConfiguration configuration, IQuestionnaireRepository questionnaireRepository, IQuestionnaireService questionnaireService, IQuestionRepository questionRepository)
     {
         _configuration = configuration;
         _questionService = questionService;
@@ -104,6 +104,7 @@ public class QuestionController : ControllerBase
         try
         {
             var isFirstQuestionnaire = await _questionnaireService.CheckIfFirstQuestionnaireOfTheDay(patientId);
+            
 
             return Ok(isFirstQuestionnaire);
         }
@@ -112,14 +113,4 @@ public class QuestionController : ControllerBase
             return BadRequest($"Failed to check if it's the first questionnaire of the day: {ex.Message}");
         }
     }
-
-
-
-
-
-
-
-
-
-
 }

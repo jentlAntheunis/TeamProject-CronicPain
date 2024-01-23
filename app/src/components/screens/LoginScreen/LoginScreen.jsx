@@ -118,7 +118,7 @@ const LoginForm = () => {
         disabled={sending || isLoading}
         className={styling.submit}
       >
-        Submit
+        Log in
       </Button>
     </Form>
   );
