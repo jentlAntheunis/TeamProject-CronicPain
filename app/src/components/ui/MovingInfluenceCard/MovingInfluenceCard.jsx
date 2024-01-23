@@ -1,7 +1,8 @@
 import { cva } from "class-variance-authority";
-import styles from "./MovingInfluanceCard.module.css";
+import styles from "./MovingInfluenceCard.module.css";
+import Wave from "../Illustrations/Wave";
 
-const cardVariants = cva(styles.movingInfluanceCard, {
+const cardVariants = cva(styles.movingInfluenceCard, {
   variants: {
     variant: {
       positive: styles.positive,
@@ -14,7 +15,7 @@ const cardVariants = cva(styles.movingInfluanceCard, {
   },
 });
 
-const MovingInfluanceCard = ({ variant }) => {
+const MovingInfluenceCard = ({ variant }) => {
   let text;
   if (variant === "positive") {
     text = "Positief";
@@ -26,6 +27,15 @@ const MovingInfluanceCard = ({ variant }) => {
 
   return (
     <div className={cardVariants({ variant })}>
+      <div className={styles.waveContainer}>
+        <Wave
+          className={styles.wave}
+          opacity={1}
+          preserveAspectRatio="none"
+          height="4rem"
+        />
+        <div className={styles.waveBackground}></div>
+      </div>
       <div className={styles.text}>
         <div className={styles.h6}>{text}</div>
         <div className={styles.small}>15 keer</div>
@@ -35,4 +45,4 @@ const MovingInfluanceCard = ({ variant }) => {
   );
 };
 
-export default MovingInfluanceCard;
+export default MovingInfluenceCard;

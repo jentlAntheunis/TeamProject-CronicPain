@@ -4,7 +4,7 @@ import NavBar from "../../../ui/NavBar/NavBar";
 import PageHeading from "../../../ui/PageHeading/PageHeading";
 import { SpecialistRoutes } from "../../../../core/config/routes";
 import styles from "./PatientDetails.module.css";
-import MovingInfluenceCard from "../../../ui/MovingInfluenceCard/MovingInfluanceCard";
+import MovingInfluenceCard from "../../../ui/MovingInfluenceCard/MovingInfluenceCard";
 import Graph from "../../../ui/Graph/Graph";
 import Button from "../../../ui/Button/Button";
 import RewardMetric from "../../../ui/RewardMetric/RewardMetric";
