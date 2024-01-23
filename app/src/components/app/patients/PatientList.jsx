@@ -25,10 +25,15 @@ const PatientList = ({ search }) => {
 
   const filteredPatients = data.data.filter((patient) => {
     const fullName = patient.lastName + " " + patient.firstName;
+    console.log(fullName);
     return fullName.toLowerCase().includes(search.toLowerCase());
   });
 
-  const sortedPatients = filteredPatients.sort((a, b) => a.localeCompare(b));
+  const sortedPatients = filteredPatients.sort((a, b) => {
+    const fullNameA = a.lastName + " " + a.firstName;
+    const fullNameB = b.lastName + " " + b.firstName;
+    return fullNameA.localeCompare(fullNameB);
+  });
 
   return (
     <div className={styles.patients}>
