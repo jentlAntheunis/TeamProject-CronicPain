@@ -98,7 +98,6 @@ const Shop = () => {
     colorName = colorName.replace(" (Default)", "");
     setShowModal(true);
     setModalContent({ id, colorName, price, hex, owned, active });
-    console.log(modalContent);
   };
 
   return (
