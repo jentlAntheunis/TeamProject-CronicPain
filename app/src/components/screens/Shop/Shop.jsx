@@ -1,6 +1,7 @@
 import Button from "../../ui/Button/Button";
 import Coin from "../../ui/Icons/Coin";
 import Pebbles from "../../ui/Illustrations/Pebbles";
+import Modal from "../../ui/Modal/Modal";
 import ScrollableScreen from "../../ui/ScrollableScreen/ScrollableScreen";
 import TabBarNav from "../../ui/TabBarNav/TabBarNav";
 import TopBar from "../../ui/TopBar/TopBar";
@@ -88,6 +89,7 @@ const Shop = () => {
 
   return (
     <ScrollableScreen>
+      <Modal showModal="true"></Modal>
       <TopBar coins={69} streak={420} />
       <div className={styles.center}>
         <Pebbles

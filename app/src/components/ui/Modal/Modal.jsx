@@ -1,7 +1,6 @@
 import styles from "./Modal.module.css";
 
 const Modal = ({ showModal, setShowModal, children }) => {
-
   const handleCloseModal = () => {
     setShowModal(false);
   };
