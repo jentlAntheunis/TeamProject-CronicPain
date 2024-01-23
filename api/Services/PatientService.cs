@@ -19,6 +19,7 @@ public interface IPatientService
     Task AddMovementSuggestion(Guid specialistId, Guid patientId, MovementSuggestion movementSuggestionId);
     Task<string> GetPebblesMoodAsync(Guid patientId);
     Task CheckStreakAsync(Guid patientId);
+    Task<MovementTimeWeekDTO> GetMovementTimeWeekAsync(Guid patientId);
 }
 
 public class PatientService : IPatientService
@@ -157,7 +158,7 @@ public class PatientService : IPatientService
             .Where(q => q.Date.HasValue)
             .GroupBy(q => q.Date.Value.Date)
             .Select(g => g.First())
-            .ToList();        
+            .ToList();
         if (!isNewPatient)
         {
             if (questionnairesByDate.Count >= 3) return "HAPPY";
@@ -191,5 +192,26 @@ public class PatientService : IPatientService
             await _patientRepository.UpdatePatientAsync(patient);
             return;
         }
+    }
+
+    public async Task<MovementTimeWeekDTO> GetMovementTimeWeekAsync(Guid patientId)
+    {
+        var patient = await _patientRepository.GetPatientByIdAsync(patientId);
+        if (patient == null)
+            throw new Exception("Patient does not exist");
+        var movementSessions = await _movementSessionRepository.GetMovementSessionsByPatientIdAsync(patientId);
+        var movementTimeWeekDTO = new MovementTimeWeekDTO
+        {
+            Days = movementSessions
+                .Where(m => m.StartTime.Date >= DateTime.Now.AddDays(-7).Date)
+                .GroupBy(m => m.StartTime.Date)
+                .Select(g => new MovementTimeDayDTO
+                {
+                    Date = g.Key,
+                    Total = g.Sum(m => m.Seconds)
+                })
+                .ToList()
+        };
+        return movementTimeWeekDTO;
     }
 }

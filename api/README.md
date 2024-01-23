@@ -113,7 +113,24 @@ GET
   - Gets all movement suggestions of the patient
 - /patients/{<span style="color: cornflowerblue">patientId</span>}/pebblesmood
   - Gets the mood pebbles should be in right now
-  - NOT IMPLEMENTED YET
+  - Output:
+    ```
+      HAPPY | NEUTRAL | SAD
+    ```
+- /patients/{<span style="color: cornflowerblue">patientId</span>}/movementtimeweek
+  - Gets the movement times of the last 7 days
+  - Output:
+    ```json
+      {
+        "days": [
+          {
+            "date": "DateTime",
+            "total": int
+          },
+          ... *7
+        ]
+      }
+    ```
 
 POST
 
