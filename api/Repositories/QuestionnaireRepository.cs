@@ -133,7 +133,7 @@ public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
         try
         {
             var categoryName = "bonus"; 
-            var scaleName = "nooit_altijd"; 
+            var scaleName = "niet_altijd"; 
 
             var categoryId = await _context.Category
                 .Where(c => c.Name == categoryName)
@@ -175,7 +175,16 @@ public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
                 {
                     throw new InvalidOperationException($"Option scale '{scaleName}' not found.");
                 }
+
+                var questionnaireQuestion = new QuestionnaireQuestion
+                {
+                    QuestionnaireId = questionnaire.Id,
+                    QuestionId = question.Id
+                };
+
+                await _context.QuestionnaireQuestion.AddAsync(questionnaireQuestion);
             }
+            
 
             await _context.SaveChangesAsync();
 
@@ -211,12 +220,15 @@ public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
             Date = null
         };
 
+        await _context.Questionnaire.AddAsync(questionnaire);
+
+        await _context.SaveChangesAsync();
+
         try
         {
-            var categoryName = "pijn"; // Category name for "pijn"
-            var scaleName = "1_10"; // Scale name for "1_10"
+            var categoryName = "pijn"; 
+            var scaleName = "0_10"; 
 
-            // Get the CategoryId for the specified category name
             var categoryId = await _context.Category
                 .Where(c => c.Name == categoryName)
                 .Select(c => c.Id)
@@ -227,10 +239,6 @@ public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
                 .Select(s => s.Id)
                 .FirstOrDefaultAsync();
 
-            if (categoryId == Guid.Empty)
-            {
-                throw new InvalidOperationException($"Category '{categoryName}' not found.");
-            }
 
             Console.WriteLine($"AddDailyPainQuestionnaireAsync - CategoryId: {categoryId}");
 
@@ -252,6 +260,9 @@ public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
                 {
                     throw new InvalidOperationException($"Option '{scaleName}' not found in category '{categoryName}'.");
                 }
+
+                var existingQuestionnaire = await _context.Questionnaire.FindAsync(questionnaire.Id);
+
 
                 var questionnaireQuestion = new QuestionnaireQuestion
                 {
