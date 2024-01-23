@@ -103,4 +103,11 @@ public class PatientController : ControllerBase
     var streakHistory = await _patientService.GetStreakHistoryAsync(patientId);
     return Ok(streakHistory);
   }
+
+  [HttpGet("{patientId}/painhistory")]
+  public async Task<IActionResult> GetPainHistoryAsync(Guid patientId)
+  {
+    var painHistory = await _patientService.GetPainHistoryAsync(patientId);
+    return Ok(painHistory);
+  }
 }

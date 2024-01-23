@@ -17,9 +17,6 @@ public interface IQuestionnaireRepository
     Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire);
     Task DeleteQuestionnaireAsync(Questionnaire questionnaire);
     Task<List<Questionnaire>> GetQuestionnairesAsync();
-
-
-    
 }
 
 public class QuestionnaireRepository : IQuestionnaireRepository
@@ -292,10 +289,6 @@ public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
             throw;
         }
     }
-
-
-
-
 
     public async Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire)
     {
