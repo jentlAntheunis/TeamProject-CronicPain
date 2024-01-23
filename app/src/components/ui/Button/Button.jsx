@@ -9,12 +9,14 @@ const buttonVariants = cva(styling.button, {
       primary: styling.primary,
       secondary: styling.secondary,
       tertiary: styling.tertiary,
+      shop: styling.shop,
     },
     size: {
       default: styling.defaultSize,
       full: styling.fullWidth,
       small: styling.small,
       superSmall: styling.superSmall,
+      shop: styling.shop,
     },
   },
   defaultVariants: {

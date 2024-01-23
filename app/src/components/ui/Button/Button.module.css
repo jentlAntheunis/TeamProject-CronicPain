@@ -64,5 +64,18 @@
   font-size: var(--small);
   font-weight: var(--medium);
   width: auto;
-  padding: .625rem 1.25rem;
+  padding: 0.625rem 1.25rem;
+}
+
+.shop {
+  font-size: var(--paragraph);
+  font-weight: var(--medium);
+  width: 5.625rem;
+  padding: 0.625rem 0;
+}
+
+.shop:disabled {
+  opacity: 100%;
+  background-color: var(--grey-100);
+  color: var(--grey-700);
 }

@@ -1,19 +1,19 @@
 import PropTypes from "prop-types";
 import { PebblesMoods } from "../../../core/config/pebblesMoods";
 
-const Pebbles = ({ mood = PebblesMoods.Neutral, size, style, className }) => {
+const Pebbles = ({ mood = PebblesMoods.Neutral, shieldColor = "#3B82F6" , size, style, className }) => {
   switch (mood) {
     case PebblesMoods.Neutral:
-      return <PebblesNeutral size={size} style={style} className={className} />
+      return <PebblesNeutral size={size} style={style} shieldColor={shieldColor} className={className} />
 
     case PebblesMoods.Happy:
-      return <PebblesHappy size={size} style={style} className={className} />;
+      return <PebblesHappy size={size} style={style} shieldColor={shieldColor} className={className} />;
 
     case PebblesMoods.Sad:
-      return <PebblesSad size={size} style={style} className={className} />;
+      return <PebblesSad size={size} style={style} shieldColor={shieldColor} className={className} />;
 
     case PebblesMoods.Bubbles:
-      return <PebblesBubbles size={size} style={style} className={className} />;
+      return <PebblesBubbles size={size} style={style} shieldColor={shieldColor} className={className} />;
 
     default:
       break;
@@ -24,7 +24,7 @@ Pebbles.propTypes = {
   mood: PropTypes.oneOf(Object.values(PebblesMoods)),
 };
 
-const PebblesNeutral = ({ size, style, className }) => (
+const PebblesNeutral = ({ size, style, className, shieldColor }) => (
   <svg
     width="1062"
     height="780"
@@ -95,7 +95,7 @@ const PebblesNeutral = ({ size, style, className }) => (
       />
       <path
         d="M990.834 451.816C990.124 460.521 986.709 468.757 981.687 475.901C898.354 594.453 715.982 589.679 576.767 492.682C491.403 433.203 456.053 348.549 463.499 215.12C477.063 178.997 531.579 185.786 532.834 221.993C702.155 89.9892 960.659 182.015 956.222 422.638C976.518 415.373 992.734 428.536 990.831 451.816H990.834Z"
-        fill="#3B82F6"
+        fill={shieldColor}
       />
       <g opacity="0.25">
         <path
@@ -184,7 +184,7 @@ const PebblesNeutral = ({ size, style, className }) => (
   </svg>
 );
 
-const PebblesHappy = ({ size, style, className }) => (
+const PebblesHappy = ({ size, style, className, shieldColor }) => (
   <svg
     width="1062"
     height="780"
@@ -255,7 +255,7 @@ const PebblesHappy = ({ size, style, className }) => (
       />
       <path
         d="M990.834 451.816C990.124 460.521 986.709 468.757 981.687 475.9C898.354 594.453 715.982 589.679 576.767 492.682C491.403 433.203 456.053 348.549 463.498 215.12C477.062 178.996 531.579 185.786 532.834 221.993C702.154 89.9891 960.659 182.015 956.222 422.638C976.518 415.373 992.734 428.536 990.831 451.816H990.834Z"
-        fill="#3B82F6"
+        fill={shieldColor}
       />
       <g opacity="0.25">
         <path
@@ -413,7 +413,7 @@ const PebblesHappy = ({ size, style, className }) => (
   </svg>
 );
 
-const PebblesSad = ({ size, style, className }) => (
+const PebblesSad = ({ size, style, className, shieldColor }) => (
   <svg
     width="1049"
     height="769"
@@ -482,9 +482,9 @@ const PebblesSad = ({ size, style, className }) => (
         d="M575.415 769C553.364 769 534.197 764.523 517.707 755.588C458.602 723.566 446.734 640.77 436.264 567.723C429.71 522.018 423.523 478.845 406.855 456.055C366.777 401.259 260.87 421.833 259.805 422.045C259.637 422.079 259.463 422.11 259.295 422.13C205.165 429.19 162.852 424.391 129.94 407.443C101.716 392.909 81.1108 369.783 67.0485 336.82C58.985 335.425 41.2385 331.85 27.8336 325.526C18.9791 321.346 12.4427 313.51 9.89872 304.025C-11.3266 224.954 1.84893 149.071 46.9908 90.3517C91.0643 33.0212 160.017 0.160803 236.2 0.160803H236.337C297.544 -2.26089 358.93 22.9103 404.732 69.2851C445.091 110.146 467.111 161.104 465.457 209.548C487.452 236.197 702.883 494.808 812.406 537.099C926.733 581.247 1013.11 562.267 1013.97 562.072C1016.32 561.535 1018.8 562.154 1020.61 563.751C1022.42 565.345 1023.36 567.712 1023.12 570.114C1018.18 620.425 983.927 658.909 931.509 673.063C899.043 681.829 862.506 679.917 828.629 667.676C792.403 654.589 760.324 630.341 735.637 597.426C734.144 597.44 732.644 597.45 731.168 597.45C652.684 597.45 598.328 575.761 570.957 561.412C618.43 663.66 709.073 718.275 710.046 718.849C712.443 720.269 713.857 722.899 713.716 725.676C713.576 728.454 711.908 730.93 709.382 732.1C656.272 756.734 611.901 768.997 575.415 769ZM306.07 402.924C343.289 402.924 392.314 410.757 418.976 447.202C437.856 473.013 444.3 517.982 451.127 565.592C461.098 635.143 472.397 713.975 524.866 742.402C562.123 762.587 616.434 756.618 690.639 724.1C661.333 703.885 585.392 644.115 548.084 545.753C546.903 542.633 547.924 539.107 550.594 537.103C553.265 535.102 556.939 535.095 559.61 537.099C560.24 537.568 624.799 584.596 739.246 582.369C739.297 582.369 739.345 582.369 739.393 582.369C741.8 582.369 744.063 583.522 745.477 585.475C796.614 656.142 873.798 673.111 927.596 658.581C970.197 647.077 999.143 617.542 1006.74 578.572C979.627 582.533 903.58 588.382 806.993 551.085C688.386 505.282 461.608 228.58 452.014 216.824C450.833 215.377 450.234 213.543 450.336 211.679C452.778 166.57 432.261 118.506 394.046 79.8133C351.171 36.4007 293.871 12.8268 236.789 15.1493C236.686 15.1527 236.618 15.1664 236.478 15.1561C236.392 15.1561 236.293 15.1561 236.204 15.1561C164.718 15.1561 100.111 45.8788 58.896 99.4844C16.6611 154.417 4.41007 225.676 24.3959 300.139C25.7963 305.362 29.3881 309.672 34.2433 311.967C49.6752 319.249 73.1877 322.625 73.4205 322.656C76.081 323.033 78.3408 324.797 79.3406 327.291C106.181 394.134 162.663 419.562 257.097 407.292C260.226 406.677 280.322 402.928 306.067 402.928L306.07 402.924Z"
         fill="#102973"
       />
-      <path
+      <path className={styles.shield}
         d="M978.706 445.444C978.004 454.026 974.631 462.146 969.67 469.189C887.357 586.07 707.218 581.363 569.707 485.734C485.388 427.093 450.47 343.634 457.825 212.086C471.223 176.472 525.072 183.166 526.311 218.862C693.559 88.7201 948.9 179.448 944.517 416.678C964.564 409.516 980.582 422.493 978.702 445.444H978.706Z"
-        fill="#3B82F6"
+        fill={shieldColor}
       />
       <g opacity="0.25">
         <path
@@ -581,7 +581,7 @@ const PebblesSad = ({ size, style, className }) => (
   </svg>
 );
 
-const PebblesBubbles = ({ size, style, className }) => (
+const PebblesBubbles = ({ size, style, className, shieldColor }) => (
   <svg
     width="1436"
     height="1166"
@@ -652,7 +652,7 @@ const PebblesBubbles = ({ size, style, className }) => (
       />
       <path
         d="M1339.77 722.671C1338.81 734.43 1334.19 745.556 1327.4 755.206C1214.72 915.353 968.126 908.905 779.884 777.875C664.458 697.527 616.658 583.173 626.726 402.929C645.067 354.132 718.782 363.304 720.479 412.213C949.429 233.896 1298.97 358.209 1292.97 683.256C1320.41 673.443 1342.34 691.224 1339.77 722.671H1339.77Z"
-        fill="#3B82F6"
+        fill={shieldColor}
       />
       <g opacity="0.25">
         <path
