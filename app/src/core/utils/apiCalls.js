@@ -107,6 +107,27 @@ const addCoins = async (userId, amount) =>
     method: "PUT",
   });
 
+/**
+ * Shop API calls
+ */
+const getShopItems = async (userId) =>
+  await request({
+    url: `/store/${userId}`,
+    method: "GET",
+  });
+
+const buyColor = async (userId, itemId) =>
+  await request({
+    url: `/store/${userId}/buy/${itemId}`,
+    method: "GET",
+  });
+
+const useColor = async (userId, itemId) =>
+  await request({
+    url: `/store/${userId}/use/${itemId}`,
+    method: "GET",
+  });
+
 export {
   getUser,
   checkIfUserExists,
@@ -118,4 +139,7 @@ export {
   getDailyQuestionnaire,
   sendAnswers,
   addCoins,
+  getShopItems,
+  buyColor,
+  useColor,
 };

@@ -9,122 +9,66 @@ import TopBar from "../../ui/TopBar/TopBar";
 import styles from "./Shop.module.css";
 import { useEffect, useState } from "react";
 import { useUser } from "../../app/auth/AuthProvider.jsx";
-import { getUserData } from "../../../core/utils/apiCalls.js";
+import {
+  buyColor,
+  getShopItems,
+  getUserData,
+} from "../../../core/utils/apiCalls.js";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-
-let apiResponse = [
-  {
-    id: "f81762a4-a8cc-4a99-a04d-283c2b4e2bf8",
-    name: "Red",
-    hex: "#F63B3B",
-    price: 10,
-    isDeleted: false,
-    deletedAt: null,
-    owned: true,
-    active: true,
-  },
-
-  {
-    id: "b0315c2a-09d5-41cb-a8ad-2c5d01c93557",
-    name: "Blue (Default)",
-    hex: "#3B82F6",
-    price: 0,
-    isDeleted: false,
-    deletedAt: null,
-    owned: true,
-    active: false,
-  },
-
-  {
-    id: "1948463f-31e0-4bfd-8211-64d87085067e",
-    name: "Orange",
-    hex: "#F7990C",
-    price: 10,
-    isDeleted: false,
-    deletedAt: null,
-    owned: false,
-    active: false,
-  },
-
-  {
-    id: "d061d986-63d7-4315-90a8-9b7165afea00",
-    name: "Purple",
-    hex: "#AF3BF6",
-    price: 10,
-    isDeleted: false,
-    deletedAt: null,
-    owned: false,
-    active: false,
-  },
-
-  {
-    id: "b8f47aac-e7c5-48fc-88d2-ad10be213499",
-    name: "Pink",
-    hex: "#F14DD7",
-    price: 10,
-    isDeleted: false,
-    deletedAt: null,
-    owned: false,
-    active: false,
-  },
-
-  {
-    id: "e9c12c00-cad3-4234-a391-d818ee353faa",
-    name: "Gold",
-    hex: "#F8D101",
-    price: 50,
-    isDeleted: false,
-    deletedAt: null,
-    owned: false,
-    active: false,
-  },
-];
 
 const Shop = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState("");
 
-  apiResponse.sort((a, b) => a.price - b.price);
-
-  // Move the default item to the beginning of the array
-  const defaultItem = apiResponse.find((item) =>
-    item.name.toLowerCase().includes("(Default)")
-  );
-  if (defaultItem) {
-    apiResponse.splice(apiResponse.indexOf(defaultItem), 1);
-    apiResponse.unshift(defaultItem);
-  }
-
   const user = useUser();
-  const { data, isLoading, isError } = useQuery({
+
+  const {
+    data: userData,
+    isLoading: userLoading,
+    isError: userError,
+  } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUserData(user.id),
   });
 
-  useEffect(() => {
-    if (!data) return;
-    console.log(data);
-  }, [data]);
+  const {
+    data: shopData,
+    isLoading: shopLoading,
+    isError: shopError,
+  } = useQuery({
+    queryKey: ["shop"],
+    queryFn: () => getShopItems(user.id),
+  });
+  useEffect(() => {}, [userData, shopData]);
+
+  if (!userData || !shopData) return;
+  if (userLoading || shopLoading) return null;
+
+  if (userError || shopError) {
+    toast.error("Er is iets misgegaan bij het ophalen van je gegevens.");
+    return null;
+  }
+
+  const handleBuyColor = async (colorId) => {
+    console.log("buy " + colorId);
+  };
+
+  const handleUseColor = async (colorId) => {
+    console.log("use " + colorId);
+  };
 
   const handleClickShopItem = ({
+    id = "",
     colorName = "",
     price = 0,
     hex = "",
     owned = false,
-    active = false,
   }) => {
     colorName = colorName.replace(" (Default)", "");
     setShowModal(true);
-    setModalContent({ colorName, price, hex, owned });
+    setModalContent({ id, colorName, price, hex, owned });
   };
-
-  if (isLoading) return null;
-
-  if (isError) {
-    toast.error("Er is iets misgegaan bij het ophalen van je gegevens.");
-    return null;
-  }
 
   return (
     <ScrollableScreen>
@@ -152,7 +96,9 @@ const Shop = () => {
         </div>
         {modalContent.owned ? (
           <div className={styles.buttonContainer}>
-            <Button size="full">Gebruik</Button>
+            <Button size="full" onClick={() => handleUseColor(modalContent.id)}>
+              Gebruik
+            </Button>
           </div>
         ) : (
           <div className={styles.buttonContainer}>
@@ -163,21 +109,21 @@ const Shop = () => {
             >
               Annuleer
             </Button>
-            <Button size="full">
+            <Button size="full" onClick={() => handleBuyColor(modalContent.id)}>
               <Coin size={20} />
               {modalContent.price}
             </Button>
           </div>
         )}
       </Modal>
-      <TopBar coins={data.data.coins} streak={data.data.streak} />
+      <TopBar coins={userData.data.coins} streak={userData.data.streak} />
       <div className={styles.center}>
         <Pebbles
           size="13.75rem"
-          shieldColor={apiResponse.find((item) => item.active)?.hex}
+          shieldColor={shopData.data.find((item) => item.active)?.hex}
         />
         <div className={styles.shopItems}>
-          {apiResponse.map((item) => (
+          {shopData.data.map((item) => (
             <div className={styles.shopItem} key={item.id}>
               <div
                 className={styles.colorCard}
@@ -193,6 +139,7 @@ const Shop = () => {
                   disabled={item.active}
                   onClick={() =>
                     handleClickShopItem({
+                      id: item.id,
                       colorName: item.name,
                       hex: item.hex,
                       owned: item.owned,
@@ -207,6 +154,7 @@ const Shop = () => {
                   variants="shop"
                   onClick={() =>
                     handleClickShopItem({
+                      id: item.id,
                       colorName: item.name,
                       price: item.price,
                       hex: item.hex,
