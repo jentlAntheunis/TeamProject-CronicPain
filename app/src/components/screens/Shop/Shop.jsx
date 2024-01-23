@@ -46,7 +46,9 @@ const Shop = () => {
 
   useEffect(() => {
     if (modalContent.id) {
-      const updatedItem = shopData.data.find(item => item.id === modalContent.id);
+      const updatedItem = shopData.data.find(
+        (item) => item.id === modalContent.id
+      );
       if (updatedItem) {
         setModalContent({
           id: updatedItem.id,
@@ -75,6 +77,7 @@ const Shop = () => {
       refetchUserData();
     } catch (error) {
       console.error(error);
+      toast.error("Er is iets misgegaan bij het kopen van de kleur.");
     }
   };
 
@@ -84,6 +87,7 @@ const Shop = () => {
       refetchShopData();
     } catch (error) {
       console.error(error);
+      toast.error("Er is iets misgegaan bij het activeren van de kleur.");
     }
   };
 
@@ -160,6 +164,7 @@ const Shop = () => {
         <Pebbles
           size="13.75rem"
           shieldColor={shopData.data.find((item) => item.active)?.hex}
+          className={styles.pebbles}
         />
         <div className={styles.shopItems}>
           {shopData.data.map((item) => (
