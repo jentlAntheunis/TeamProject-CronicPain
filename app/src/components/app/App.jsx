@@ -18,7 +18,11 @@ import MovementSuggestions from "../screens/MovementSuggestions/MovementSuggesti
 import TimeTracker from "../screens/TimeTracker/TimeTracker";
 import Patients from "../screens/Specialist/Patients/Patients";
 import Questions from "../screens/Specialist/Questions/Questions";
+<<<<<<< HEAD
 import AddPatientCsv from "../screens/Specialist/AddPatientCsv/AddPatientCsv";
+=======
+import QuestionnaireContainer from "./questionnaire/QuestionnaireContainer";
+>>>>>>> develop
 import PatientDetails from "../screens/Specialist/PatientDetails/PatientDetails";
 import AddQuestion from "../screens/Specialist/AddQuestion/AddQuestion";
 import QuestionnaireDetails from "../screens/Specialist/QuestionnaireDetails/QuestionnaireDetails";
@@ -90,17 +94,26 @@ const App = () => (
       >
         {/* Patient Paths */}
         <Route path={PatientRoutes.Dashboard} element={<DashboardScreen />} />
-        <Route
-          path={PatientRoutes.Questionaire}
-          element={<QuestionaireScreen />}
-        />
-        <Route
-          path={PatientRoutes.MovementSuggestions}
-          element={<MovementSuggestions />}
-        />
-        <Route path={PatientRoutes.TimeTracker} element={<TimeTracker />} />
         <Route path={PatientRoutes.Streaks} element={<StreaksScreen />} />
-        <Route path={PatientRoutes.WellDone} element={<WellDone />} />
+        {/* Questionnaire Paths */}
+        <Route
+          element={
+            <QuestionnaireContainer>
+              <Outlet />
+            </QuestionnaireContainer>
+          }
+        >
+          <Route
+            path={PatientRoutes.Questionaire}
+            element={<QuestionaireScreen />}
+          />
+          <Route
+            path={PatientRoutes.MovementSuggestions}
+            element={<MovementSuggestions />}
+          />
+          <Route path={PatientRoutes.TimeTracker} element={<TimeTracker />} />
+          <Route path={PatientRoutes.WellDone} element={<WellDone />} />
+        </Route>
       </Route>
     </Route>
   </Routes>

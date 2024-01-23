@@ -60,20 +60,19 @@ const AddPatient = () => {
     try {
       const response = await checkIfUserExists(data.email);
 
+      const dataObject = { ...data, specialistId: user.id };
+
+      await storeMutation.mutateAsync(dataObject);
       // if user doesn't exist, add user to database and send email
       if (!response) {
-        const dataObject = { ...data, specialistId: user.id };
-
-        await storeMutation.mutateAsync(dataObject);
-
         await sendMailMutation.mutateAsync(dataObject);
-
         toast.success("Gebruiker toegevoegd en mail verzonden");
         setLoading(false);
         navigate(SpecialistRoutes.Index);
       } else {
+        toast.success("Gebruiker toegevoegd");
         setLoading(false);
-        toast.error("Gebruiker met dit e-mailadres bestaat al");
+        navigate(SpecialistRoutes.Index);
       }
     } catch (error) {
       console.error(error);
