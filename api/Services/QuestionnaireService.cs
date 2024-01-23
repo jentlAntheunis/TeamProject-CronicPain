@@ -26,6 +26,9 @@ public interface IQuestionnaireService
 
     Task<bool> CheckIfFirstQuestionnaireOfTheDay(Guid userId);
 
+    Task<List<QuestionnaireDetailDTO>> GetQuestionnairesWithDetailsByPatientIdAsync(Guid patientId);
+
+
 }
 
 public class QuestionnaireService : IQuestionnaireService
@@ -88,6 +91,56 @@ public class QuestionnaireService : IQuestionnaireService
         }
         return isFirstQuestionnaire;
     }
+
+    public async Task<List<QuestionnaireDetailDTO>> GetQuestionnairesWithDetailsByPatientIdAsync(Guid patientId)
+    {
+        var questionnaires = await _questionnaireRepository.GetFullQuestionnairesByPatientIdAsync(patientId);
+        var detailedQuestionnaires = new List<QuestionnaireDetailDTO>();
+
+        foreach (var questionnaire in questionnaires)
+        {
+            var detailedQuestions = new List<QuestionDetailDTO>();
+
+            foreach (var question in questionnaire.Questions)
+            {
+                // Check if the question's category is "beweging" or "bonus"
+                if (question.Category.Name == "beweging" || question.Category.Name == "bonus")
+                {
+                    var filteredAnswers = question.Answers
+                        .Where(a => a.QuestionnaireId == questionnaire.Id && (a.QuestionnaireIndex == 0 || a.QuestionnaireIndex == 1))
+                        .Select(a => new AnswerDTO
+                        {
+                            QuestionId = a.QuestionId,
+                            OptionId = a.OptionId,
+                            QuestionnaireIndex = a.QuestionnaireIndex
+                        }).ToList();
+
+                    detailedQuestions.Add(new QuestionDetailDTO
+                    {
+                        Id = question.Id,
+                        Content = question.Content,
+                        Answers = filteredAnswers
+                    });
+                }
+            }
+
+            // Add the questionnaire to the list only if it contains relevant questions
+            if (detailedQuestions.Any())
+            {
+                detailedQuestionnaires.Add(new QuestionnaireDetailDTO
+                {
+                    Id = questionnaire.Id,
+                    Questions = detailedQuestions
+                });
+            }
+        }
+
+        return detailedQuestionnaires;
+    }
+
+
+
+
 
 
 
