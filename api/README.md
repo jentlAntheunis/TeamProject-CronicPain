@@ -196,6 +196,11 @@ GET
 
 ## Answer
 
+GET
+
+- /answers/user/{userId}/impacts
+  - Returns a list of all the questionnaires and their impact (the score of the comparison of all the questions in a questionnaire)
+
 POST
 
 - /answers
