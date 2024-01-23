@@ -10,9 +10,13 @@ import Button from "../../../ui/Button/Button";
 import RewardMetric from "../../../ui/RewardMetric/RewardMetric";
 import Streaks from "../../../ui/Icons/Streaks";
 import InfoTooltip from "../../../ui/InfoTooltip/InfoTooltip";
+import { Popover, PopoverContent, PopoverTrigger } from "../../../ui/Popover/Popover";
+import { Calendar } from "../../../ui/Calendar/Calendar";
+import { useState } from "react";
 
 const PatientDetails = () => {
   let { id } = useParams();
+  const [date, setDate] = useState(new Date());
 
   const questionnaires = [
     {
@@ -99,12 +103,25 @@ const PatientDetails = () => {
         <div className={styles.questionnairesContainer}>
           <div className={styles.titleAndSearchContainer}>
             <div className={styles.h5}>Antwoorden</div>
-            <input
+            {/* <input
               type="date"
               name="date"
               id="date"
               className={styles.searchOnDate}
-            />
+            /> */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="tertiary">Filter</Button>
+              </PopoverTrigger>
+              <PopoverContent>
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  className="rounded-md border"
+                />
+              </PopoverContent>
+            </Popover>
           </div>
           <div className={styles.questionnaires}>
             {sortedQuestionnaires.map((questionnaire, index) => (
