@@ -253,6 +253,7 @@ public class PatientService : IPatientService
     {
         var categories = new List<string>() { "pijn" };
         var questionnaires = await _questionnaireService.GetQuestionnairesWithDetailsByPatientIdAsync(patientId, categories);
+        questionnaires = questionnaires.Where(q => q.Date.HasValue && q.Date.Value.Date >= DateTime.Now.AddDays(-30).Date).ToList();
         var intOverDaysTDO = new IntOverDaysDTO
         {
             Days = new List<DayTDO>()
