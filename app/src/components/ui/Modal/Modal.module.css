@@ -1,6 +1,6 @@
 .modal {
   z-index: 100;
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   width: 100vw;
@@ -12,7 +12,7 @@
 
 .modalBackground{
   z-index: -1;
-  position: absolute;
+  position: fixed;
   /* TODO: change background color to variable */
   background-color: var(--bg-overlay);
   inset: 0;

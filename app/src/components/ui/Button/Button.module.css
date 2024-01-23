@@ -79,6 +79,19 @@
   padding: 0.625rem 1.25rem;
 }
 
+.shop {
+  font-size: var(--paragraph);
+  font-weight: var(--medium);
+  width: 5.625rem;
+  padding: 0.625rem 0;
+}
+
+.shop:disabled {
+  opacity: 100%;
+  background-color: var(--grey-100);
+  color: var(--grey-700);
+}
+
 .inputSize {
   min-width: 12rem;
   width: auto;

@@ -83,6 +83,14 @@ const TopBar = ({ coins, streak }) => {
 };
 
 const Menu = forwardRef(({ showMenu, setShowMenu, setShowModal }, ref) => {
+  useEffect(() => {
+    if (!showMenu) {
+      document.body.classList.remove("modal-open");
+    } else {
+      document.body.classList.add("modal-open");
+    }
+  }, [showMenu]);
+
   if (!showMenu) {
     return null;
   }

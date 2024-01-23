@@ -5,15 +5,14 @@ import QuestionCategories from "../config/questionCategories";
 /**
  * Authentication API calls
  */
-const getUser = async (email) =>
-  await request({
-    url: "/users/loginbyemail",
-    method: "POST",
-    data: email,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+const getUser = async (email) => await request({
+  url: "/users/loginbyemail",
+  method: "POST",
+  data: email,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 const checkIfUserExists = async (email) => {
   const { data } = await axios.get(
@@ -22,33 +21,30 @@ const checkIfUserExists = async (email) => {
   return data;
 };
 
-const storePatient = async ({ firstName, lastName, email, specialistId }) =>
-  await request({
-    url: `/specialists/${specialistId}/patients`,
-    method: "POST",
-    data: { firstName, lastName, email },
-  });
+const storePatient = async ({ firstName, lastName, email, specialistId }) => await request({
+  url: `/specialists/${specialistId}/patients`,
+  method: "POST",
+  data: { firstName, lastName, email },
+});
 
 const sendMailToPatient = async ({
   firstName,
   lastName,
   email,
   specialistId,
-}) =>
-  await request({
-    url: "/specialists/send-email/" + specialistId,
-    method: "POST",
-    data: { firstName, lastName, email },
-  });
+}) => await request({
+  url: "/specialists/send-email/" + specialistId,
+  method: "POST",
+  data: { firstName, lastName, email },
+});
 
 /**
  * User API calls
  */
-const getUserData = async (userId) =>
-  await request({
-    url: "/patients/" + userId,
-    method: "GET",
-  });
+const getUserData = async (userId) => await request({
+  url: "/patients/" + userId,
+  method: "GET",
+});
 
 const getPatients = async (userId) => await request({
   url: '/specialists/' + userId + '/patients',
@@ -96,21 +92,37 @@ const getDailyQuestionnaire = async (userId) => {
   );
 };
 
-const sendAnswers = async (data) =>
-  await request({
-    url: "/answers",
-    method: "POST",
-    data: data,
-  });
+const sendAnswers = async (data) => await request({
+  url: "/answers",
+  method: "POST",
+  data: data,
+});
 
 /**
  * Coins and Streaks API calls
  */
-const addCoins = async (userId, amount) =>
-  await request({
-    url: `/patients/${userId}/addcoins/${amount}`,
-    method: "PUT",
-  });
+const addCoins = async (userId, amount) => await request({
+  url: `/patients/${userId}/addcoins/${amount}`,
+  method: "PUT",
+});
+
+/**
+ * Shop API calls
+ */
+const getShopItems = async (userId) => await request({
+  url: `/store/${userId}`,
+  method: "GET",
+});
+
+const buyColor = async (userId, itemId) => await request({
+  url: `/store/${userId}/buy/${itemId}`,
+  method: "GET",
+});
+
+const activateColor = async (userId, itemId) => await request({
+  url: `/store/${userId}/use/${itemId}`,
+  method: "GET",
+});
 
 /**
  * Movement API calls
@@ -133,5 +145,8 @@ export {
   getDailyQuestionnaire,
   sendAnswers,
   addCoins,
+  getShopItems,
+  buyColor,
+  activateColor,
   storeMovement,
-}
+};

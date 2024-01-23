@@ -22,6 +22,7 @@ import QuestionnaireContainer from "./questionnaire/QuestionnaireContainer";
 import PatientDetails from "../screens/Specialist/PatientDetails/PatientDetails";
 import AddQuestion from "../screens/Specialist/AddQuestion/AddQuestion";
 import QuestionnaireDetails from "../screens/Specialist/QuestionnaireDetails/QuestionnaireDetails";
+import Shop from "../screens/Shop/Shop";
 import RoleRouter from "./auth/RoleRouter";
 
 const App = () => (
@@ -90,6 +91,7 @@ const App = () => (
         {/* Patient Paths */}
         <Route path={PatientRoutes.Dashboard} element={<DashboardScreen />} />
         <Route path={PatientRoutes.Streaks} element={<StreaksScreen />} />
+        <Route path={PatientRoutes.Shop} element={<Shop />} />
         {/* Questionnaire Paths */}
         <Route
           element={
