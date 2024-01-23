@@ -1,3 +1,4 @@
+using Google.Cloud.Firestore.V1;
 using Newtonsoft.Json;
 using Pebbles.Models;
 using Pebbles.Repositories;
@@ -225,7 +226,7 @@ public class PatientService : IPatientService
         var weekDTO = new WeekDTO
         {
             Days = questionnaires
-                .Where(q => q.Date.HasValue)
+                .Where(q => q.Date.HasValue && q.Date.Value.Date >= DateTime.Now.AddDays(-7).Date)
                 .GroupBy(q => q.Date.Value.Date)
                 .Select(g => new DayTDO
                 {
