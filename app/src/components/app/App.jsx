@@ -20,6 +20,7 @@ import Patients from "../screens/Specialist/Patients/Patients";
 import Questions from "../screens/Specialist/Questions/Questions";
 import AddQuestion from "../screens/Specialist/AddQuestion/AddQuestion";
 import QuestionnaireDetails from "../screens/Specialist/QuestionnaireDetails/QuestionnaireDetails";
+import Shop from "../screens/Shop/Shop";
 
 const App = () => (
   <Routes>
@@ -76,6 +77,7 @@ const App = () => (
         <Route path={PatientRoutes.TimeTracker} element={<TimeTracker />} />
         <Route path={PatientRoutes.Streaks} element={<StreaksScreen />} />
         <Route path={PatientRoutes.WellDone} element={<WellDone />} />
+        <Route path={PatientRoutes.Shop} element={<Shop />} />
         <Route path="*" element={<Navigate to={PatientRoutes.Dashboard} />} />
       </Route>
     </Route>

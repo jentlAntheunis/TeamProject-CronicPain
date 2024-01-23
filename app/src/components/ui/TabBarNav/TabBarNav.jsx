@@ -1,41 +1,51 @@
 import styles from "./TabBarNav.module.css";
 import { House, ChartBar, Storefront } from "@phosphor-icons/react";
-import { route } from "../../../core/utils/routing.js";
 import { PatientRoutes } from "../../../core/config/routes.js";
+import { NavLink } from "react-router-dom";
+import clsx from "clsx";
 
 const navItems = [
   {
-      href: route(PatientRoutes.Dashboard),
-      isActive: location.pathname.includes(PatientRoutes.Dashboard),
-      label: "Start",
+    href: PatientRoutes.Dashboard,
+    label: "Start",
   },
   {
-      href: route(PatientRoutes.progress),
-      isActive: location.pathname.includes(PatientRoutes.progress),
-      label: "Voortgang",
+    href: PatientRoutes.Progress,
+    label: "Voortgang",
   },
   {
-      href: route(PatientRoutes.shop),
-      isActive: location.pathname.includes(PatientRoutes.shop),
-      label: "Winkel",
-  }
-]
+    href: PatientRoutes.Shop,
+    label: "Winkel",
+  },
+];
 
 const TabBarNav = () => {
   return (
     <div className={styles.tabBarNav}>
       {navItems.map((item) => (
-        <button
+        <NavLink
+          to={item.href}
           key={item.label}
-          className={`${styles.navBtn} btn-reset ${
-            item.isActive ? styles.active : ""
-          }`}
+          // className={`${styles.navBtn}`}
+          className={({ isActive }) =>
+            clsx(isActive && styles.active, styles.navBtn)
+          }
         >
-          {item.label === "Start" && <House size={24} weight="fill" />}
-          {item.label === "Voortgang" && <ChartBar size={24} />}
-          {item.label === "Winkel" && <Storefront size={24} />}
-          {item.label}
-        </button>
+          {({ isActive }) => (
+            <button key={item.label} className={`${styles.navBtn} btn-reset`}>
+              {item.label === "Start" && (
+                <House size={24} weight={isActive ? "fill" : "regular"} />
+              )}
+              {item.label === "Voortgang" && (
+                <ChartBar size={24} weight={isActive ? "fill" : "regular"} />
+              )}
+              {item.label === "Winkel" && (
+                <Storefront size={24} weight={isActive ? "fill" : "regular"} />
+              )}
+              {item.label}
+            </button>
+          )}
+        </NavLink>
       ))}
     </div>
   );
