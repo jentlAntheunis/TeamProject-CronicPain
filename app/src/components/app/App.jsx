@@ -49,12 +49,24 @@ const App = () => (
         }
       >
         {/* Specialist Paths */}
-        <Route path={SpecialistRoutes.PatientsOverview} element={<Patients />} />
+        <Route
+          path={SpecialistRoutes.PatientsOverview}
+          element={<Patients />}
+        />
         <Route path={SpecialistRoutes.AddPatient} element={<AddPatient />} />
-        <Route path={SpecialistRoutes.QuestionsOverview} element={<Questions />} />
+        <Route
+          path={SpecialistRoutes.QuestionsOverview}
+          element={<Questions />}
+        />
         {/* <Route path={SpecialistRoutes.AddQuestion} element={<AddQuestion />} /> */}
-        <Route path={SpecialistRoutes.PatientDetails} element={<PatientDetails />} />
-        <Route path="*" element={<Navigate to={SpecialistRoutes.PatientsOverview} />} />
+        <Route
+          path={SpecialistRoutes.PatientDetails}
+          element={<PatientDetails />}
+        />
+        <Route
+          path="*"
+          element={<Navigate to={SpecialistRoutes.PatientsOverview} />}
+        />
       </Route>
 
       {/* Patient */}
@@ -71,7 +83,10 @@ const App = () => (
           path={PatientRoutes.Questionaire}
           element={<QuestionaireScreen />}
         />
-        <Route path={PatientRoutes.MovementSuggestions} element={<MovementSuggestions />} />
+        <Route
+          path={PatientRoutes.MovementSuggestions}
+          element={<MovementSuggestions />}
+        />
         <Route path={PatientRoutes.TimeTracker} element={<TimeTracker />} />
         <Route path={PatientRoutes.Streaks} element={<StreaksScreen />} />
         <Route path={PatientRoutes.WellDone} element={<WellDone />} />
