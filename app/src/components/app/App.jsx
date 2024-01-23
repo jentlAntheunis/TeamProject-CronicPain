@@ -18,11 +18,14 @@ import MovementSuggestions from "../screens/MovementSuggestions/MovementSuggesti
 import TimeTracker from "../screens/TimeTracker/TimeTracker";
 import Patients from "../screens/Specialist/Patients/Patients";
 import Questions from "../screens/Specialist/Questions/Questions";
+import PatientDetails from "../screens/Specialist/PatientDetails/PatientDetails";
 import AddQuestion from "../screens/Specialist/AddQuestion/AddQuestion";
 import QuestionnaireDetails from "../screens/Specialist/QuestionnaireDetails/QuestionnaireDetails";
+import RoleRouter from "./auth/RoleRouter";
 
 const App = () => (
   <Routes>
+    <Route path="*" element={<RoleRouter />} />
     {/* Authentication Paths */}
     <Route path={AuthRoutes.Login} element={<OnboardingLayout />}>
       <Route index element={<LoginScreen />} />
@@ -50,12 +53,29 @@ const App = () => (
         }
       >
         {/* Specialist Paths */}
-        <Route path={SpecialistRoutes.PatientsOverview} element={<Patients />} />
+        <Route
+          path={SpecialistRoutes.PatientsOverview}
+          element={<Patients />}
+        />
         <Route path={SpecialistRoutes.AddPatient} element={<AddPatient />} />
-        <Route path={SpecialistRoutes.QuestionsOverview} element={<Questions />} />
-        <Route path={SpecialistRoutes.QuestionnaireDetails} element={<QuestionnaireDetails />} />
+        <Route
+          path={SpecialistRoutes.QuestionsOverview}
+          element={<Questions />}
+        />
+        {/* <Route path={SpecialistRoutes.AddQuestion} element={<AddQuestion />} /> */}
+        <Route
+          path={SpecialistRoutes.PatientDetails}
+          element={<PatientDetails />}
+        />
+        <Route
+          path={SpecialistRoutes.QuestionsOverview}
+          element={<Questions />}
+        />
+        <Route
+          path={SpecialistRoutes.QuestionnaireDetails}
+          element={<QuestionnaireDetails />}
+        />
         <Route path={SpecialistRoutes.AddQuestion} element={<AddQuestion />} />
-        <Route path="*" element={<Navigate to={SpecialistRoutes.PatientsOverview} />} />
       </Route>
 
       {/* Patient */}
@@ -72,11 +92,13 @@ const App = () => (
           path={PatientRoutes.Questionaire}
           element={<QuestionaireScreen />}
         />
-        <Route path={PatientRoutes.MovementSuggestions} element={<MovementSuggestions />} />
+        <Route
+          path={PatientRoutes.MovementSuggestions}
+          element={<MovementSuggestions />}
+        />
         <Route path={PatientRoutes.TimeTracker} element={<TimeTracker />} />
         <Route path={PatientRoutes.Streaks} element={<StreaksScreen />} />
         <Route path={PatientRoutes.WellDone} element={<WellDone />} />
-        <Route path="*" element={<Navigate to={PatientRoutes.Dashboard} />} />
       </Route>
     </Route>
   </Routes>

@@ -50,6 +50,11 @@ const getUserData = async (userId) =>
     method: "GET",
   });
 
+const getPatients = async (userId) => await request({
+  url: '/specialists/' + userId + '/patients',
+  method: 'GET',
+})
+
 /**
  * Questionnaire API calls
  */
@@ -113,6 +118,7 @@ export {
   storePatient,
   sendMailToPatient,
   getUserData,
+  getPatients,
   getMovementQuestionnaire,
   getBonusQuestionnaire,
   getDailyQuestionnaire,

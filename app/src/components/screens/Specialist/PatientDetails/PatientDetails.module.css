@@ -1,0 +1,71 @@
+.titleAndTooltipContainer {
+  font-size: var(--h5);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.h5 {
+  font-size: var(--h5);
+}
+
+.nameAndStreaksContainer {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.streaks {
+  font-size: var(--paragraph);
+}
+
+.movingInfluenceContainer {
+  margin-top: 3rem;
+}
+
+.movingInfluenceCardsContainer {
+  display: flex;
+  width: 100%;
+  height: 7.75rem;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 3rem;
+}
+
+.graphs {
+  display: flex;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+.questionnairesContainer {
+  margin-top: 3rem;
+}
+
+.titleAndSearchContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.questionnaire {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--grey-200);
+}
+
+.datetime {
+  font-size: var(--h6);
+}
+
+.category {
+  font-size: var(--paragraph);
+  color: var(--grey-500);
+}
+
+.noValue {
+  color: var(--grey-400);
+}
