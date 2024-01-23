@@ -10,13 +10,21 @@ import Button from "../../../ui/Button/Button";
 import RewardMetric from "../../../ui/RewardMetric/RewardMetric";
 import Streaks from "../../../ui/Icons/Streaks";
 import InfoTooltip from "../../../ui/InfoTooltip/InfoTooltip";
-import { Popover, PopoverContent, PopoverTrigger } from "../../../ui/Popover/Popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "../../../ui/Popover/Popover";
 import { Calendar } from "../../../ui/Calendar/Calendar";
 import { useState } from "react";
+import { CalendarBlank } from "@phosphor-icons/react";
+import clsx from "clsx";
 
 const PatientDetails = () => {
   let { id } = useParams();
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState();
+
+  console.log(date);
 
   const questionnaires = [
     {
@@ -103,15 +111,12 @@ const PatientDetails = () => {
         <div className={styles.questionnairesContainer}>
           <div className={styles.titleAndSearchContainer}>
             <div className={styles.h5}>Antwoorden</div>
-            {/* <input
-              type="date"
-              name="date"
-              id="date"
-              className={styles.searchOnDate}
-            /> */}
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="tertiary">Filter</Button>
+                <Button variant="input" size="input" className={clsx(!date && styles.noValue)}>
+                  <CalendarBlank size={16} />
+                  {date ? date.toLocaleDateString('en-GB') : "Kies een datum"}
+                </Button>
               </PopoverTrigger>
               <PopoverContent>
                 <Calendar
