@@ -12,11 +12,12 @@ public interface IQuestionnaireRepository
     Task<List<Questionnaire>> GetQuestionnairesByPatientIdAsync(Guid id);
     Task<QuestionnaireDTO> AddMovementQuestionnaireAsync(Guid id);
     Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId);
-
     Task<QuestionnaireDTO> AddDailyPainQuestionnaireAsync(Guid userId);
     Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire);
     Task DeleteQuestionnaireAsync(Questionnaire questionnaire);
     Task<List<Questionnaire>> GetQuestionnairesAsync();
+    Task<List<Guid>> GetQuestionnaireIdsByUserId(Guid userId);
+    Task<List<Questionnaire>> GetFullQuestionnairesByPatientIdAsync(Guid patientId);
 }
 
 public class QuestionnaireRepository : IQuestionnaireRepository
@@ -312,4 +313,40 @@ public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
     }
 
     public async Task<List<Questionnaire>> GetQuestionnairesAsync() => await _context.Questionnaire.ToListAsync();
+
+    public async Task<List<Guid>> GetQuestionnaireIdsByUserId(Guid userId)
+    {
+        var questionnaireIds = await _context.Questionnaire
+            .Where(q => q.PatientId == userId)
+            .Select(q => q.Id)
+            .ToListAsync();
+
+        return questionnaireIds;
+    }
+    public async Task<List<Questionnaire>> GetFullQuestionnairesByPatientIdAsync(Guid patientId)
+    {
+        var questionnaires = await _context.Questionnaire
+            .Where(q => q.PatientId == patientId)
+            .Include(q => q.Questions)
+                .ThenInclude(question => question.Answers)
+            .ToListAsync();
+
+        foreach (var questionnaire in questionnaires)
+        {
+            foreach (var question in questionnaire.Questions)
+            {
+                // Eagerly load the Category for each Question
+                question.Category = await _context.Category
+                    .FirstOrDefaultAsync(c => c.Id == question.CategoryId);
+            }
+        }
+
+        return questionnaires;
+    }
+
+
+
+
+
+
 }
