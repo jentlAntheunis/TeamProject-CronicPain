@@ -1,5 +1,5 @@
 .formContainer {
-  padding-top: 3rem;
+  padding-top: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -20,7 +20,8 @@
 .header {
   display: flex;
   justify-content: space-between;
-  padding-bottom: 1rem;
+  align-items: end;
+  padding: 1rem 0;
 }
 
 .csvImport {

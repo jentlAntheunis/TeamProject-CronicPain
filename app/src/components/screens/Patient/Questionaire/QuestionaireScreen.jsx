@@ -44,9 +44,12 @@ const QuestionaireScreen = () => {
 
   useEffect(() => {
     // If answer already exists, set slider to that value
-    if (answers[currentQuestion]) {
+    console.log(answers);
+    const answerIndex =
+      questionaireIndex === 0 ? currentQuestion : currentQuestion + 5;
+    if (answers[answerIndex]) {
       const selectedOption = questions[currentQuestion].scale.options.find(
-        (option) => option.id === answers[currentQuestion].optionId
+        (option) => option.id === answers[answerIndex].optionId
       );
       if (selectedOption) {
         setSliderValue(parseInt(selectedOption.position) - 1);
@@ -56,7 +59,7 @@ const QuestionaireScreen = () => {
     } else {
       setSliderValue(defaultAnswer(questions[currentQuestion]));
     }
-  }, [currentQuestion, questions, answers]);
+  }, [currentQuestion, questions, answers, questionaireIndex]);
 
   const handleNextQuestion = async () => {
     // Add answer to answers array
@@ -65,7 +68,10 @@ const QuestionaireScreen = () => {
       optionId: orderOptions(questions[currentQuestion].scale.options)[
         sliderValue
       ].id,
+      questionnaireIndex: questionaireIndex,
     };
+    const answerIndex =
+      questionaireIndex === 0 ? currentQuestion : currentQuestion + 5;
     // Check if last question
     if (currentQuestion === questions.length - 1) {
       // Check if first questionaire from movement questionaire
@@ -73,7 +79,7 @@ const QuestionaireScreen = () => {
         questionaireCategory === QuestionCategories.Movement &&
         questionaireIndex === 0
       ) {
-        addAnswer(answer, currentQuestion);
+        addAnswer(answer, answerIndex);
         navigate(PatientRoutes.MovementSuggestions);
       } else {
         // End of questionaire
@@ -81,9 +87,10 @@ const QuestionaireScreen = () => {
           questionaireCategory === QuestionCategories.Movement ? 10 : 5;
         const data = {
           questionnaireId: questionaireId,
-          questionnaireIndex: questionaireIndex,
           answers: [...answers, answer],
         };
+
+        console.log(data);
         // TODO: add streaks to database
         setLoading(true);
         try {
@@ -102,7 +109,7 @@ const QuestionaireScreen = () => {
       }
     } else {
       // When not last question
-      addAnswer(answer, currentQuestion);
+      addAnswer(answer, answerIndex);
       incrementCurrentQuestion();
     }
   };

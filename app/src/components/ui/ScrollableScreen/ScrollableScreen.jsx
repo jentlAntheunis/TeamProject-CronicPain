@@ -1,7 +1,7 @@
 import styles from "./ScrollableScreen.module.css";
 
-const ScrollableScreen = ({ children }) => (
-  <div className={`margins-desktop screen-padding ${styles.scrollableScreen}`}>
+const ScrollableScreen = ({ children, className }) => (
+  <div className={`margins-desktop screen-padding ${styles.scrollableScreen} ${className}`}>
     {children}
   </div>
 );

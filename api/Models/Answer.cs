@@ -17,4 +17,6 @@ public class Answer
     [Required]
     public Guid QuestionnaireId { get; set; }
     public Questionnaire Questionnaire { get; set; }
+
+    public int QuestionnaireIndex { get; set; }
 }

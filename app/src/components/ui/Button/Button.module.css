@@ -46,6 +46,18 @@
   background-color: var(--grey-50);
 }
 
+.input {
+  background: var(--white);
+  color: var(--grey-700);
+  border: 1px solid var(--grey-200);
+  padding: 0.875rem 1.25rem;
+  justify-content: left;
+}
+
+.input:hover {
+  background-color: var(--grey-50);
+}
+
 .defaultSize {
   width: auto;
 }
@@ -64,5 +76,12 @@
   font-size: var(--small);
   font-weight: var(--medium);
   width: auto;
-  padding: .625rem 1.25rem;
+  padding: 0.625rem 1.25rem;
+}
+
+.inputSize {
+  min-width: 12rem;
+  width: auto;
+  font-size: var(--paragraph);
+  font-weight: var(--regular);
 }

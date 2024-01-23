@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import styles from "./RecieveCoinsModal.module.css";
 
 const RecieveCoinsModal = ({ showModal, setShowModal, amount, linkTo }) => (
-  <Modal showModal={showModal} setShowModal={setShowModal}>
+  <Modal showModal={showModal} setShowModal={setShowModal} easyClose={false}>
     <div className={styles.container}>
       <h1 className={styles.title}>Bedankt, hier is je beloning!</h1>
       <div className={styles.amount}>

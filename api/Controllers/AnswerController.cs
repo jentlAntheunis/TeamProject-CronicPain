@@ -15,11 +15,12 @@ using Pebbles.Repositories;
 [Route("answers")]
 [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] // only authenticated users can access this controller
 
-public class AnswerController: ControllerBase
+public class AnswerController : ControllerBase
 {
     private readonly IConfiguration _configuration;
     private readonly IAnswerService _answerService;
     private readonly IOptionService _optionService;
+
 
     public AnswerController(IAnswerService answerService, IConfiguration configuration, IOptionService optionService)
     {
@@ -29,7 +30,7 @@ public class AnswerController: ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> SaveAnswers([FromBody] AnswerInputDTO answerInputDTO)
+    public async Task<IActionResult> SaveAnswers([FromBody] AnswerInputDTO answerInputDTO, [FromServices] IQuestionnaireService questionnaireService)
     {
         if (!ModelState.IsValid)
         {
@@ -38,14 +39,29 @@ public class AnswerController: ControllerBase
 
         try
         {
-            await _answerService.ProcessAnswers(answerInputDTO.Answers, answerInputDTO.QuestionnaireId, answerInputDTO.QuestionnaireIndex);
+            await _answerService.ProcessAnswers(answerInputDTO.Answers, answerInputDTO.QuestionnaireId, answerInputDTO.QuestionnaireIndex, questionnaireService);
             return Ok();
         }
         catch (Exception ex)
         {
-            return StatusCode(500, "An error occurred while processing your request to save answers.");
+            return StatusCode(500, "An error occurred while processing your request to save answers: " + ex.Message);
         }
     }
 
-    
+    [HttpGet("user/{userId}/impacts")]
+    public async Task<IActionResult> GetQuestionnaireImpactsByUserId(Guid userId)
+    {
+        try
+        {
+            var impacts = await _answerService.GetQuestionnaireImpactsByUserId(userId);
+            return Ok(impacts);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "An error occurred while processing your request: " + ex.Message);
+        }
+    }
+
+
+
 }
