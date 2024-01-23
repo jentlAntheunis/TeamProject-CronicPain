@@ -130,6 +130,7 @@ public class QuestionnaireService : IQuestionnaireService
                 detailedQuestionnaires.Add(new QuestionnaireDetailDTO
                 {
                     Id = questionnaire.Id,
+                    Date = questionnaire.Date,
                     Questions = detailedQuestions
                 });
             }

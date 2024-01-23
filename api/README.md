@@ -132,7 +132,7 @@ GET
       }
     ```
 - /patients/{patientid}/questionnaires
-  - Returns a json with all the questionnaires, their questions and their answers (before and after the movement in the case of a movement questionnaire)
+  - Returns a json with all the questionnaires (incl their date), their questions and their answers (before and after the movement in the case of a movement questionnaire)
 
 POST
 
