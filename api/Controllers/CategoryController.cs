@@ -58,19 +58,26 @@ namespace Pebbles.Controllers.V2
         [HttpGet("all")]
         public async Task<IActionResult> GetAllCategoriesAsync()
         {
-            var categories = await _categoryRepository.GetAllCategoriesAsync();
-            if (categories == null)
+            try
             {
-                return StatusCode(500);
+                var categories = await _categoryRepository.GetAllCategoriesAsync();
+                if (categories == null)
+                {
+                    return StatusCode(500, "Internal server error.");
+                }
+
+                var response = categories.Select(category => new
+                {
+                    id = category.Id,
+                    name = category.Name
+                });
+
+                return Ok(JsonConvert.SerializeObject(response));
             }
-
-            var response = categories.Select(category => new
+            catch (Exception ex)
             {
-                id = category.Id,
-                name = category.Name
-            });
-
-            return Ok(JsonConvert.SerializeObject(response));
+                return StatusCode(500, "Internal server error.");
+            }
         }
     }
 }
