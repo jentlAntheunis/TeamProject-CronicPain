@@ -52,10 +52,7 @@ public class PebblesContext : DbContext
         modelBuilder.Entity<QuestionnaireQuestion>()
             .HasKey(qq => new { qq.QuestionnaireId, qq.QuestionId });
 
-
-
         //relations between tables
-
         modelBuilder.Entity<Specialist>()
             .HasMany(s => s.Patients)
             .WithMany(p => p.Specialists)
@@ -164,15 +161,13 @@ public class PebblesContext : DbContext
             new Specialist("Rita", "Coonincks", "rita.coonincks@ziekenhuis.be")
         );
 
-
-
         modelBuilder.Entity<Color>().HasData(
-            new Color("Blue (Default)", "#3B82F6"),
-            new Color("Red", "#F63B3B", 10),
-            new Color("Purple", "#AF3BF6", 10),
-            new Color("Pink", "#F14DD7", 10),
-            new Color("Orange", "#F7990C", 10),
-            new Color("Gold", "#F8D101", 50)
+            new Color("Blauw (Default)", "#3B82F6"),
+            new Color("Rood", "#F63B3B", 10),
+            new Color("Paars", "#AF3BF6", 10),
+            new Color("Roze", "#F14DD7", 10),
+            new Color("Oranje", "#F7990C", 10),
+            new Color("Goud", "#F8D101", 50)
         );
     }
 }
