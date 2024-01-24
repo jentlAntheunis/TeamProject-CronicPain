@@ -10,8 +10,14 @@ import MovingInfluenceCard from "../../../ui/MovingInfluenceCard/MovingInfluence
 import InfoTooltip from "../../../ui/InfoTooltip/InfoTooltip";
 import Graph from "../../../ui/Graph/Graph";
 import clsx from "clsx";
+import Modal from "../../../ui/Modal/Modal";
+import { X } from "@phosphor-icons/react";
+import Button from "../../../ui/Button/Button";
+import { useState } from "react";
 
 const Progress = () => {
+  const [showModal, setShowModal] = useState(false);
+
   const user = useUser();
 
   const { data, isLoading, isError } = useQuery({
@@ -28,18 +34,50 @@ const Progress = () => {
 
   return (
     <ScrollableScreen>
+      <Modal showModal={showModal} setShowModal={setShowModal}>
+        <div className={styles.modalContainer}>
+          <div className={styles.modalHeader}>
+            <div className={styles.modalTitle}>Invloed van bewegen</div>
+            <button
+              className={`btn-reset ${styles.closeBtn}`}
+              onClick={() => setShowModal(false)}
+            >
+              <X size={32} />
+            </button>
+          </div>
+          <div className={styles.modalText}>
+            Deze kaartjes geven de invloed weer van het bewegen op de pijn
+          </div>
+          <Button size="full" onClick={() => setShowModal(false)}>
+            Ok
+          </Button>
+        </div>
+      </Modal>
       <TopBar coins={data.data.coins} streak={data.data.streak} />
       <div className={styles.graphTitleContainer}>
         Invloed van bewegen
-        <InfoTooltip text="Deze kaartjes geven de invloed weer van het bewegen op de pijn" />
+        <InfoTooltip
+          text="Deze kaartjes geven de invloed weer van het bewegen op de pijn"
+          onClick={() => setShowModal(true)}
+        />
       </div>
       <div className={styles.movingInfluenceCardsContainer}>
         <MovingInfluenceCard variant={"positive"} />
         <MovingInfluenceCard variant={"neutral"} />
         <MovingInfluenceCard variant={"negative"} />
       </div>
-      <Graph variant={"bar"} title={"Duur bewegingssessies voorbije week"} className={styles.graph} />
-      <Graph variant={"line"} title={"Pijn ervaring voorbije maand"} className={clsx(styles.graph, styles.lastGraph)} />
+      <Graph
+        variant={"bar"}
+        title={"Duur bewegingssessies voorbije week"}
+        className={styles.graph}
+        setShowModal={setShowModal}
+      />
+      <Graph
+        variant={"line"}
+        title={"Pijn ervaring voorbije maand"}
+        className={clsx(styles.graph, styles.lastGraph)}
+        setShowModal={setShowModal}
+      />
       <TabBarNav />
     </ScrollableScreen>
   );

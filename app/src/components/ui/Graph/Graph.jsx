@@ -77,7 +77,7 @@ const graphVariants = cva(styles.graph, {
   },
 });
 
-const Graph = ({ title, variant, className }) => {
+const Graph = ({ title, variant, className, setShowModal }) => {
   let graphComponent;
   let graphInfo;
 
@@ -149,7 +149,7 @@ const Graph = ({ title, variant, className }) => {
     <div className={clsx(styles.graphContainer, className)}>
       <div className={styles.titleContainer}>
         <div className={styles.graphTitle}>{title}</div>
-        <InfoTooltip text={graphInfo} />
+        <InfoTooltip text={graphInfo} onClick={setShowModal ? () => setShowModal(true) : null}/>
       </div>
       <div className={graphVariants({ variant })}>{graphComponent}</div>
     </div>

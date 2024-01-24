@@ -23,3 +23,29 @@
 .lastGraph{
   margin-bottom: 5.8125rem;
 }
+
+.modalContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.modalHeader{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.closeBtn {
+  color: var(--grey-400);
+}
+
+.modalTitle{
+  font-size: var(--h5);
+}
+
+.modalText {
+  font-size: var(--h6);
+}
