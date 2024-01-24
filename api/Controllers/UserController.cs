@@ -96,14 +96,17 @@ namespace Pebbles.Controllers.V2
     {
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
+        private readonly IPatientService _patientService;
 
         public UserController(
             IConfiguration configuration,
-            IUserService userService
+            IUserService userService,
+            IPatientService patientService
             )
         {
             _configuration = configuration;
             _userService = userService;
+            _patientService = patientService;
         }
 
         [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
@@ -114,13 +117,23 @@ namespace Pebbles.Controllers.V2
             {
                 var users = await _userService.GetUsersAsync();
                 if (users == null)
-                {
                     return NotFound("Users not found");
+                var usersCopy = new List<User>(users);
+                foreach (var user in usersCopy)
+                {
+                    if (user.Role == "PATIENT")
+                    {
+                        var patient = await _patientService.GetPatientByIdAsync(user.Id);
+                        if (patient != null)
+                            //replace user with patient in users
+                            users[users.IndexOf(user)] = patient;
+                    }
                 }
                 return Ok(JsonConvert.SerializeObject(users));
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return StatusCode(500, "Internal server error");
             }
         }
@@ -149,8 +162,9 @@ namespace Pebbles.Controllers.V2
                 var userExists = await _userService.CheckIfUserExistsAsync(email);
                 return Ok(JsonConvert.SerializeObject(userExists));
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return StatusCode(500, "Internal server error");
             }
         }
