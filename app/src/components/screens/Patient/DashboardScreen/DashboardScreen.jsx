@@ -128,7 +128,7 @@ const DashboardScreen = () => {
       <DailyPain question={dailyQuestion} setQuestion={setDailyQuestion} />
       <div className={styles.screen}>
         <TopBar coins={userData.data.coins} streak={userData.data.streak} />
-        <Avatar color={userData.data.avatar.color.hex} />
+        <Avatar color={userData.data.avatar.color.hex} mood={moodData.data} />
         <div className={styles.btnContainer}>
           <Button
             variant="primary"

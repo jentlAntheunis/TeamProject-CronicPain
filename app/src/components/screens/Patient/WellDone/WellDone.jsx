@@ -13,6 +13,7 @@ import styles from "./WellDone.module.css";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../../app/auth/AuthProvider";
 import { toast } from "react-toastify";
+import { PebblesMoods } from "../../../../core/config/pebblesMoods";
 
 const WellDone = () => {
   // state management
@@ -41,7 +42,7 @@ const WellDone = () => {
   const { minutes, seconds } = secondsToMinutesSeconds(movementTime);
   const timeText = minutesSecondsToText({ minutes, seconds });
 
-  const isLongSession = minutes >= 0;
+  const isLongSession = minutes >= 5;
   const celebration = isLongSession ? "Goed gedaan!" : "Een goed begin!";
   const text = isLongSession
     ? `Je bewoog voor ${timeText}`
@@ -53,6 +54,8 @@ const WellDone = () => {
       inzicht te krijgen in de impact van deze bewegingssessie
     </>
   ) : null;
+
+  const pebblesMood = isLongSession ? PebblesMoods.Happy : PebblesMoods.Neutral;
 
   const handleClick = () => {
     if (isLongSession) {
@@ -66,7 +69,7 @@ const WellDone = () => {
     <FullHeightScreen>
       <div className={styles.layout}>
         <div>
-          <Avatar color={userData.data.avatar.color.hex} />
+          <Avatar color={userData.data.avatar.color.hex} mood={pebblesMood} />
           <div className={styles.textContainer}>
             <div className={styles.goedGedaan}>{celebration}</div>
             <div className={styles.tijd}>{text}</div>
