@@ -225,6 +225,9 @@ GET
 
 - /store/{<span style="color: cornflowerblue">patientId</span>}
   - Gets a complete list of all store items, with info on owned and active
+
+PUT
+
 - /store/{<span style="color: cornflowerblue">patientId</span>}/buy/{<span style="color: cornflowerblue">colorId</span>}
   - Subtracts patient coins if they have enough and adds the color to their account
 - /store/{<span style="color: cornflowerblue">patientId</span>}/use/{<span style="color: cornflowerblue">colorId</span>}
@@ -321,14 +324,12 @@ GET
 - /all
   - Returns an array with all the scales (id and name)
 
-
 ## Category
 
 GET
 
 - /all
   - Returns an array with all the categories (id and name)
-
 
 ## Category
 
@@ -338,10 +339,10 @@ POST
   - Adds a question by a specialist
   - Body:
   ```json
-    {
+  {
     "categoryId": "string",
     "specialistId": "string",
     "scaleId": "string",
     "content": "string"
-    }
+  }
   ```
