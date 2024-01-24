@@ -114,7 +114,7 @@ namespace Pebbles.Controllers.V2
             }
             catch (Exception ex)
             {
-                return BadRequest(500, "Internal server error.");
+                return StatusCode(500, "Internal server error.");
             }
         }
 
@@ -134,7 +134,7 @@ namespace Pebbles.Controllers.V2
             }
             catch (Exception ex)
             {
-                return BadRequest(500, "Internal server error.");
+                return StatusCode(500, "Internal server error.");
             }
         }
 

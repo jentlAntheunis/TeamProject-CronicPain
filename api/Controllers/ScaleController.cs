@@ -83,6 +83,8 @@ namespace Pebbles.Controllers.V2
                     id = scale.Id,
                     name = scale.Name
                 });
+
+                return Ok(JsonConvert.SerializeObject(response));
             }
             catch (Exception ex)
             {
