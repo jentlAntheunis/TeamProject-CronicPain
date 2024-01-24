@@ -55,11 +55,5 @@ namespace Pebbles.Controllers.V2
         {
             return Ok("Ja hoor, de backend werkt");
         }
-
-        // [HttpGet("doesitwork")]
-        // public IActionResult DoesItWork()
-        // {
-        //     return Ok("Yes");
-        // }
     }
 }

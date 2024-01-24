@@ -176,42 +176,70 @@ namespace Pebbles.Controllers.V2
         [HttpGet]
         public async Task<IActionResult> GetAllSpecialistsAsync()
         {
-            var specialists = await _specialistService.GetAllSpecialistsAsync();
-            if (specialists == null)
+            try
             {
-                return StatusCode(500);
+                var specialists = await _specialistService.GetAllSpecialistsAsync();
+                if (specialists == null)
+                {
+                    return NotFound("Specialist not found");
+                }
+                var response = new
+                {
+                    specialists = specialists
+                };
+                return Ok(JsonConvert.SerializeObject(response));
             }
-            var response = new
+            catch (System.Exception)
             {
-                specialists = specialists
-            };
-            return Ok(JsonConvert.SerializeObject(response));
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpGet("{specialistId}")]
         public async Task<IActionResult> GetSpecialistByIdAsync(Guid specialistId)
         {
-            var specialist = await _specialistService.GetSpecialistByIdAsync(specialistId);
-            if (specialist == null)
+            try
             {
-                return NotFound();
+                var specialist = await _specialistService.GetSpecialistByIdAsync(specialistId);
+                if (specialist == null)
+                {
+                    return NotFound("Specialist not found");
+                }
+                return Ok(JsonConvert.SerializeObject(specialist));
             }
-            return Ok(JsonConvert.SerializeObject(specialist));
+            catch (System.Exception)
+            {
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateSpecialistAsync([FromBody] Specialist specialist)
         {
-            var newSpecialist = await _specialistService.CreateSpecialistAsync(specialist);
-            return Ok(JsonConvert.SerializeObject(newSpecialist));
+            try
+            {
+                var newSpecialist = await _specialistService.CreateSpecialistAsync(specialist);
+                return Ok(JsonConvert.SerializeObject(newSpecialist));
+            }
+            catch (System.Exception)
+            {
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpPut("{specialistId}")]
         public async Task<IActionResult> UpdateSpecialistAsync(Guid specialistId, [FromBody] Specialist specialist)
         {
-            specialist.Id = specialistId;
-            var updatedSpecialist = await _specialistService.UpdateSpecialistAsync(specialist);
-            return Ok(JsonConvert.SerializeObject(updatedSpecialist));
+            try
+            {
+                specialist.Id = specialistId;
+                var updatedSpecialist = await _specialistService.UpdateSpecialistAsync(specialist);
+                return Ok(JsonConvert.SerializeObject(updatedSpecialist));
+            }
+            catch (System.Exception)
+            {
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpPost("send-email/{specialistId}")]
@@ -244,10 +272,9 @@ namespace Pebbles.Controllers.V2
                 var newPatientId = await _patientService.AddPatientBySpecialistAsync(specialistId, patient);
                 return Created("Ok", newPatientId);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex);
-                return StatusCode(500);
+                return StatusCode(500, "Internal server error");
             }
         }
 
@@ -262,26 +289,40 @@ namespace Pebbles.Controllers.V2
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                return StatusCode(500);
+                return StatusCode(500, "Internal server error");
             }
         }
 
         [HttpGet("{specialistId}/patients")]
         public async Task<IActionResult> GetPatientsBySpecialistAsync(Guid specialistId)
         {
-            var patients = await _patientService.GetPatientsBySpecialistAsync(specialistId);
-            if (patients == null)
+            try
             {
-                return StatusCode(500);
+                var patients = await _patientService.GetPatientsBySpecialistAsync(specialistId);
+                if (patients == null)
+                {
+                    return NotFound("Patients not found");
+                }
+                return Ok(JsonConvert.SerializeObject(patients));
             }
-            return Ok(JsonConvert.SerializeObject(patients));
+            catch (System.Exception)
+            {
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpPost("{specialistId}/patients/{patientId}/movementsuggestions")]
         public async Task<IActionResult> AddMovementSuggestionAsync(Guid specialistId, Guid patientId, [FromBody] MovementSuggestion movementSuggestion)
         {
-            await _patientService.AddMovementSuggestion(specialistId, patientId, movementSuggestion);
-            return Ok();
+            try
+            {
+                await _patientService.AddMovementSuggestion(specialistId, patientId, movementSuggestion);
+                return Ok();
+            }
+            catch (System.Exception)
+            {
+                return StatusCode(500, "Internal server error");
+            }
         }
     }
 }
