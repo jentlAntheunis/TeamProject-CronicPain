@@ -131,26 +131,26 @@ namespace Pebbles.Controllers.V1
         return StatusCode(500, "Internal Server Error: " + ex.Message);
       }
     }
-  }
 
-  [HttpGet("/checklink/{patientId}/specialist/{specialistId}")]
-  public async Task<IActionResult> GetPatientIfLinkedToSpecialistAsync(Guid patientId, Guid specialistId)
-  {
+    [HttpGet("/checklink/{patientId}/specialist/{specialistId}")]
+    public async Task<IActionResult> GetPatientIfLinkedToSpecialistAsync(Guid patientId, Guid specialistId)
+    {
       var isLinked = await _patientService.IsPatientLinkedToSpecialistAsync(patientId, specialistId);
 
       if (!isLinked)
       {
-          return Ok(new { Message = "Patient is not linked to the specialist" });
+        return Ok(new { Message = "Patient is not linked to the specialist" });
       }
 
       var patient = await _patientService.GetPatientByIdAsync(patientId);
       if (patient == null)
       {
-          return NotFound();
+        return NotFound();
       }
       return Ok(JsonConvert.SerializeObject(patient));
-  }
+    }
 
+  }
 }
 
 
