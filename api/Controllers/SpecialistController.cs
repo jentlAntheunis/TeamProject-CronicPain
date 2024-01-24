@@ -1,16 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using System.Runtime.CompilerServices;
-using FirebaseAdmin;
-using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Authorization;
-
 
 using Pebbles.Models;
 using Pebbles.Services;
-using Pebbles.Repositories;
-
 
 namespace Pebbles.Controllers.V1
 {
@@ -158,17 +151,14 @@ namespace Pebbles.Controllers.V2
 
     public class SpecialistController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
         private readonly ISpecialistService _specialistService;
         private readonly IPatientService _patientService;
 
         public SpecialistController(
             ISpecialistService specialistService,
-            IPatientService patientService,
-            IConfiguration configuration
+            IPatientService patientService
             )
         {
-            _configuration = configuration;
             _specialistService = specialistService;
             _patientService = patientService;
         }

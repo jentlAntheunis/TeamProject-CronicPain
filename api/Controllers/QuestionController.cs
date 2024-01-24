@@ -1,11 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using System.Runtime.CompilerServices;
-using FirebaseAdmin;
-using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Authorization;
-
 
 using Pebbles.Models;
 using Pebbles.Services;
@@ -21,13 +15,11 @@ namespace Pebbles.Controllers.V1
 
     public class QuestionController : ControllerBase
     {
-        private readonly IQuestionRepository _questionRepository;
         private readonly IQuestionService _questionService;
         private readonly PebblesContext _context;
 
-        public QuestionController(IQuestionRepository questionRepository, PebblesContext context, IQuestionService questionService)
+        public QuestionController(PebblesContext context, IQuestionService questionService)
         {
-            _questionRepository = questionRepository;
             _context = context;
             _questionService = questionService;
         }
