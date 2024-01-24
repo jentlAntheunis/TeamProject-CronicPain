@@ -2,4 +2,6 @@
   padding-bottom: var(--margin-side);
   position: relative;
   width: 100vw;
+  overflow-x: hidden;
+  margin-bottom: 2rem;
 }

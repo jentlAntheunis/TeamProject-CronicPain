@@ -11,6 +11,10 @@
 
 .graphTitle {
   font-size: var(--h5);
+
+  @media (max-width: 600px) {
+    font-size: var(--h6);
+  }
 }
 
 .graph {
@@ -19,4 +23,15 @@
   border-radius: var(--border-radius-xl);
   border: 1px solid var(--grey-200);
   padding: 1.4375rem 1rem 0.75rem 1rem;
+  position: relative;
+}
+
+.noData {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: var(--grey-400);
 }

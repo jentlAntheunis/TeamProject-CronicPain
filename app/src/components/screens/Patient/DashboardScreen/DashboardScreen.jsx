@@ -71,7 +71,6 @@ const DashboardScreen = () => {
         try {
           const { data } = await getDailyQuestionnaire(user.id);
           setDailyQuestion(data);
-          console.log(data);
         } catch (error) {
           toast.error(
             "Er is iets misgegaan bij het ophalen van de vragenlijst."
@@ -103,7 +102,6 @@ const DashboardScreen = () => {
       const { data } = result;
       // TODO: Check if first movement questionnaire of the day and store in zustand
       setLoading(false);
-      console.log(data);
       resetEverything();
       setQuestionaireId(data.id);
       setQuestionaireCategory(questionnaireCategory);

@@ -4,8 +4,6 @@ const validatePatientCsv = (data) => {
   // strip empty rows
   data = data.filter((row) => row.length > 1);
 
-  console.log(data);
-
   const hasThreeColumns = data.every((row) => row.length === 3);
 
   if (!hasThreeColumns) {
