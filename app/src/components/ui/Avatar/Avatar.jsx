@@ -1,4 +1,3 @@
-import { PebblesMoods } from "../../../core/config/pebblesMoods";
 import Pebbles from "../Illustrations/Pebbles";
 import styles from "./Avatar.module.css";
 

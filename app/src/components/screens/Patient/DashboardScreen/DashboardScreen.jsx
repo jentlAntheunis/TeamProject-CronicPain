@@ -23,7 +23,6 @@ import { useUser } from "../../../app/auth/AuthProvider.jsx";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import QuestionCategories from "../../../../core/config/questionCategories.js";
-import { PebblesMoods } from "../../../../core/config/pebblesMoods.js";
 
 const DashboardScreen = () => {
   // state management

@@ -1,5 +1,7 @@
+import { useQuery } from "@tanstack/react-query";
 import { PatientRoutes } from "../../../../core/config/routes";
 import useStore from "../../../../core/hooks/useStore";
+import { getUserData } from "../../../../core/utils/apiCalls";
 import {
   minutesSecondsToText,
   secondsToMinutesSeconds,
@@ -9,12 +11,32 @@ import Button from "../../../ui/Button/Button";
 import FullHeightScreen from "../../../ui/FullHeightScreen/FullHeightScreen";
 import styles from "./WellDone.module.css";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../../app/auth/AuthProvider";
+import { toast } from "react-toastify";
 
 const WellDone = () => {
   // state management
   const { movementTime } = useStore();
 
+  const user = useUser();
   const navigate = useNavigate();
+
+  const {
+    data: userData,
+    isLoading: userLoading,
+    isError: userError,
+  } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getUserData(user.id),
+  });
+
+  if (!userData) return;
+  if (userLoading) return null;
+
+  if (userError) {
+    toast.error("Er is iets misgegaan bij het ophalen van je gegevens.");
+    return null;
+  }
 
   const { minutes, seconds } = secondsToMinutesSeconds(movementTime);
   const timeText = minutesSecondsToText({ minutes, seconds });
@@ -44,7 +66,7 @@ const WellDone = () => {
     <FullHeightScreen>
       <div className={styles.layout}>
         <div>
-          <Avatar />
+          <Avatar color={userData.data.avatar.color.hex} />
           <div className={styles.textContainer}>
             <div className={styles.goedGedaan}>{celebration}</div>
             <div className={styles.tijd}>{text}</div>
