@@ -15,14 +15,13 @@ public interface IQuestionnaireService
 {
     Task<Questionnaire> GetQuestionnaireByIdAsync(Guid id);
     Task<List<Questionnaire>> GetQuestionnairesByPatientIdAsync(Guid id);
-    Task<QuestionnaireDTO> AddMovementQuestionnaireAsync(Guid id);
-    Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId);
-
-    Task<QuestionnaireDTO> AddDailyPainQuestionnaireAsync(Guid userId);
-    Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire);
-    Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex);
-    Task DeleteQuestionnaireAsync(Questionnaire questionnaire);
-    Task<List<Questionnaire>> GetQuestionnairesAsync();
+    // Task<QuestionnaireDTO> AddMovementQuestionnaireAsync(Guid id);
+    // Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId);
+    // Task<QuestionnaireDTO> AddDailyPainQuestionnaireAsync(Guid userId);
+    // Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire);
+    // Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex);
+    // Task DeleteQuestionnaireAsync(Questionnaire questionnaire);
+    // Task<List<Questionnaire>> GetQuestionnairesAsync();
 
     Task<bool> CheckIfFirstQuestionnaireOfTheDay(Guid userId);
 
@@ -62,15 +61,13 @@ public class QuestionnaireService : IQuestionnaireService
 
     public async Task<List<Questionnaire>> GetQuestionnairesByPatientIdAsync(Guid id) => await _questionnaireRepository.GetQuestionnairesByPatientIdAsync(id);
 
-    public async Task<QuestionnaireDTO> AddMovementQuestionnaireAsync(Guid id) => throw new NotImplementedException();
-
-    public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId) => throw new NotImplementedException();
-
-    public async Task<QuestionnaireDTO> AddDailyPainQuestionnaireAsync(Guid userId) => throw new NotImplementedException();
-    public async Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire) => throw new NotImplementedException();
-    public async Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex) => throw new NotImplementedException();
-    public async Task DeleteQuestionnaireAsync(Questionnaire questionnaire) => throw new NotImplementedException();
-    public async Task<List<Questionnaire>> GetQuestionnairesAsync() => throw new NotImplementedException();
+    // public async Task<QuestionnaireDTO> AddMovementQuestionnaireAsync(Guid id) => throw new NotImplementedException();
+    // public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId) => throw new NotImplementedException();
+    // public async Task<QuestionnaireDTO> AddDailyPainQuestionnaireAsync(Guid userId) => throw new NotImplementedException();
+    // public async Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire) => throw new NotImplementedException();
+    // public async Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex) => throw new NotImplementedException();
+    // public async Task DeleteQuestionnaireAsync(Questionnaire questionnaire) => throw new NotImplementedException();
+    // public async Task<List<Questionnaire>> GetQuestionnairesAsync() => throw new NotImplementedException();
 
 
     public async Task<bool> CheckIfFirstQuestionnaireOfTheDay(Guid userId)

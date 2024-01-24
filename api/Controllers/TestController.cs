@@ -39,19 +39,7 @@ namespace Pebbles.Controllers.V2
     [Route("tests")]
     public class TestController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
-        private readonly IUserService _userService;
-        private readonly IPatientService _patientService;
-
-        public TestController(
-            IConfiguration configuration,
-            IUserService userService,
-            IPatientService patientService
-            )
-        {
-            _userService = userService;
-            _patientService = patientService;
-        }
+        public TestController() { }
 
         [HttpGet("version")]
         public IActionResult GetVersion()
