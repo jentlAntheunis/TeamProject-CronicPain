@@ -70,19 +70,26 @@ namespace Pebbles.Controllers.V2
         [HttpGet("all")]
         public async Task<IActionResult> GetAllScalesAsync()
         {
-            var scales = await _scaleRepository.GetAllScalesAsync();
-            if (scales == null)
+            try
             {
-                return StatusCode(500);
+                var scales = await _scaleRepository.GetAllScalesAsync();
+                if (scales == null)
+                {
+                    return StatusCode(500);
+                }
+
+                var response = scales.Select(scale => new
+                {
+                    id = scale.Id,
+                    name = scale.Name
+                });
+
+                return Ok(JsonConvert.SerializeObject(response));
             }
-
-            var response = scales.Select(scale => new
+            catch (Exception ex)
             {
-                id = scale.Id,
-                name = scale.Name
-            });
-
-            return Ok(JsonConvert.SerializeObject(response));
+                return StatusCode(500, "Internal server error.");
+            }
         }
 
     }

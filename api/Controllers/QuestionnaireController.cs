@@ -161,7 +161,7 @@ namespace Pebbles.Controllers.V2
             }
             catch (Exception ex)
             {
-                return BadRequest($"Failed to create movement questionnaire: {ex.Message}");
+                return StatusCode(500, "Internal server error.");
             }
         }
 
@@ -183,7 +183,7 @@ namespace Pebbles.Controllers.V2
             }
             catch (Exception ex)
             {
-                return BadRequest($"Failed to create bonus questionnaire: {ex.Message}");
+                return StatusCode(500, "Internal server error.");
             }
         }
 
@@ -203,7 +203,7 @@ namespace Pebbles.Controllers.V2
             }
             catch (Exception ex)
             {
-                return BadRequest($"Failed to create daily pain questionnaire: {ex.Message}");
+                return StatusCode(500, "Internal server error.");
             }
         }
 
@@ -220,7 +220,7 @@ namespace Pebbles.Controllers.V2
             }
             catch (Exception ex)
             {
-                return BadRequest($"Failed to check if it's the first questionnaire of the day: {ex.Message}");
+                return StatusCode(500, "Internal server error.");
             }
         }
     }

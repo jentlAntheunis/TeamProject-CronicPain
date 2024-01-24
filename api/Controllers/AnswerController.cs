@@ -102,7 +102,7 @@ namespace Pebbles.Controllers.V2
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "An error occurred while processing your request to save answers: " + ex.Message);
+                return StatusCode(500, "Internal server error.");
             }
         }
 
@@ -116,7 +116,7 @@ namespace Pebbles.Controllers.V2
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "An error occurred while processing your request: " + ex.Message);
+                return StatusCode(500, "Internal server error.");
             }
         }
     }
