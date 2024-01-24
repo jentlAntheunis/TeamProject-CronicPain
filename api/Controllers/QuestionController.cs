@@ -20,12 +20,14 @@ using Pebbles.Context;
 public class QuestionController : ControllerBase
 {
     private readonly IQuestionRepository _questionRepository;
+    private readonly IQuestionService _questionService;
     private readonly PebblesContext _context;
 
-    public QuestionController(IQuestionRepository questionRepository, PebblesContext context)
+    public QuestionController(IQuestionRepository questionRepository, PebblesContext context, IQuestionService questionService)
     {
         _questionRepository = questionRepository;
         _context = context;
+        _questionService = questionService;
     }
 
     [HttpPost("addquestion")]
@@ -51,6 +53,19 @@ public class QuestionController : ControllerBase
         {
             return BadRequest($"Failed to add question: {ex.Message}");
         }
+    }
+
+    [HttpPost("addquestionlist")]
+    public async Task<IActionResult> AddQuestions([FromBody] List<Question> questions)
+    {
+        foreach (var question in questions)
+        {
+            question.Id = Guid.NewGuid(); 
+        }
+
+        var questionIds = await _questionService.AddQuestionsAsync(questions);
+
+        return Ok(questionIds);
     }
 
 }

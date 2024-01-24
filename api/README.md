@@ -233,7 +233,7 @@ PUT
 - /store/{<span style="color: cornflowerblue">patientId</span>}/use/{<span style="color: cornflowerblue">colorId</span>}
   - Adds the color if owned to the patients avatar, and sets the color as active in the store endpoint
 
-## Question
+## Questionnaire
 
 GET
 
@@ -331,7 +331,6 @@ GET
 - /all
   - Returns an array with all the categories (id and name)
 
-## Category
 
 POST
 
@@ -345,4 +344,44 @@ POST
     "scaleId": "string",
     "content": "string"
   }
+  ```
+
+## Question
+
+POST
+- /question/addquestion
+  - Adds one question to the database
+  - Body:
+  ```json
+    {
+        "SpecialistId": "string",
+        "ScaleId": "string",
+        "CategoryId": "string",
+        "Content": "string"
+    }
+  ```
+- /question/addquestionlist
+  - Adds a list of questions to the database
+  - Body:
+  ```json
+    [
+    {
+        "SpecialistId": "string",
+        "ScaleId": "string",
+        "CategoryId": "string",
+        "Content": "string"
+    },
+    {
+        "SpecialistId": "string",
+        "ScaleId": "string",
+        "CategoryId": "string",
+        "Content": "string"
+    },
+    {
+        "SpecialistId": "string",
+        "ScaleId": "string",
+        "CategoryId": "string",
+        "Content": "string"
+    }
+    ]
   ```

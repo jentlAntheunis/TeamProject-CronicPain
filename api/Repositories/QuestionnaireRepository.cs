@@ -18,6 +18,8 @@ public interface IQuestionnaireRepository
     Task<List<Questionnaire>> GetQuestionnairesAsync();
     Task<List<Guid>> GetQuestionnaireIdsByUserId(Guid userId);
     Task<List<Questionnaire>> GetFullQuestionnairesByPatientIdAsync(Guid patientId);
+
+
 }
 
 public class QuestionnaireRepository : IQuestionnaireRepository
@@ -343,4 +345,5 @@ public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
 
         return questionnaires;
     }
+
 }
