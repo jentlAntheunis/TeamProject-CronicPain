@@ -3,6 +3,7 @@ import styles from "./QuestionnaireList.module.css";
 import { Link } from "react-router-dom";
 import Button from "../../../ui/Button/Button";
 import { dateToDateTimeString } from "../../../../core/utils/timeData";
+import { SpecialistRoutes } from "../../../../core/config/routes";
 
 const QuestionnaireList = ({ questionnaires, date }) => {
   const filteredQuestionnaires = questionnaires.filter((questionnaire) => {
@@ -26,7 +27,7 @@ const QuestionnaireList = ({ questionnaires, date }) => {
               <div className={styles.category}>{questionnaire.category}</div>
             </div>
             {/* TODO: changeroute */}
-            <Link to={"/nogintevullen"}>
+            <Link to={SpecialistRoutes.QuestionnaireDetails} state={{ questionnaire: questionnaire }}>
               <Button variant="tertiary" size="superSmall">
                 Details
               </Button>
