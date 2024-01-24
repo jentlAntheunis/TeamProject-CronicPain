@@ -106,6 +106,7 @@ namespace Pebbles.Controllers.V2
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return StatusCode(500, "Internal server error.");
             }
         }
@@ -126,6 +127,7 @@ namespace Pebbles.Controllers.V2
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return StatusCode(500, "Internal server error.");
             }
         }
