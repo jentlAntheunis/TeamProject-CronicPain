@@ -165,6 +165,10 @@ GET
         ]
       }
     ```
+- /checklink/{patientId}/specialist/{specialistId}
+  - Checks if a patient is linked to a specialist for security reasons
+    - When they are not linked it return a message that they are not linked
+    - When they are linked it returns the details of the patient (same as the /patients/{patientId} endpoint)
 
 POST
 
