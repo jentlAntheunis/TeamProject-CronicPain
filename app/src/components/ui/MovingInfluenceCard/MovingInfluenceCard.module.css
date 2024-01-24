@@ -5,6 +5,10 @@
   padding: 0.5rem 1rem;
   border-radius: var(--border-radius);
   overflow: hidden;
+
+  @media (max-width: 600px) {
+    padding: 0.5rem;
+  }
 }
 
 .waveContainer {
@@ -52,6 +56,9 @@
   font-weight: var(--semi-bold);
   font-size: var(--h6);
   color: var(--h6-color);
+  @media (max-width: 400px) {
+    font-size: var(--paragraph);
+  }
 }
 
 .small {
@@ -68,4 +75,12 @@
   font-size: var(--h1);
   color: var(--white);
   line-height: 0.74;
+
+  @media (max-width: 600px) {
+    font-size: var(--h2);
+  }
+
+  @media (max-width: 400px) {
+    font-size: var(--h3);
+  }
 }

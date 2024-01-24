@@ -10,6 +10,7 @@ import {
 } from "recharts";
 import { LineChart, Line } from "recharts";
 import InfoTooltip from "../InfoTooltip/InfoTooltip";
+import clsx from "clsx";
 const lineData = [];
 
 for (let i = 0; i < 30; i++) {
@@ -76,7 +77,7 @@ const graphVariants = cva(styles.graph, {
   },
 });
 
-const Graph = ({ title, variant }) => {
+const Graph = ({ title, variant, className }) => {
   let graphComponent;
   let graphInfo;
 
@@ -145,7 +146,7 @@ const Graph = ({ title, variant }) => {
   }
 
   return (
-    <div className={styles.graphContainer}>
+    <div className={clsx(styles.graphContainer, className)}>
       <div className={styles.titleContainer}>
         <div className={styles.graphTitle}>{title}</div>
         <InfoTooltip text={graphInfo} />
