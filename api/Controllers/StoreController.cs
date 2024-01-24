@@ -85,9 +85,10 @@ namespace Pebbles.Controllers.V2
                 var store = await _storeService.GetPatientStoreAsync(patientId);
                 return Ok(JsonConvert.SerializeObject(store));
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, "Internal server error");
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -99,9 +100,10 @@ namespace Pebbles.Controllers.V2
                 await _storeService.PurchaseColorAsync(patientId, colorId);
                 return Ok();
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, "Internal server error");
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -113,9 +115,10 @@ namespace Pebbles.Controllers.V2
                 await _storeService.UseColorAsync(patientId, colorId);
                 return Ok();
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, "Internal server error");
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal Server Error");
             }
         }
     }

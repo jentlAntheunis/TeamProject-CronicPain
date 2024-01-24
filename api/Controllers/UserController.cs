@@ -148,9 +148,10 @@ namespace Pebbles.Controllers.V2
                 var updatedUser = await _userService.UpdateUserAsync(user);
                 return Ok(JsonConvert.SerializeObject(updatedUser));
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, "Internal server error");
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -164,8 +165,8 @@ namespace Pebbles.Controllers.V2
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return StatusCode(500, "Internal server error");
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -183,9 +184,10 @@ namespace Pebbles.Controllers.V2
                 await _userService.DeleteUserAsync(user);
                 return Ok();
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, "Internal server error");
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -200,9 +202,10 @@ namespace Pebbles.Controllers.V2
                     return NotFound();
                 return Ok(JsonConvert.SerializeObject(user));
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, "Internal server error");
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal Server Error");
             }
         }
     }
