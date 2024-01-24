@@ -63,10 +63,10 @@ const AddPatientCsv = () => {
     Papa.parse(file, {
       complete: async function (results) {
         console.log(results);
-        const data = results.data;
+        let data = results.data;
 
         try {
-          validatePatientCsv(data);
+          data = validatePatientCsv(data);
         } catch (error) {
           setError(error.message);
           return;
