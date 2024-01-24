@@ -1,14 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using System.Runtime.CompilerServices;
-using FirebaseAdmin;
-using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Authorization;
 
 using Pebbles.Models;
 using Pebbles.Services;
-using Pebbles.Repositories;
 
 namespace Pebbles.Controllers.V1
 {
@@ -75,16 +69,10 @@ namespace Pebbles.Controllers.V2
 
     public class AnswerController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
         private readonly IAnswerService _answerService;
-        private readonly IOptionService _optionService;
-
-
-        public AnswerController(IAnswerService answerService, IConfiguration configuration, IOptionService optionService)
+        public AnswerController(IAnswerService answerService)
         {
-            _configuration = configuration;
             _answerService = answerService;
-            _optionService = optionService;
         }
 
         [HttpPost]

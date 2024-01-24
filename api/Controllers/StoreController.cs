@@ -1,16 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using System.Runtime.CompilerServices;
-using FirebaseAdmin;
-using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Authorization;
 
-
-using Pebbles.Models;
 using Pebbles.Services;
-using Pebbles.Repositories;
-using Google.Rpc;
 
 namespace Pebbles.Controllers.V1
 {
@@ -65,15 +57,10 @@ namespace Pebbles.Controllers.V2
 
     public class StoreController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
         private readonly IStoreService _storeService;
 
-        public StoreController(
-            IStoreService storeService,
-            IConfiguration configuration
-            )
+        public StoreController(IStoreService storeService)
         {
-            _configuration = configuration;
             _storeService = storeService;
         }
 

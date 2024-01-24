@@ -1,13 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using System.Runtime.CompilerServices;
-using FirebaseAdmin;
-using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Authorization;
 
-
-using Pebbles.Models;
 using Pebbles.Services;
 using Pebbles.Repositories;
 
@@ -128,21 +121,14 @@ namespace Pebbles.Controllers.V2
 
     public class QuestionnaireController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
-        private readonly IQuestionRepository _questionRepository;
-        private readonly IQuestionService _questionService;
 
         private readonly IQuestionnaireRepository _questionnaireRepository;
         private readonly IQuestionnaireService _questionnaireService;
 
-
-        public QuestionnaireController(IQuestionService questionService, IConfiguration configuration, IQuestionnaireRepository questionnaireRepository, IQuestionnaireService questionnaireService, IQuestionRepository questionRepository)
+        public QuestionnaireController(IQuestionnaireRepository questionnaireRepository, IQuestionnaireService questionnaireService)
         {
-            _configuration = configuration;
-            _questionService = questionService;
             _questionnaireRepository = questionnaireRepository;
             _questionnaireService = questionnaireService;
-            _questionRepository = questionRepository;
         }
 
         [HttpGet("movementquestionnaire/{patientId}")]

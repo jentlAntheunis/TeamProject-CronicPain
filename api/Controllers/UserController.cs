@@ -1,16 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using System.Runtime.CompilerServices;
-using FirebaseAdmin;
-using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
-
 
 using Pebbles.Models;
 using Pebbles.Services;
-using Pebbles.Repositories;
 
 namespace Pebbles.Controllers.V1
 {
@@ -94,17 +87,14 @@ namespace Pebbles.Controllers.V2
     [Route("users")]
     public class UserController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
         private readonly IPatientService _patientService;
 
         public UserController(
-            IConfiguration configuration,
             IUserService userService,
             IPatientService patientService
             )
         {
-            _configuration = configuration;
             _userService = userService;
             _patientService = patientService;
         }
