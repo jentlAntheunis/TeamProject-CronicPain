@@ -17,6 +17,7 @@ import {
 } from "../../../core/utils/apiCalls.js";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import { PebblesMoods } from "../../../core/config/pebblesMoods.js";
 
 const Shop = () => {
   const [showModal, setShowModal] = useState(false);
@@ -126,6 +127,7 @@ const Shop = () => {
             size={"12rem"}
             shieldColor={modalContent.hex}
             className={styles.pebbles}
+            mood={PebblesMoods.Happy}
           />
         </div>
         {modalContent.owned ? (
