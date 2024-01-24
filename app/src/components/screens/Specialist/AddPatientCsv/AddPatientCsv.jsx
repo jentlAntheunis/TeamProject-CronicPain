@@ -63,7 +63,6 @@ const AddPatientCsv = () => {
     const file = csv[0];
     Papa.parse(file, {
       complete: async function (results) {
-        console.log(results);
         let data = results.data;
 
         try {

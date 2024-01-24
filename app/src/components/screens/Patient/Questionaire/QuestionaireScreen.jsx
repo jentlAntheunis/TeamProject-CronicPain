@@ -44,7 +44,6 @@ const QuestionaireScreen = () => {
 
   useEffect(() => {
     // If answer already exists, set slider to that value
-    console.log(answers);
     const answerIndex =
       questionaireIndex === 0 ? currentQuestion : currentQuestion + 5;
     if (answers[answerIndex]) {
@@ -90,10 +89,11 @@ const QuestionaireScreen = () => {
           answers: [...answers, answer],
         };
 
-        console.log(data);
         // TODO: add streaks to database
         setLoading(true);
         try {
+          // send answers to backend
+          console.log("send answers");
           await sendAnswers(data);
           setAmount(coins);
           await addCoins(user.id, coins);

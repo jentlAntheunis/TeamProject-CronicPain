@@ -24,10 +24,12 @@ import {
   getImpact,
   getMovementWeek,
   getPainMonth,
+  getQuestionnaires,
   getUserData,
 } from "../../../../core/utils/apiCalls";
 import { Impacts } from "../../../../core/config/impacts";
 import { fillMissingDates } from "../../../../core/utils/patientDetails";
+import QuestionnaireList from "../../../app/questionnaire/QuestionnaireList/QuestionnaireList";
 
 const questionnaires = [
   {
@@ -93,11 +95,16 @@ const PatientDetails = () => {
     queryKey: ["pain", id],
     queryFn: () => getPainMonth(id),
   });
+  const { data: questionnairesData } = useQuery({
+    queryKey: ["questionnaires", id],
+    queryFn: () => getQuestionnaires(id),
+  });
 
-  const sortedQuestionnaires = [...questionnaires].sort((a, b) => {
-    const dateA = new Date(a.datetime);
-    const dateB = new Date(b.datetime);
-    return dateA - dateB;
+  // Sort questionnaires by date descending
+  const sortedQuestionnaires = questionnairesData?.data.sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateB - dateA;
   });
 
   return (
@@ -146,12 +153,14 @@ const PatientDetails = () => {
             <>
               <Graph
                 variant={"bar"}
-                title={"Duur bewegingssessies voorbije week"}
+                title="Duur bewegingssessies voorbije week"
+                tooltip="Deze grafiek geeft de duur van de bewegingssessies weer per dag van de week uitgedrukt in minuten."
               ></Graph>
               <Graph
                 variant={"line"}
                 title={"Pijn ervaring voorbije maand"}
                 data={fillMissingDates(painData.data.days)}
+                tooltip="Deze grafiek geeft de pijnervaring weer op een schaal van 0 tot 10."
               ></Graph>
             </>
           )}
@@ -181,24 +190,12 @@ const PatientDetails = () => {
             </Popover>
           </div>
           <div className={styles.questionnaires}>
-            {sortedQuestionnaires.map((questionnaire, index) => (
-              <div key={index} className={styles.questionnaire}>
-                <div>
-                  <div className={styles.datetime}>
-                    {questionnaire.datetime}
-                  </div>
-                  <div className={styles.category}>
-                    {questionnaire.category}
-                  </div>
-                </div>
-                {/* TODO: changeroute */}
-                <Link to={"/nogintevullen"}>
-                  <Button variant="tertiary" size="superSmall">
-                    Details
-                  </Button>
-                </Link>
-              </div>
-            ))}
+            {questionnairesData && (
+              <QuestionnaireList
+                questionnaires={sortedQuestionnaires}
+                date={date}
+              />
+            )}
           </div>
         </div>
       </div>

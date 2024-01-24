@@ -37,12 +37,12 @@ const fillMissingDates = (data) => {
   let currentDate = new Date(startDate);
   while (currentDate <= endDate) {
     // Get the date string in the correct format (dd/mm/yyyy)
-    const dateString = currentDate.toLocaleDateString("nl-BE").split(' ')[0];
+    const dateString = currentDate.toLocaleDateString("nl-BE");
 
     // Find the corresponding entry in the original array
     const matchingEntry = data.find(entry => {
       const entryDate = new Date(entry.date);
-      return entryDate.toLocaleDateString("nl-BE").split(' ')[0] === dateString
+      return entryDate.toLocaleTimeString("nl-BE") === dateString
     });
 
     // Generate the day/month string (dd/mm) used as the label in the chart

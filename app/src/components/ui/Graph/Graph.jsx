@@ -78,20 +78,27 @@ const graphVariants = cva(styles.graph, {
   },
 });
 
-const Graph = ({ title, variant, data }) => {
-  let graphComponent;
-  let graphInfo;
+const Graph = ({ title, variant, data, tooltip }) => {
+  return (
+    <div className={styles.graphContainer}>
+      <div className={styles.titleContainer}>
+        <div className={styles.graphTitle}>{title}</div>
+        <InfoTooltip text={tooltip} />
+      </div>
+      <div className={graphVariants({ variant })}>
+        { data?.length > 0 ? (
+          <GraphComponent variant={variant} data={data} />
+        ) : (
+          <div className={styles.noData}>Geen data beschikbaar</div>
+        )}
+      </div>
+    </div>
+  );
+};
 
-  useEffect(() => {
-    if (variant === "line") {
-      console.log(data);
-    }
-  }, [data, variant]);
-
+const GraphComponent = ({ variant, data }) => {
   if (variant === "bar") {
-    graphInfo =
-      "Deze grafiek geeft de duur van de bewegingssessies weer per dag van de week uitgedrukt in minuten.";
-    graphComponent = (
+    return (
       <ResponsiveContainer width={"100%"} height={"100%"}>
         <BarChart
           data={barData}
@@ -120,9 +127,7 @@ const Graph = ({ title, variant, data }) => {
       </ResponsiveContainer>
     );
   } else if (variant === "line") {
-    graphInfo =
-      "Deze grafiek geeft de pijnervaring weer op een schaal van 0 tot 10.";
-    graphComponent = (
+    return (
       <ResponsiveContainer width={"100%"} height={"100%"}>
         <LineChart width={500} height={300} data={data}>
           <XAxis
@@ -152,16 +157,6 @@ const Graph = ({ title, variant, data }) => {
       </ResponsiveContainer>
     );
   }
-
-  return (
-    <div className={styles.graphContainer}>
-      <div className={styles.titleContainer}>
-        <div className={styles.graphTitle}>{title}</div>
-        <InfoTooltip text={graphInfo} />
-      </div>
-      <div className={graphVariants({ variant })}>{graphComponent}</div>
-    </div>
-  );
 };
 
 export default Graph;

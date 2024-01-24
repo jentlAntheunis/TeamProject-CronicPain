@@ -27,16 +27,11 @@ const storePatient = async ({ firstName, lastName, email, specialistId }) => awa
   data: { firstName, lastName, email },
 });
 
-const storePatientList = async ({ patients, specialistId }) => {
-  console.log(patients)
-  console.log(specialistId)
-
-  return await request({
-    url: `/specialists/${specialistId}/patients/addlist`,
-    method: "POST",
-    data: patients,
-  })
-};
+const storePatientList = async ({ patients, specialistId }) => await request({
+  url: `/specialists/${specialistId}/patients/addlist`,
+  method: "POST",
+  data: patients,
+})
 
 const sendMailToPatient = async ({
   firstName,
@@ -162,6 +157,11 @@ const getPainMonth = async (userId) => await request({
   method: 'GET',
 })
 
+const getQuestionnaires = async (userId) => await request({
+  url: `/patients/${userId}/questionnaires`,
+  method: 'GET',
+})
+
 export {
   getUser,
   checkIfUserExists,
@@ -182,4 +182,5 @@ export {
   getImpact,
   getMovementWeek,
   getPainMonth,
+  getQuestionnaires,
 };
