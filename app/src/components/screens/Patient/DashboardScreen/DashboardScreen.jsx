@@ -5,8 +5,6 @@ import { Play, ClipboardText, X } from "@phosphor-icons/react";
 import styles from "./DashboardScreen.module.css";
 import FullHeightScreen from "../../../ui/FullHeightScreen/FullHeightScreen.jsx";
 import Button from "../../../ui/Button/Button.jsx";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../../../core/services/firebase.js";
 import { useNavigate } from "react-router-dom";
 import { PatientRoutes } from "../../../../core/config/routes.js";
 import { useEffect, useState } from "react";
@@ -14,11 +12,18 @@ import BottomSheet from "../../../ui/BottomSheet/BottomSheet.jsx";
 import clsx from "clsx";
 import useStore from "../../../../core/hooks/useStore.jsx";
 import DailyPain from "../../../ui/DailyPain/DailyPain.jsx";
-import { getBonusQuestionnaire, getDailyQuestionnaire, getMovementQuestionnaire, getUserData } from "../../../../core/utils/apiCalls.js";
+import {
+  getBonusQuestionnaire,
+  getDailyQuestionnaire,
+  getMovementQuestionnaire,
+  getPebblesMood,
+  getUserData,
+} from "../../../../core/utils/apiCalls.js";
 import { useUser } from "../../../app/auth/AuthProvider.jsx";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import QuestionCategories from "../../../../core/config/questionCategories.js";
+import { PebblesMoods } from "../../../../core/config/pebblesMoods.js";
 
 const DashboardScreen = () => {
   // state management
@@ -37,14 +42,28 @@ const DashboardScreen = () => {
   const navigate = useNavigate();
 
   // fetch data
-  const { data, isLoading, isError } = useQuery({
+  const {
+    data: userData,
+    isLoading: userLoading,
+    isError: userError,
+  } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUserData(user.id),
   });
 
+  const {
+    data: moodData,
+    isLoading: moodLoading,
+    isError: moodError,
+  } = useQuery({
+    queryKey: ["mood"],
+    queryFn: () => getPebblesMood(user.id),
+  });
+
   // check if first launch of the day
   useEffect(() => {
-    if (!data) return;
+    if (!userData) return;
+    console.log(userData);
 
     const dailyQuestionnaire = async () => {
       const lastLaunch = localStorage.getItem("lastLaunch");
@@ -55,17 +74,20 @@ const DashboardScreen = () => {
           setDailyQuestion(data);
           console.log(data);
         } catch (error) {
-          toast.error("Er is iets misgegaan bij het ophalen van de vragenlijst.");
+          toast.error(
+            "Er is iets misgegaan bij het ophalen van de vragenlijst."
+          );
         }
       }
-    }
+    };
 
     dailyQuestionnaire();
-  }, [data, user.id]);
+  }, [userData, user.id]);
 
-  if (isLoading) return null;
+  if (!userData || !moodData) return;
+  if (userLoading || moodLoading) return null;
 
-  if (isError) {
+  if (userError || moodError) {
     toast.error("Er is iets misgegaan bij het ophalen van je gegevens.");
     return null;
   }
@@ -106,8 +128,8 @@ const DashboardScreen = () => {
     <FullHeightScreen>
       <DailyPain question={dailyQuestion} setQuestion={setDailyQuestion} />
       <div className={styles.screen}>
-        <TopBar coins={data.data.coins} streak={data.data.streak} />
-        <Avatar />
+        <TopBar coins={userData.data.coins} streak={userData.data.streak} />
+        <Avatar color={userData.data.avatar.color.hex} />
         <div className={styles.btnContainer}>
           <Button
             variant="primary"

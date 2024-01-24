@@ -8,8 +8,6 @@ const Pebbles = ({
   size,
   style,
 }) => {
-  console.log(className);
-
   switch (mood) {
     case PebblesMoods.Neutral:
       return (

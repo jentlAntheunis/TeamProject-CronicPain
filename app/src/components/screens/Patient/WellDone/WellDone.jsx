@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { PatientRoutes } from "../../../../core/config/routes";
 import useStore from "../../../../core/hooks/useStore";
 import {
