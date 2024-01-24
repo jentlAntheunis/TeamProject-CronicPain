@@ -121,7 +121,6 @@ namespace Pebbles.Controllers.V2
 
     public class QuestionnaireController : ControllerBase
     {
-
         private readonly IQuestionnaireRepository _questionnaireRepository;
         private readonly IQuestionnaireService _questionnaireService;
 
@@ -147,11 +146,10 @@ namespace Pebbles.Controllers.V2
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return StatusCode(500, "Internal server error.");
             }
         }
-
-
 
         [HttpGet("bonusquestionnaire/{patientId}")]
         public async Task<IActionResult> CreateBonusQuestionnaire(Guid patientId)
@@ -169,6 +167,7 @@ namespace Pebbles.Controllers.V2
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return StatusCode(500, "Internal server error.");
             }
         }
@@ -189,10 +188,10 @@ namespace Pebbles.Controllers.V2
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return StatusCode(500, "Internal server error.");
             }
         }
-
 
         [HttpGet("checkIfFirstQuestionnaireOfTheDay/{patientId}")]
         public async Task<IActionResult> CheckIfFirstQuestionnaireOfTheDay(Guid patientId)
@@ -206,6 +205,7 @@ namespace Pebbles.Controllers.V2
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return StatusCode(500, "Internal server error.");
             }
         }

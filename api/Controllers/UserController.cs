@@ -128,6 +128,39 @@ namespace Pebbles.Controllers.V2
             }
         }
 
+        [HttpGet("exists/{email}")]
+        public async Task<IActionResult> CheckIfUserExistsAsync(string email)
+        {
+            try
+            {
+                var userExists = await _userService.CheckIfUserExistsAsync(email);
+                return Ok(JsonConvert.SerializeObject(userExists));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
+        [HttpPost("loginbyemail")]
+        public async Task<IActionResult> LoginAsync([FromBody] string email)
+        {
+            try
+            {
+                var user = await _userService.LoginAsync(email);
+                if (user == null)
+                    return NotFound();
+                return Ok(JsonConvert.SerializeObject(user));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
         [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
         [HttpPut("{userId}")]
         public async Task<IActionResult> UpdateUserAsync(Guid userId, [FromBody] User user)
@@ -137,21 +170,6 @@ namespace Pebbles.Controllers.V2
                 user.Id = userId;
                 var updatedUser = await _userService.UpdateUserAsync(user);
                 return Ok(JsonConvert.SerializeObject(updatedUser));
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                return StatusCode(500, "Internal Server Error");
-            }
-        }
-
-        [HttpGet("exists/{email}")]
-        public async Task<IActionResult> CheckIfUserExistsAsync(string email)
-        {
-            try
-            {
-                var userExists = await _userService.CheckIfUserExistsAsync(email);
-                return Ok(JsonConvert.SerializeObject(userExists));
             }
             catch (Exception ex)
             {
@@ -173,24 +191,6 @@ namespace Pebbles.Controllers.V2
                 }
                 await _userService.DeleteUserAsync(user);
                 return Ok();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                return StatusCode(500, "Internal Server Error");
-            }
-        }
-
-        [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
-        [HttpPost("loginbyemail")]
-        public async Task<IActionResult> LoginAsync([FromBody] string email)
-        {
-            try
-            {
-                var user = await _userService.LoginAsync(email);
-                if (user == null)
-                    return NotFound();
-                return Ok(JsonConvert.SerializeObject(user));
             }
             catch (Exception ex)
             {

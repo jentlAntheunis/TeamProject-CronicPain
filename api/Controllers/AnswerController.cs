@@ -75,25 +75,6 @@ namespace Pebbles.Controllers.V2
             _answerService = answerService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> SaveAnswers([FromBody] AnswerInputDTO answerInputDTO, [FromServices] IQuestionnaireService questionnaireService)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            try
-            {
-                await _answerService.ProcessAnswers(answerInputDTO.Answers, answerInputDTO.QuestionnaireId, answerInputDTO.QuestionnaireIndex, questionnaireService);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Internal server error.");
-            }
-        }
-
         [HttpGet("user/{userId}/impacts")]
         public async Task<IActionResult> GetQuestionnaireImpactsByUserId(Guid userId)
         {
@@ -104,8 +85,29 @@ namespace Pebbles.Controllers.V2
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return StatusCode(500, "Internal server error.");
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveAnswers([FromBody] AnswerInputDTO answerInputDTO, [FromServices] IQuestionnaireService questionnaireService)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                await _answerService.ProcessAnswers(answerInputDTO.Answers, answerInputDTO.QuestionnaireId, answerInputDTO.QuestionnaireIndex, questionnaireService);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal server error.");
+            }
+        }
+
     }
 }

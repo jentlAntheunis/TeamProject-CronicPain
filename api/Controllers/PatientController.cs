@@ -162,15 +162,14 @@ namespace Pebbles.Controllers.V2
     private readonly IQuestionnaireService _questionnaireService;
 
     public PatientController(
-        IPatientService patientService,
-        IQuestionnaireService questionnaireService
-        )
+      IPatientService patientService,
+      IQuestionnaireService questionnaireService
+    )
     {
       _patientService = patientService;
       _questionnaireService = questionnaireService;
     }
 
-    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
     [HttpGet("{patientId}")]
     public async Task<IActionResult> GetPatientAsync(Guid patientId)
     {
@@ -224,21 +223,6 @@ namespace Pebbles.Controllers.V2
       }
     }
 
-    [HttpPost("{patientId}/movementsessions")]
-    public async Task<IActionResult> AddMovementSessionAsync(Guid patientId, [FromBody] MovementSession movementSession)
-    {
-      try
-      {
-        var movementSessionId = await _patientService.AddMovementSessionAsync(patientId, movementSession);
-        return Ok(JsonConvert.SerializeObject(movementSessionId));
-      }
-      catch (Exception ex)
-      {
-        Console.WriteLine(ex);
-        return StatusCode(500, "Internal Server Error");
-      }
-    }
-
     [HttpGet("{patientId}/movementsuggestions")]
     public async Task<IActionResult> GetMovementSuggestionsAsync(Guid patientId)
     {
@@ -269,37 +253,7 @@ namespace Pebbles.Controllers.V2
       }
     }
 
-    [HttpPut("{patientId}/addcoins/{amount}")]
-    public async Task<IActionResult> AddCoinsAsync(Guid patientId, int amount)
-    {
-      try
-      {
-        await _patientService.AddCoinsAsync(patientId, amount);
-        return Ok();
-      }
-      catch (Exception ex)
-      {
-        Console.WriteLine(ex);
-        return StatusCode(500, "Internal Server Error");
-      }
-    }
-
-    [HttpPut("{patientId}/checkstreak")]
-    public async Task<IActionResult> CheckStreakAsync(Guid patientId)
-    {
-      try
-      {
-        await _patientService.CheckStreakAsync(patientId);
-        return Ok();
-      }
-      catch (Exception ex)
-      {
-        Console.WriteLine(ex);
-        return StatusCode(500, "Internal Server Error");
-      }
-    }
-
-    [HttpGet("{patientId}/movementtimeweek")]
+     [HttpGet("{patientId}/movementtimeweek")]
     public async Task<IActionResult> GetMovementTimeWeekAsync(Guid patientId)
     {
       try
@@ -359,5 +313,50 @@ namespace Pebbles.Controllers.V2
         return StatusCode(500, "Internal Server Error");
       }
     }
-  }
+
+    [HttpPost("{patientId}/movementsessions")]
+    public async Task<IActionResult> AddMovementSessionAsync(Guid patientId, [FromBody] MovementSession movementSession)
+    {
+      try
+      {
+        var movementSessionId = await _patientService.AddMovementSessionAsync(patientId, movementSession);
+        return Ok(JsonConvert.SerializeObject(movementSessionId));
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine(ex);
+        return StatusCode(500, "Internal Server Error");
+      }
+    }
+
+    [HttpPut("{patientId}/addcoins/{amount}")]
+    public async Task<IActionResult> AddCoinsAsync(Guid patientId, int amount)
+    {
+      try
+      {
+        await _patientService.AddCoinsAsync(patientId, amount);
+        return Ok();
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine(ex);
+        return StatusCode(500, "Internal Server Error");
+      }
+    }
+
+    [HttpPut("{patientId}/checkstreak")]
+    public async Task<IActionResult> CheckStreakAsync(Guid patientId)
+    {
+      try
+      {
+        await _patientService.CheckStreakAsync(patientId);
+        return Ok();
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine(ex);
+        return StatusCode(500, "Internal Server Error");
+      }
+    }
+ }
 }

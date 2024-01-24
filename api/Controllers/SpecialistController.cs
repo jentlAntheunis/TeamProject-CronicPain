@@ -205,13 +205,17 @@ namespace Pebbles.Controllers.V2
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateSpecialistAsync([FromBody] Specialist specialist)
+        [HttpGet("{specialistId}/patients")]
+        public async Task<IActionResult> GetPatientsBySpecialistAsync(Guid specialistId)
         {
             try
             {
-                var newSpecialist = await _specialistService.CreateSpecialistAsync(specialist);
-                return Ok(JsonConvert.SerializeObject(newSpecialist));
+                var patients = await _patientService.GetPatientsBySpecialistAsync(specialistId);
+                if (patients == null)
+                {
+                    return NotFound("Patients not found");
+                }
+                return Ok(JsonConvert.SerializeObject(patients));
             }
             catch (Exception ex)
             {
@@ -220,14 +224,13 @@ namespace Pebbles.Controllers.V2
             }
         }
 
-        [HttpPut("{specialistId}")]
-        public async Task<IActionResult> UpdateSpecialistAsync(Guid specialistId, [FromBody] Specialist specialist)
+        [HttpPost]
+        public async Task<IActionResult> CreateSpecialistAsync([FromBody] Specialist specialist)
         {
             try
             {
-                specialist.Id = specialistId;
-                var updatedSpecialist = await _specialistService.UpdateSpecialistAsync(specialist);
-                return Ok(JsonConvert.SerializeObject(updatedSpecialist));
+                var newSpecialist = await _specialistService.CreateSpecialistAsync(specialist);
+                return Ok(JsonConvert.SerializeObject(newSpecialist));
             }
             catch (Exception ex)
             {
@@ -289,25 +292,6 @@ namespace Pebbles.Controllers.V2
             }
         }
 
-        [HttpGet("{specialistId}/patients")]
-        public async Task<IActionResult> GetPatientsBySpecialistAsync(Guid specialistId)
-        {
-            try
-            {
-                var patients = await _patientService.GetPatientsBySpecialistAsync(specialistId);
-                if (patients == null)
-                {
-                    return NotFound("Patients not found");
-                }
-                return Ok(JsonConvert.SerializeObject(patients));
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                return StatusCode(500, "Internal Server Error");
-            }
-        }
-
         [HttpPost("{specialistId}/patients/{patientId}/movementsuggestions")]
         public async Task<IActionResult> AddMovementSuggestionAsync(Guid specialistId, Guid patientId, [FromBody] MovementSuggestion movementSuggestion)
         {
@@ -322,5 +306,22 @@ namespace Pebbles.Controllers.V2
                 return StatusCode(500, "Internal Server Error");
             }
         }
+    
+        [HttpPut("{specialistId}")]
+        public async Task<IActionResult> UpdateSpecialistAsync(Guid specialistId, [FromBody] Specialist specialist)
+        {
+            try
+            {
+                specialist.Id = specialistId;
+                var updatedSpecialist = await _specialistService.UpdateSpecialistAsync(specialist);
+                return Ok(JsonConvert.SerializeObject(updatedSpecialist));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
     }
 }
