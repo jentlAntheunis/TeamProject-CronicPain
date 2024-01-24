@@ -20,7 +20,7 @@ const WellDone = () => {
   const { minutes, seconds } = secondsToMinutesSeconds(movementTime);
   const timeText = minutesSecondsToText({ minutes, seconds });
 
-  const isLongSession = minutes >= 5;
+  const isLongSession = minutes >= 0;
   const celebration = isLongSession ? "Goed gedaan!" : "Een goed begin!";
   const text = isLongSession
     ? `Je bewoog voor ${timeText}`

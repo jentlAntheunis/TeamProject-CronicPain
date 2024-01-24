@@ -21,7 +21,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useUser } from "../../../app/auth/AuthProvider";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SpecialistRoutes } from "../../../../core/config/routes";
 import ScrollableScreen from "../../../ui/ScrollableScreen/ScrollableScreen";
 
@@ -68,11 +68,11 @@ const AddPatient = () => {
         await sendMailMutation.mutateAsync(dataObject);
         toast.success("Gebruiker toegevoegd en mail verzonden");
         setLoading(false);
-        navigate(SpecialistRoutes.Index);
+        navigate(SpecialistRoutes.PatientsOverview);
       } else {
         toast.success("Gebruiker toegevoegd");
         setLoading(false);
-        navigate(SpecialistRoutes.Index);
+        navigate(SpecialistRoutes.PatientsOverview);
       }
     } catch (error) {
       console.error(error);
@@ -88,9 +88,11 @@ const AddPatient = () => {
         <div className={styles.header}>
           <PageHeading backLink={SpecialistRoutes.PatientsOverview}>Patiënt toevoegen</PageHeading>
           <div className="desktop-only">
-            <Button variant="secondary" className={styles.csvImport}>
-              CSV importeren
-            </Button>
+            <Link to={SpecialistRoutes.AddPatientCsv}>
+              <Button variant="secondary" className={styles.csvImport}>
+                CSV importeren
+              </Button>
+            </Link>
           </div>
         </div>
         <Form
