@@ -19,55 +19,66 @@ import { Calendar } from "../../../ui/Calendar/Calendar";
 import { useState } from "react";
 import { CalendarBlank } from "@phosphor-icons/react";
 import clsx from "clsx";
+import { useQuery } from "@tanstack/react-query";
+import { getImpact, getUserData } from "../../../../core/utils/apiCalls";
+import { Impacts } from "../../../../core/config/impacts";
+
+const questionnaires = [
+  {
+    category: "bewegingsvragen",
+    datetime: "03/01/2024 14:03",
+  },
+  {
+    category: "bonusvragen",
+    datetime: "04/01/2024 15:12",
+  },
+  {
+    category: "bewegingsvragen",
+    datetime: "04/01/2024 10:45",
+  },
+  {
+    category: "bewegingsvragen",
+    datetime: "04/01/2024 09:27",
+  },
+  {
+    category: "bonusvragen",
+    datetime: "05/01/2024 16:58",
+  },
+  {
+    category: "bewegingsvragen",
+    datetime: "05/01/2024 11:30",
+  },
+  {
+    category: "bewegingsvragen",
+    datetime: "05/01/2024 13:15",
+  },
+  {
+    category: "bewegingsvragen",
+    datetime: "05/01/2024 08:59",
+  },
+  {
+    category: "bonusvragen",
+    datetime: "05/01/2024 17:42",
+  },
+  {
+    category: "bonusvragen",
+    datetime: "06/01/2024 12:20",
+  },
+];
 
 const PatientDetails = () => {
-  let { id } = useParams();
   const [date, setDate] = useState();
+  let { id } = useParams();
 
-  console.log(date);
-
-  const questionnaires = [
-    {
-      category: "bewegingsvragen",
-      datetime: "03/01/2024 14:03",
-    },
-    {
-      category: "bonusvragen",
-      datetime: "04/01/2024 15:12",
-    },
-    {
-      category: "bewegingsvragen",
-      datetime: "04/01/2024 10:45",
-    },
-    {
-      category: "bewegingsvragen",
-      datetime: "04/01/2024 09:27",
-    },
-    {
-      category: "bonusvragen",
-      datetime: "05/01/2024 16:58",
-    },
-    {
-      category: "bewegingsvragen",
-      datetime: "05/01/2024 11:30",
-    },
-    {
-      category: "bewegingsvragen",
-      datetime: "05/01/2024 13:15",
-    },
-    {
-      category: "bewegingsvragen",
-      datetime: "05/01/2024 08:59",
-    },
-    {
-      category: "bonusvragen",
-      datetime: "05/01/2024 17:42",
-    },
-    {
-      category: "bonusvragen",
-      datetime: "06/01/2024 12:20",
-    },
-  ];
+  // Queries
+  const { data: patientData } = useQuery({
+    queryKey: ["user", id],
+    queryFn: () => getUserData(id),
+  });
+  const { data: impactData } = useQuery({
+    queryKey: ["impact", id],
+    queryFn: () => getImpact(id),
+  });
 
   const sortedQuestionnaires = [...questionnaires].sort((a, b) => {
     const dateA = new Date(a.datetime);
@@ -80,12 +91,17 @@ const PatientDetails = () => {
       <NavBar />
       <div className="container">
         <PageHeading backLink={SpecialistRoutes.PatientsOverview}>
-          <div className={styles.nameAndStreaksContainer}>
-            {id}
-            <RewardMetric number={5} className={styles.streaks}>
-              <Streaks />
-            </RewardMetric>
-          </div>
+          {patientData && (
+            <div className={styles.nameAndStreaksContainer}>
+              {patientData.data.lastName + " " + patientData.data.firstName}
+              <RewardMetric
+                number={patientData.data.streak}
+                className={styles.streaks}
+              >
+                <Streaks />
+              </RewardMetric>
+            </div>
+          )}
         </PageHeading>
         <div className={styles.movingInfluenceContainer}>
           <div className={styles.titleAndTooltipContainer}>
@@ -93,9 +109,13 @@ const PatientDetails = () => {
             <InfoTooltip text="Deze kaartjes geven de invloed weer van het bewegen op de pijn" />
           </div>
           <div className={styles.movingInfluenceCardsContainer}>
-            <MovingInfluenceCard variant={"positive"} />
-            <MovingInfluenceCard variant={"neutral"} />
-            <MovingInfluenceCard variant={"negative"} />
+            {impactData && (
+              <>
+                <MovingInfluenceCard variant={Impacts.Positive} data={impactData.data} />
+                <MovingInfluenceCard variant={Impacts.Neutral} data={impactData.data} />
+                <MovingInfluenceCard variant={Impacts.Negative} data={impactData.data} />
+              </>
+            )}
           </div>
         </div>
         <div className={styles.graphs}>
@@ -113,9 +133,13 @@ const PatientDetails = () => {
             <div className={styles.h5}>Antwoorden</div>
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="input" size="input" className={clsx(!date && styles.noValue)}>
+                <Button
+                  variant="input"
+                  size="input"
+                  className={clsx(!date && styles.noValue)}
+                >
                   <CalendarBlank size={16} />
-                  {date ? date.toLocaleDateString('en-GB') : "Kies een datum"}
+                  {date ? date.toLocaleDateString("en-GB") : "Kies een datum"}
                 </Button>
               </PopoverTrigger>
               <PopoverContent>

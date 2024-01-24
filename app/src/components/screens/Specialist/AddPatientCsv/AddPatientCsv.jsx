@@ -46,8 +46,9 @@ const formSchema = z.object({
 
 const AddPatientCsv = () => {
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const { mutateAsync, isLoading } = useMutation({
+  const { mutateAsync } = useMutation({
     mutationFn: storePatientList,
   });
   const user = useUser();
@@ -81,16 +82,17 @@ const AddPatientCsv = () => {
           };
         });
 
-        // TODO: send to backend
-        console.log(patients);
+        setLoading(true);
         try {
           await mutateAsync({
             patients,
             specialistId: user.id,
           });
+          setLoading(false);
           toast.success("Patiënten toegevoegd");
           navigate(SpecialistRoutes.PatientsOverview);
         } catch (error) {
+          setLoading(false);
           console.error(error);
           toast.error("Er ging iets mis. Probeer het opnieuw.");
         }
@@ -123,12 +125,12 @@ const AddPatientCsv = () => {
             <FormMessage>{error}</FormMessage>
           </FormItem>
           <div className={`mobile-only`}>
-            <Button type="submit" size="full" disabled={isLoading}>
+            <Button type="submit" size="full" disabled={loading}>
               Toevoegen
             </Button>
           </div>
           <div className={clsx("desktop-only", styles.submitBtn)}>
-            <Button type="submit" size="default" disabled={isLoading}>
+            <Button type="submit" size="default" disabled={loading}>
               Toevoegen
             </Button>
           </div>

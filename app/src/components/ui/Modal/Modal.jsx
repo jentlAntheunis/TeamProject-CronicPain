@@ -22,7 +22,7 @@ const Modal = ({ showModal, setShowModal, children, easyClose = true }) => {
 
   return (
     <div className={styles.modal}>
-      <div className={styles.modalBackground} onClick={easyClose && handleCloseModal}></div>
+      <div className={styles.modalBackground} onClick={easyClose ? handleCloseModal : null}></div>
       <div className={styles.modalContent}>{children}</div>
     </div>
   );

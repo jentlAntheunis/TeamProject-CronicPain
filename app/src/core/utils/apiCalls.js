@@ -144,6 +144,14 @@ const storeMovement = async (userId, totalTime) => await request({
   data: { seconds: totalTime }
 })
 
+/**
+ * Questionnaire Details from Patient API calls
+ */
+const getImpact = async (userId) => await request({
+  url: `/answers/user/${userId}/impacts`,
+  method: 'GET',
+})
+
 export {
   getUser,
   checkIfUserExists,
@@ -161,4 +169,5 @@ export {
   buyColor,
   activateColor,
   storeMovement,
+  getImpact
 };
