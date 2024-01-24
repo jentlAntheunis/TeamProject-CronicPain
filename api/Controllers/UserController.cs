@@ -110,54 +110,86 @@ namespace Pebbles.Controllers.V2
         [HttpGet]
         public async Task<IActionResult> GetUsersAsync()
         {
-            Console.WriteLine("GetUsersAsync called");
-            var users = await _userService.GetUsersAsync();
-            if (users == null)
+            try
             {
-                Console.WriteLine("GetUsersAsync returned null");
-                return StatusCode(500);
+                var users = await _userService.GetUsersAsync();
+                if (users == null)
+                {
+                    return NotFound("Users not found");
+                }
+                return Ok(JsonConvert.SerializeObject(users));
             }
-            Console.WriteLine($"GetUsersAsync returned {users.Count()} users");
-            return Ok(JsonConvert.SerializeObject(users));
+            catch (System.Exception)
+            {
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
         [HttpPut("{userId}")]
         public async Task<IActionResult> UpdateUserAsync(Guid userId, [FromBody] User user)
         {
-            user.Id = userId;
-            var updatedUser = await _userService.UpdateUserAsync(user);
-            return Ok(JsonConvert.SerializeObject(updatedUser));
+            try
+            {
+                user.Id = userId;
+                var updatedUser = await _userService.UpdateUserAsync(user);
+                return Ok(JsonConvert.SerializeObject(updatedUser));
+            }
+            catch (System.Exception)
+            {
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpGet("exists/{email}")]
         public async Task<IActionResult> CheckIfUserExistsAsync(string email)
         {
-            var userExists = await _userService.CheckIfUserExistsAsync(email);
-            return Ok(JsonConvert.SerializeObject(userExists));
+            try
+            {
+                var userExists = await _userService.CheckIfUserExistsAsync(email);
+                return Ok(JsonConvert.SerializeObject(userExists));
+            }
+            catch (System.Exception)
+            {
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
         [HttpDelete("{userId}")]
         public async Task<IActionResult> DeleteUserAsync(Guid userId)
         {
-            var user = await _userService.GetUserByIdAsync(userId);
-            if (user == null)
+            try
             {
-                return NotFound();
+                var user = await _userService.GetUserByIdAsync(userId);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                await _userService.DeleteUserAsync(user);
+                return Ok();
             }
-            await _userService.DeleteUserAsync(user);
-            return Ok();
+            catch (System.Exception)
+            {
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] //only authenticated users can access this controller
         [HttpPost("loginbyemail")]
         public async Task<IActionResult> LoginAsync([FromBody] string email)
         {
-            var user = await _userService.LoginAsync(email);
-            if (user == null)
-                return NotFound();
-            return Ok(JsonConvert.SerializeObject(user));
+            try
+            {
+                var user = await _userService.LoginAsync(email);
+                if (user == null)
+                    return NotFound();
+                return Ok(JsonConvert.SerializeObject(user));
+            }
+            catch (System.Exception)
+            {
+                return StatusCode(500, "Internal server error");
+            }
         }
     }
 }
