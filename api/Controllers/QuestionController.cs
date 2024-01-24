@@ -12,60 +12,124 @@ using Pebbles.Services;
 using Pebbles.Repositories;
 using Pebbles.Context;
 
-
-[ApiController]
-[Route("question")]
-[Authorize(AuthenticationSchemes = "FirebaseAuthentication")] // only authenticated patients can access this controller
-
-public class QuestionController : ControllerBase
+namespace Pebbles.Controllers.V1
 {
-    private readonly IQuestionRepository _questionRepository;
-    private readonly IQuestionService _questionService;
-    private readonly PebblesContext _context;
+    [ApiController]
+    [ApiVersion("1.0")]
+    [Route("question")]
+    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] // only authenticated patients can access this controller
 
-    public QuestionController(IQuestionRepository questionRepository, PebblesContext context, IQuestionService questionService)
+    public class QuestionController : ControllerBase
     {
-        _questionRepository = questionRepository;
-        _context = context;
-        _questionService = questionService;
-    }
+        private readonly IQuestionRepository _questionRepository;
+        private readonly IQuestionService _questionService;
+        private readonly PebblesContext _context;
 
-    [HttpPost("addquestion")]
-    public async Task<IActionResult> AddQuestion([FromBody] Question newQuestion)
-    {
-        try
+        public QuestionController(IQuestionRepository questionRepository, PebblesContext context, IQuestionService questionService)
         {
-            var newQuestionId = Guid.NewGuid();
+            _questionRepository = questionRepository;
+            _context = context;
+            _questionService = questionService;
+        }
 
-            if (string.IsNullOrEmpty(newQuestion.Content) || newQuestion.CategoryId == Guid.Empty || newQuestion.SpecialistId == Guid.Empty || newQuestion.ScaleId == Guid.Empty)
+        [HttpPost("addquestion")]
+        public async Task<IActionResult> AddQuestion([FromBody] Question newQuestion)
+        {
+            try
             {
-                return BadRequest("Invalid data. Please provide valid values for all properties.");
+                var newQuestionId = Guid.NewGuid();
+
+                if (string.IsNullOrEmpty(newQuestion.Content) || newQuestion.CategoryId == Guid.Empty || newQuestion.SpecialistId == Guid.Empty || newQuestion.ScaleId == Guid.Empty)
+                {
+                    return BadRequest("Invalid data. Please provide valid values for all properties.");
+                }
+
+                newQuestion.Id = newQuestionId;
+
+                _context.Question.Add(newQuestion);
+                await _context.SaveChangesAsync();
+
+                return Ok("Question added successfully.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Failed to add question: {ex.Message}");
+            }
+        }
+
+        [HttpPost("addquestionlist")]
+        public async Task<IActionResult> AddQuestions([FromBody] List<Question> questions)
+        {
+            foreach (var question in questions)
+            {
+                question.Id = Guid.NewGuid();
             }
 
-            newQuestion.Id = newQuestionId;
+            var questionIds = await _questionService.AddQuestionsAsync(questions);
 
-            _context.Question.Add(newQuestion);
-            await _context.SaveChangesAsync();
+            return Ok(questionIds);
+        }
 
-            return Ok("Question added successfully.");
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Failed to add question: {ex.Message}");
-        }
     }
+}
 
-    [HttpPost("addquestionlist")]
-    public async Task<IActionResult> AddQuestions([FromBody] List<Question> questions)
+namespace Pebbles.Controllers.V2
+{
+    [ApiController]
+    [ApiVersion("2.0")]
+    [Route("question")]
+    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] // only authenticated patients can access this controller
+
+    public class QuestionController : ControllerBase
     {
-        foreach (var question in questions)
+        private readonly IQuestionRepository _questionRepository;
+        private readonly IQuestionService _questionService;
+        private readonly PebblesContext _context;
+
+        public QuestionController(IQuestionRepository questionRepository, PebblesContext context, IQuestionService questionService)
         {
-            question.Id = Guid.NewGuid(); 
+            _questionRepository = questionRepository;
+            _context = context;
+            _questionService = questionService;
         }
 
-        var questionIds = await _questionService.AddQuestionsAsync(questions);
+        [HttpPost("addquestion")]
+        public async Task<IActionResult> AddQuestion([FromBody] Question newQuestion)
+        {
+            try
+            {
+                var newQuestionId = Guid.NewGuid();
 
-        return Ok(questionIds);
+                if (string.IsNullOrEmpty(newQuestion.Content) || newQuestion.CategoryId == Guid.Empty || newQuestion.SpecialistId == Guid.Empty || newQuestion.ScaleId == Guid.Empty)
+                {
+                    return BadRequest("Invalid data. Please provide valid values for all properties.");
+                }
+
+                newQuestion.Id = newQuestionId;
+
+                _context.Question.Add(newQuestion);
+                await _context.SaveChangesAsync();
+
+                return Ok("Question added successfully.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Failed to add question: {ex.Message}");
+            }
+        }
+
+        [HttpPost("addquestionlist")]
+        public async Task<IActionResult> AddQuestions([FromBody] List<Question> questions)
+        {
+            foreach (var question in questions)
+            {
+                question.Id = Guid.NewGuid();
+            }
+
+            var questionIds = await _questionService.AddQuestionsAsync(questions);
+
+            return Ok(questionIds);
+        }
+
     }
-
 }

@@ -7,28 +7,74 @@ using Pebbles.Models;
 using Pebbles.Services;
 using Pebbles.Repositories;
 
-[ApiController]
-[Route("tests")]
-public class TestController : ControllerBase
+namespace Pebbles.Controllers.V1
 {
-    private readonly IConfiguration _configuration;
-    private readonly IUserService _userService;
-    private readonly IPatientService _patientService;
-
-    public TestController(
-        IConfiguration configuration, 
-        IUserService userService,
-        IPatientService patientService
-        )
+    [ApiController]
+    [ApiVersion("1.0")]
+    [Route("tests")]
+    public class TestController : ControllerBase
     {
-        _userService = userService;
-        _patientService = patientService;
+        private readonly IConfiguration _configuration;
+        private readonly IUserService _userService;
+        private readonly IPatientService _patientService;
+
+        public TestController(
+            IConfiguration configuration,
+            IUserService userService,
+            IPatientService patientService
+            )
+        {
+            _userService = userService;
+            _patientService = patientService;
+        }
+
+        [HttpGet("patientdetails/{patientId}")]
+        public async Task<IActionResult> GetPatientDetailsByIdAsync(Guid patientId)
+        {
+            var patient = await _patientService.GetPatientDetailsByIdAsync(patientId);
+            return Ok(JsonConvert.SerializeObject(patient));
+        }
+
+        [HttpGet("version")]
+        public IActionResult GetVersion()
+        {
+            return Ok("Version 1.0");
+        }
     }
+}
 
-    [HttpGet("patientdetails/{patientId}")]
-    public async Task<IActionResult> GetPatientDetailsByIdAsync(Guid patientId)
+namespace Pebbles.Controllers.V2
+{
+    [ApiController]
+    [ApiVersion("2.0")]
+    [Route("tests")]
+    public class TestController : ControllerBase
     {
-        var patient = await _patientService.GetPatientDetailsByIdAsync(patientId);
-        return Ok(JsonConvert.SerializeObject(patient));
+        private readonly IConfiguration _configuration;
+        private readonly IUserService _userService;
+        private readonly IPatientService _patientService;
+
+        public TestController(
+            IConfiguration configuration,
+            IUserService userService,
+            IPatientService patientService
+            )
+        {
+            _userService = userService;
+            _patientService = patientService;
+        }
+
+        [HttpGet("patientdetails/{patientId}")]
+        public async Task<IActionResult> GetPatientDetailsByIdAsync(Guid patientId)
+        {
+            var patient = await _patientService.GetPatientDetailsByIdAsync(patientId);
+            return Ok(JsonConvert.SerializeObject(patient));
+        }
+
+        [HttpGet("version")]
+        public IActionResult GetVersion()
+        {
+            return Ok("Version 2.0");
+        }
     }
 }

@@ -10,58 +10,114 @@ using Pebbles.Models;
 using Pebbles.Services;
 using Pebbles.Repositories;
 
-
-[ApiController]
-[Route("answers")]
-[Authorize(AuthenticationSchemes = "FirebaseAuthentication")] // only authenticated users can access this controller
-
-public class AnswerController : ControllerBase
+namespace Pebbles.Controllers.V1
 {
-    private readonly IConfiguration _configuration;
-    private readonly IAnswerService _answerService;
-    private readonly IOptionService _optionService;
+    [ApiController]
+    [ApiVersion("1.0")]
+    [Route("answers")]
+    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] // only authenticated users can access this controller
 
-
-    public AnswerController(IAnswerService answerService, IConfiguration configuration, IOptionService optionService)
+    public class AnswerController : ControllerBase
     {
-        _configuration = configuration;
-        _answerService = answerService;
-        _optionService = optionService;
-    }
+        private readonly IConfiguration _configuration;
+        private readonly IAnswerService _answerService;
+        private readonly IOptionService _optionService;
 
-    [HttpPost]
-    public async Task<IActionResult> SaveAnswers([FromBody] AnswerInputDTO answerInputDTO, [FromServices] IQuestionnaireService questionnaireService)
+
+        public AnswerController(IAnswerService answerService, IConfiguration configuration, IOptionService optionService)
+        {
+            _configuration = configuration;
+            _answerService = answerService;
+            _optionService = optionService;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveAnswers([FromBody] AnswerInputDTO answerInputDTO, [FromServices] IQuestionnaireService questionnaireService)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                await _answerService.ProcessAnswers(answerInputDTO.Answers, answerInputDTO.QuestionnaireId, answerInputDTO.QuestionnaireIndex, questionnaireService);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while processing your request to save answers: " + ex.Message);
+            }
+        }
+
+        [HttpGet("user/{userId}/impacts")]
+        public async Task<IActionResult> GetQuestionnaireImpactsByUserId(Guid userId)
+        {
+            try
+            {
+                var impacts = await _answerService.GetQuestionnaireImpactsByUserId(userId);
+                return Ok(impacts);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while processing your request: " + ex.Message);
+            }
+        }
+    }
+}
+
+namespace Pebbles.Controllers.V2
+{
+    [ApiController]
+    [ApiVersion("2.0")]
+    [Route("answers")]
+    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] // only authenticated users can access this controller
+
+    public class AnswerController : ControllerBase
     {
-        if (!ModelState.IsValid)
+        private readonly IConfiguration _configuration;
+        private readonly IAnswerService _answerService;
+        private readonly IOptionService _optionService;
+
+
+        public AnswerController(IAnswerService answerService, IConfiguration configuration, IOptionService optionService)
         {
-            return BadRequest(ModelState);
+            _configuration = configuration;
+            _answerService = answerService;
+            _optionService = optionService;
         }
 
-        try
+        [HttpPost]
+        public async Task<IActionResult> SaveAnswers([FromBody] AnswerInputDTO answerInputDTO, [FromServices] IQuestionnaireService questionnaireService)
         {
-            await _answerService.ProcessAnswers(answerInputDTO.Answers, answerInputDTO.QuestionnaireId, answerInputDTO.QuestionnaireIndex, questionnaireService);
-            return Ok();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                await _answerService.ProcessAnswers(answerInputDTO.Answers, answerInputDTO.QuestionnaireId, answerInputDTO.QuestionnaireIndex, questionnaireService);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while processing your request to save answers: " + ex.Message);
+            }
         }
-        catch (Exception ex)
+
+        [HttpGet("user/{userId}/impacts")]
+        public async Task<IActionResult> GetQuestionnaireImpactsByUserId(Guid userId)
         {
-            return StatusCode(500, "An error occurred while processing your request to save answers: " + ex.Message);
+            try
+            {
+                var impacts = await _answerService.GetQuestionnaireImpactsByUserId(userId);
+                return Ok(impacts);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while processing your request: " + ex.Message);
+            }
         }
     }
-
-    [HttpGet("user/{userId}/impacts")]
-    public async Task<IActionResult> GetQuestionnaireImpactsByUserId(Guid userId)
-    {
-        try
-        {
-            var impacts = await _answerService.GetQuestionnaireImpactsByUserId(userId);
-            return Ok(impacts);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, "An error occurred while processing your request: " + ex.Message);
-        }
-    }
-
-
-
 }
