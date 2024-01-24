@@ -188,8 +188,9 @@ namespace Pebbles.Controllers.V2
         }
         return Ok(JsonConvert.SerializeObject(patient));
       }
-      catch (System.Exception)
+      catch (Exception ex)
       {
+        Console.WriteLine(ex);
         return StatusCode(500, "Internal Server Error");
       }
     }
@@ -206,8 +207,9 @@ namespace Pebbles.Controllers.V2
         }
         return Ok(JsonConvert.SerializeObject(patient));
       }
-      catch (System.Exception)
+      catch (Exception ex)
       {
+        Console.WriteLine(ex);
         return StatusCode(500, "Internal Server Error");
       }
     }
@@ -220,8 +222,9 @@ namespace Pebbles.Controllers.V2
         var movementSessions = await _patientService.GetMovementSessionsAsync(patientId);
         return Ok(JsonConvert.SerializeObject(movementSessions));
       }
-      catch (System.Exception)
+      catch (Exception ex)
       {
+        Console.WriteLine(ex);
         return StatusCode(500, "Internal Server Error");
       }
     }
@@ -234,8 +237,9 @@ namespace Pebbles.Controllers.V2
         var movementSessionId = await _patientService.AddMovementSessionAsync(patientId, movementSession);
         return Ok(JsonConvert.SerializeObject(movementSessionId));
       }
-      catch (System.Exception)
+      catch (Exception ex)
       {
+        Console.WriteLine(ex);
         return StatusCode(500, "Internal Server Error");
       }
     }
@@ -248,8 +252,9 @@ namespace Pebbles.Controllers.V2
         var movementSuggestions = await _patientService.GetMovementSuggestionsAsync(patientId);
         return Ok(JsonConvert.SerializeObject(movementSuggestions));
       }
-      catch (System.Exception)
+      catch (Exception ex)
       {
+        Console.WriteLine(ex);
         return StatusCode(500, "Internal Server Error");
       }
     }
@@ -262,8 +267,9 @@ namespace Pebbles.Controllers.V2
         var pebblesMood = await _patientService.GetPebblesMoodAsync(patientId);
         return Ok(pebblesMood);
       }
-      catch (System.Exception)
+      catch (Exception ex)
       {
+        Console.WriteLine(ex);
         return StatusCode(500, "Internal Server Error");
       }
     }
@@ -276,8 +282,9 @@ namespace Pebbles.Controllers.V2
         await _patientService.AddCoinsAsync(patientId, amount);
         return Ok();
       }
-      catch (System.Exception)
+      catch (Exception ex)
       {
+        Console.WriteLine(ex);
         return StatusCode(500, "Internal Server Error");
       }
     }
@@ -290,8 +297,9 @@ namespace Pebbles.Controllers.V2
         await _patientService.CheckStreakAsync(patientId);
         return Ok();
       }
-      catch (System.Exception)
+      catch (Exception ex)
       {
+        Console.WriteLine(ex);
         return StatusCode(500, "Internal Server Error");
       }
     }
@@ -304,8 +312,9 @@ namespace Pebbles.Controllers.V2
         var movementTimeWeek = await _patientService.GetMovementTimeWeekAsync(patientId);
         return Ok(movementTimeWeek);
       }
-      catch (System.Exception)
+      catch (Exception ex)
       {
+        Console.WriteLine(ex);
         return StatusCode(500, "Internal Server Error");
       }
     }
@@ -318,8 +327,9 @@ namespace Pebbles.Controllers.V2
         var streakHistory = await _patientService.GetStreakHistoryAsync(patientId);
         return Ok(streakHistory);
       }
-      catch (System.Exception)
+      catch (Exception ex)
       {
+        Console.WriteLine(ex);
         return StatusCode(500, "Internal Server Error");
       }
     }
@@ -332,8 +342,9 @@ namespace Pebbles.Controllers.V2
         var painHistory = await _patientService.GetPainHistoryAsync(patientId);
         return Ok(painHistory);
       }
-      catch (System.Exception)
+      catch (Exception ex)
       {
+        Console.WriteLine(ex);
         return StatusCode(500, "Internal Server Error");
       }
     }
@@ -349,8 +360,8 @@ namespace Pebbles.Controllers.V2
       }
       catch (Exception ex)
       {
-        // Handle exceptions
-        return StatusCode(500, "Internal Server Error: " + ex.Message);
+        Console.WriteLine(ex);
+        return StatusCode(500, "Internal Server Error");
       }
     }
   }

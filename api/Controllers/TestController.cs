@@ -64,13 +64,6 @@ namespace Pebbles.Controllers.V2
             _patientService = patientService;
         }
 
-        [HttpGet("patientdetails/{patientId}")]
-        public async Task<IActionResult> GetPatientDetailsByIdAsync(Guid patientId)
-        {
-            var patient = await _patientService.GetPatientDetailsByIdAsync(patientId);
-            return Ok(JsonConvert.SerializeObject(patient));
-        }
-
         [HttpGet("version")]
         public IActionResult GetVersion()
         {

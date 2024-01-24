@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Pebbles.Models;
 using Pebbles.Services;
 using Pebbles.Repositories;
+using Google.Rpc;
 
 namespace Pebbles.Controllers.V1
 {
@@ -79,22 +80,46 @@ namespace Pebbles.Controllers.V2
         [HttpGet("{patientId}")]
         public async Task<IActionResult> GetPatientStoreAsync(Guid patientId)
         {
-            var store = await _storeService.GetPatientStoreAsync(patientId);
-            return Ok(JsonConvert.SerializeObject(store));
+            try
+            {
+                var store = await _storeService.GetPatientStoreAsync(patientId);
+                return Ok(JsonConvert.SerializeObject(store));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal Server Error");
+            }
         }
 
         [HttpPut("{patientId}/buy/{colorId}")]
         public async Task<IActionResult> BuyColorAsync(Guid patientId, Guid colorId)
         {
-            await _storeService.PurchaseColorAsync(patientId, colorId);
-            return Ok();
+            try
+            {
+                await _storeService.PurchaseColorAsync(patientId, colorId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal Server Error");
+            }
         }
 
         [HttpPut("{patientId}/use/{colorId}")]
         public async Task<IActionResult> UseColorAsync(Guid patientId, Guid colorId)
         {
-            await _storeService.UseColorAsync(patientId, colorId);
-            return Ok();
+            try
+            {
+                await _storeService.UseColorAsync(patientId, colorId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal Server Error");
+            }
         }
     }
 }

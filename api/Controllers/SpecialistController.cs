@@ -189,9 +189,10 @@ namespace Pebbles.Controllers.V2
                 };
                 return Ok(JsonConvert.SerializeObject(response));
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, "Internal server error");
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -207,9 +208,10 @@ namespace Pebbles.Controllers.V2
                 }
                 return Ok(JsonConvert.SerializeObject(specialist));
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, "Internal server error");
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -221,9 +223,10 @@ namespace Pebbles.Controllers.V2
                 var newSpecialist = await _specialistService.CreateSpecialistAsync(specialist);
                 return Ok(JsonConvert.SerializeObject(newSpecialist));
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, "Internal server error");
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -236,9 +239,10 @@ namespace Pebbles.Controllers.V2
                 var updatedSpecialist = await _specialistService.UpdateSpecialistAsync(specialist);
                 return Ok(JsonConvert.SerializeObject(updatedSpecialist));
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, "Internal server error");
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -260,7 +264,8 @@ namespace Pebbles.Controllers.V2
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error sending email: {ex.Message}");
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -272,9 +277,10 @@ namespace Pebbles.Controllers.V2
                 var newPatientId = await _patientService.AddPatientBySpecialistAsync(specialistId, patient);
                 return Created("Ok", newPatientId);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, "Internal server error");
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -289,7 +295,7 @@ namespace Pebbles.Controllers.V2
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -305,9 +311,10 @@ namespace Pebbles.Controllers.V2
                 }
                 return Ok(JsonConvert.SerializeObject(patients));
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, "Internal server error");
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -319,9 +326,10 @@ namespace Pebbles.Controllers.V2
                 await _patientService.AddMovementSuggestion(specialistId, patientId, movementSuggestion);
                 return Ok();
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, "Internal server error");
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal Server Error");
             }
         }
     }
