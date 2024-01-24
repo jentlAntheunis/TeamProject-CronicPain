@@ -73,7 +73,7 @@ namespace Pebbles.Controllers.V2
                 var categories = await _categoryRepository.GetAllCategoriesAsync();
                 if (categories == null)
                 {
-                    return StatusCode(500);
+                    return StatusCode(500, "Internal server error.");
                 }
 
                 var response = categories.Select(category => new

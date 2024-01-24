@@ -114,21 +114,28 @@ namespace Pebbles.Controllers.V2
             }
             catch (Exception ex)
             {
-                return BadRequest($"Failed to add question: {ex.Message}");
+                return BadRequest(500, "Internal server error.");
             }
         }
 
         [HttpPost("addquestionlist")]
         public async Task<IActionResult> AddQuestions([FromBody] List<Question> questions)
         {
-            foreach (var question in questions)
+            try
             {
-                question.Id = Guid.NewGuid();
+                foreach (var question in questions)
+                {
+                    question.Id = Guid.NewGuid();
+                }
+
+                var questionIds = await _questionService.AddQuestionsAsync(questions);
+
+                return Ok(questionIds);
             }
-
-            var questionIds = await _questionService.AddQuestionsAsync(questions);
-
-            return Ok(questionIds);
+            catch (Exception ex)
+            {
+                return BadRequest(500, "Internal server error.");
+            }
         }
 
     }
