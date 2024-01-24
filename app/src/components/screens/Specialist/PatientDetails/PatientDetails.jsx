@@ -16,12 +16,18 @@ import {
   PopoverTrigger,
 } from "../../../ui/Popover/Popover";
 import { Calendar } from "../../../ui/Calendar/Calendar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CalendarBlank } from "@phosphor-icons/react";
 import clsx from "clsx";
 import { useQuery } from "@tanstack/react-query";
-import { getImpact, getUserData } from "../../../../core/utils/apiCalls";
+import {
+  getImpact,
+  getMovementWeek,
+  getPainMonth,
+  getUserData,
+} from "../../../../core/utils/apiCalls";
 import { Impacts } from "../../../../core/config/impacts";
+import { fillMissingDates } from "../../../../core/utils/patientDetails";
 
 const questionnaires = [
   {
@@ -79,6 +85,14 @@ const PatientDetails = () => {
     queryKey: ["impact", id],
     queryFn: () => getImpact(id),
   });
+  const { data: movementData } = useQuery({
+    queryKey: ["movement", id],
+    queryFn: () => getMovementWeek(id),
+  });
+  const { data: painData } = useQuery({
+    queryKey: ["pain", id],
+    queryFn: () => getPainMonth(id),
+  });
 
   const sortedQuestionnaires = [...questionnaires].sort((a, b) => {
     const dateA = new Date(a.datetime);
@@ -111,22 +125,36 @@ const PatientDetails = () => {
           <div className={styles.movingInfluenceCardsContainer}>
             {impactData && (
               <>
-                <MovingInfluenceCard variant={Impacts.Positive} data={impactData.data} />
-                <MovingInfluenceCard variant={Impacts.Neutral} data={impactData.data} />
-                <MovingInfluenceCard variant={Impacts.Negative} data={impactData.data} />
+                <MovingInfluenceCard
+                  variant={Impacts.Positive}
+                  data={impactData.data}
+                />
+                <MovingInfluenceCard
+                  variant={Impacts.Neutral}
+                  data={impactData.data}
+                />
+                <MovingInfluenceCard
+                  variant={Impacts.Negative}
+                  data={impactData.data}
+                />
               </>
             )}
           </div>
         </div>
         <div className={styles.graphs}>
-          <Graph
-            variant={"bar"}
-            title={"Duur bewegingssessies voorbije week"}
-          ></Graph>
-          <Graph
-            variant={"line"}
-            title={"Pijn ervaring voorbije maand"}
-          ></Graph>
+          {movementData && painData && (
+            <>
+              <Graph
+                variant={"bar"}
+                title={"Duur bewegingssessies voorbije week"}
+              ></Graph>
+              <Graph
+                variant={"line"}
+                title={"Pijn ervaring voorbije maand"}
+                data={fillMissingDates(painData.data.days)}
+              ></Graph>
+            </>
+          )}
         </div>
         <div className={styles.questionnairesContainer}>
           <div className={styles.titleAndSearchContainer}>

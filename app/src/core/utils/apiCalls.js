@@ -152,6 +152,16 @@ const getImpact = async (userId) => await request({
   method: 'GET',
 })
 
+const getMovementWeek = async (userId) => await request({
+  url: `/patients/${userId}/movementtimeweek`,
+  method: 'GET',
+})
+
+const getPainMonth = async (userId) => await request({
+  url: `/patients/${userId}/painhistory`,
+  method: 'GET',
+})
+
 export {
   getUser,
   checkIfUserExists,
@@ -169,5 +179,7 @@ export {
   buyColor,
   activateColor,
   storeMovement,
-  getImpact
+  getImpact,
+  getMovementWeek,
+  getPainMonth,
 };

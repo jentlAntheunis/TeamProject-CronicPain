@@ -10,6 +10,8 @@ import {
 } from "recharts";
 import { LineChart, Line } from "recharts";
 import InfoTooltip from "../InfoTooltip/InfoTooltip";
+import { useEffect } from "react";
+import { fillMissingDates } from "../../../core/utils/patientDetails";
 const lineData = [];
 
 for (let i = 0; i < 30; i++) {
@@ -76,9 +78,15 @@ const graphVariants = cva(styles.graph, {
   },
 });
 
-const Graph = ({ title, variant }) => {
+const Graph = ({ title, variant, data }) => {
   let graphComponent;
   let graphInfo;
+
+  useEffect(() => {
+    if (variant === "line") {
+      console.log(data);
+    }
+  }, [data, variant]);
 
   if (variant === "bar") {
     graphInfo =
@@ -116,9 +124,9 @@ const Graph = ({ title, variant }) => {
       "Deze grafiek geeft de pijnervaring weer op een schaal van 0 tot 10.";
     graphComponent = (
       <ResponsiveContainer width={"100%"} height={"100%"}>
-        <LineChart width={500} height={300} data={lineData}>
+        <LineChart width={500} height={300} data={data}>
           <XAxis
-            dataKey="name"
+            dataKey="date"
             axisLine={false}
             tickLine={false}
             stroke="#94a3b8"
@@ -138,6 +146,7 @@ const Graph = ({ title, variant }) => {
             stroke="#3b82f6"
             strokeWidth={4}
             dot={false}
+            connectNulls
           />
         </LineChart>
       </ResponsiveContainer>
