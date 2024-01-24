@@ -17,6 +17,7 @@ import { useState } from "react";
 
 const Progress = () => {
   const [showModal, setShowModal] = useState(false);
+  const [modalContent, setModalContent] = useState("");
 
   const user = useUser();
 
@@ -37,7 +38,7 @@ const Progress = () => {
       <Modal showModal={showModal} setShowModal={setShowModal}>
         <div className={styles.modalContainer}>
           <div className={styles.modalHeader}>
-            <div className={styles.modalTitle}>Invloed van bewegen</div>
+            <div className={styles.modalTitle}>{modalContent.title}</div>
             <button
               className={`btn-reset ${styles.closeBtn}`}
               onClick={() => setShowModal(false)}
@@ -45,9 +46,7 @@ const Progress = () => {
               <X size={32} />
             </button>
           </div>
-          <div className={styles.modalText}>
-            Deze kaartjes geven de invloed weer van het bewegen op de pijn
-          </div>
+          <div className={styles.modalText}>{modalContent.text}</div>
           <Button size="full" onClick={() => setShowModal(false)}>
             Ok
           </Button>
@@ -58,7 +57,13 @@ const Progress = () => {
         Invloed van bewegen
         <InfoTooltip
           text="Deze kaartjes geven de invloed weer van het bewegen op de pijn"
-          onClick={() => setShowModal(true)}
+          onClick={() => {
+            setShowModal(true);
+            setModalContent({
+              title: "Invloed van bewegen",
+              text: "Deze kaartjes geven de invloed weer van het bewegen op de pijn",
+            });
+          }}
         />
       </div>
       <div className={styles.movingInfluenceCardsContainer}>
@@ -71,12 +76,14 @@ const Progress = () => {
         title={"Duur bewegingssessies voorbije week"}
         className={styles.graph}
         setShowModal={setShowModal}
+        setModalContent={setModalContent}
       />
       <Graph
         variant={"line"}
         title={"Pijn ervaring voorbije maand"}
         className={clsx(styles.graph, styles.lastGraph)}
         setShowModal={setShowModal}
+        setModalContent={setModalContent}
       />
       <TabBarNav />
     </ScrollableScreen>
