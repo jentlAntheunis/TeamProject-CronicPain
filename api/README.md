@@ -240,6 +240,8 @@ GET
 - /questionnaire/checkifFirstquestionnaireoftheday
   - Returns true if it's the first answered questionnaire of the day
   - Returns false if it's not the fist answered questionnaire of the day
+- /questionnaires/checkIfFirstBonusOfTheDay/{patientId}
+  - same as previous but filtered on bonus questionnaires
 
 
 ## Question
