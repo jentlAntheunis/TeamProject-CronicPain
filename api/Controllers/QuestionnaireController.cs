@@ -209,5 +209,20 @@ namespace Pebbles.Controllers.V2
                 return StatusCode(500, "Internal server error.");
             }
         }
+
+        [HttpGet("checkIfFirstBonusOfTheDay/{patientId}")]
+        public async Task<IActionResult> CheckIfFirstBonusOfTheDay(Guid patientId)
+        {
+            try
+            {
+                var isFirstBonus = await _questionnaireService.CheckIfFirstBonusOfTheDay(patientId);
+                return Ok(isFirstBonus);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(500, "Internal server error.");
+            }
+        }
     }
 }
