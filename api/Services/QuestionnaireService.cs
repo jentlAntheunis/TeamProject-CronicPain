@@ -124,14 +124,14 @@ public class QuestionnaireService : IQuestionnaireService
                 }
             }
 
-            // Add the questionnaire to the list only if it contains relevant questions
             if (detailedQuestions.Any())
             {
                 detailedQuestionnaires.Add(new QuestionnaireDetailDTO
                 {
                     Id = questionnaire.Id,
                     Date = questionnaire.Date,
-                    Questions = detailedQuestions
+                    Questions = detailedQuestions,
+                    PatientId = questionnaire.PatientId
                 });
             }
         }
