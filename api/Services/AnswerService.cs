@@ -45,7 +45,7 @@ public class AnswerService : IAnswerService
         if (questionnaire == null)
         {
             Console.WriteLine($"Questionnaire with ID {questionnaireId} not found.");
-            return; 
+            return;
         }
 
         Console.WriteLine($"ProcessAnswers - Start: QuestionnaireId {questionnaireId}");
@@ -53,7 +53,7 @@ public class AnswerService : IAnswerService
         questionnaire.Date = DateTime.Now;
         await _questionnaireRepository.UpdateQuestionnaireAsync(questionnaire);
 
-        
+
 
         foreach (var answerDTO in answers)
         {
@@ -66,7 +66,7 @@ public class AnswerService : IAnswerService
                 QuestionnaireIndex = answerDTO.QuestionnaireIndex
             };
 
-        
+
             Console.WriteLine($"ProcessAnswers - AnswerToSave: {JsonConvert.SerializeObject(answerToSave)}");
 
 
@@ -140,12 +140,18 @@ public class AnswerService : IAnswerService
         var impacts = new Dictionary<Guid, string>();
         foreach (var questionnaireId in questionnaireIds)
         {
-            var impact = await CompareAnswersAndCalculateScore(questionnaireId);
-            impacts.Add(questionnaireId, impact.ToString());
+            var questionnaire = await _questionnaireRepository.GetQuestionnaireByIdAsync(questionnaireId);
+
+            if (questionnaire?.Date != null)
+            {
+                var impact = await CompareAnswersAndCalculateScore(questionnaireId);
+                impacts.Add(questionnaireId, impact.ToString());
+            }
         }
 
         return impacts;
     }
+
 
 
 
