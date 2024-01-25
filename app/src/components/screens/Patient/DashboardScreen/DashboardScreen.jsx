@@ -5,8 +5,6 @@ import { Play, ClipboardText, X } from "@phosphor-icons/react";
 import styles from "./DashboardScreen.module.css";
 import FullHeightScreen from "../../../ui/FullHeightScreen/FullHeightScreen.jsx";
 import Button from "../../../ui/Button/Button.jsx";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../../../core/services/firebase.js";
 import { useNavigate } from "react-router-dom";
 import { PatientRoutes } from "../../../../core/config/routes.js";
 import { useEffect, useState } from "react";

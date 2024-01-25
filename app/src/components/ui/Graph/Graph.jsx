@@ -10,8 +10,7 @@ import {
 } from "recharts";
 import { LineChart, Line } from "recharts";
 import InfoTooltip from "../InfoTooltip/InfoTooltip";
-import { useEffect } from "react";
-import { fillMissingDates } from "../../../core/utils/patientDetails";
+import clsx from "clsx";
 const lineData = [];
 
 for (let i = 0; i < 30; i++) {
@@ -78,15 +77,30 @@ const graphVariants = cva(styles.graph, {
   },
 });
 
-const Graph = ({ title, variant, data, tooltip }) => {
+const Graph = ({
+  title,
+  variant,
+  data,
+  tooltip,
+  className,
+  setShowModal,
+  setModalContent,
+}) => {
   return (
-    <div className={styles.graphContainer}>
+    <div className={clsx(styles.graphContainer, className)}>
       <div className={styles.titleContainer}>
         <div className={styles.graphTitle}>{title}</div>
-        <InfoTooltip text={tooltip} />
+        <InfoTooltip
+          text={tooltip}
+          onClick={() => {
+            if (setShowModal) setShowModal(true);
+            if (setModalContent)
+              setModalContent({ title: title, text: tooltip });
+          }}
+        />
       </div>
       <div className={graphVariants({ variant })}>
-        { data?.length > 0 ? (
+        {data?.length > 0 ? (
           <GraphComponent variant={variant} data={data} />
         ) : (
           <div className={styles.noData}>Geen data beschikbaar</div>

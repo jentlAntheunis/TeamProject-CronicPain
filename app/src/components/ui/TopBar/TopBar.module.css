@@ -21,6 +21,7 @@
   right: 0;
   top: 0;
   padding-top: 3rem;
+  z-index: 300;
 }
 
 .menu {

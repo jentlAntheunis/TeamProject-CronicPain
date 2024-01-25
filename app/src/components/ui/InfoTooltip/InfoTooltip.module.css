@@ -8,10 +8,6 @@
   color: var(--grey-400);
 }
 
-.tooltipIcon:hover {
-  color: var(--black);
-}
-
 .tooltip .tooltiptext {
   visibility: hidden;
   background-color: var(--black);
@@ -28,6 +24,12 @@
   font-size: var(--small);
 }
 
-.tooltip:hover .tooltiptext {
-  visibility: visible;
+@media (min-width: 1024px) {
+  .tooltipIcon:hover {
+    color: var(--black);
+  }
+
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
 }
