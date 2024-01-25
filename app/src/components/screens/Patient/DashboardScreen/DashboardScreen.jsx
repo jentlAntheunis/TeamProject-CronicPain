@@ -5,8 +5,6 @@ import { Play, ClipboardText, X } from "@phosphor-icons/react";
 import styles from "./DashboardScreen.module.css";
 import FullHeightScreen from "../../../ui/FullHeightScreen/FullHeightScreen.jsx";
 import Button from "../../../ui/Button/Button.jsx";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../../../core/services/firebase.js";
 import { useNavigate } from "react-router-dom";
 import { PatientRoutes } from "../../../../core/config/routes.js";
 import { useEffect, useState } from "react";
@@ -20,6 +18,7 @@ import {
   getDailyQuestionnaire,
   getMovementQuestionnaire,
   getUserData,
+  getPebblesMood,
 } from "../../../../core/utils/apiCalls.js";
 import { useUser } from "../../../app/auth/AuthProvider.jsx";
 import { toast } from "react-toastify";
@@ -62,6 +61,11 @@ const DashboardScreen = () => {
     enabled: !!fetchData,
   });
 
+  const { data: moodData, isError: moodError } = useQuery({
+    queryKey: ["mood"],
+    queryFn: () => getPebblesMood(user.id),
+  });
+
   useEffect(() => {
     if (checkFirstLaunch()) {
       streaksMutate();
@@ -91,12 +95,12 @@ const DashboardScreen = () => {
     }
   };
 
-  if (isError || isStreaksError) {
+  if (isError || isStreaksError || moodError) {
     toast.error("Er is iets misgegaan bij het ophalen van je gegevens.");
     return null;
   }
 
-  if (!data || isStreaksLoading) return null;
+  if (!data || isStreaksLoading || !moodData) return null;
 
   const handleStartQuestionnaire = async (questionnaireCategory) => {
     setLoading(true);
@@ -134,7 +138,7 @@ const DashboardScreen = () => {
       <DailyPain question={dailyQuestion} setQuestion={setDailyQuestion} />
       <div className={styles.screen}>
         <TopBar coins={data.data.coins} streak={data.data.streak} />
-        <Avatar />
+        <Avatar color={data.data.avatar.color.hex} mood={moodData.data} />
         <div className={styles.btnContainer}>
           <Button
             variant="primary"

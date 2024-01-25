@@ -55,8 +55,8 @@ const MyStopwatch = () => {
   } = useStopwatch();
   const user = useUser();
   const { isSupported, request, release } = useWakeLock({
-    onRequest: () => console.log("Wake Lock was requested"),
-    onRelease: () => console.log("Wake Lock was released"),
+    onRequest: () => console.info("Wake Lock was requested"),
+    onRelease: () => console.info("Wake Lock was released"),
     onError: (err) => console.error("Wake Lock request failed", err),
   });
 
@@ -88,7 +88,7 @@ const MyStopwatch = () => {
       resetCurrentQuestion();
       navigate(PatientRoutes.WellDone);
     } else {
-      !isSupported ? console.warn("Wake Lock API not supported") : console.log("Wake Lock API supported");
+      !isSupported && console.warn("Wake Lock API not supported");
       request();
       start();
     }

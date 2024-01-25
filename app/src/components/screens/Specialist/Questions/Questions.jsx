@@ -89,7 +89,6 @@ const Questions = () => {
     if (filters.includes(filter)) {
         setFilters(filters.filter((f) => f !== filter));
     } else {
-      console.log("adding filter");
       setFilters([...filters, filter]);
     }
   };

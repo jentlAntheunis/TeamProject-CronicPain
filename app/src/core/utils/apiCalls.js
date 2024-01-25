@@ -29,16 +29,11 @@ const storePatient = async ({ firstName, lastName, email, specialistId }) =>
     data: { firstName, lastName, email },
   });
 
-const storePatientList = async ({ patients, specialistId }) => {
-  console.log(patients);
-  console.log(specialistId);
-
-  return await request({
-    url: `/specialists/${specialistId}/patients/addlist`,
-    method: "POST",
-    data: patients,
-  });
-};
+const storePatientList = async ({ patients, specialistId }) => await request({
+  url: `/specialists/${specialistId}/patients/addlist`,
+  method: "POST",
+  data: patients,
+})
 
 const sendMailToPatient = async ({
   firstName,
@@ -147,12 +142,18 @@ const getShopItems = async (userId) =>
 const buyColor = async (userId, itemId) =>
   await request({
     url: `/store/${userId}/buy/${itemId}`,
-    method: "GET",
+    method: "PUT",
   });
 
 const activateColor = async (userId, itemId) =>
   await request({
     url: `/store/${userId}/use/${itemId}`,
+    method: "PUT",
+  });
+
+const getPebblesMood = async (userId) =>
+  await request({
+    url: `/patients/${userId}/pebblesmood`,
     method: "GET",
   });
 
@@ -165,6 +166,29 @@ const storeMovement = async (userId, totalTime) =>
     method: "POST",
     data: { seconds: totalTime },
   });
+
+/**
+ * Questionnaire Details from Patient API calls
+ */
+const getImpact = async (userId) => await request({
+  url: `/answers/user/${userId}/impacts`,
+  method: 'GET',
+})
+
+const getMovementWeek = async (userId) => await request({
+  url: `/patients/${userId}/movementtimeweek`,
+  method: 'GET',
+})
+
+const getPainMonth = async (userId) => await request({
+  url: `/patients/${userId}/painhistory`,
+  method: 'GET',
+})
+
+const getQuestionnaires = async (userId) => await request({
+  url: `/patients/${userId}/questionnaires`,
+  method: 'GET',
+})
 
 export {
   getUser,
@@ -185,4 +209,9 @@ export {
   storeMovement,
   getStreakHistory,
   checkStreak,
+  getPebblesMood,
+  getImpact,
+  getMovementWeek,
+  getPainMonth,
+  getQuestionnaires,
 };

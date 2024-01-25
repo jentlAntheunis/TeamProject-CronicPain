@@ -27,7 +27,6 @@ const DailyPain = ({ question, setQuestion }) => {
           }
         ]
       };
-      console.log(data);
       await sendAnswers(data);
       setLoading(false);
       localStorage.setItem("lastLaunch", new Date().getDate().toString());
