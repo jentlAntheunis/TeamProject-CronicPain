@@ -13,22 +13,20 @@ using Microsoft.EntityFrameworkCore;
 
 public interface IQuestionnaireService
 {
-  Task<Questionnaire> GetQuestionnaireByIdAsync(Guid id);
-  Task<List<Questionnaire>> GetQuestionnairesByPatientIdAsync(Guid id);
-  // Task<QuestionnaireDTO> AddMovementQuestionnaireAsync(Guid id);
-  // Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId);
-  // Task<QuestionnaireDTO> AddDailyPainQuestionnaireAsync(Guid userId);
-  // Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire);
-  // Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex);
-  // Task DeleteQuestionnaireAsync(Questionnaire questionnaire);
-  // Task<List<Questionnaire>> GetQuestionnairesAsync();
+    Task<Questionnaire> GetQuestionnaireByIdAsync(Guid id);
+    Task<List<Questionnaire>> GetQuestionnairesByPatientIdAsync(Guid id);
+    // Task<QuestionnaireDTO> AddMovementQuestionnaireAsync(Guid id);
+    // Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId);
+    // Task<QuestionnaireDTO> AddDailyPainQuestionnaireAsync(Guid userId);
+    // Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire);
+    // Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex);
+    // Task DeleteQuestionnaireAsync(Questionnaire questionnaire);
+    // Task<List<Questionnaire>> GetQuestionnairesAsync();
 
   Task<bool> CheckIfFirstQuestionnaireOfTheDay(Guid userId);
-  Task<bool> CheckIfFirstBonusOfTheDay(Guid userId);
+    Task<bool> CheckIfFirstBonusOfTheDay(Guid userId);
 
   Task<List<QuestionnaireDetailDTO>> GetQuestionnairesWithDetailsByPatientIdAsync(Guid patientId, List<string> categories);
-
-
 }
 
 public class QuestionnaireService : IQuestionnaireService
@@ -173,16 +171,6 @@ public class QuestionnaireService : IQuestionnaireService
         }
       }
 
-      return detailedQuestionnaires;
+        return detailedQuestionnaires;
     }
-    catch (Exception ex)
-    {
-      Console.WriteLine($"Error occurred: {ex.Message}");
-      throw;
-    }
-  }
-
-
-
-
 }
