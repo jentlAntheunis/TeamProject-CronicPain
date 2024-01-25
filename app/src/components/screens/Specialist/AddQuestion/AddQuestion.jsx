@@ -5,10 +5,19 @@ import PageHeading from "../../../ui/PageHeading/PageHeading";
 import { SpecialistRoutes } from "../../../../core/config/routes";
 import Button from "../../../ui/Button/Button";
 import styles from "./AddQuestion.module.css";
-import { Form, FormControl, FormItem, FormLabel, FormMessage } from "../../../app/form/Form";
+import {
+  Form,
+  FormControl,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../../../app/form/Form";
 import Input from "../../../ui/Input/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "../../../ui/Select/Select";
+import { getCategories, getScales } from "../../../../core/utils/apiCalls";
+import { useQuery } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 const formSchema = z.object({
   question: z.string().min(5, { message: "Vraag is te kort" }),
@@ -19,6 +28,24 @@ const formSchema = z.object({
 const AddQuestion = () => {
   const [loading, setLoading] = useState(false);
 
+  const {
+    data: scaleData,
+    isLoading: scaleLoading,
+    isError: scaleError,
+  } = useQuery({
+    queryKey: ["scale"],
+    queryFn: () => getScales(),
+  });
+
+  const {
+    data: categoryData,
+    isLoading: categoryLoading,
+    isError: categoryError,
+  } = useQuery({
+    queryKey: ["category"],
+    queryFn: () => getCategories(),
+  });
+
   const defaultValues = {
     question: "",
     category: "",
@@ -26,8 +53,24 @@ const AddQuestion = () => {
   };
 
   const handleSubmit = (data) => {
+    // setLoading(true);
     console.log(data);
   };
+
+  useEffect(() => {
+    console.log(scaleData);
+  }, [scaleData]);
+
+  useEffect(() => {
+    console.log(categoryData);
+  }, [categoryData]);
+
+  if (!categoryData || !scaleData) return;
+
+  if (categoryError || scaleError) {
+    toast.error("Er is iets misgegaan bij het ophalen van je gegevens.");
+    return null;
+  }
 
   return (
     <ScrollableScreen className={styles.screenContainer}>
@@ -60,14 +103,20 @@ const AddQuestion = () => {
             <FormItem name="category">
               <FormLabel>Categorie</FormLabel>
               <FormControl>
-                <Select placeholder="Kies een categorie" options={["Bewegingsvragen", "Bonusvragen"]} />
+                <Select
+                  placeholder="Kies een categorie"
+                  options={categoryData.data.map((category) => category.name)}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
             <FormItem name="scale">
               <FormLabel>Antwoordschaal</FormLabel>
               <FormControl>
-                <Select placeholder="Kies een antwoordschaal" options={["oneens -> eens", "niet -> altijd"]} />
+                <Select
+                  placeholder="Kies een antwoordschaal"
+                  options={scaleData.data.map((scale) => scale.name)}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
