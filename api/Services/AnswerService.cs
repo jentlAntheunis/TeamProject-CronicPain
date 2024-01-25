@@ -135,8 +135,7 @@ public class AnswerService : IAnswerService
 
     public async Task<Dictionary<Guid, string>> GetQuestionnaireImpactsByUserId(Guid userId)
     {
-        var categoryName = "beweging";
-        var questionnaireIds = await _questionnaireRepository.GetQuestionnaireIdsByUserIdAndCategory(userId, categoryName);
+        var questionnaireIds = await _questionnaireRepository.GetQuestionnaireIdsByUserId(userId);
 
         var impacts = new Dictionary<Guid, string>();
         foreach (var questionnaireId in questionnaireIds)

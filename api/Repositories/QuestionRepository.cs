@@ -11,7 +11,6 @@ public interface IQuestionRepository
     Task<Guid> CreateQuestionAsync(Question question);
     Task<Question> UpdateQuestionAsync(Question question);
     Task DeleteQuestionAsync(Question question);
-    Task<List<Guid>> CreateQuestionsAsync(List<Question> questions);
 }
 
 public class QuestionRepository : IQuestionRepository
@@ -51,13 +50,6 @@ public class QuestionRepository : IQuestionRepository
 
         _context.Question.Remove(question);
         await _context.SaveChangesAsync();
-    }
-
-    public async Task<List<Guid>> CreateQuestionsAsync(List<Question> questions)
-    {
-        await _context.Question.AddRangeAsync(questions);
-        await _context.SaveChangesAsync();
-        return questions.Select(q => q.Id).ToList();
     }
 
 }
