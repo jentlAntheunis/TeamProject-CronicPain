@@ -18,6 +18,8 @@ public interface IQuestionnaireRepository
     Task<List<Questionnaire>> GetQuestionnairesAsync();
     Task<List<Guid>> GetQuestionnaireIdsByUserId(Guid userId);
     Task<List<Questionnaire>> GetFullQuestionnairesByPatientIdAsync(Guid patientId);
+    Task<List<Guid>> GetQuestionnaireIdsByUserIdAndCategory(Guid userId, string categoryName);
+
 }
 
 public class QuestionnaireRepository : IQuestionnaireRepository
@@ -343,4 +345,37 @@ public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
 
         return questionnaires;
     }
+
+    public async Task<List<Guid>> GetQuestionnaireIdsByUserIdAndCategory(Guid userId, string categoryName)
+    {
+        var categoryId = await _context.Category
+            .Where(c => c.Name == categoryName)
+            .Select(c => c.Id)
+            .FirstOrDefaultAsync();
+
+        if (categoryId == Guid.Empty)
+        {
+            throw new InvalidOperationException($"Category '{categoryName}' not found.");
+        }
+
+        var questionnaireIds = await _context.Questionnaire
+            .Where(q => q.PatientId == userId)
+            .Join(_context.QuestionnaireQuestion, 
+                questionnaire => questionnaire.Id, 
+                questionnaireQuestion => questionnaireQuestion.QuestionnaireId, 
+                (questionnaire, questionnaireQuestion) => new { questionnaire, questionnaireQuestion })
+            .Join(_context.Question, 
+                joint => joint.questionnaireQuestion.QuestionId, 
+                question => question.Id, 
+                (joint, question) => new { joint.questionnaire, question })
+            .Where(joint => joint.question.CategoryId == categoryId)
+            .Select(joint => joint.questionnaire.Id)
+            .Distinct()
+            .ToListAsync();
+
+        return questionnaireIds;
+    }
+
+
+
 }

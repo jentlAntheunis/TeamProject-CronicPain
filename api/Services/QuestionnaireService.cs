@@ -15,16 +15,16 @@ public interface IQuestionnaireService
 {
     Task<Questionnaire> GetQuestionnaireByIdAsync(Guid id);
     Task<List<Questionnaire>> GetQuestionnairesByPatientIdAsync(Guid id);
-    Task<QuestionnaireDTO> AddMovementQuestionnaireAsync(Guid id);
-    Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId);
-
-    Task<QuestionnaireDTO> AddDailyPainQuestionnaireAsync(Guid userId);
-    Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire);
-    Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex);
-    Task DeleteQuestionnaireAsync(Questionnaire questionnaire);
-    Task<List<Questionnaire>> GetQuestionnairesAsync();
+    // Task<QuestionnaireDTO> AddMovementQuestionnaireAsync(Guid id);
+    // Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId);
+    // Task<QuestionnaireDTO> AddDailyPainQuestionnaireAsync(Guid userId);
+    // Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire);
+    // Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex);
+    // Task DeleteQuestionnaireAsync(Questionnaire questionnaire);
+    // Task<List<Questionnaire>> GetQuestionnairesAsync();
 
     Task<bool> CheckIfFirstQuestionnaireOfTheDay(Guid userId);
+    Task<bool> CheckIfFirstBonusOfTheDay(Guid userId);
 
     Task<List<QuestionnaireDetailDTO>> GetQuestionnairesWithDetailsByPatientIdAsync(Guid patientId, List<string> categories);
 
@@ -62,15 +62,13 @@ public class QuestionnaireService : IQuestionnaireService
 
     public async Task<List<Questionnaire>> GetQuestionnairesByPatientIdAsync(Guid id) => await _questionnaireRepository.GetQuestionnairesByPatientIdAsync(id);
 
-    public async Task<QuestionnaireDTO> AddMovementQuestionnaireAsync(Guid id) => throw new NotImplementedException();
-
-    public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId) => throw new NotImplementedException();
-
-    public async Task<QuestionnaireDTO> AddDailyPainQuestionnaireAsync(Guid userId) => throw new NotImplementedException();
-    public async Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire) => throw new NotImplementedException();
-    public async Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex) => throw new NotImplementedException();
-    public async Task DeleteQuestionnaireAsync(Questionnaire questionnaire) => throw new NotImplementedException();
-    public async Task<List<Questionnaire>> GetQuestionnairesAsync() => throw new NotImplementedException();
+    // public async Task<QuestionnaireDTO> AddMovementQuestionnaireAsync(Guid id) => throw new NotImplementedException();
+    // public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId) => throw new NotImplementedException();
+    // public async Task<QuestionnaireDTO> AddDailyPainQuestionnaireAsync(Guid userId) => throw new NotImplementedException();
+    // public async Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire) => throw new NotImplementedException();
+    // public async Task UpdateQuestionnaireIndexAsync(Guid questionnaireId, int questionnaireIndex) => throw new NotImplementedException();
+    // public async Task DeleteQuestionnaireAsync(Questionnaire questionnaire) => throw new NotImplementedException();
+    // public async Task<List<Questionnaire>> GetQuestionnairesAsync() => throw new NotImplementedException();
 
 
     public async Task<bool> CheckIfFirstQuestionnaireOfTheDay(Guid userId)
@@ -78,6 +76,28 @@ public class QuestionnaireService : IQuestionnaireService
         DateTime currentDate = DateTime.Now.Date;
 
         var questionnaireExists = await _context.Questionnaire
+            .AnyAsync(q => q.PatientId == userId && q.Date.HasValue && q.Date.Value.Date == currentDate);
+
+        bool isFirstQuestionnaire = !questionnaireExists;
+        if (isFirstQuestionnaire)
+        {
+            var patient = await _context.Patient
+                .FirstOrDefaultAsync(p => p.Id == userId);
+
+            patient.Streak += 1;
+            await _context.SaveChangesAsync();
+        }
+        return isFirstQuestionnaire;
+    }
+
+    public async Task<bool> CheckIfFirstBonusOfTheDay(Guid userId)
+    {
+        DateTime currentDate = DateTime.Now.Date;
+
+        var questionnaireExists = await _context.Questionnaire
+            .Include(q => q.Questions)
+                .ThenInclude(q => q.Category)
+            .Where(q => q.Questions.Any(q => q.Category.Name == "bonus"))
             .AnyAsync(q => q.PatientId == userId && q.Date.HasValue && q.Date.Value.Date == currentDate);
 
         bool isFirstQuestionnaire = !questionnaireExists;
@@ -124,14 +144,14 @@ public class QuestionnaireService : IQuestionnaireService
                 }
             }
 
-            // Add the questionnaire to the list only if it contains relevant questions
             if (detailedQuestions.Any())
             {
                 detailedQuestionnaires.Add(new QuestionnaireDetailDTO
                 {
                     Id = questionnaire.Id,
                     Date = questionnaire.Date,
-                    Questions = detailedQuestions
+                    Questions = detailedQuestions,
+                    PatientId = questionnaire.PatientId
                 });
             }
         }

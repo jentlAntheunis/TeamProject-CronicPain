@@ -3,7 +3,7 @@ const AuthRoutes = {
 };
 
 const PatientRoutes = {
-  Dashboard: "/patient/",
+  Dashboard: "/patient/dashboard",
   Progress: "/patient/progress",
   Shop: "/patient/shop",
   Questionaire: '/patient/questionaire',
