@@ -11,12 +11,12 @@ using Pebbles.Repositories;
 [Route("tests")]
 public class TestController : ControllerBase
 {
-    private readonly IConfiguration _configuration;
+    //private readonly IConfiguration _configuration;
     private readonly IUserService _userService;
     private readonly IPatientService _patientService;
 
     public TestController(
-        IConfiguration configuration, 
+        //IConfiguration configuration,
         IUserService userService,
         IPatientService patientService
         )
