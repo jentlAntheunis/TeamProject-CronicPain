@@ -59,12 +59,12 @@ builder.Services.AddScoped<ISpecialistRepository, SpecialistRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddApiVersioning(setup =>
-    {
-      setup.DefaultApiVersion = new ApiVersion(2, 0);
-      setup.AssumeDefaultVersionWhenUnspecified = true;
-      setup.ReportApiVersions = true;
-      setup.ApiVersionReader = new HeaderApiVersionReader("api-version");
-    }
+  {
+    setup.DefaultApiVersion = new ApiVersion(2, 0);
+    setup.AssumeDefaultVersionWhenUnspecified = true;
+    setup.ReportApiVersions = true;
+    setup.ApiVersionReader = new HeaderApiVersionReader("api-version");
+  }
 );
 
 builder.Services.AddSwaggerGen(c =>
@@ -92,19 +92,19 @@ builder.Services.AddSwaggerGen(opt =>
   });
 
   opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+  {
     {
+      new OpenApiSecurityScheme
+      {
+        Reference = new OpenApiReference
         {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type=ReferenceType.SecurityScheme,
-                    Id="Bearer"
-                }
-            },
-            new string[]{}
+          Type=ReferenceType.SecurityScheme,
+          Id="Bearer"
         }
-    });
+      },
+      new string[]{}
+    }
+  });
 });
 
 
@@ -190,8 +190,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Default}"
+  name: "default",
+  pattern: "{controller=Default}"
 );
 
 app.Run();
