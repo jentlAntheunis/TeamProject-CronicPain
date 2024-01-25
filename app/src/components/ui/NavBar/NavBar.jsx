@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import Button from "../Button/Button";
 import styles from "./NavBar.module.css";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { auth } from "../../../core/services/firebase";
 import Modal from "../Modal/Modal.jsx";
 import { useState } from "react";
@@ -20,7 +20,9 @@ const NavBar = () => {
   return (
     <div className={`desktop-only ${styles.navBarContainer}`}>
       <div className={styles.navBarLeft}>
-        <div className={styles.navBarLogo}>Pebbles</div>
+        <Link to={SpecialistRoutes.PatientsOverview} className={styles.removeTextDecoration}>
+          <div className={styles.navBarLogo}>Pebbles</div>
+        </Link>
         {user && (
           <>
             <div className={styles.navBarSpacer}></div>
