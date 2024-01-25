@@ -129,6 +129,7 @@ public class QuestionnaireService : IQuestionnaireService
                 {
                     Id = questionnaire.Id,
                     Date = questionnaire.Date,
+                    PatientId = questionnaire.PatientId,
                     Questions = detailedQuestions
                 });
             }
