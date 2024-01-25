@@ -13,7 +13,7 @@ public class QuestionDTO
     public Guid Id { get; set; }
     public string Content { get; set; }
     public ScaleDTO Scale { get; set; }
-    
+
 }
 
 public class ScaleDTO
@@ -28,7 +28,7 @@ public class OptionDTO
     public Guid Id { get; set; }
     //public ScaleDTO Scale { get; set; }
     //public string Content { get; set; }
-    public string Position { get; set; } 
+    public string Position { get; set; }
     public string Content { get; set; }
 }
 
@@ -61,6 +61,7 @@ public class DayTDO
 public class QuestionnaireDetailDTO
 {
     public Guid Id { get; set; }
+    public string CategoryName { get; set; }
     public Guid PatientId { get; set; }
     public DateTime? Date { get; set; }
     public List<QuestionDetailDTO> Questions { get; set; }

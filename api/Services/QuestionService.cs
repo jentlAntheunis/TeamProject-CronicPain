@@ -10,7 +10,6 @@ public interface IQuestionService
     Task<Guid> CreateQuestionAsync(Question question);
     Task<Question> UpdateQuestionAsync(Question question);
     Task DeleteQuestionAsync(Question question);
-    Task<List<Guid>> AddQuestionsAsync(List<Question> questions);
 }
 
 public class QuestionService : IQuestionService
@@ -55,11 +54,5 @@ public class QuestionService : IQuestionService
     public async Task<Question> UpdateQuestionAsync(Question question) => await _questionRepository.UpdateQuestionAsync(question);
 
     public async Task DeleteQuestionAsync(Question question) => await _questionRepository.DeleteQuestionAsync(question);
-
-    public async Task<List<Guid>> AddQuestionsAsync(List<Question> questions)
-    {
-        return await _questionRepository.CreateQuestionsAsync(questions);
-    }
-
 }
 

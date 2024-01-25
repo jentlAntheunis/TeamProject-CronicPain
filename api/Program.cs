@@ -4,7 +4,6 @@ using Pebbles.Context;
 using Pebbles.Models;
 using Pebbles.Repositories;
 using Pebbles.Services;
-using Pebbles.Swagger;
 using FirebaseAdmin;
 using FirebaseAdmin.Auth;
 using Google.Apis.Auth.OAuth2;
@@ -16,10 +15,6 @@ using Microsoft.AspNetCore.Authentication;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Versioning;
-using Microsoft.OpenApi.Any;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -58,23 +53,6 @@ builder.Services.AddScoped<IScaleRepository, ScaleRepository>();
 builder.Services.AddScoped<ISpecialistRepository, SpecialistRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-builder.Services.AddApiVersioning(setup =>
-    {
-        setup.DefaultApiVersion = new ApiVersion(2, 0);
-        setup.AssumeDefaultVersionWhenUnspecified = true;
-        setup.ReportApiVersions = true;
-        setup.ApiVersionReader = new HeaderApiVersionReader("api-version");
-    }
-);
-
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Pebbles API", Version = "v1" });
-    c.SwaggerDoc("v2", new OpenApiInfo { Title = "Pebbles API", Version = "v2" });
-    c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
-
-    c.OperationFilter<AddRequiredHeaderParameter>();
-});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -170,9 +148,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pebbles API V1");
-        c.SwaggerEndpoint("/swagger/v2/swagger.json", "Pebbles API V2");
-
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API V1");
         // Enable the "Authorize" button
         c.OAuthClientId("swagger-ui");
         c.OAuthAppName("Swagger UI");

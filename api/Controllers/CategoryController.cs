@@ -1,84 +1,45 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System.Runtime.CompilerServices;
+using FirebaseAdmin;
+using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Authorization;
 
+
+using Pebbles.Models;
+using Pebbles.Services;
 using Pebbles.Repositories;
 
-namespace Pebbles.Controllers.V1
+
+[ApiController]
+[Route("category")]
+[Authorize(AuthenticationSchemes = "FirebaseAuthentication")] // only authenticated users can access this controller
+
+
+public class CategoryController : ControllerBase
 {
-    [ApiController]
-    [ApiVersion("1.0")]
-    [Route("category")]
-    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] // only authenticated users can access this controller
+    private readonly ICategoryRepository _categoryRepository;
 
-    public class CategoryController : ControllerBase
+    public CategoryController(ICategoryRepository categoryRepository)
     {
-        private readonly ICategoryRepository _categoryRepository;
-
-        public CategoryController(ICategoryRepository categoryRepository)
-        {
-            _categoryRepository = categoryRepository;
-        }
-
-        [HttpGet("all")]
-        public async Task<IActionResult> GetAllCategoriesAsync()
-        {
-            var categories = await _categoryRepository.GetAllCategoriesAsync();
-            if (categories == null)
-            {
-                return StatusCode(500);
-            }
-
-            var response = categories.Select(category => new
-            {
-                id = category.Id,
-                name = category.Name
-            });
-
-            return Ok(JsonConvert.SerializeObject(response));
-        }
+        _categoryRepository = categoryRepository;
     }
-}
 
-namespace Pebbles.Controllers.V2
-{
-    [ApiController]
-    [ApiVersion("2.0")]
-    [Route("category")]
-    [Authorize(AuthenticationSchemes = "FirebaseAuthentication")] // only authenticated users can access this controller
-    public class CategoryController : ControllerBase
+    [HttpGet("all")]
+    public async Task<IActionResult> GetAllCategoriesAsync()
     {
-        private readonly ICategoryRepository _categoryRepository;
-
-        public CategoryController(ICategoryRepository categoryRepository)
+        var categories = await _categoryRepository.GetAllCategoriesAsync();
+        if (categories == null)
         {
-            _categoryRepository = categoryRepository;
+            return StatusCode(500);
         }
+        
+        var response = categories.Select(category => new {
+            id = category.Id,
+            name = category.Name
+        });
 
-        [HttpGet("all")]
-        public async Task<IActionResult> GetAllCategoriesAsync()
-        {
-            try
-            {
-                var categories = await _categoryRepository.GetAllCategoriesAsync();
-                if (categories == null)
-                {
-                    return StatusCode(500, "Internal server error.");
-                }
-
-                var response = categories.Select(category => new
-                {
-                    id = category.Id,
-                    name = category.Name
-                });
-
-                return Ok(JsonConvert.SerializeObject(response));
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                return StatusCode(500, "Internal server error.");
-            }
-        }
+        return Ok(JsonConvert.SerializeObject(response));
     }
 }
