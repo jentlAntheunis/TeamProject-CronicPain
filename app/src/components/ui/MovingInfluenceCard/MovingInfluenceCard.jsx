@@ -1,13 +1,16 @@
 import { cva } from "class-variance-authority";
 import styles from "./MovingInfluenceCard.module.css";
 import Wave from "../Illustrations/Wave";
+import { useEffect, useState } from "react";
+import { Impacts } from "../../../core/config/impacts";
+import { countImpact } from "../../../core/utils/patientDetails";
 
 const cardVariants = cva(styles.movingInfluenceCard, {
   variants: {
     variant: {
-      positive: styles.positive,
-      neutral: styles.neutral,
-      negative: styles.negative,
+      [Impacts.Positive]: styles.positive,
+      [Impacts.Neutral]: styles.neutral,
+      [Impacts.Negative]: styles.negative,
     },
   },
   defaultVariants: {
@@ -15,15 +18,24 @@ const cardVariants = cva(styles.movingInfluenceCard, {
   },
 });
 
-const MovingInfluenceCard = ({ variant }) => {
-  let text;
-  if (variant === "positive") {
-    text = "Positief";
-  } else if (variant === "neutral") {
-    text = "Neutraal";
-  } else if (variant === "negative") {
-    text = "Negatief";
-  }
+const MovingInfluenceCard = ({ variant, data }) => {
+  const [text, setText] = useState("");
+  const [results, setResults] = useState({});
+
+  useEffect(() => {
+    if (variant === Impacts.Positive) {
+      setText("Positief");
+    } else if (variant === Impacts.Neutral) {
+      setText("Neutraal");
+    } else if (variant === Impacts.Negative) {
+      setText("Negatief");
+    }
+  }, [variant]);
+
+  useEffect(() => {
+    const results = countImpact(data);
+    setResults(results);
+  }, [data]);
 
   return (
     <div className={cardVariants({ variant })}>
@@ -38,9 +50,11 @@ const MovingInfluenceCard = ({ variant }) => {
       </div>
       <div className={styles.text}>
         <div className={styles.h6}>{text}</div>
-        <div className={styles.small}>15 keer</div>
+        <div className={styles.small}>{results[variant]} keer</div>
       </div>
-      <div className={styles.percentage}>75%</div>
+      <div className={styles.percentage}>
+        {Math.round((results[variant] / Object.keys(data).length) * 100)}%
+      </div>
     </div>
   );
 };

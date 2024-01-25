@@ -1,3 +1,4 @@
+import { Navigate, useLocation } from "react-router-dom";
 import { SpecialistRoutes } from "../../../../core/config/routes";
 import NavBar from "../../../ui/NavBar/NavBar";
 import PageHeading from "../../../ui/PageHeading/PageHeading";
@@ -76,6 +77,10 @@ const questions = [
 ];
 
 const QuestionnaireDetails = () => {
+  const { state } = useLocation();
+
+  if (!state) return <Navigate to={SpecialistRoutes.PatientsOverview} />;
+
   return (
     <ScrollableScreen>
       <NavBar />

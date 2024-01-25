@@ -27,16 +27,11 @@ const storePatient = async ({ firstName, lastName, email, specialistId }) => awa
   data: { firstName, lastName, email },
 });
 
-const storePatientList = async ({ patients, specialistId }) => {
-  console.log(patients)
-  console.log(specialistId)
-
-  return await request({
-    url: `/specialists/${specialistId}/patients/addlist`,
-    method: "POST",
-    data: patients,
-  })
-};
+const storePatientList = async ({ patients, specialistId }) => await request({
+  url: `/specialists/${specialistId}/patients/addlist`,
+  method: "POST",
+  data: patients,
+})
 
 const sendMailToPatient = async ({
   firstName,
@@ -144,6 +139,29 @@ const storeMovement = async (userId, totalTime) => await request({
   data: { seconds: totalTime }
 })
 
+/**
+ * Questionnaire Details from Patient API calls
+ */
+const getImpact = async (userId) => await request({
+  url: `/answers/user/${userId}/impacts`,
+  method: 'GET',
+})
+
+const getMovementWeek = async (userId) => await request({
+  url: `/patients/${userId}/movementtimeweek`,
+  method: 'GET',
+})
+
+const getPainMonth = async (userId) => await request({
+  url: `/patients/${userId}/painhistory`,
+  method: 'GET',
+})
+
+const getQuestionnaires = async (userId) => await request({
+  url: `/patients/${userId}/questionnaires`,
+  method: 'GET',
+})
+
 export {
   getUser,
   checkIfUserExists,
@@ -161,4 +179,8 @@ export {
   buyColor,
   activateColor,
   storeMovement,
+  getImpact,
+  getMovementWeek,
+  getPainMonth,
+  getQuestionnaires,
 };

@@ -80,17 +80,39 @@ const graphVariants = cva(styles.graph, {
 const Graph = ({
   title,
   variant,
+  data,
+  tooltip,
   className,
   setShowModal,
   setModalContent,
 }) => {
-  let graphComponent;
-  let graphInfo;
+  return (
+    <div className={clsx(styles.graphContainer, className)}>
+      <div className={styles.titleContainer}>
+        <div className={styles.graphTitle}>{title}</div>
+        <InfoTooltip
+          text={tooltip}
+          onClick={() => {
+            if (setShowModal) setShowModal(true);
+            if (setModalContent)
+              setModalContent({ title: title, text: tooltip });
+          }}
+        />
+      </div>
+      <div className={graphVariants({ variant })}>
+        {data?.length > 0 ? (
+          <GraphComponent variant={variant} data={data} />
+        ) : (
+          <div className={styles.noData}>Geen data beschikbaar</div>
+        )}
+      </div>
+    </div>
+  );
+};
 
+const GraphComponent = ({ variant, data }) => {
   if (variant === "bar") {
-    graphInfo =
-      "Deze grafiek geeft de duur van de bewegingssessies weer per dag van de week uitgedrukt in minuten.";
-    graphComponent = (
+    return (
       <ResponsiveContainer width={"100%"} height={"100%"}>
         <BarChart
           data={barData}
@@ -119,13 +141,11 @@ const Graph = ({
       </ResponsiveContainer>
     );
   } else if (variant === "line") {
-    graphInfo =
-      "Deze grafiek geeft de pijnervaring weer op een schaal van 0 tot 10.";
-    graphComponent = (
+    return (
       <ResponsiveContainer width={"100%"} height={"100%"}>
-        <LineChart width={500} height={300} data={lineData}>
+        <LineChart width={500} height={300} data={data}>
           <XAxis
-            dataKey="name"
+            dataKey="date"
             axisLine={false}
             tickLine={false}
             stroke="#94a3b8"
@@ -145,28 +165,12 @@ const Graph = ({
             stroke="#3b82f6"
             strokeWidth={4}
             dot={false}
+            connectNulls
           />
         </LineChart>
       </ResponsiveContainer>
     );
   }
-
-  return (
-    <div className={clsx(styles.graphContainer, className)}>
-      <div className={styles.titleContainer}>
-        <div className={styles.graphTitle}>{title}</div>
-        <InfoTooltip
-          text={graphInfo}
-          onClick={() => {
-            if (setShowModal) setShowModal(true);
-            if (setModalContent)
-              setModalContent({ title: title, text: graphInfo });
-          }}
-        />
-      </div>
-      <div className={graphVariants({ variant })}>{graphComponent}</div>
-    </div>
-  );
 };
 
 export default Graph;

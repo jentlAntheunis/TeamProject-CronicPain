@@ -12,7 +12,12 @@ import BottomSheet from "../../../ui/BottomSheet/BottomSheet.jsx";
 import clsx from "clsx";
 import useStore from "../../../../core/hooks/useStore.jsx";
 import DailyPain from "../../../ui/DailyPain/DailyPain.jsx";
-import { getBonusQuestionnaire, getDailyQuestionnaire, getMovementQuestionnaire, getUserData } from "../../../../core/utils/apiCalls.js";
+import {
+  getBonusQuestionnaire,
+  getDailyQuestionnaire,
+  getMovementQuestionnaire,
+  getUserData,
+} from "../../../../core/utils/apiCalls.js";
 import { useUser } from "../../../app/auth/AuthProvider.jsx";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
@@ -51,12 +56,13 @@ const DashboardScreen = () => {
         try {
           const { data } = await getDailyQuestionnaire(user.id);
           setDailyQuestion(data);
-          console.log(data);
         } catch (error) {
-          toast.error("Er is iets misgegaan bij het ophalen van de vragenlijst.");
+          toast.error(
+            "Er is iets misgegaan bij het ophalen van de vragenlijst."
+          );
         }
       }
-    }
+    };
 
     dailyQuestionnaire();
   }, [data, user.id]);
@@ -80,7 +86,6 @@ const DashboardScreen = () => {
       const { data } = result;
       // TODO: Check if first movement questionnaire of the day and store in zustand
       setLoading(false);
-      console.log(data);
       resetEverything();
       setQuestionaireId(data.id);
       setQuestionaireCategory(questionnaireCategory);

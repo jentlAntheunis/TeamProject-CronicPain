@@ -25,7 +25,6 @@ const PatientList = ({ search }) => {
 
   const filteredPatients = data.data.filter((patient) => {
     const fullName = patient.lastName + " " + patient.firstName;
-    console.log(fullName);
     return fullName.toLowerCase().includes(search.toLowerCase());
   });
 

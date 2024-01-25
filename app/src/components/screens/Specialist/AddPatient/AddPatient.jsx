@@ -40,10 +40,6 @@ const AddPatient = () => {
   });
   const user = useUser();
 
-  if (user) {
-    console.log(user);
-  }
-
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
