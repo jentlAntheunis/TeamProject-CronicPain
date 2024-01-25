@@ -251,25 +251,33 @@ public class PatientService : IPatientService
 
   public async Task<IntOverDaysDTO> GetPainHistoryAsync(Guid patientId)
   {
-    var categories = new List<string>() { "pijn" };
-    var questionnaires = await _questionnaireService.GetQuestionnairesWithDetailsByPatientIdAsync(patientId, categories);
-    questionnaires = questionnaires.Where(q => q.Date.HasValue && q.Date.Value.Date >= DateTime.Now.AddDays(-30).Date).ToList();
-    var intOverDaysTDO = new IntOverDaysDTO
-    {
-      Days = new List<DayTDO>()
-    };
-    foreach (var questionnaire in questionnaires.OrderBy(q => q.Date))
-    {
-      var question = questionnaire.Questions.FirstOrDefault();
-      var answer = question.Answers.FirstOrDefault();
-      var option = await _optionRepository.GetOptionByIdAsync(answer.OptionId);
-      var dayTDO = new DayTDO
+      var categories = new List<string>() { "pijn" };
+      var questionnaires = await _questionnaireService.GetQuestionnairesWithDetailsByPatientIdAsync(patientId, categories);
+
+      questionnaires = questionnaires
+          .Where(q => q.Date.HasValue && q.Date.Value.Date >= DateTime.Now.AddDays(-30).Date)
+          .OrderBy(q => q.Date) 
+          .ToList();
+
+      var intOverDaysTDO = new IntOverDaysDTO
       {
-        Date = questionnaire.Date.Value.Date,
-        Int = int.TryParse(option.Position, out int result) ? result : 0
+          Days = new List<DayTDO>()
       };
-      intOverDaysTDO.Days.Add(dayTDO);
-    }
-    return intOverDaysTDO;
+
+      foreach (var questionnaire in questionnaires)
+      {
+          var question = questionnaire.Questions.FirstOrDefault();
+          var answer = question.Answers.FirstOrDefault();
+          var option = await _optionRepository.GetOptionByIdAsync(answer.OptionId);
+          var dayTDO = new DayTDO
+          {
+              Date = questionnaire.Date.Value.Date,
+              Int = int.TryParse(option.Position, out int result) ? result : 0
+          };
+          intOverDaysTDO.Days.Add(dayTDO);
+      }
+
+      return intOverDaysTDO;
   }
+
 }
