@@ -18,6 +18,7 @@ import Select from "../../../ui/Select/Select";
 import { getCategories, getScales } from "../../../../core/utils/apiCalls";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import { DatabaseCategories, DatabaseScales } from "../../../../core/config/questionCategories";
 
 const formSchema = z.object({
   question: z.string().min(5, { message: "Vraag is te kort" }),
@@ -105,7 +106,10 @@ const AddQuestion = () => {
               <FormControl>
                 <Select
                   placeholder="Kies een categorie"
-                  options={categoryData.data.map((category) => category.name)}
+                  options={categoryData.data
+                    .filter((category) => category.name !== "pijn")
+                    .map((category) => ({ id: category.id, name: DatabaseCategories[category.name] }))
+                  }
                 />
               </FormControl>
               <FormMessage />
@@ -115,7 +119,7 @@ const AddQuestion = () => {
               <FormControl>
                 <Select
                   placeholder="Kies een antwoordschaal"
-                  options={scaleData.data.map((scale) => scale.name)}
+                  options={scaleData.data.map((category) => ({ id: category.id, name: DatabaseScales[category.name] }))}
                 />
               </FormControl>
               <FormMessage />
