@@ -45,11 +45,6 @@ const Progress = () => {
     queryFn: () => getPainMonth(user.id),
   });
 
-  useEffect(() => {
-    console.log(painData)
-    console.log(user.id)
-  }, [painData])
-
   if (isLoading) return null;
 
   if (isError) {
