@@ -27,8 +27,6 @@ public interface IQuestionnaireService
   Task<bool> CheckIfFirstBonusOfTheDay(Guid userId);
 
   Task<List<QuestionnaireDetailDTO>> GetQuestionnairesWithDetailsByPatientIdAsync(Guid patientId, List<string> categories);
-
-
 }
 
 public class QuestionnaireService : IQuestionnaireService
@@ -177,12 +175,8 @@ public class QuestionnaireService : IQuestionnaireService
     }
     catch (Exception ex)
     {
-      Console.WriteLine($"Error occurred: {ex.Message}");
+      Console.WriteLine(ex);
       throw;
     }
   }
-
-
-
-
 }
