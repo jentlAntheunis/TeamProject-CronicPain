@@ -115,19 +115,26 @@ public class QuestionnaireService : IQuestionnaireService
                   }
 
                     var filteredAnswers = question.Answers
-                        .Where(a => a.QuestionnaireId == questionnaire.Id && (a.QuestionnaireIndex == 0 || a.QuestionnaireIndex == 1))
-                        .Select(a => new AnswerDTO
-                        {
-                            QuestionId = a.QuestionId,
-                            OptionId = a.OptionId,
-                            QuestionnaireIndex = a.QuestionnaireIndex
-                        }).ToList();
+                    .Where(a => a.QuestionnaireId == questionnaire.Id && (a.QuestionnaireIndex == 0 || a.QuestionnaireIndex == 1))
+                    .ToList();
+
+                    var optionContents = _context.Option
+                        .Where(o => filteredAnswers.Select(a => a.OptionId).Contains(o.Id))
+                        .ToDictionary(o => o.Id, o => o.Content);
+
+                    var answers = filteredAnswers.Select(a => new AnswerDTO
+                    {
+                        QuestionId = a.QuestionId,
+                        Id = a.OptionId,
+                        OptionContent = optionContents.ContainsKey(a.OptionId) ? optionContents[a.OptionId] : null,
+                        QuestionnaireIndex = a.QuestionnaireIndex
+                    }).ToList();
 
                     detailedQuestions.Add(new QuestionDetailDTO
                     {
                         Id = question.Id,
                         Content = question.Content,
-                        Answers = filteredAnswers
+                        Answers = answers
                     });
                 }
             }
