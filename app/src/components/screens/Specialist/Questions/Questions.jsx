@@ -83,7 +83,7 @@ const Questions = () => {
   };
 
   // TODO: change to config categories
-  const [filters, setFilters] = useState(["bewegingsvragen", "bonusvragen"]);
+  const [filters, setFilters] = useState([]);
 
   const handleFilterClick = (filter) => {
     if (filters.includes(filter)) {
