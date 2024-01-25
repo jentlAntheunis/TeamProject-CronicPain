@@ -62,7 +62,6 @@ const DashboardScreen = () => {
   // check if first launch of the day
   useEffect(() => {
     if (!userData) return;
-    console.log(userData);
 
     const dailyQuestionnaire = async () => {
       const lastLaunch = localStorage.getItem("lastLaunch");
