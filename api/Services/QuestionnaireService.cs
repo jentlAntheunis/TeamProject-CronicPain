@@ -114,48 +114,68 @@ public class QuestionnaireService : IQuestionnaireService
 
     public async Task<List<QuestionnaireDetailDTO>> GetQuestionnairesWithDetailsByPatientIdAsync(Guid patientId, List<string> categories)
     {
-        var questionnaires = await _questionnaireRepository.GetFullQuestionnairesByPatientIdAsync(patientId);
-        var detailedQuestionnaires = new List<QuestionnaireDetailDTO>();
-
-        foreach (var questionnaire in questionnaires)
+        try
         {
-            var detailedQuestions = new List<QuestionDetailDTO>();
+            var questionnaires = await _questionnaireRepository.GetFullQuestionnairesByPatientIdAsync(patientId);
 
-            foreach (var question in questionnaire.Questions)
+            if (questionnaires == null || !questionnaires.Any())
             {
-                // Check if the question's category is "beweging" or "bonus"
-                if (categories.Contains(question.Category.Name))
-                {
-                    var filteredAnswers = question.Answers
-                        .Where(a => a.QuestionnaireId == questionnaire.Id && (a.QuestionnaireIndex == 0 || a.QuestionnaireIndex == 1))
-                        .Select(a => new AnswerDTO
-                        {
-                            QuestionId = a.QuestionId,
-                            OptionId = a.OptionId,
-                            QuestionnaireIndex = a.QuestionnaireIndex
-                        }).ToList();
+                Console.WriteLine($"No questionnaires found for patientId: {patientId}");
+                return new List<QuestionnaireDetailDTO>();
+            }
 
-                    detailedQuestions.Add(new QuestionDetailDTO
+            var detailedQuestionnaires = new List<QuestionnaireDetailDTO>();
+
+            foreach (var questionnaire in questionnaires.Where(q => q.Date != null))
+            {
+                var detailedQuestions = new List<QuestionDetailDTO>();
+
+                foreach (var question in questionnaire.Questions)
+                {
+                    var category = await _context.Category.FirstOrDefaultAsync(c => c.Id == question.CategoryId);
+                    if (category != null && categories.Contains(category.Name))
                     {
-                        Id = question.Id,
-                        Content = question.Content,
-                        Answers = filteredAnswers
+                        var filteredAnswers = question.Answers
+                            .Where(a => a.Option != null)
+                            .Select(a => new AnswerDTO
+                            {
+                                QuestionId = a.QuestionId,
+                                OptionId = a.OptionId,
+                                OptionContent = a.Option.Content, 
+                                QuestionnaireIndex = a.QuestionnaireIndex
+                            }).ToList();
+
+                        detailedQuestions.Add(new QuestionDetailDTO
+                        {
+                            Id = question.Id,
+                            Content = question.Content,
+                            CategoryName = category.Name,
+                            Answers = filteredAnswers
+                        });
+                    }
+                }
+
+                if (detailedQuestions.Any())
+                {
+                    detailedQuestionnaires.Add(new QuestionnaireDetailDTO
+                    {
+                        Id = questionnaire.Id,
+                        Date = questionnaire.Date,
+                        PatientId = questionnaire.PatientId,
+                        Questions = detailedQuestions
                     });
                 }
             }
 
-            if (detailedQuestions.Any())
-            {
-                detailedQuestionnaires.Add(new QuestionnaireDetailDTO
-                {
-                    Id = questionnaire.Id,
-                    Date = questionnaire.Date,
-                    Questions = detailedQuestions,
-                    PatientId = questionnaire.PatientId
-                });
-            }
+            return detailedQuestionnaires;
         }
-
-        return detailedQuestionnaires;
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error occurred: {ex.Message}");
+            throw;
+        }
     }
+
+
+
 }
