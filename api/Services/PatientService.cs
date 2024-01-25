@@ -258,36 +258,42 @@ public class PatientService : IPatientService
     return IntOverDaysDTO;
   }
 
-  public async Task<IntOverDaysDTO> GetPainHistoryAsync(Guid patientId)
-  {
+   public async Task<IntOverDaysDTO> GetPainHistoryAsync(Guid patientId)
+    {
       var categories = new List<string>() { "pijn" };
+
       var questionnaires = await _questionnaireService.GetQuestionnairesWithDetailsByPatientIdAsync(patientId, categories);
 
       questionnaires = questionnaires
-          .Where(q => q.Date.HasValue && q.Date.Value.Date >= DateTime.Now.AddDays(-30).Date)
-          .OrderBy(q => q.Date)
-          .ToList();
+      .Where(q => q.Date.HasValue && q.Date.Value.Date >= DateTime.Now.AddDays(-30).Date).ToList()
+      .OrderBy(q => q.Date)
+      .ToList();
 
       var intOverDaysTDO = new IntOverDaysDTO
       {
-          Days = new List<DayTDO>()
+        Days = new List<DayTDO>()
       };
 
-      foreach (var questionnaire in questionnaires)
+      foreach (var questionnaire in questionnaires.OrderBy(q => q.Date))
       {
-          var question = questionnaire.Questions.FirstOrDefault();
-          var answer = question.Answers.FirstOrDefault();
-          var option = await _optionRepository.GetOptionByIdAsync(answer.OptionId);
-          var dayTDO = new DayTDO
+          foreach (var question in questionnaire.Questions)
           {
-              Date = questionnaire.Date.Value.Date,
-              Int = int.TryParse(option.Position, out int result) ? result : 0
-          };
-          intOverDaysTDO.Days.Add(dayTDO);
-      }
+              foreach (var answer in question.Answers)
+              {
+                  var option = await _optionRepository.GetOptionByIdAsync(answer.OptionId);
+                  var dayTDO = new DayTDO
+                  {
+                      Date = questionnaire.Date.Value.Date,
+                      Int = int.TryParse(option.Position, out int result) ? result : 0
+                  };
 
+                  intOverDaysTDO.Days.Add(dayTDO);
+              }
+          }
+      }
       return intOverDaysTDO;
-  }
+    }
+
 
   public async Task<bool> IsPatientLinkedToSpecialistAsync(Guid patientId, Guid specialistId)
   {
