@@ -4,7 +4,6 @@ using Pebbles.Context;
 using Pebbles.Models;
 using Pebbles.Repositories;
 using Pebbles.Services;
-using Pebbles.Swagger;
 using FirebaseAdmin;
 using FirebaseAdmin.Auth;
 using Google.Apis.Auth.OAuth2;
@@ -16,10 +15,6 @@ using Microsoft.AspNetCore.Authentication;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Versioning;
-using Microsoft.OpenApi.Any;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,8 +23,8 @@ builder.Services.AddControllers();
 
 JsonConvert.DefaultSettings = () => new JsonSerializerSettings
 {
-  Formatting = Formatting.Indented,
-  ContractResolver = new CamelCasePropertyNamesContractResolver()
+    Formatting = Formatting.Indented,
+    ContractResolver = new CamelCasePropertyNamesContractResolver()
 };
 
 //add services
@@ -58,53 +53,36 @@ builder.Services.AddScoped<IScaleRepository, ScaleRepository>();
 builder.Services.AddScoped<ISpecialistRepository, SpecialistRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-builder.Services.AddApiVersioning(setup =>
-  {
-    setup.DefaultApiVersion = new ApiVersion(2, 0);
-    setup.AssumeDefaultVersionWhenUnspecified = true;
-    setup.ReportApiVersions = true;
-    setup.ApiVersionReader = new HeaderApiVersionReader("api-version");
-  }
-);
-
-builder.Services.AddSwaggerGen(c =>
-{
-  c.SwaggerDoc("v1", new OpenApiInfo { Title = "Pebbles API", Version = "v1" });
-  c.SwaggerDoc("v2", new OpenApiInfo { Title = "Pebbles API", Version = "v2" });
-  c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
-
-  c.OperationFilter<AddRequiredHeaderParameter>();
-});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt =>
 {
-  // Define the FirebaseAuthentication security scheme
-  opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-  {
-    In = ParameterLocation.Header,
-    Description = "Please enter token",
-    Name = "Authorization",
-    Type = SecuritySchemeType.Http,
-    BearerFormat = "JWT",
-    Scheme = "bearer"
-  });
-
-  opt.AddSecurityRequirement(new OpenApiSecurityRequirement
-  {
+    // Define the FirebaseAuthentication security scheme
+    opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-      new OpenApiSecurityScheme
-      {
-        Reference = new OpenApiReference
+        In = ParameterLocation.Header,
+        Description = "Please enter token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "bearer"
+    });
+
+    opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
         {
-          Type=ReferenceType.SecurityScheme,
-          Id="Bearer"
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{}
         }
-      },
-      new string[]{}
-    }
-  });
+    });
 });
 
 
@@ -116,35 +94,35 @@ builder.Services.AddDbContext<PebblesContext>(options =>
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer("FirebaseAuthentication", options =>
     {
-      var projectId = "pebbles-294c6";
-      options.Authority = $"https://securetoken.google.com/{projectId}";
-      options.TokenValidationParameters = new TokenValidationParameters
-      {
-        ValidateIssuer = true,
-        ValidIssuer = $"https://securetoken.google.com/{projectId}",
-        ValidateAudience = true,
-        ValidAudience = projectId,
-        ValidateLifetime = true
-      };
-      options.Events = new JwtBearerEvents
-      {
-        OnMessageReceived = context =>
+        var projectId = "pebbles-294c6";
+        options.Authority = $"https://securetoken.google.com/{projectId}";
+        options.TokenValidationParameters = new TokenValidationParameters
         {
-          // Your Firebase authentication logic here
-          // You can use FirebaseAuthenticationHandler methods directly
-          return Task.CompletedTask;
-        }
-      };
+            ValidateIssuer = true,
+            ValidIssuer = $"https://securetoken.google.com/{projectId}",
+            ValidateAudience = true,
+            ValidAudience = projectId,
+            ValidateLifetime = true
+        };
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                // Your Firebase authentication logic here
+                // You can use FirebaseAuthenticationHandler methods directly
+                return Task.CompletedTask;
+            }
+        };
     });
 
 builder.Services.AddCors(options =>
 {
-  options.AddPolicy("CorsPolicy", builder =>
-  {
-    builder.WithOrigins("http://localhost:5173", "https://www.pebbles-health.be", "https://staging.pebbles-health.be")
-             .AllowAnyHeader()
-             .AllowAnyMethod();
-  });
+    options.AddPolicy("CorsPolicy", builder =>
+    {
+        builder.WithOrigins("http://localhost:5173", "https://www.pebbles-health.be", "https://staging.pebbles-health.be")
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
 });
 
 
@@ -159,7 +137,7 @@ var firebaseCredential = GoogleCredential.FromFile(serviceAccountPath);
 
 FirebaseApp.Create(new AppOptions
 {
-  Credential = firebaseCredential,
+    Credential = firebaseCredential,
 });
 
 var app = builder.Build();
@@ -167,16 +145,14 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-  app.UseSwagger();
-  app.UseSwaggerUI(c =>
-  {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pebbles API V1");
-    c.SwaggerEndpoint("/swagger/v2/swagger.json", "Pebbles API V2");
-
-    // Enable the "Authorize" button
-    c.OAuthClientId("swagger-ui");
-    c.OAuthAppName("Swagger UI");
-  });
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API V1");
+        // Enable the "Authorize" button
+        c.OAuthClientId("swagger-ui");
+        c.OAuthAppName("Swagger UI");
+    });
 }
 
 app.UseHttpsRedirection();
@@ -190,8 +166,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapControllerRoute(
-  name: "default",
-  pattern: "{controller=Default}"
+    name: "default",
+    pattern: "{controller=Default}"
 );
 
 app.Run();
