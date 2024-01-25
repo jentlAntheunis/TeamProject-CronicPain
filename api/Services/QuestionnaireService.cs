@@ -97,13 +97,12 @@ public class QuestionnaireService : IQuestionnaireService
         var questionnaires = await _questionnaireRepository.GetFullQuestionnairesByPatientIdAsync(patientId);
         var detailedQuestionnaires = new List<QuestionnaireDetailDTO>();
 
-        foreach (var questionnaire in questionnaires)
+        foreach (var questionnaire in questionnaires.Where(q => q.Date != null))
         {
             var detailedQuestions = new List<QuestionDetailDTO>();
 
             foreach (var question in questionnaire.Questions)
             {
-                // Check if the question's category is "beweging" or "bonus"
                 if (categories.Contains(question.Category.Name))
                 {
                     var filteredAnswers = question.Answers
@@ -124,13 +123,13 @@ public class QuestionnaireService : IQuestionnaireService
                 }
             }
 
-            // Add the questionnaire to the list only if it contains relevant questions
             if (detailedQuestions.Any())
             {
                 detailedQuestionnaires.Add(new QuestionnaireDetailDTO
                 {
                     Id = questionnaire.Id,
                     Date = questionnaire.Date,
+                    PatientId = questionnaire.PatientId,
                     Questions = detailedQuestions
                 });
             }
