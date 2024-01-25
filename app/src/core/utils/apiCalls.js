@@ -175,6 +175,13 @@ const getCategories = async () => await request({
   method: 'GET',
 })
 
+const addQuestion = async (data) => await request({
+  url: `/question/addquestion`,
+  method: 'POST',
+  data: data,
+})
+
+
 export {
   getUser,
   checkIfUserExists,
@@ -198,4 +205,5 @@ export {
   getQuestionnaires,
   getScales,
   getCategories,
+  addQuestion,
 };
