@@ -130,6 +130,11 @@ const getStreakHistory = async (userId) =>
     method: "GET",
   });
 
+const checkStreak = async (userId) => await request({
+  url: `/patients/${userId}/checkstreak`,
+  method: "PUT",
+});
+
 /**
  * Shop API calls
  */
@@ -179,4 +184,5 @@ export {
   activateColor,
   storeMovement,
   getStreakHistory,
+  checkStreak,
 };

@@ -14,10 +14,16 @@ import BottomSheet from "../../../ui/BottomSheet/BottomSheet.jsx";
 import clsx from "clsx";
 import useStore from "../../../../core/hooks/useStore.jsx";
 import DailyPain from "../../../ui/DailyPain/DailyPain.jsx";
-import { getBonusQuestionnaire, getDailyQuestionnaire, getMovementQuestionnaire, getUserData } from "../../../../core/utils/apiCalls.js";
+import {
+  checkStreak,
+  getBonusQuestionnaire,
+  getDailyQuestionnaire,
+  getMovementQuestionnaire,
+  getUserData,
+} from "../../../../core/utils/apiCalls.js";
 import { useUser } from "../../../app/auth/AuthProvider.jsx";
 import { toast } from "react-toastify";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import QuestionCategories from "../../../../core/config/questionCategories.js";
 
 const DashboardScreen = () => {
@@ -25,6 +31,7 @@ const DashboardScreen = () => {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [dailyQuestion, setDailyQuestion] = useState(null);
+  const [fetchData, setFetchData] = useState(false);
   const { resetEverything } = useStore();
   const setQuestions = useStore((state) => state.setQuestions);
   const setQuestionaireId = useStore((state) => state.setQuestionaireId);
@@ -37,38 +44,59 @@ const DashboardScreen = () => {
   const navigate = useNavigate();
 
   // fetch data
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["user"],
+  const {
+    mutate: streaksMutate,
+    isLoading: isStreaksLoading,
+    isError: isStreaksError,
+  } = useMutation({
+    mutationKey: ["streaks", user.id],
+    mutationFn: () => checkStreak(user.id),
+    onSuccess: async () => {
+      setFetchData(true);
+      await dailyQuestionnaire();
+    },
+  });
+  const { data, isError } = useQuery({
+    queryKey: ["user", user.id],
     queryFn: () => getUserData(user.id),
+    enabled: !!fetchData,
   });
 
-  // check if first launch of the day
   useEffect(() => {
-    if (!data) return;
+    if (checkFirstLaunch()) {
+      streaksMutate();
+    } else {
+      setFetchData(true);
+    }
+  }, [streaksMutate]);
 
-    const dailyQuestionnaire = async () => {
-      const lastLaunch = localStorage.getItem("lastLaunch");
-      const today = new Date().getDate();
-      if (lastLaunch !== today.toString()) {
-        try {
-          const { data } = await getDailyQuestionnaire(user.id);
-          setDailyQuestion(data);
-          console.log(data);
-        } catch (error) {
-          toast.error("Er is iets misgegaan bij het ophalen van de vragenlijst.");
-        }
+  const checkFirstLaunch = () => {
+    const lastLaunch = localStorage.getItem("lastLaunch");
+    const today = new Date().getDate();
+    if (lastLaunch !== today.toString()) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const dailyQuestionnaire = async () => {
+    if (checkFirstLaunch()) {
+      try {
+        const { data } = await getDailyQuestionnaire(user.id);
+        setDailyQuestion(data);
+      } catch (error) {
+        toast.error("Er is iets misgegaan bij het ophalen van de vragenlijst.");
       }
     }
+  };
 
-    dailyQuestionnaire();
-  }, [data, user.id]);
-
-  if (isLoading) return null;
-
-  if (isError) {
+  if (isError || isStreaksError) {
     toast.error("Er is iets misgegaan bij het ophalen van je gegevens.");
     return null;
   }
+
+  if (!data || isStreaksLoading) return null;
 
   const handleStartQuestionnaire = async (questionnaireCategory) => {
     setLoading(true);
@@ -82,7 +110,6 @@ const DashboardScreen = () => {
       const { data } = result;
       // TODO: Check if first movement questionnaire of the day and store in zustand
       setLoading(false);
-      console.log(data);
       resetEverything();
       setQuestionaireId(data.id);
       setQuestionaireCategory(questionnaireCategory);

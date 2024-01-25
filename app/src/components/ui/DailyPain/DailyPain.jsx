@@ -40,7 +40,7 @@ const DailyPain = ({ question, setQuestion }) => {
   }
 
   return (
-    <Modal showModal={question}>
+    <Modal easyClose={false} showModal={question}>
       {question && (
         <div className={styles.layout}>
           <div className={styles.question}>{question.questions[0].content}</div>
