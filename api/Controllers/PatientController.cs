@@ -253,7 +253,7 @@ namespace Pebbles.Controllers.V2
       }
     }
 
-     [HttpGet("{patientId}/movementtimeweek")]
+    [HttpGet("{patientId}/movementtimeweek")]
     public async Task<IActionResult> GetMovementTimeWeekAsync(Guid patientId)
     {
       try
@@ -358,5 +358,5 @@ namespace Pebbles.Controllers.V2
         return StatusCode(500, "Internal Server Error");
       }
     }
- }
+  }
 }

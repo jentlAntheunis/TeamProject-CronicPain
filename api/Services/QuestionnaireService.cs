@@ -173,7 +173,7 @@ public class QuestionnaireService : IQuestionnaireService
 
       return detailedQuestionnaires;
     }
-    catch(Exception ex)
+    catch (Exception ex)
     {
       Console.WriteLine(ex);
       throw;
