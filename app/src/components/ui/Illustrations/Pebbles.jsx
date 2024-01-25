@@ -381,7 +381,7 @@ const PebblesHappy = ({ size, style, className, shieldColor }) => (
       />
       <mask
         id="mask0_74_426"
-        style="mask-type:alpha"
+        style={{ maskType: "alpha" }}
         maskUnits="userSpaceOnUse"
         x="71"
         y="313"
@@ -396,7 +396,7 @@ const PebblesHappy = ({ size, style, className, shieldColor }) => (
       <g mask="url(#mask0_74_426)"></g>
       <mask
         id="mask1_74_426"
-        style="mask-type:alpha"
+        style={{ maskType: "alpha" }}
         maskUnits="userSpaceOnUse"
         x="71"
         y="313"

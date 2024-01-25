@@ -16,6 +16,7 @@ import {
   getBonusQuestionnaire,
   getDailyQuestionnaire,
   getMovementQuestionnaire,
+  getPebblesMood,
   getUserData,
 } from "../../../../core/utils/apiCalls.js";
 import { useUser } from "../../../app/auth/AuthProvider.jsx";
@@ -40,14 +41,27 @@ const DashboardScreen = () => {
   const navigate = useNavigate();
 
   // fetch data
-  const { data, isLoading, isError } = useQuery({
+  const {
+    data: userData,
+    isLoading: userLoading,
+    isError: userError,
+  } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUserData(user.id),
   });
 
+  const {
+    data: moodData,
+    isLoading: moodLoading,
+    isError: moodError,
+  } = useQuery({
+    queryKey: ["mood"],
+    queryFn: () => getPebblesMood(user.id),
+  });
+
   // check if first launch of the day
   useEffect(() => {
-    if (!data) return;
+    if (!userData) return;
 
     const dailyQuestionnaire = async () => {
       const lastLaunch = localStorage.getItem("lastLaunch");
@@ -65,11 +79,12 @@ const DashboardScreen = () => {
     };
 
     dailyQuestionnaire();
-  }, [data, user.id]);
+  }, [userData, user.id]);
 
-  if (isLoading) return null;
+  if (!userData || !moodData) return;
+  if (userLoading || moodLoading) return null;
 
-  if (isError) {
+  if (userError || moodError) {
     toast.error("Er is iets misgegaan bij het ophalen van je gegevens.");
     return null;
   }
@@ -109,8 +124,8 @@ const DashboardScreen = () => {
     <FullHeightScreen>
       <DailyPain question={dailyQuestion} setQuestion={setDailyQuestion} />
       <div className={styles.screen}>
-        <TopBar coins={data.data.coins} streak={data.data.streak} />
-        <Avatar />
+        <TopBar coins={userData.data.coins} streak={userData.data.streak} />
+        <Avatar color={userData.data.avatar.color.hex} mood={moodData.data} />
         <div className={styles.btnContainer}>
           <Button
             variant="primary"
