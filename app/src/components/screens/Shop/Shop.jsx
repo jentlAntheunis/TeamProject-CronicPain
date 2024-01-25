@@ -14,6 +14,7 @@ import {
   getUserData,
   activateColor,
   buyColor,
+  getPebblesMood,
 } from "../../../core/utils/apiCalls.js";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -27,7 +28,6 @@ const Shop = () => {
 
   const {
     data: userData,
-    isLoading: userLoading,
     isError: userError,
     refetch: refetchUserData,
   } = useQuery({
@@ -37,12 +37,19 @@ const Shop = () => {
 
   const {
     data: shopData,
-    isLoading: shopLoading,
     isError: shopError,
     refetch: refetchShopData,
   } = useQuery({
     queryKey: ["shop"],
     queryFn: () => getShopItems(user.id),
+  });
+
+  const {
+    data: moodData,
+    isError: moodError,
+  } = useQuery({
+    queryKey: ["mood"],
+    queryFn: () => getPebblesMood(user.id),
   });
 
   useEffect(() => {
@@ -63,10 +70,9 @@ const Shop = () => {
     }
   }, [shopData, modalContent.id]);
 
-  if (!userData || !shopData) return;
-  if (userLoading || shopLoading) return null;
+  if (!userData || !shopData || !moodData) return;
 
-  if (userError || shopError) {
+  if (userError || shopError || moodError) {
     toast.error("Er is iets misgegaan bij het ophalen van je gegevens.");
     return null;
   }
@@ -127,7 +133,7 @@ const Shop = () => {
             size={"12rem"}
             shieldColor={modalContent.hex}
             className={styles.pebbles}
-            mood={PebblesMoods.Happy}
+            mood={PebblesMoods.Neutral}
           />
         </div>
         {modalContent.owned ? (
@@ -167,6 +173,7 @@ const Shop = () => {
           size="13.75rem"
           shieldColor={shopData.data.find((item) => item.active)?.hex}
           className={styles.pebbles}
+          mood={moodData.data}
         />
         <div className={styles.shopItems}>
           {shopData.data.map((item) => (
