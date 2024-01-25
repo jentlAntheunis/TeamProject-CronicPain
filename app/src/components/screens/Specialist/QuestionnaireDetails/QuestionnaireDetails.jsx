@@ -6,6 +6,7 @@ import ScrollableScreen from "../../../ui/ScrollableScreen/ScrollableScreen";
 import styles from "./QuestionnaireDetails.module.css";
 import { dateToDateTimeString } from "../../../../core/utils/timeData";
 import { useEffect } from "react";
+import { DatabaseCategories } from "../../../../core/config/questionCategories";
 
 const questions = [
   {
@@ -96,11 +97,8 @@ const QuestionnaireDetails = () => {
           {dateToDateTimeString(new Date(state.questionnaire.date))}
         </PageHeading>
         <h2 className={styles.category}>
-          {state.questionnaire.categoryName === "beweging"
-            ? "Bewegingsvragen"
-            : state.questionnaire.categoryName === "bonus"
-            ? "Bonusvragen"
-            : null}
+          {state.questionnaire.categoryName &&
+            DatabaseCategories[state.questionnaire.categoryName]}
         </h2>
         {/* Questions */}
         <div className={styles.questionContainer}>

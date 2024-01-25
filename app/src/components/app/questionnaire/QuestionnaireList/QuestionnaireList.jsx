@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Button from "../../../ui/Button/Button";
 import { dateToDateTimeString } from "../../../../core/utils/timeData";
 import { SpecialistRoutes } from "../../../../core/config/routes";
+import { DatabaseCategories } from "../../../../core/config/questionCategories";
 
 const QuestionnaireList = ({ questionnaires, date }) => {
   const filteredQuestionnaires = questionnaires.filter((questionnaire) => {
@@ -25,7 +26,7 @@ const QuestionnaireList = ({ questionnaires, date }) => {
                 {dateToDateTimeString(new Date(questionnaire.date))}
               </div>
               <div className={styles.category}>
-                {questionnaire.categoryName === "beweging" ? "Bewegingsvragen" : questionnaire.categoryName === "bonus" ? "Bonusvragen" : null}
+                {questionnaire.categoryName && DatabaseCategories[questionnaire.categoryName]}
               </div>
             </div>
             {/* TODO: changeroute */}

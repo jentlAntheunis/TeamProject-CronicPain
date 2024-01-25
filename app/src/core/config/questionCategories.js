@@ -4,4 +4,11 @@ const QuestionCategories = {
   Daily: "DAILY"
 }
 
+export const DatabaseCategories = {
+  beweging: "Bewegingsvragen",
+  bonus: "Bonusvragen",
+  pijn: "Dagelijkse pijnvraag",
+}
+
+
 export default QuestionCategories;
