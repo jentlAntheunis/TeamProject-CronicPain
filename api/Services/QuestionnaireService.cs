@@ -128,28 +128,33 @@ public class QuestionnaireService : IQuestionnaireService
 
             foreach (var questionnaire in questionnaires.Where(q => q.Date != null))
             {
+                var firstQuestionCategory = questionnaire.Questions.FirstOrDefault()?.Category;
+                var questionnaireCategory = await _context.Category.FirstOrDefaultAsync(c => c.Id == firstQuestionCategory.Id);
+
                 var detailedQuestions = new List<QuestionDetailDTO>();
 
                 foreach (var question in questionnaire.Questions)
                 {
-                    var category = await _context.Category.FirstOrDefaultAsync(c => c.Id == question.CategoryId);
-                    if (category != null && categories.Contains(category.Name))
+                    var questionCategory = await _context.Category.FirstOrDefaultAsync(c => c.Id == question.CategoryId);
+                    if (questionCategory != null && categories.Contains(questionCategory.Name))
                     {
                         var filteredAnswers = question.Answers
-                            .Where(a => a.Option != null)
-                            .Select(a => new AnswerDTO
+                            .Select(a =>
                             {
-                                QuestionId = a.QuestionId,
-                                OptionId = a.OptionId,
-                                OptionContent = a.Option.Content, 
-                                QuestionnaireIndex = a.QuestionnaireIndex
+                                var option = _context.Option.FirstOrDefault(o => o.Id == a.OptionId);
+                                return new AnswerDTO
+                                {
+                                    QuestionId = a.QuestionId,
+                                    OptionId = a.OptionId,
+                                    OptionContent = option?.Content,
+                                    QuestionnaireIndex = a.QuestionnaireIndex
+                                };
                             }).ToList();
 
                         detailedQuestions.Add(new QuestionDetailDTO
                         {
                             Id = question.Id,
                             Content = question.Content,
-                            CategoryName = category.Name,
                             Answers = filteredAnswers
                         });
                     }
@@ -162,6 +167,7 @@ public class QuestionnaireService : IQuestionnaireService
                         Id = questionnaire.Id,
                         Date = questionnaire.Date,
                         PatientId = questionnaire.PatientId,
+                        CategoryName = questionnaireCategory?.Name,
                         Questions = detailedQuestions
                     });
                 }
@@ -175,6 +181,7 @@ public class QuestionnaireService : IQuestionnaireService
             throw;
         }
     }
+
 
 
 

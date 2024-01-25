@@ -64,6 +64,7 @@ public class QuestionnaireDetailDTO
     public Guid Id { get; set; }
     public Guid PatientId { get; set; }
     public DateTime? Date { get; set; }
+    public string CategoryName { get; set; }
     public List<QuestionDetailDTO> Questions { get; set; }
 }
 
@@ -71,6 +72,5 @@ public class QuestionDetailDTO
 {
     public Guid Id { get; set; }
     public string Content { get; set; }
-    public string CategoryName { get; set; }
     public List<AnswerDTO> Answers { get; set; }
 }
