@@ -22,11 +22,12 @@ const checkIfUserExists = async (email) => {
   return data;
 };
 
-const storePatient = async ({ firstName, lastName, email, specialistId }) => await request({
-  url: `/specialists/${specialistId}/patients`,
-  method: "POST",
-  data: { firstName, lastName, email },
-});
+const storePatient = async ({ firstName, lastName, email, specialistId }) =>
+  await request({
+    url: `/specialists/${specialistId}/patients`,
+    method: "POST",
+    data: { firstName, lastName, email },
+  });
 
 const storePatientList = async ({ patients, specialistId }) => await request({
   url: `/specialists/${specialistId}/patients/addlist`,
@@ -118,6 +119,17 @@ const addCoins = async (userId, amount) =>
     method: "PUT",
   });
 
+const getStreakHistory = async (userId) =>
+  await request({
+    url: `/patients/${userId}/streakhistory`,
+    method: "GET",
+  });
+
+const checkStreak = async (userId) => await request({
+  url: `/patients/${userId}/checkstreak`,
+  method: "PUT",
+});
+
 /**
  * Shop API calls
  */
@@ -195,6 +207,8 @@ export {
   buyColor,
   activateColor,
   storeMovement,
+  getStreakHistory,
+  checkStreak,
   getPebblesMood,
   getImpact,
   getMovementWeek,
