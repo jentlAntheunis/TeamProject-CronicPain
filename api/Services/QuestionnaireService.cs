@@ -101,10 +101,19 @@ public class QuestionnaireService : IQuestionnaireService
         {
             var detailedQuestions = new List<QuestionDetailDTO>();
 
+            string categoryName = null;
+
             foreach (var question in questionnaire.Questions)
             {
                 if (categories.Contains(question.Category.Name))
                 {
+
+                  if (categoryName == null)
+                  {
+                      // Fetch the category name for the first question
+                      categoryName = question.Category.Name;
+                  }
+
                     var filteredAnswers = question.Answers
                         .Where(a => a.QuestionnaireId == questionnaire.Id && (a.QuestionnaireIndex == 0 || a.QuestionnaireIndex == 1))
                         .Select(a => new AnswerDTO
@@ -128,6 +137,7 @@ public class QuestionnaireService : IQuestionnaireService
                 detailedQuestionnaires.Add(new QuestionnaireDetailDTO
                 {
                     Id = questionnaire.Id,
+                    CategoryName = categoryName,
                     Date = questionnaire.Date,
                     PatientId = questionnaire.PatientId,
                     Questions = detailedQuestions
