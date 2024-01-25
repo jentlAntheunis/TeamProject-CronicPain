@@ -24,7 +24,9 @@ const QuestionnaireList = ({ questionnaires, date }) => {
               <div className={styles.datetime}>
                 {dateToDateTimeString(new Date(questionnaire.date))}
               </div>
-              <div className={styles.category}>{questionnaire.category}</div>
+              <div className={styles.category}>
+                {questionnaire.categoryName === "beweging" ? "Bewegingsvragen" : questionnaire.categoryName === "bonus" ? "Bonusvragen" : null}
+              </div>
             </div>
             {/* TODO: changeroute */}
             <Link to={SpecialistRoutes.QuestionnaireDetails} state={{ questionnaire: questionnaire }}>

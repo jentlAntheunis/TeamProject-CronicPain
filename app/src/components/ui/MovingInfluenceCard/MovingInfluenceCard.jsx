@@ -53,7 +53,11 @@ const MovingInfluenceCard = ({ variant, data }) => {
         <div className={styles.small}>{results[variant]} keer</div>
       </div>
       <div className={styles.percentage}>
-        {Math.round((results[variant] / Object.keys(data).length) * 100)}%
+        {isNaN(results[variant] / Object.keys(data).length)
+          ? "0%"
+          : `${Math.round(
+              (results[variant] / Object.keys(data).length) * 100
+            )}%`}
       </div>
     </div>
   );

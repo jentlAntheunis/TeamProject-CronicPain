@@ -100,6 +100,18 @@ const PatientDetails = () => {
     queryFn: () => getQuestionnaires(id),
   });
 
+  useEffect(() => {
+    if (questionnairesData) {
+      console.log(questionnairesData.data);
+    }
+  }, [questionnairesData]);
+
+  useEffect(() => {
+    if (impactData) {
+      console.log(impactData.data);
+    }
+  }, [impactData]);
+
   // Sort questionnaires by date descending
   const sortedQuestionnaires = questionnairesData?.data.sort((a, b) => {
     const dateA = new Date(a.date);
@@ -190,11 +202,15 @@ const PatientDetails = () => {
             </Popover>
           </div>
           <div className={styles.questionnaires}>
-            {questionnairesData && (
+            {questionnairesData && questionnairesData?.data.length ? (
               <QuestionnaireList
                 questionnaires={sortedQuestionnaires}
                 date={date}
               />
+            ) : (
+              <div className={styles.noQuestionnaires}>
+                Geen vragenlijsten gevonden.
+              </div>
             )}
           </div>
         </div>

@@ -4,6 +4,8 @@ import NavBar from "../../../ui/NavBar/NavBar";
 import PageHeading from "../../../ui/PageHeading/PageHeading";
 import ScrollableScreen from "../../../ui/ScrollableScreen/ScrollableScreen";
 import styles from "./QuestionnaireDetails.module.css";
+import { dateToDateTimeString } from "../../../../core/utils/timeData";
+import { useEffect } from "react";
 
 const questions = [
   {
@@ -78,6 +80,9 @@ const questions = [
 
 const QuestionnaireDetails = () => {
   const { state } = useLocation();
+  useEffect(() => {
+    console.log(state.questionnaire, "state");
+  }, [state]);
 
   if (!state) return <Navigate to={SpecialistRoutes.PatientsOverview} />;
 
@@ -85,35 +90,41 @@ const QuestionnaireDetails = () => {
     <ScrollableScreen>
       <NavBar />
       <div className="container">
-        {/* TODO: change backLink  */}
-        <PageHeading backLink={SpecialistRoutes.PatientsOverview}>
-          {/* TODO: dynamically set title */}
-          03/01/2024 14:03
+        <PageHeading
+          backLink={`${SpecialistRoutes.PatientsOverview}/${state.questionnaire.patientId}`}
+        >
+          {dateToDateTimeString(new Date(state.questionnaire.date))}
         </PageHeading>
-        {/* TODO: dynamically set category */}
-        <h2 className={styles.category}>Bewegingsvragen</h2>
+        <h2 className={styles.category}>
+          {state.questionnaire.categoryName === "beweging"
+            ? "Bewegingsvragen"
+            : state.questionnaire.categoryName === "bonus"
+            ? "Bonusvragen"
+            : null}
+        </h2>
         {/* Questions */}
         <div className={styles.questionContainer}>
-          {questions.map((question, index) => (
+          {state.questionnaire.questions.map((question, index) => (
             <div className={styles.question} key={index}>
               <p className={styles.questionNumber}>Vraag {index + 1}</p>
-              <p className={styles.questionText}>{question.question}</p>
+              <p className={styles.questionText}>{question.content}</p>
               <div className={styles.answers}>
                 {question.answers.length > 1 ? (
                   <>
                     <div>
                       <p className={styles.answerLabel}>Antwoord voor:</p>
-                      <p className={styles.answerText}>{question.answers[0]}</p>
+                      {/* <p className={styles.answerText}>{question.answers[0]}</p> */}
+                      {console.log(question.answers, "answers")}
                     </div>
                     <div>
                       <p className={styles.answerLabel}>Antwoord na:</p>
-                      <p className={styles.answerText}>{question.answers[1]}</p>
+                      {/* <p className={styles.answerText}>{question.answers[1]}</p> */}
                     </div>
                   </>
                 ) : (
                   <div>
                     <p className={styles.answerLabel}>Antwoord:</p>
-                    <p className={styles.answerText}>{question.answers[0]}</p>
+                    {/* <p className={styles.answerText}>{question.answers[0]}</p> */}
                   </div>
                 )}
               </div>
