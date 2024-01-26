@@ -81,23 +81,16 @@ const AddQuestionCsv = () => {
         const questions = data.map((question) => {
           return {
             content: question[0],
+            categoryId: 1,
+            scaleId: 1,
+            specialistId: user.id,
           };
         });
 
         setLoading(true);
         try {
-          console.log({
-            questions,
-            categoryId: 1,
-            scaleId: 1,
-            specialistId: user.id,
-          });
-          // await mutateAsync({
-          //   questions,
-          //   categoryId: TODO,
-          //   scaleId: TODO,
-          //   specialistId: user.id,
-          // });
+          console.log(questions);
+          // await mutateAsync(questions); TODO
           setLoading(false);
           toast.success("Vragen toegevoegd");
           navigate(SpecialistRoutes.QuestionsOverview);
