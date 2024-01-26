@@ -70,14 +70,14 @@ const AddQuestion = () => {
     scaleId: "",
   };
 
-  const handleSubmit = (data) => {
+  const handleSubmit = async (data) => {
     setLoading(true);
     try {
       const newData = {
         ...data,
         specialistId: user.id,
       };
-      addMutation.mutate(newData);
+      await addMutation.mutateAsync(newData);
       toast.success("Vraag toegevoegd");
       setLoading(false);
       navigate(SpecialistRoutes.QuestionsOverview);
