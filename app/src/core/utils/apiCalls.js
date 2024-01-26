@@ -135,7 +135,7 @@ const checkStreak = async (userId) => await request({
  */
 const getShopItems = async (userId) =>
   await request({
-    url: `/store/${userId}`,
+    url: `/store/${userId}/byprice`,
     method: "GET",
   });
 
