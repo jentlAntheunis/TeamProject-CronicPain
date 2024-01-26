@@ -27,7 +27,7 @@ import {
   DatabaseScales,
 } from "../../../../core/config/questionCategories";
 import { useUser } from "../../../app/auth/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
   content: z.string().min(5, { message: "Vraag is te kort" }),
@@ -36,6 +36,8 @@ const formSchema = z.object({
 });
 
 const AddQuestion = () => {
+  const { state } = useLocation();
+  
   const [loading, setLoading] = useState(false);
 
   const user = useUser();
@@ -46,20 +48,12 @@ const AddQuestion = () => {
     mutationFn: addQuestion,
   });
 
-  const {
-    data: scaleData,
-    isLoading: scaleLoading,
-    isError: scaleError,
-  } = useQuery({
+  const { data: scaleData, isError: scaleError } = useQuery({
     queryKey: ["scale"],
     queryFn: () => getScales(),
   });
 
-  const {
-    data: categoryData,
-    isLoading: categoryLoading,
-    isError: categoryError,
-  } = useQuery({
+  const { data: categoryData, isError: categoryError } = useQuery({
     queryKey: ["category"],
     queryFn: () => getCategories(),
   });

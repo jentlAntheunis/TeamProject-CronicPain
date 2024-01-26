@@ -1,5 +1,7 @@
 import Button from "../../../ui/Button/Button";
 import styles from "./QuestionList.module.css";
+import { Link } from "react-router-dom";
+import { SpecialistRoutes } from "../../../../core/config/routes";
 
 const QuestionList = ({ questions, search, filters }) => {
   const filteredQuestions = questions
@@ -12,9 +14,7 @@ const QuestionList = ({ questions, search, filters }) => {
   return (
     <>
       {filteredQuestions.map((question, index) => {
-        const indexMatch = question
-          .toLowerCase()
-          .indexOf(search.toLowerCase());
+        const indexMatch = question.toLowerCase().indexOf(search.toLowerCase());
         const nameBeforeMatch = question.slice(0, indexMatch);
         const nameMatch = question.slice(
           indexMatch,
@@ -28,9 +28,11 @@ const QuestionList = ({ questions, search, filters }) => {
               <span className={styles.match}>{nameMatch}</span>
               {nameAfterMatch}
             </div>
-            <Button variant="tertiary" size="superSmall">
-              Aanpassen
-            </Button>
+            <Link to={SpecialistRoutes.AddQuestion} state={{question: question}}>
+              <Button variant="tertiary" size="superSmall">
+                Aanpassen
+              </Button>
+            </Link>
           </div>
         );
       })}
