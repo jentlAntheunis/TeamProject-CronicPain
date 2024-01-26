@@ -6,6 +6,7 @@ public class QuestionnaireDTO
     public Guid Id { get; set; }
     public Guid PatientId { get; set; }
     public List<QuestionDTO> Questions { get; set; }
+
 }
 
 public class QuestionDTO
@@ -16,6 +17,7 @@ public class QuestionDTO
     public Guid? SpecialistId { get; set; }
     public Guid? ScaleId { get; set; }
     public string Content { get; set; }
+    public ScaleDTO Scale { get; set; } 
 
 }
 
