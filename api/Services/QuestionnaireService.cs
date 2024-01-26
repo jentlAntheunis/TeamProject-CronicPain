@@ -107,27 +107,37 @@ public class QuestionnaireService : IQuestionnaireService
             {
                 if (categories.Contains(question.Category.Name))
                 {
+                    if (categoryName == null)
+                    {
+                        // Fetch the category name for the first question
+                        categoryName = question.Category.Name;
+                    }
 
-                  if (categoryName == null)
-                  {
-                      // Fetch the category name for the first question
-                      categoryName = question.Category.Name;
-                  }
-
+                    // Initialize filteredAnswers here
                     var filteredAnswers = question.Answers
                         .Where(a => a.QuestionnaireId == questionnaire.Id && (a.QuestionnaireIndex == 0 || a.QuestionnaireIndex == 1))
-                        .Select(a => new AnswerDTO
-                        {
-                            QuestionId = a.QuestionId,
-                            OptionId = a.OptionId,
-                            QuestionnaireIndex = a.QuestionnaireIndex
-                        }).ToList();
+                        .ToList();
+
+                    // Fetch options for filtered answers
+                    var optionIds = filteredAnswers.Select(a => a.OptionId).Distinct().ToList();
+                    var options = await _context.Option
+                        .Where(o => optionIds.Contains(o.Id))
+                        .ToListAsync();
+
+                    var answerDTOs = filteredAnswers.Select(a => new AnswerDTO
+                    {
+                        QuestionId = a.QuestionId,
+                        OptionId = a.OptionId,
+                        OptionContent = options.FirstOrDefault(o => o.Id == a.OptionId)?.Content,
+                        Position = options.FirstOrDefault(o => o.Id == a.OptionId)?.Position,
+                        QuestionnaireIndex = a.QuestionnaireIndex
+                    }).ToList();
 
                     detailedQuestions.Add(new QuestionDetailDTO
                     {
                         Id = question.Id,
                         Content = question.Content,
-                        Answers = filteredAnswers
+                        Answers = answerDTOs
                     });
                 }
             }
@@ -147,4 +157,5 @@ public class QuestionnaireService : IQuestionnaireService
 
         return detailedQuestionnaires;
     }
+
 }
