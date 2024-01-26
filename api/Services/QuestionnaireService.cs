@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 
+
 public interface IQuestionnaireService
 {
     Task<Questionnaire> GetQuestionnaireByIdAsync(Guid id);
@@ -93,73 +94,87 @@ public class QuestionnaireService : IQuestionnaireService
         return isFirstQuestionnaire;
     }
 
-    public async Task<bool> CheckIfBonusDone(Guid userId)
+  public async Task<bool> CheckIfBonusDone(Guid userId)
+  {
+    DateTime currentDate = DateTime.Now.Date;
+
+    var questionnaireExists = await _context.Questionnaire
+      .Include(q => q.Questions)
+        .ThenInclude(q => q.Category)
+      .Where(q => q.PatientId == userId)
+      .Where(q => q.Date.HasValue && q.Date.Value.Date == currentDate)
+      .AnyAsync(q => q.Questions.Any(q => q.Category.Name == "Bonus"));
+
+    return questionnaireExists;
+  }
+
+  public async Task<List<QuestionnaireDetailDTO>> GetQuestionnairesWithDetailsByPatientIdAsync(Guid patientId, List<string> categories)
+{
+    var questionnaires = await _questionnaireRepository.GetFullQuestionnairesByPatientIdAsync(patientId);
+    var detailedQuestionnaires = new List<QuestionnaireDetailDTO>();
+
+    foreach (var questionnaire in questionnaires)
     {
-        DateTime currentDate = DateTime.Now.Date;
+        // Skip if Date is null
+        if (questionnaire.Date == null) continue;
 
-        var questionnaireExists = await _context.Questionnaire
-          .Include(q => q.Questions)
-            .ThenInclude(q => q.Category)
-          .Where(q => q.PatientId == userId)
-          .Where(q => q.Date.HasValue && q.Date.Value.Date == currentDate)
-          .AnyAsync(q => q.Questions.Any(q => q.Category.Name == "Bonus"));
+        var detailedQuestions = new List<QuestionDetailDTO>();
+        string categoryName = null;
 
-        return questionnaireExists;
-    }
-
-    public async Task<List<QuestionnaireDetailDTO>> GetQuestionnairesWithDetailsByPatientIdAsync(Guid patientId, List<string> categories)
-    {
-        var questionnaires = await _questionnaireRepository.GetFullQuestionnairesByPatientIdAsync(patientId);
-        var detailedQuestionnaires = new List<QuestionnaireDetailDTO>();
-
-        foreach (var questionnaire in questionnaires.Where(q => q.Date != null))
+        foreach (var question in questionnaire.Questions)
         {
-            var detailedQuestions = new List<QuestionDetailDTO>();
+            if (!categories.Contains(question.Category.Name)) continue;
 
-            string categoryName = null;
-
-            foreach (var question in questionnaire.Questions)
+            if (categoryName == null)
             {
-                if (categories.Contains(question.Category.Name))
-                {
-
-                  if (categoryName == null)
-                  {
-                      // Fetch the category name for the first question
-                      categoryName = question.Category.Name;
-                  }
-
-                    var filteredAnswers = question.Answers
-                        .Where(a => a.QuestionnaireId == questionnaire.Id && (a.QuestionnaireIndex == 0 || a.QuestionnaireIndex == 1))
-                        .Select(a => new AnswerDTO
-                        {
-                            QuestionId = a.QuestionId,
-                            OptionId = a.OptionId,
-                            QuestionnaireIndex = a.QuestionnaireIndex
-                        }).ToList();
-
-                    detailedQuestions.Add(new QuestionDetailDTO
-                    {
-                        Id = question.Id,
-                        Content = question.Content,
-                        Answers = filteredAnswers
-                    });
-                }
+                categoryName = question.Category.Name;
             }
 
-            if (detailedQuestions.Any())
+            var questionContent = await _context.Question.FirstOrDefaultAsync(q => q.Id == question.Id);
+
+            var filteredAnswers = question.Answers
+                .Where(a => a.QuestionnaireId == questionnaire.Id && (a.QuestionnaireIndex == 0 || a.QuestionnaireIndex == 1))
+                .ToList();
+
+            var optionIds = filteredAnswers.Select(a => a.OptionId).Distinct().ToList();
+            var options = await _context.Option
+                .Where(o => optionIds.Contains(o.Id))
+                .ToListAsync();
+
+            var answerDtos = filteredAnswers.Select(answer => new AnswerDTO
             {
-                detailedQuestionnaires.Add(new QuestionnaireDetailDTO
-                {
-                    Id = questionnaire.Id,
-                    CategoryName = categoryName,
-                    Date = questionnaire.Date,
-                    PatientId = questionnaire.PatientId,
-                    Questions = detailedQuestions
-                });
-            }
+                Id = answer.Id,
+                QuestionId = answer.QuestionId,
+                OptionId = answer.OptionId,
+                OptionContent = options.FirstOrDefault(o => o.Id == answer.OptionId)?.Content,
+                Position = options.FirstOrDefault(o => o.Id == answer.OptionId)?.Position, // Add Position here
+                QuestionnaireIndex = answer.QuestionnaireIndex
+            }).ToList();
+
+            detailedQuestions.Add(new QuestionDetailDTO
+            {
+                Id = question.Id,
+                Content = questionContent?.Content,
+                Answers = answerDtos
+            });
         }
 
-        return detailedQuestionnaires;
+        if (detailedQuestions.Any())
+        {
+            detailedQuestionnaires.Add(new QuestionnaireDetailDTO
+            {
+                Id = questionnaire.Id,
+                CategoryName = categoryName,  // Use categoryName here
+                Date = questionnaire.Date,
+                PatientId = questionnaire.PatientId,
+                Questions = detailedQuestions
+            });
+        }
     }
+
+    return detailedQuestionnaires;
+}
+
+
+
 }
