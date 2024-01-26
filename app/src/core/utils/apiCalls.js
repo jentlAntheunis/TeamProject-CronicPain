@@ -175,6 +175,11 @@ const storeMovement = async (userId, totalTime) =>
 /**
  * Questionnaire Details from Patient API calls
  */
+const validatePatient = async (specialistId, patientId) => await request({
+  url: `/${specialistId}/haspatient/${patientId}`,
+  method: 'GET',
+})
+
 const getImpact = async (userId) => await request({
   url: `/answers/user/${userId}/impacts`,
   method: 'GET',
@@ -235,6 +240,7 @@ export {
   getStreakHistory,
   checkStreak,
   getPebblesMood,
+  validatePatient,
   getImpact,
   getMovementWeek,
   getPainMonth,
