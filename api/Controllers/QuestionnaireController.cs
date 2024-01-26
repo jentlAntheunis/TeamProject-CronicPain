@@ -18,99 +18,112 @@ using Pebbles.Repositories;
 
 public class QuestionnaireController : ControllerBase
 {
-    private readonly IConfiguration _configuration;
-    private readonly IQuestionRepository _questionRepository;
-    private readonly IQuestionService _questionService;
+  private readonly IConfiguration _configuration;
+  private readonly IQuestionRepository _questionRepository;
+  private readonly IQuestionService _questionService;
 
-    private readonly IQuestionnaireRepository _questionnaireRepository;
-    private readonly IQuestionnaireService _questionnaireService;
+  private readonly IQuestionnaireRepository _questionnaireRepository;
+  private readonly IQuestionnaireService _questionnaireService;
 
 
-    public QuestionnaireController(IQuestionService questionService, IConfiguration configuration, IQuestionnaireRepository questionnaireRepository, IQuestionnaireService questionnaireService, IQuestionRepository questionRepository)
+  public QuestionnaireController(IQuestionService questionService, IConfiguration configuration, IQuestionnaireRepository questionnaireRepository, IQuestionnaireService questionnaireService, IQuestionRepository questionRepository)
+  {
+    _configuration = configuration;
+    _questionService = questionService;
+    _questionnaireRepository = questionnaireRepository;
+    _questionnaireService = questionnaireService;
+    _questionRepository = questionRepository;
+  }
+
+  [HttpGet("movementquestionnaire/{patientId}")]
+  public async Task<IActionResult> CreateMovementQuestionnaire(Guid patientId)
+  {
+    try
     {
-        _configuration = configuration;
-        _questionService = questionService;
-        _questionnaireRepository = questionnaireRepository;
-        _questionnaireService = questionnaireService;
-        _questionRepository = questionRepository;
-    }
+      var questionnaireDTO = await _questionnaireRepository.AddMovementQuestionnaireAsync(patientId);
 
-    [HttpGet("movementquestionnaire/{patientId}")]
-    public async Task<IActionResult> CreateMovementQuestionnaire(Guid patientId)
+      if (questionnaireDTO == null)
+      {
+        return NotFound("Questionnaire not found.");
+      }
+
+      return Ok(questionnaireDTO);
+    }
+    catch (Exception ex)
     {
-        try
-        {
-            var questionnaireDTO = await _questionnaireRepository.AddMovementQuestionnaireAsync(patientId);
-
-            if (questionnaireDTO == null)
-            {
-                return NotFound("Questionnaire not found.");
-            }
-
-            return Ok(questionnaireDTO);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Failed to create movement questionnaire: {ex.Message}");
-        }
+      return BadRequest($"Failed to create movement questionnaire: {ex.Message}");
     }
+  }
 
 
 
-    [HttpGet("bonusquestionnaire/{patientId}")]
-    public async Task<IActionResult> CreateBonusQuestionnaire(Guid patientId)
+  [HttpGet("bonusquestionnaire/{patientId}")]
+  public async Task<IActionResult> CreateBonusQuestionnaire(Guid patientId)
+  {
+    try
     {
-        try
-        {
-            var questionnaireDTO = await _questionnaireRepository.AddBonusQuestionnaireAsync(patientId);
+      var questionnaireDTO = await _questionnaireRepository.AddBonusQuestionnaireAsync(patientId);
 
-            if (questionnaireDTO == null)
-            {
-                return NotFound("Questionnaire not found.");
-            }
+      if (questionnaireDTO == null)
+      {
+        return NotFound("Questionnaire not found.");
+      }
 
-            return Ok(questionnaireDTO);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Failed to create bonus questionnaire: {ex.Message}");
-        }
+      return Ok(questionnaireDTO);
     }
-
-    [HttpGet("dailypainquestionnaire/{patientId}")]
-    public async Task<IActionResult> CreateDailyPainQuestionnaire(Guid patientId)
+    catch (Exception ex)
     {
-        try
-        {
-            var questionnaireDTO = await _questionnaireRepository.AddDailyPainQuestionnaireAsync(patientId);
-
-            if (questionnaireDTO == null)
-            {
-                return NotFound("Questionnaire not found.");
-            }
-
-            return Ok(questionnaireDTO);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Failed to create daily pain questionnaire: {ex.Message}");
-        }
+      return BadRequest($"Failed to create bonus questionnaire: {ex.Message}");
     }
+  }
 
-
-    [HttpGet("checkIfFirstQuestionnaireOfTheDay/{patientId}")]
-    public async Task<IActionResult> CheckIfFirstQuestionnaireOfTheDay(Guid patientId)
+  [HttpGet("dailypainquestionnaire/{patientId}")]
+  public async Task<IActionResult> CreateDailyPainQuestionnaire(Guid patientId)
+  {
+    try
     {
-        try
-        {
-            var isFirstQuestionnaire = await _questionnaireService.CheckIfFirstQuestionnaireOfTheDay(patientId);
-            
+      var questionnaireDTO = await _questionnaireRepository.AddDailyPainQuestionnaireAsync(patientId);
 
-            return Ok(isFirstQuestionnaire);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Failed to check if it's the first questionnaire of the day: {ex.Message}");
-        }
+      if (questionnaireDTO == null)
+      {
+        return NotFound("Questionnaire not found.");
+      }
+
+      return Ok(questionnaireDTO);
     }
+    catch (Exception ex)
+    {
+      return BadRequest($"Failed to create daily pain questionnaire: {ex.Message}");
+    }
+  }
+
+
+  [HttpGet("checkIfFirstQuestionnaireOfTheDay/{patientId}")]
+  public async Task<IActionResult> CheckIfFirstQuestionnaireOfTheDay(Guid patientId)
+  {
+    try
+    {
+      var isFirstQuestionnaire = await _questionnaireService.CheckIfFirstQuestionnaireOfTheDay(patientId);
+      return Ok(isFirstQuestionnaire);
+    }
+    catch (Exception ex)
+    {
+      return BadRequest($"Failed to check if it's the first questionnaire of the day: {ex.Message}");
+    }
+  }
+
+  [HttpGet("checkifbonusdone/{patientId}")]
+  public async Task<IActionResult> CheckIfBonusDone(Guid patientId)
+  {
+    try
+    {
+      var isBonusDone = await _questionnaireService.CheckIfBonusDone(patientId);
+      return Ok(isBonusDone);
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine(ex);
+      return StatusCode(500, $"Failed to check if bonus is done");
+    }
+  }
 }
