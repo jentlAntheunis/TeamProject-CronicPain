@@ -248,7 +248,7 @@ public class PatientService : IPatientService
     };
     return IntOverDaysDTO;
   }
-
+/*
   public async Task<IntOverDaysDTO> GetPainHistoryAsync(Guid patientId)
   {
       var categoryName = "pijn";
@@ -295,11 +295,12 @@ public class PatientService : IPatientService
 
       return intOverDaysDTO;
   }
+  */
 
 
 
 
-/*
+
   public async Task<IntOverDaysDTO> GetPainHistoryAsync(Guid patientId)
   {
     var categoryName = "pijn";
@@ -339,6 +340,6 @@ public class PatientService : IPatientService
       }
 
     return intOverDaysTDO;
-    */
-  }
 
+  }
+}
