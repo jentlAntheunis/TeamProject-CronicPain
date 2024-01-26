@@ -20,6 +20,7 @@ const SpecialistRoutes = {
   PatientDetails: "/specialist/patients/:id",
   QuestionsOverview: "/specialist/questions",
   AddQuestion: "/specialist/questions/add",
+  AddQuestionCsv: "/specialist/questions/add/csv",
   QuestionnaireDetails: "/specialist/questionnaire/details",
 };
 
