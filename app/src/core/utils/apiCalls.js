@@ -22,11 +22,12 @@ const checkIfUserExists = async (email) => {
   return data;
 };
 
-const storePatient = async ({ firstName, lastName, email, specialistId }) => await request({
-  url: `/specialists/${specialistId}/patients`,
-  method: "POST",
-  data: { firstName, lastName, email },
-});
+const storePatient = async ({ firstName, lastName, email, specialistId }) =>
+  await request({
+    url: `/specialists/${specialistId}/patients`,
+    method: "POST",
+    data: { firstName, lastName, email },
+  });
 
 const storePatientList = async ({ patients, specialistId }) => await request({
   url: `/specialists/${specialistId}/patients/addlist`,
@@ -118,12 +119,23 @@ const addCoins = async (userId, amount) =>
     method: "PUT",
   });
 
+const getStreakHistory = async (userId) =>
+  await request({
+    url: `/patients/${userId}/streakhistory`,
+    method: "GET",
+  });
+
+const checkStreak = async (userId) => await request({
+  url: `/patients/${userId}/checkstreak`,
+  method: "PUT",
+});
+
 /**
  * Shop API calls
  */
 const getShopItems = async (userId) =>
   await request({
-    url: `/store/${userId}`,
+    url: `/store/${userId}/byprice`,
     method: "GET",
   });
 
@@ -178,6 +190,26 @@ const getQuestionnaires = async (userId) => await request({
   method: 'GET',
 })
 
+/**
+ * Question API calls
+ */
+const getScales = async () => await request({
+  url: `/scale/all`,
+  method: 'GET',
+})
+
+const getCategories = async () => await request({
+  url: `/category/all`,
+  method: 'GET',
+})
+
+const addQuestion = async (data) => await request({
+  url: `/question/addquestion`,
+  method: 'POST',
+  data: data,
+})
+
+
 export {
   getUser,
   checkIfUserExists,
@@ -195,9 +227,14 @@ export {
   buyColor,
   activateColor,
   storeMovement,
+  getStreakHistory,
+  checkStreak,
   getPebblesMood,
   getImpact,
   getMovementWeek,
   getPainMonth,
   getQuestionnaires,
+  getScales,
+  getCategories,
+  addQuestion,
 };
