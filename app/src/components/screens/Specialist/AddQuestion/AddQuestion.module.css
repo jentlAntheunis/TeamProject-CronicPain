@@ -6,7 +6,7 @@
   display: flex;
   justify-content: space-between;
   align-items: end;
-  padding: 1rem 0;
+  padding-bottom: 1rem;
 }
 
 .csvImport {

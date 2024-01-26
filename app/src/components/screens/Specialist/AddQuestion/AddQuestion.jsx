@@ -9,6 +9,7 @@ import { Form, FormControl, FormItem, FormLabel, FormMessage } from "../../../ap
 import Input from "../../../ui/Input/Input";
 import { useState } from "react";
 import Select from "../../../ui/Select/Select";
+import { Link } from "react-router-dom";
 
 const formSchema = z.object({
   question: z.string().min(5, { message: "Vraag is te kort" }),
@@ -38,9 +39,11 @@ const AddQuestion = () => {
             Vraag toevoegen
           </PageHeading>
           <div className="desktop-only">
+          <Link to={SpecialistRoutes.AddQuestionCsv}>
             <Button variant="secondary" className={styles.csvImport}>
               CSV importeren
             </Button>
+          </Link>
           </div>
         </div>
         <Form
