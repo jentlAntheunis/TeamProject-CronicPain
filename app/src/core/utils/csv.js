@@ -34,6 +34,14 @@ const validatePatientCsv = (data) => {
     throw new Error("Het bestand bevat kolomnamen");
   }
 
+  const hasNoEmptyFields = data.every((row) => {
+    return row.every((field) => field !== "");
+  });
+
+  if (!hasNoEmptyFields) {
+    throw new Error("Het bestand bevat lege velden");
+  }
+
   const hasValidEmails = data.every((row) => {
     const email = row[2];
     return z.string().email().safeParse(email).success;
@@ -43,13 +51,6 @@ const validatePatientCsv = (data) => {
     throw new Error("Het bestand bevat ongeldige e-mailadressen");
   }
 
-  const hasNoEmptyFields = data.every((row) => {
-    return row.every((field) => field !== "");
-  });
-
-  if (!hasNoEmptyFields) {
-    throw new Error("Het bestand bevat lege velden");
-  }
 
   const hasNoDuplicates = data.every((row, index) => {
     const email = row[2];
@@ -77,6 +78,9 @@ const validateQuestionCsv = (data) => {
     "vraag",
     "question",
     "content",
+    "vragen",
+    "questions",
+    "contents",
   ];
 
   const hasNoColumnNames = data.every((row) => {
@@ -89,15 +93,6 @@ const validateQuestionCsv = (data) => {
     throw new Error("Het bestand bevat een kolomnaam");
   }
 
-  const hasValidQuestions = data.every((row) => {
-    const question = row[0];
-    return z.string().min(5).safeParse(question).success;
-  });
-
-  if (!hasValidQuestions) {
-    throw new Error("Het bestand bevat ongeldige vragen");
-  }
-
   const hasNoEmptyFields = data.every((row) => {
     return row.every((field) => field !== "");
   });
@@ -105,6 +100,17 @@ const validateQuestionCsv = (data) => {
   if (!hasNoEmptyFields) {
     throw new Error("Het bestand bevat lege velden");
   }
+
+  const hasValidQuestions = data.every((row) => {
+    const question = row[0];
+    console.log(z.string().min(5).safeParse(question).success);
+    return z.string().min(5).safeParse(question).success;
+  });
+
+  if (!hasValidQuestions) {
+    throw new Error("Het bestand bevat ongeldige vragen");
+  }
+
 
   const hasNoDuplicates = data.every((row, index) => {
     const question = row[0];
