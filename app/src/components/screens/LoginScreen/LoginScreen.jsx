@@ -21,8 +21,11 @@ import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
 import FullHeightScreen from "../../ui/FullHeightScreen/FullHeightScreen";
 import { checkIfUserExists } from "../../../core/utils/apiCalls";
+import useTitle from "../../../core/hooks/useTitle";
 
 const LoginScreen = () => {
+  useTitle("Inloggen");
+
   return (
     <FullHeightScreen className={`margins-desktop ${styling.mainContainer}`}>
         {/* Top part */}

@@ -24,6 +24,7 @@ import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { SpecialistRoutes } from "../../../../core/config/routes";
 import ScrollableScreen from "../../../ui/ScrollableScreen/ScrollableScreen";
+import useTitle from "../../../../core/hooks/useTitle";
 
 const formSchema = z.object({
   lastName: z.string().min(2, { message: "Achternaam is te kort" }),
@@ -38,6 +39,8 @@ const AddPatient = () => {
   const sendMailMutation = useMutation({
     mutationFn: sendMailToPatient,
   });
+
+  useTitle("Patiënt toevoegen");
   const user = useUser();
 
   const navigate = useNavigate();

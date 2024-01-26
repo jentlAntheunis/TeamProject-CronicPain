@@ -30,6 +30,7 @@ import {
 import { Impacts } from "../../../../core/config/impacts";
 import { fillMissingDates } from "../../../../core/utils/patientDetails";
 import QuestionnaireList from "../../../app/questionnaire/QuestionnaireList/QuestionnaireList";
+import useTitle from "../../../../core/hooks/useTitle";
 
 const questionnaires = [
   {
@@ -99,6 +100,12 @@ const PatientDetails = () => {
     queryKey: ["questionnaires", id],
     queryFn: () => getQuestionnaires(id),
   });
+
+  useTitle(
+    patientData
+      ? patientData.data.lastName + " " + patientData.data.firstName
+      : "Patiënt details"
+  );
 
   // Sort questionnaires by date descending
   const sortedQuestionnaires = questionnairesData?.data.sort((a, b) => {

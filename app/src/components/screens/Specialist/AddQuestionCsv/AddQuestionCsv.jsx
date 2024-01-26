@@ -28,6 +28,7 @@ import {
   DatabaseCategories,
   DatabaseScales,
 } from "../../../../core/config/questionCategories";
+import useTitle from "../../../../core/hooks/useTitle";
 
 const formSchema = z.object({
   csv: z
@@ -57,6 +58,7 @@ const AddQuestionCsv = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  useTitle("Vragen toevoegen");
   const user = useUser();
 
   const navigate = useNavigate();

@@ -24,6 +24,7 @@ import { useUser } from "../../../app/auth/AuthProvider.jsx";
 import { toast } from "react-toastify";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import QuestionCategories from "../../../../core/config/questionCategories.js";
+import useTitle from "../../../../core/hooks/useTitle.jsx";
 
 const DashboardScreen = () => {
   // state management
@@ -39,6 +40,7 @@ const DashboardScreen = () => {
   );
 
   // hooks
+  useTitle("Dashboard");
   const user = useUser();
   const navigate = useNavigate();
 

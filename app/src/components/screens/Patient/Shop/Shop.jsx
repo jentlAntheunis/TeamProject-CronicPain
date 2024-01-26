@@ -1,29 +1,31 @@
 import { X } from "@phosphor-icons/react";
-import Button from "../../ui/Button/Button";
-import Coin from "../../ui/Icons/Coin";
-import Pebbles from "../../ui/Illustrations/Pebbles";
-import Modal from "../../ui/Modal/Modal";
-import ScrollableScreen from "../../ui/ScrollableScreen/ScrollableScreen";
-import TabBarNav from "../../ui/TabBarNav/TabBarNav";
-import TopBar from "../../ui/TopBar/TopBar";
+import Button from "../../../ui/Button/Button.jsx";
+import Coin from "../../../ui/Icons/Coin.jsx";
+import Pebbles from "../../../ui/Illustrations/Pebbles.jsx";
+import Modal from "../../../ui/Modal/Modal.jsx";
+import ScrollableScreen from "../../../ui/ScrollableScreen/ScrollableScreen.jsx";
+import TabBarNav from "../../../ui/TabBarNav/TabBarNav.jsx";
+import TopBar from "../../../ui/TopBar/TopBar.jsx";
 import styles from "./Shop.module.css";
 import { useEffect, useState } from "react";
-import { useUser } from "../../app/auth/AuthProvider.jsx";
+import { useUser } from "../../../app/auth/AuthProvider.jsx";
 import {
   getShopItems,
   getUserData,
   activateColor,
   buyColor,
   getPebblesMood,
-} from "../../../core/utils/apiCalls.js";
+} from "../../../../core/utils/apiCalls.js";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { PebblesMoods } from "../../../core/config/pebblesMoods.js";
+import { PebblesMoods } from "../../../../core/config/pebblesMoods.js";
+import useTitle from "../../../../core/hooks/useTitle.jsx";
 
 const Shop = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState("");
 
+  useTitle("Winkel");
   const user = useUser();
 
   const {
@@ -44,10 +46,7 @@ const Shop = () => {
     queryFn: () => getShopItems(user.id),
   });
 
-  const {
-    data: moodData,
-    isError: moodError,
-  } = useQuery({
+  const { data: moodData, isError: moodError } = useQuery({
     queryKey: ["mood"],
     queryFn: () => getPebblesMood(user.id),
   });

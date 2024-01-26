@@ -14,6 +14,7 @@ import QuestionCategories from "../../../../core/config/questionCategories";
 import { addCoins, sendAnswers } from "../../../../core/utils/apiCalls";
 import { useUser } from "../../../app/auth/AuthProvider";
 import { toast } from "react-toastify";
+import useTitle from "../../../../core/hooks/useTitle";
 
 const QuestionaireScreen = () => {
   // States
@@ -24,6 +25,7 @@ const QuestionaireScreen = () => {
   const [amount, setAmount] = useState(0);
 
   // Hooks
+  useTitle("Vragenlijst");
   const user = useUser();
   const {
     questions,
