@@ -180,7 +180,9 @@ POST
 PUT
 
 - /patients/{<span style="color: cornflowerblue">patientId</span>}/addcoins/{<span style="color: cornflowerblue">amount</span>}
-- Add coins to the patient
+  - Add coins to the patient
+- /patients/{patientId}/addstreak
+  - Increases the patient streak with one
 
 ## Users (specialists and patients combined)
 

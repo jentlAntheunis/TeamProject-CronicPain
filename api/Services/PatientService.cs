@@ -21,6 +21,7 @@ public interface IPatientService
   Task AddMovementSuggestion(Guid specialistId, Guid patientId, MovementSuggestion movementSuggestionId);
   Task<string> GetPebblesMoodAsync(Guid patientId);
   Task CheckStreakAsync(Guid patientId);
+  Task AddStreakAsync(Guid patientId);
   Task<IntOverDaysDTO> GetMovementTimeWeekAsync(Guid patientId);
   Task<IntOverDaysDTO> GetStreakHistoryAsync(Guid patientId);
   Task<IntOverDaysDTO> GetPainHistoryAsync(Guid patientId);
@@ -205,6 +206,15 @@ public class PatientService : IPatientService
       await _patientRepository.UpdatePatientAsync(patient);
       return;
     }
+  }
+
+  public async Task AddStreakAsync(Guid patientId)
+  {
+    var patient = await _patientRepository.GetPatientByIdAsync(patientId);
+    if (patient == null)
+      throw new Exception("Patient does not exist");
+    patient.Streak++;
+    await _patientRepository.UpdatePatientAsync(patient);
   }
 
   public async Task<IntOverDaysDTO> GetMovementTimeWeekAsync(Guid patientId)
