@@ -118,7 +118,8 @@ const QuestionaireScreen = () => {
 
   // Check if slider value is valid
   const checkSliderValue = (current) => {
-    if (current.scale.options.length < sliderValue) return false;
+    console.log(current.scale.options.length, sliderValue)
+    if (current.scale.options.length - 1 < sliderValue) return false;
     return true;
   };
 
