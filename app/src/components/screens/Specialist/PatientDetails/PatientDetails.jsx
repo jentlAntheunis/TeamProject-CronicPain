@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ScrollableScreen from "../../../ui/ScrollableScreen/ScrollableScreen";
 import NavBar from "../../../ui/NavBar/NavBar";
 import PageHeading from "../../../ui/PageHeading/PageHeading";
@@ -26,11 +26,13 @@ import {
   getPainMonth,
   getQuestionnaires,
   getUserData,
+  validatePatient,
 } from "../../../../core/utils/apiCalls";
 import { Impacts } from "../../../../core/config/impacts";
 import { fillMissingDates } from "../../../../core/utils/patientDetails";
 import QuestionnaireList from "../../../app/questionnaire/QuestionnaireList/QuestionnaireList";
 import useTitle from "../../../../core/hooks/useTitle";
+import { useUser } from "../../../app/auth/AuthProvider";
 
 const questionnaires = [
   {
@@ -78,8 +80,14 @@ const questionnaires = [
 const PatientDetails = () => {
   const [date, setDate] = useState();
   let { id } = useParams();
+  const user = useUser();
+  const navigate = useNavigate();
 
   // Queries
+  const { data: validatedData } = useQuery({
+    queryKey: ["validated", id],
+    queryFn: () => validatePatient(user.id, id),
+  });
   const { data: patientData } = useQuery({
     queryKey: ["user", id],
     queryFn: () => getUserData(id),
@@ -101,11 +109,21 @@ const PatientDetails = () => {
     queryFn: () => getQuestionnaires(id),
   });
 
+  useEffect(() => {
+    // If patient is not validated, navigate to overview
+    if (validatedData && !validatedData.data) {
+      navigate(SpecialistRoutes.PatientsOverview);
+    }
+  }, [validatedData, navigate])
+
   useTitle(
     patientData
       ? patientData.data.lastName + " " + patientData.data.firstName
       : "Patiënt details"
   );
+
+  if (!validatedData) return null;
+
 
   // Sort questionnaires by date descending
   const sortedQuestionnaires = questionnairesData?.data.sort((a, b) => {
