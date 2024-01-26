@@ -180,7 +180,11 @@ POST
 PUT
 
 - /patients/{<span style="color: cornflowerblue">patientId</span>}/addcoins/{<span style="color: cornflowerblue">amount</span>}
-- Add coins to the patient
+  - Add coins to the patient
+- /patients/{patientId}/checkstreak
+  - Checks if patient has filled in a questionnaire yesterday and today. If both are false, resets streak to 0
+- /patients/{patientId}/addstreak
+  - Increases the patient streak with one
 
 ## Users (specialists and patients combined)
 

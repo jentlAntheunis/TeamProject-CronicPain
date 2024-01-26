@@ -93,6 +93,13 @@ public class PatientController : ControllerBase
     return Ok();
   }
 
+  [HttpPut("{patientId}/addstreak")]
+  public async Task<IActionResult> AddStreakAsync(Guid patientId)
+  {
+    await _patientService.AddStreakAsync(patientId);
+    return Ok();
+  }
+
   [HttpGet("{patientId}/movementtimeweek")]
   public async Task<IActionResult> GetMovementTimeWeekAsync(Guid patientId)
   {
