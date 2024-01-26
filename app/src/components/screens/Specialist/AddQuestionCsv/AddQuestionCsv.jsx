@@ -17,12 +17,17 @@ import { z } from "zod";
 import Papa from "papaparse";
 import { validateQuestionCsv } from "../../../../core/utils/csv";
 import clsx from "clsx";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useUser } from "../../../app/auth/AuthProvider";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Input from "../../../ui/Input/Input";
 import Select from "../../../ui/Select/Select";
+import { getCategories, getScales } from "../../../../core/utils/apiCalls";
+import {
+  DatabaseCategories,
+  DatabaseScales,
+} from "../../../../core/config/questionCategories";
 
 const formSchema = z.object({
   csv: z
@@ -44,52 +49,65 @@ const formSchema = z.object({
       const fileExtension = file.name.substring(file.name.lastIndexOf("."));
       return allowedExtensions.includes(fileExtension);
     }, "Geen geldig bestandstype"),
-  category: z.string().min(1, { message: "Kies een categorie" }),
-  scale: z.string().min(1, { message: "Kies een antwoordschaal" }),
+  categoryId: z.string().min(1, { message: "Kies een categorie" }),
+  scaleId: z.string().min(1, { message: "Kies een antwoordschaal" }),
 });
 
 const AddQuestionCsv = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const user = useUser();
+
+  const navigate = useNavigate();
+
   // const { mutateAsync } = useMutation({
   //   mutationFn: storePatientList, TODO
   // });
 
-  const user = useUser();
-  const navigate = useNavigate();
+  const { data: scaleData, isError: scaleError } = useQuery({
+    queryKey: ["scale"],
+    queryFn: () => getScales(),
+  });
+
+  const { data: categoryData, isError: categoryError } = useQuery({
+    queryKey: ["category"],
+    queryFn: () => getCategories(),
+  });
 
   const defaultValues = {
     csv: "",
+    categoryId: "",
+    scaleId: "",
   };
 
-  const handleSubmit = async ({ csv }) => {
+  const handleSubmit = async (data) => {
     setError(null);
-    const file = csv[0];
+    const file = data.csv[0];
     Papa.parse(file, {
       complete: async function (results) {
-        let data = results.data;
+        let csvData = results.data;
 
         try {
-          data = validateQuestionCsv(data);
+          csvData = validateQuestionCsv(csvData);
         } catch (error) {
           setError(error.message);
           return;
         }
 
         // transform data to array of objects
-        const questions = data.map((question) => {
+        const questions = csvData.map((question) => {
           return {
             content: question[0],
-            categoryId: 1,
-            scaleId: 1,
+            categoryId: data.categoryId,
+            scaleId: data.scaleId,
             specialistId: user.id,
           };
         });
 
         setLoading(true);
         try {
-          console.log(questions);
+          console.log({ data: questions });
           // await mutateAsync(questions); TODO
           setLoading(false);
           toast.success("Vragen toegevoegd");
@@ -102,6 +120,13 @@ const AddQuestionCsv = () => {
       },
     });
   };
+
+  if (!categoryData || !scaleData) return;
+
+  if (categoryError || scaleError) {
+    toast.error("Er is iets misgegaan bij het ophalen van je gegevens.");
+    return null;
+  }
 
   return (
     <ScrollableScreen>
@@ -127,22 +152,30 @@ const AddQuestionCsv = () => {
               </FormControl>
               <FormMessage>{error}</FormMessage>
             </FormItem>
-            <FormItem name="category">
+            <FormItem name="categoryId">
               <FormLabel>Categorie</FormLabel>
               <FormControl>
                 <Select
                   placeholder="Kies een categorie"
-                  options={["Bewegingsvragen", "Bonusvragen"]}
+                  options={categoryData.data
+                    .filter((category) => category.name !== "pijn")
+                    .map((category) => ({
+                      id: category.id,
+                      name: DatabaseCategories[category.name],
+                    }))}
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
-            <FormItem name="scale">
+            <FormItem name="scaleId">
               <FormLabel>Antwoordschaal</FormLabel>
               <FormControl>
                 <Select
                   placeholder="Kies een antwoordschaal"
-                  options={["oneens -> eens", "niet -> altijd"]}
+                  options={scaleData.data.map((category) => ({
+                    id: category.id,
+                    name: DatabaseScales[category.name],
+                  }))}
                 />
               </FormControl>
               <FormMessage />
