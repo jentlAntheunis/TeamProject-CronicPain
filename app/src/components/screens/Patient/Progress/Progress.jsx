@@ -21,11 +21,13 @@ import Button from "../../../ui/Button/Button";
 import { useEffect, useState } from "react";
 import { Impacts } from "../../../../core/config/impacts";
 import { fillMissingDates } from "../../../../core/utils/patientDetails";
+import useTitle from "../../../../core/hooks/useTitle";
 
 const Progress = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState("");
 
+  useTitle("Voortgang");
   const user = useUser();
 
   const { data, isLoading, isError } = useQuery({

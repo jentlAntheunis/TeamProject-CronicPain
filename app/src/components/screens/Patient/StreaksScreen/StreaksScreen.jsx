@@ -10,10 +10,12 @@ import { getStreakHistory, getUserData } from "../../../../core/utils/apiCalls";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import useTitle from "../../../../core/hooks/useTitle";
 
 const StreaksScreen = () => {
   const [streakResults, setStreakResults] = useState({});
 
+  useTitle("Streaks");
   const user = useUser();
 
   const {

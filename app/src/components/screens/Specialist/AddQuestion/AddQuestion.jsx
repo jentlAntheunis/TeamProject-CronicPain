@@ -29,6 +29,7 @@ import {
 } from "../../../../core/config/questionCategories";
 import { useUser } from "../../../app/auth/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import useTitle from "../../../../core/hooks/useTitle";
 
 const formSchema = z.object({
   content: z.string().min(5, { message: "Vraag is te kort" }),
@@ -39,6 +40,7 @@ const formSchema = z.object({
 const AddQuestion = () => {
   const [loading, setLoading] = useState(false);
 
+  useTitle("Vraag toevoegen");
   const user = useUser();
 
   const navigate = useNavigate();

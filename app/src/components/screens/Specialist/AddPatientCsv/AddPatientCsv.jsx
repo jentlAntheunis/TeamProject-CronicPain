@@ -21,6 +21,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useUser } from "../../../app/auth/AuthProvider";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import useTitle from "../../../../core/hooks/useTitle";
 
 const formSchema = z.object({
   csv: z
@@ -48,6 +49,7 @@ const AddPatientCsv = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  useTitle("Patiënten toevoegen");
   const { mutateAsync } = useMutation({
     mutationFn: storePatientList,
   });

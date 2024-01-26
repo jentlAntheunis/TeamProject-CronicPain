@@ -4,6 +4,7 @@ import NavBar from "../../../ui/NavBar/NavBar";
 import PageHeading from "../../../ui/PageHeading/PageHeading";
 import ScrollableScreen from "../../../ui/ScrollableScreen/ScrollableScreen";
 import styles from "./QuestionnaireDetails.module.css";
+import useTitle from "../../../../core/hooks/useTitle";
 
 const questions = [
   {
@@ -78,6 +79,8 @@ const questions = [
 
 const QuestionnaireDetails = () => {
   const { state } = useLocation();
+
+  useTitle("Details vragenlijst");
 
   if (!state) return <Navigate to={SpecialistRoutes.PatientsOverview} />;
 
