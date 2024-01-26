@@ -190,6 +190,26 @@ const getQuestionnaires = async (userId) => await request({
   method: 'GET',
 })
 
+/**
+ * Question API calls
+ */
+const getScales = async () => await request({
+  url: `/scale/all`,
+  method: 'GET',
+})
+
+const getCategories = async () => await request({
+  url: `/category/all`,
+  method: 'GET',
+})
+
+const addQuestion = async (data) => await request({
+  url: `/question/addquestion`,
+  method: 'POST',
+  data: data,
+})
+
+
 export {
   getUser,
   checkIfUserExists,
@@ -214,4 +234,7 @@ export {
   getMovementWeek,
   getPainMonth,
   getQuestionnaires,
+  getScales,
+  getCategories,
+  addQuestion,
 };
