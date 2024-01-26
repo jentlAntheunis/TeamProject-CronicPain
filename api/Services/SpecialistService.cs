@@ -75,12 +75,12 @@ public class SpecialistService : ISpecialistService
 
   public async Task<bool> SpecialistHasPatient(Guid specialistId, Guid patientId)
   {
-    var specialist = await _specialistRepository.GetSpecialistByIdAsync(specialistId);
+    var specialist = await _specialistRepository.GetSpecialistWithPatientIdsByIdAsync(specialistId);
     if (specialist == null)
     {
       return false;
     }
-    var patient = specialist.Patients.FirstOrDefault(p => p.Id == patientId);
+    var patient = specialist.PatientSpecialists.FirstOrDefault(p => p.PatientId == patientId);
     if (patient == null)
     {
       return false;
