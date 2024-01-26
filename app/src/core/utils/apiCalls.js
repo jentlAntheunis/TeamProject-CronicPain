@@ -110,6 +110,11 @@ const sendAnswers = async (data) =>
     data: data,
   });
 
+const checkBonusQuestionnaire = async (userId) => await request({
+  url: `/questionnaires/checkifbonusdone/${userId}`,
+  method: "GET",
+});
+
 /**
  * Coins and Streaks API calls
  */
@@ -237,4 +242,5 @@ export {
   getScales,
   getCategories,
   addQuestion,
+  checkBonusQuestionnaire,
 };

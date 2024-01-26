@@ -19,6 +19,7 @@ import {
   getMovementQuestionnaire,
   getUserData,
   getPebblesMood,
+  checkBonusQuestionnaire,
 } from "../../../../core/utils/apiCalls.js";
 import { useUser } from "../../../app/auth/AuthProvider.jsx";
 import { toast } from "react-toastify";
@@ -43,6 +44,10 @@ const DashboardScreen = () => {
   const navigate = useNavigate();
 
   // fetch data
+  const { data: bonusDone, isError: checkBonusError } = useQuery({
+    queryKey: ["bonus", user.id],
+    queryFn: () => checkBonusQuestionnaire(user.id),
+  });
   const {
     mutate: streaksMutate,
     isLoading: isStreaksLoading,
@@ -95,12 +100,12 @@ const DashboardScreen = () => {
     }
   };
 
-  if (isError || isStreaksError || moodError) {
+  if (isError || isStreaksError || moodError || checkBonusError) {
     toast.error("Er is iets misgegaan bij het ophalen van je gegevens.");
     return null;
   }
 
-  if (!data || isStreaksLoading || !moodData) return null;
+  if (!data || isStreaksLoading || !moodData || !bonusDone) return null;
 
   const handleStartQuestionnaire = async (questionnaireCategory) => {
     setLoading(true);
@@ -148,14 +153,16 @@ const DashboardScreen = () => {
           >
             Ik wil bewegen! <Play size={22} weight="bold" />
           </Button>
-          <Button
-            variant="secondary"
-            size="full"
-            onClick={handleStartBonus}
-            disabled={loading}
-          >
-            Vul bonusvragen in <ClipboardText size={22} weight="bold" />
-          </Button>
+          {!bonusDone.data && (
+            <Button
+              variant="secondary"
+              size="full"
+              onClick={handleStartBonus}
+              disabled={loading}
+            >
+              Vul bonusvragen in <ClipboardText size={22} weight="bold" />
+            </Button>
+          )}
         </div>
       </div>
       <TabBarNav />
