@@ -71,3 +71,7 @@
 .modalButtons button {
   flex-grow: 1;
 }
+
+.removeTextDecoration{
+  text-decoration: none;
+}
