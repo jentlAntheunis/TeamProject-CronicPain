@@ -18,6 +18,7 @@ public interface IQuestionnaireRepository
     Task<List<Questionnaire>> GetQuestionnairesAsync();
     Task<List<Guid>> GetQuestionnaireIdsByUserId(Guid userId);
     Task<List<Questionnaire>> GetFullQuestionnairesByPatientIdAsync(Guid patientId);
+    Task<List<QuestionnaireDTO2>> GetQuestionnairesByCategoryAsync(string categoryName);
 }
 
 public class QuestionnaireRepository : IQuestionnaireRepository
@@ -48,14 +49,14 @@ public class QuestionnaireRepository : IQuestionnaireRepository
 
         try
         {
-            var categoryName = "beweging"; 
-            var scaleName = "oneens_eens"; 
+            var categoryName = "beweging";
+            var scaleName = "oneens_eens";
 
             var categoryId = await _context.Category
                 .Where(c => c.Name == categoryName)
                 .Select(c => c.Id)
                 .FirstOrDefaultAsync();
-            
+
             var scaleId= await _context.Scale
                 .Where(s => s.Name == scaleName)
                 .Select(s => s.Id)
@@ -130,14 +131,14 @@ public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
 
         try
         {
-            var categoryName = "bonus"; 
-            var scaleName = "niet_altijd"; 
+            var categoryName = "bonus";
+            var scaleName = "niet_altijd";
 
             var categoryId = await _context.Category
                 .Where(c => c.Name == categoryName)
                 .Select(c => c.Id)
                 .FirstOrDefaultAsync();
-            
+
             var scaleId= await _context.Scale
                 .Where(s => s.Name == scaleName)
                 .Select(s => s.Id)
@@ -182,7 +183,7 @@ public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
 
                 await _context.QuestionnaireQuestion.AddAsync(questionnaireQuestion);
             }
-            
+
 
             await _context.SaveChangesAsync();
 
@@ -224,14 +225,14 @@ public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
 
         try
         {
-            var categoryName = "pijn"; 
-            var scaleName = "0_10"; 
+            var categoryName = "pijn";
+            var scaleName = "0_10";
 
             var categoryId = await _context.Category
                 .Where(c => c.Name == categoryName)
                 .Select(c => c.Id)
                 .FirstOrDefaultAsync();
-            
+
             var scaleId= await _context.Scale
                 .Where(s => s.Name == scaleName)
                 .Select(s => s.Id)
@@ -343,4 +344,36 @@ public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
 
         return questionnaires;
     }
+
+    public async Task<List<QuestionnaireDTO2>> GetQuestionnairesByCategoryAsync(string categoryName)
+    {
+        var category = await _context.Category.FirstOrDefaultAsync(c => c.Name == categoryName);
+        if (category == null)
+        {
+            throw new InvalidOperationException($"Category '{categoryName}' not found.");
+        }
+
+        var questionnaires = await _context.Questionnaire
+            .Include(q => q.Questions)
+                .ThenInclude(question => question.Category)
+            .Include(q => q.Questions)
+                .ThenInclude(question => question.Answers)
+                    .ThenInclude(answer => answer.Option)
+            .Where(q => q.Questions.Any(question => question.CategoryId == category.Id))
+            .ToListAsync();
+
+        var questionnaireDTO2s = new List<QuestionnaireDTO2>();
+        foreach (var questionnaire in questionnaires)
+        {
+            var questionnaireDTO = _mapper.Map<QuestionnaireDTO2>(questionnaire);
+            questionnaireDTO2s.Add(questionnaireDTO);
+        }
+
+        return questionnaireDTO2s;
+    }
+
+
+
+
+
 }

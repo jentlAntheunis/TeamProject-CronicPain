@@ -8,11 +8,20 @@ public class QuestionnaireDTO
     public List<QuestionDTO> Questions { get; set; }
 }
 
+public class QuestionnaireDTO2
+{
+    public Guid Id { get; set; }
+    public Guid PatientId { get; set; }
+    public DateTime ? Date { get; set; }
+    public List<QuestionDTO> Questions { get; set; }
+}
+
 public class QuestionDTO
 {
     public Guid Id { get; set; }
     public string Content { get; set; }
     public ScaleDTO Scale { get; set; }
+    public List<AnswerDTO> Answers { get; set; }
 
 }
 
@@ -45,6 +54,7 @@ public class AnswerDTO
     public Guid QuestionId { get; set; }
     public Guid OptionId { get; set; }
     public string OptionContent { get; set; }
+    public string Position {get; set;}
     public int QuestionnaireIndex { get; set; }
 }
 
@@ -72,6 +82,6 @@ public class QuestionDetailDTO
 {
     public Guid Id { get; set; }
     public string Content { get; set; }
-    //public List<OptionDTO> Options { get; set; }
+    public List<OptionDTO> Options { get; set; }
     public List<AnswerDTO> Answers { get; set; }
 }
