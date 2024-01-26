@@ -23,6 +23,9 @@ GET
   - gets specialist by id
 - /specialists/{<span style="color: cornflowerblue">specialistId</span>}/patients
   - Gets a list of Patients for the specialist
+- /specialists/{specialistId}/haspatient/{patientId}
+  - Checks if a patient and specialist are connected
+
 
 POST
 

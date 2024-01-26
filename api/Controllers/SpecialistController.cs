@@ -23,8 +23,8 @@ public class SpecialistController : ControllerBase
     private readonly IPatientService _patientService;
 
     public SpecialistController(
-        ISpecialistService specialistService, 
-        IPatientService patientService, 
+        ISpecialistService specialistService,
+        IPatientService patientService,
         IConfiguration configuration
         )
     {
@@ -56,6 +56,13 @@ public class SpecialistController : ControllerBase
             return NotFound();
         }
         return Ok(JsonConvert.SerializeObject(specialist));
+    }
+
+    [HttpGet("/{specialistId}/haspatient/{patientId}")]
+    public async Task<IActionResult> SpecialistHasPatient(Guid specialistId, Guid patientId)
+    {
+        var specialistHasPatient = await _specialistService.SpecialistHasPatient(specialistId, patientId);
+        return Ok(JsonConvert.SerializeObject(specialistHasPatient));
     }
 
     [HttpPost]
