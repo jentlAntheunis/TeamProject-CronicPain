@@ -76,16 +76,7 @@ const validateQuestionCsv = (data) => {
   const possibleColumnNames = [
     "vraag",
     "question",
-    "categorie",
-    "category",
-    "antwoordschaal",
-    "antwoord_schaal",
-    "answerscale",
-    "answer_scale",
-    "schaal",
-    "scale",
-    "antwoord",
-    "answer",
+    "content",
   ];
 
   const hasNoColumnNames = data.every((row) => {
@@ -95,34 +86,16 @@ const validateQuestionCsv = (data) => {
   });
 
   if (!hasNoColumnNames) {
-    throw new Error("Het bestand bevat kolomnamen");
+    throw new Error("Het bestand bevat een kolomnaam");
   }
 
   const hasValidQuestions = data.every((row) => {
     const question = row[0];
-    // return z.string().question().safeParse(question).success;
+    return z.string().min(5).safeParse(question).success;
   });
 
   if (!hasValidQuestions) {
     throw new Error("Het bestand bevat ongeldige vragen");
-  }
-
-  const hasValidCategories = data.every((row) => {
-    const category = row[1];
-    // return z.string().category().safeParse(category).success;
-  });
-
-  if (!hasValidCategories) {
-    throw new Error("Het bestand bevat ongeldige categorieën");
-  }
-
-  const hasValidScales = data.every((row) => {
-    const scale = row[2];
-    // return z.string().scale().safeParse(scale).success;
-  });
-
-  if (!hasValidScales) {
-    throw new Error("Het bestand bevat ongeldige antwoordschalen");
   }
 
   const hasNoEmptyFields = data.every((row) => {

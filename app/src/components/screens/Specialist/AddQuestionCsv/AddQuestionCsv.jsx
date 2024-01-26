@@ -4,6 +4,7 @@ import {
   Form,
   FormControl,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "../../../app/form/Form";
 import Button from "../../../ui/Button/Button";
@@ -20,6 +21,8 @@ import { useMutation } from "@tanstack/react-query";
 import { useUser } from "../../../app/auth/AuthProvider";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import Input from "../../../ui/Input/Input";
+import Select from "../../../ui/Select/Select";
 
 const formSchema = z.object({
   csv: z
@@ -41,6 +44,8 @@ const formSchema = z.object({
       const fileExtension = file.name.substring(file.name.lastIndexOf("."));
       return allowedExtensions.includes(fileExtension);
     }, "Geen geldig bestandstype"),
+  category: z.string().min(1, { message: "Kies een categorie" }),
+  scale: z.string().min(1, { message: "Kies een antwoordschaal" }),
 });
 
 const AddQuestionCsv = () => {
@@ -75,8 +80,6 @@ const AddQuestionCsv = () => {
         const questions = data.map((question) => {
           return {
             content: question[0],
-            category: question[1],
-            scale: question[2],
           };
         });
 
@@ -84,6 +87,8 @@ const AddQuestionCsv = () => {
         try {
           // await mutateAsync({
           //   questions,
+          //   categoryId: 1,
+          //   scaleId: 1,
           //   specialistId: user.id,
           // });
           console.log(questions);
@@ -107,21 +112,43 @@ const AddQuestionCsv = () => {
           Vragen toevoegen op basis van CSV
         </PageHeading>
         <p className={styles.infoText}>
-          Upload een csv bestand met enkel de{" "}
-          <strong>vraag, categorie en antwoordschaal</strong> in deze volgorde.
-          Het bestand mag <strong>geen kolomnamen</strong> bevatten.
+          Upload een csv bestand met enkel de <strong>vragen</strong>. Het
+          bestand mag <strong>geen kolomnaam</strong> bevatten.
         </p>
         <Form
           schema={formSchema}
           defaultValues={defaultValues}
           onSubmit={handleSubmit}
+          className={styles.formContainer}
         >
-          <FormItem name="csv">
-            <FormControl>
-              <FileInput />
-            </FormControl>
-            <FormMessage>{error}</FormMessage>
-          </FormItem>
+          <div className={styles.formItems}>
+            <FormItem name="csv">
+              <FormControl>
+                <FileInput />
+              </FormControl>
+              <FormMessage>{error}</FormMessage>
+            </FormItem>
+            <FormItem name="category">
+              <FormLabel>Categorie</FormLabel>
+              <FormControl>
+                <Select
+                  placeholder="Kies een categorie"
+                  options={["Bewegingsvragen", "Bonusvragen"]}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+            <FormItem name="scale">
+              <FormLabel>Antwoordschaal</FormLabel>
+              <FormControl>
+                <Select
+                  placeholder="Kies een antwoordschaal"
+                  options={["oneens -> eens", "niet -> altijd"]}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          </div>
           <div className={`mobile-only`}>
             <Button type="submit" size="full" disabled={loading}>
               Toevoegen
