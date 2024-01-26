@@ -46,20 +46,12 @@ const AddQuestion = () => {
     mutationFn: addQuestion,
   });
 
-  const {
-    data: scaleData,
-    isLoading: scaleLoading,
-    isError: scaleError,
-  } = useQuery({
+  const { data: scaleData, isError: scaleError } = useQuery({
     queryKey: ["scale"],
     queryFn: () => getScales(),
   });
 
-  const {
-    data: categoryData,
-    isLoading: categoryLoading,
-    isError: categoryError,
-  } = useQuery({
+  const { data: categoryData, isError: categoryError } = useQuery({
     queryKey: ["category"],
     queryFn: () => getCategories(),
   });
