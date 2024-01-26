@@ -53,4 +53,34 @@ public class QuestionController : ControllerBase
         }
     }
 
+    [HttpGet("getallquestions")]
+    public async Task<IActionResult> GetAllQuestions()
+    {
+        try
+        {
+            var questions = await _questionRepository.GetAllQuestionsAsync();
+
+            if (questions == null)
+            {
+                return NotFound("No questions found.");
+            }
+
+            var questionDtos = questions.Select(q => new QuestionDTO
+            {
+                Id = q.Id,
+                CategoryId = q.CategoryId,
+                SpecialistId = q.SpecialistId,
+                ScaleId = q.ScaleId,
+                Content = q.Content
+            }).ToList();
+
+            return Ok(questionDtos);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Failed to get questions: {ex.Message}");
+        }
+    }
+
+
 }

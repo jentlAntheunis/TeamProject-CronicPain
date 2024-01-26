@@ -11,8 +11,10 @@ public class QuestionnaireDTO
 public class QuestionDTO
 {
     public Guid Id { get; set; }
+    public Guid? CategoryId { get; set; }
+    public Guid? SpecialistId { get; set; }
+    public Guid? ScaleId { get; set; }
     public string Content { get; set; }
-    public ScaleDTO Scale { get; set; }
 
 }
 
