@@ -21,11 +21,13 @@ public class QuestionController : ControllerBase
 {
     private readonly IQuestionRepository _questionRepository;
     private readonly PebblesContext _context;
+    private readonly ICategoryRepository _categoryRepository;
 
-    public QuestionController(IQuestionRepository questionRepository, PebblesContext context)
+    public QuestionController(IQuestionRepository questionRepository, PebblesContext context, ICategoryRepository categoryRepository)
     {
         _questionRepository = questionRepository;
         _context = context;
+        _categoryRepository = categoryRepository;
     }
 
     [HttpPost("addquestion")]
@@ -65,14 +67,31 @@ public class QuestionController : ControllerBase
                 return NotFound("No questions found.");
             }
 
-            var questionDtos = questions.Select(q => new QuestionDTO
+            var questionDtos = new List<QuestionDTO>();
+
+            foreach (var question in questions)
             {
-                Id = q.Id,
-                CategoryId = q.CategoryId,
-                SpecialistId = q.SpecialistId,
-                ScaleId = q.ScaleId,
-                Content = q.Content
-            }).ToList();
+                var questionDto = new QuestionDTO
+                {
+                    Id = question.Id,
+                    CategoryId = question.CategoryId,
+                    SpecialistId = question.SpecialistId,
+                    ScaleId = question.ScaleId,
+                    Content = question.Content
+                };
+
+                // Retrieve the category name based on CategoryId
+                if (question.CategoryId != null) // Check if CategoryId is not null
+                {
+                    var categoryName = await _categoryRepository.GetCategoryNameByIdAsync(question.CategoryId);
+                    if (categoryName != null)
+                    {
+                        questionDto.CategoryName = categoryName;
+                    }
+                }
+
+                questionDtos.Add(questionDto);
+            }
 
             return Ok(questionDtos);
         }
@@ -81,6 +100,7 @@ public class QuestionController : ControllerBase
             return BadRequest($"Failed to get questions: {ex.Message}");
         }
     }
+
 
 
 }
