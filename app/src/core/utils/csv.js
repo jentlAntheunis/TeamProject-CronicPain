@@ -7,7 +7,7 @@ const validatePatientCsv = (data) => {
   const hasThreeColumns = data.every((row) => row.length === 3);
 
   if (!hasThreeColumns) {
-    throw new Error("Het bestand bevat niet 3 kolommen");
+    throw new Error("Het bestand bevat niet exact 3 kolommen");
   }
 
   const possibleColumnNames = [
@@ -65,12 +65,12 @@ const validatePatientCsv = (data) => {
 }
 
 const validateQuestionCsv = (data) => {
-  data = data.filter((row) => row.length > 1);
+  data = data.filter((row) => row.length > 0);
 
-  const hasThreeColumns = data.every((row) => row.length === 3);
+  const hasOneColumn = data.every((row) => row.length === 1);
 
-  if (!hasThreeColumns) {
-    throw new Error("Het bestand bevat niet 3 kolommen");
+  if (!hasOneColumn) {
+    throw new Error("Het bestand bevat niet exact 1 kolom");
   }
 
   const possibleColumnNames = [

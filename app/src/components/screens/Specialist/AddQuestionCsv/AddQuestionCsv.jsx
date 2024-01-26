@@ -53,8 +53,9 @@ const AddQuestionCsv = () => {
   const [loading, setLoading] = useState(false);
 
   // const { mutateAsync } = useMutation({
-  //   mutationFn: storePatientList,
+  //   mutationFn: storePatientList, TODO
   // });
+
   const user = useUser();
   const navigate = useNavigate();
 
@@ -85,13 +86,18 @@ const AddQuestionCsv = () => {
 
         setLoading(true);
         try {
+          console.log({
+            questions,
+            categoryId: 1,
+            scaleId: 1,
+            specialistId: user.id,
+          });
           // await mutateAsync({
           //   questions,
-          //   categoryId: 1,
-          //   scaleId: 1,
+          //   categoryId: TODO,
+          //   scaleId: TODO,
           //   specialistId: user.id,
           // });
-          console.log(questions);
           setLoading(false);
           toast.success("Vragen toegevoegd");
           navigate(SpecialistRoutes.QuestionsOverview);
