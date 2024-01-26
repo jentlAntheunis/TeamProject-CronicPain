@@ -8,6 +8,7 @@ namespace Pebbles.Services;
 public interface IStoreService
 {
     Task<List<Color>> GetPatientStoreAsync(Guid patientId);
+    Task<List<Color>> GetPatientStoreByPriceAsync(Guid patientId);
     Task PurchaseColorAsync(Guid patientId, Guid colorId);
     Task UseColorAsync(Guid patientId, Guid colorId);
 }
@@ -46,6 +47,11 @@ public class StoreService : IStoreService
             }
         }
         return colors;
+    }
+
+    public async Task<List<Color>> GetPatientStoreByPriceAsync(Guid patientId)
+    {
+        return (await GetPatientStoreAsync(patientId)).OrderBy(c => c.Price).ToList();
     }
 
     public async Task PurchaseColorAsync(Guid patientId, Guid colorId)

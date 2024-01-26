@@ -25,6 +25,7 @@ import AddQuestion from "../screens/Specialist/AddQuestion/AddQuestion";
 import QuestionnaireDetails from "../screens/Specialist/QuestionnaireDetails/QuestionnaireDetails";
 import Shop from "../screens/Shop/Shop";
 import RoleRouter from "./auth/RoleRouter";
+import Progress from "../screens/Patient/Progress/Progress";
 
 const App = () => (
   <Routes>
@@ -97,6 +98,8 @@ const App = () => (
         <Route path={PatientRoutes.Dashboard} element={<DashboardScreen />} />
         <Route path={PatientRoutes.Streaks} element={<StreaksScreen />} />
         <Route path={PatientRoutes.Shop} element={<Shop />} />
+        <Route path={PatientRoutes.Progress} element={<Progress />} />
+
         {/* Questionnaire Paths */}
         <Route
           element={

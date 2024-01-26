@@ -42,7 +42,7 @@ const fillMissingDates = (data) => {
     // Find the corresponding entry in the original array
     const matchingEntry = data.find(entry => {
       const entryDate = new Date(entry.date);
-      return entryDate.toLocaleTimeString("nl-BE") === dateString
+      return entryDate.toLocaleDateString("nl-BE") === dateString
     });
 
     // Generate the day/month string (dd/mm) used as the label in the chart

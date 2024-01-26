@@ -5,52 +5,98 @@ import Button from "../../../ui/Button/Button";
 import styles from "./StreaksScreen.module.css";
 import { Link } from "react-router-dom";
 import { PatientRoutes } from "../../../../core/config/routes";
+import { useUser } from "../../../app/auth/AuthProvider";
+import { getStreakHistory, getUserData } from "../../../../core/utils/apiCalls";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const StreaksScreen = () => {
+  const [streakResults, setStreakResults] = useState({});
+
+  const user = useUser();
+
+  const {
+    data: userData,
+    isLoading: userLoading,
+    isError: userError,
+  } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getUserData(user.id),
+  });
+
+  const {
+    data: streakData,
+    isLoading: streakLoading,
+    isError: streakError,
+  } = useQuery({
+    queryKey: ["streak"],
+    queryFn: () => getStreakHistory(user.id),
+  });
+
+  useEffect(() => {
+    if (!streakData) return;
+    const today = new Date();
+    const dayNames = ["Zo", "Ma", "Di", "Wo", "Do", "Vr", "Za"];
+    const dataDates = new Set(
+      streakData.data.days.map((day) =>
+        new Date(day.date).toLocaleDateString("nl-NL")
+      )
+    );
+    const combinedResults = {};
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date();
+      date.setDate(today.getDate() - i);
+      const dateString = date.toLocaleDateString("nl-NL");
+      combinedResults[dayNames[date.getDay()]] = dataDates.has(dateString);
+    }
+    setStreakResults(combinedResults);
+  }, [streakData]);
+
+  if (!userData || !streakData) return;
+  if (userLoading || streakLoading) return null;
+
+  if (userError || streakError) {
+    toast.error("Er is iets misgegaan bij het ophalen van je gegevens.");
+    return null;
+  }
+
   return (
     <FullHeightScreen className={styles.streaksContainer}>
-
-      <Link to={PatientRoutes.Dashboard} className={`btn-reset ${styles.closeBtn}`}>
+      <Link
+        to={PatientRoutes.Dashboard}
+        className={`btn-reset ${styles.closeBtn}`}
+      >
         <X size={32} />
       </Link>
       <div className={styles.center}>
         <div>
           <div className={styles.streaks}>
-            <div>3</div>
+            <div>{userData.data.streak}</div>
             <Streaks size={50} />
           </div>
           <div className={styles.streaksText}>dagen op een rij!</div>
         </div>
         <div className={styles.stats}>
           <div className={styles.weekdays}>
-            <div className={styles.day}>
-              Ma
-              <CheckCircle size={32} weight="fill" className={styles.StreakColor}/>
-            </div>
-            <div className={styles.day}>
-              Di
-              <XCircle size={32} weight="fill" className={styles.noStreakColor}/>
-            </div>
-            <div className={styles.day}>
-              Wo
-              <XCircle size={32} weight="fill" className={styles.noStreakColor}/>
-            </div>
-            <div className={styles.day}>
-              Do
-              <XCircle size={32} weight="fill" className={styles.noStreakColor}/>
-            </div>
-            <div className={styles.day}>
-              Vr
-              <CheckCircle size={32} weight="fill" className={styles.StreakColor}/>
-            </div>
-            <div className={styles.day}>
-              Za
-              <CheckCircle size={32} weight="fill" className={styles.StreakColor}/>
-            </div>
-            <div className={styles.day}>
-              Zo
-              <CheckCircle size={32} weight="fill" className={styles.StreakColor}/>
-            </div>
+            {Object.entries(streakResults).map(([day, result]) => (
+              <div key={day} className={styles.day}>
+                {day}
+                {result ? (
+                  <CheckCircle
+                    size={32}
+                    weight="fill"
+                    className={styles.StreakColor}
+                  />
+                ) : (
+                  <XCircle
+                    size={32}
+                    weight="fill"
+                    className={styles.noStreakColor}
+                  />
+                )}
+              </div>
+            ))}
           </div>
           <div className={styles.streaksInfo}>
             Behoud je voortgang door dagelijks te sporten of een vragenlijst in

@@ -36,6 +36,13 @@ public class StoreController : ControllerBase
         return Ok(JsonConvert.SerializeObject(store));
     }
 
+    [HttpGet("{patientId}/byprice")]
+    public async Task<IActionResult> GetPatientStoreByPriceAsync(Guid patientId)
+    {
+        var store = await _storeService.GetPatientStoreByPriceAsync(patientId);
+        return Ok(JsonConvert.SerializeObject(store));
+    }
+
     [HttpPut("{patientId}/buy/{colorId}")]
     public async Task<IActionResult> BuyColorAsync(Guid patientId, Guid colorId)
     {

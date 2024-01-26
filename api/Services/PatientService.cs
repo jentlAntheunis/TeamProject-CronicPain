@@ -248,28 +248,98 @@ public class PatientService : IPatientService
     };
     return IntOverDaysDTO;
   }
+/*
+  public async Task<IntOverDaysDTO> GetPainHistoryAsync(Guid patientId)
+  {
+      var categoryName = "pijn";
+      var questionnaires = await _questionnaireRepository.GetQuestionnairesByCategoryAsync(categoryName);
+
+      // Filter questionnaires for the specific patient and date range
+      questionnaires = questionnaires
+          .Where(q => q.PatientId == patientId && q.Date.HasValue && q.Date.Value.Date >= DateTime.Now.AddDays(-30).Date)
+          .OrderBy(q => q.Date)
+          .ToList();
+
+      var intOverDaysDTO = new IntOverDaysDTO
+      {
+          Days = new List<DayTDO>()
+      };
+
+      foreach (var questionnaire in questionnaires)
+      {
+          if (!questionnaire.Date.HasValue) continue; // Skip if no date is set
+
+          var dayTDO = new DayTDO
+          {
+              Date = questionnaire.Date.Value.Date,
+              Int = 0 // Initialize to 0
+          };
+
+          foreach (var question in questionnaire.Questions)
+          {
+              var answer = question.Answers.FirstOrDefault();
+              if (answer != null)
+              {
+                  if (int.TryParse(answer.Position, out int painIntensity))
+                  {
+                      // Assuming 'option.Position' holds the pain intensity (int)
+                      // Since there's only one questionnaire per day, we take the first valid answer
+                      dayTDO.Int = painIntensity;
+                      break;
+                  }
+              }
+          }
+
+          intOverDaysDTO.Days.Add(dayTDO);
+      }
+
+      return intOverDaysDTO;
+  }
+  */
+
+
+
+
 
   public async Task<IntOverDaysDTO> GetPainHistoryAsync(Guid patientId)
   {
+    var categoryName = "pijn";
+    var category = await _categoryRepository.GetCategoryByNameAsync(categoryName);
+    if (category == null)
+    {
+        throw new InvalidOperationException($"Category '{categoryName}' not found.");
+    }
+    var categoryId = category.Id;
+
     var categories = new List<string>() { "pijn" };
+
     var questionnaires = await _questionnaireService.GetQuestionnairesWithDetailsByPatientIdAsync(patientId, categories);
-    questionnaires = questionnaires.Where(q => q.Date.HasValue && q.Date.Value.Date >= DateTime.Now.AddDays(-30).Date).ToList();
+
+    questionnaires = questionnaires
+      .Where(q => q.Date.HasValue && q.Date.Value.Date >= DateTime.Now.AddDays(-30).Date).ToList()
+      .OrderBy(q => q.Date)
+      .ToList();
+
     var intOverDaysTDO = new IntOverDaysDTO
     {
       Days = new List<DayTDO>()
     };
+
     foreach (var questionnaire in questionnaires.OrderBy(q => q.Date))
-    {
-      var question = questionnaire.Questions.FirstOrDefault();
-      var answer = question.Answers.FirstOrDefault();
-      var option = await _optionRepository.GetOptionByIdAsync(answer.OptionId);
-      var dayTDO = new DayTDO
       {
-        Date = questionnaire.Date.Value.Date,
-        Int = int.TryParse(option.Position, out int result) ? result : 0
-      };
-      intOverDaysTDO.Days.Add(dayTDO);
-    }
+        var question = questionnaire.Questions.FirstOrDefault();
+        var answer = question.Answers.FirstOrDefault();
+        var option = await _optionRepository.GetOptionByIdAsync(answer.OptionId);
+        var dayTDO = new DayTDO
+        {
+          Date = questionnaire.Date.Value.Date,
+          Int = int.TryParse(option.Position, out int result) ? result : 0
+        };
+
+        intOverDaysTDO.Days.Add(dayTDO);
+      }
+
     return intOverDaysTDO;
+
   }
 }

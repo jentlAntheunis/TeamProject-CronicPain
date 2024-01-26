@@ -114,6 +114,12 @@ const QuestionaireScreen = () => {
     }
   };
 
+  // Check if slider value is valid
+  const checkSliderValue = (current) => {
+    if (current.scale.options.length < sliderValue) return false;
+    return true;
+  };
+
   return (
     <FullHeightScreen>
       <div className={styles.container}>
@@ -129,10 +135,12 @@ const QuestionaireScreen = () => {
           </h1>
         </div>
         <div className={styles.sliderValue}>
-          {capitalize(
-            orderOptions(questions[currentQuestion].scale.options)[sliderValue]
-              .content
-          )}
+          {checkSliderValue(questions[currentQuestion]) &&
+            capitalize(
+              orderOptions(questions[currentQuestion].scale.options)[
+                sliderValue
+              ].content
+            )}
         </div>
         <div>
           <Slider

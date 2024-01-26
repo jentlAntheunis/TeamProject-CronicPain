@@ -11,6 +11,10 @@
 
 .graphTitle {
   font-size: var(--h5);
+
+  @media (max-width: 600px) {
+    font-size: var(--h6);
+  }
 }
 
 .graph {
