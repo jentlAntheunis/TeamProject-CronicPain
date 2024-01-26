@@ -121,43 +121,44 @@ public class QuestionnaireService : IQuestionnaireService
         var detailedQuestions = new List<QuestionDetailDTO>();
         string categoryName = null;
 
-        foreach (var question in questionnaire.Questions)
-        {
-            if (!categories.Contains(question.Category.Name)) continue;
-
-            if (categoryName == null)
+            foreach (var question in questionnaire.Questions)
             {
-                categoryName = question.Category.Name;
+                if (categories.Contains(question.Category.Name))
+                {
+                    if (categoryName == null)
+                    {
+                        // Fetch the category name for the first question
+                        categoryName = question.Category.Name;
+                    }
+
+                    // Initialize filteredAnswers here
+                    var filteredAnswers = question.Answers
+                        .Where(a => a.QuestionnaireId == questionnaire.Id && (a.QuestionnaireIndex == 0 || a.QuestionnaireIndex == 1))
+                        .ToList();
+
+                    // Fetch options for filtered answers
+                    var optionIds = filteredAnswers.Select(a => a.OptionId).Distinct().ToList();
+                    var options = await _context.Option
+                        .Where(o => optionIds.Contains(o.Id))
+                        .ToListAsync();
+
+                    var answerDTOs = filteredAnswers.Select(a => new AnswerDTO
+                    {
+                        QuestionId = a.QuestionId,
+                        OptionId = a.OptionId,
+                        OptionContent = options.FirstOrDefault(o => o.Id == a.OptionId)?.Content,
+                        Position = options.FirstOrDefault(o => o.Id == a.OptionId)?.Position,
+                        QuestionnaireIndex = a.QuestionnaireIndex
+                    }).ToList();
+
+                    detailedQuestions.Add(new QuestionDetailDTO
+                    {
+                        Id = question.Id,
+                        Content = question.Content,
+                        Answers = answerDTOs
+                    });
+                }
             }
-
-            var questionContent = await _context.Question.FirstOrDefaultAsync(q => q.Id == question.Id);
-
-            var filteredAnswers = question.Answers
-                .Where(a => a.QuestionnaireId == questionnaire.Id && (a.QuestionnaireIndex == 0 || a.QuestionnaireIndex == 1))
-                .ToList();
-
-            var optionIds = filteredAnswers.Select(a => a.OptionId).Distinct().ToList();
-            var options = await _context.Option
-                .Where(o => optionIds.Contains(o.Id))
-                .ToListAsync();
-
-            var answerDtos = filteredAnswers.Select(answer => new AnswerDTO
-            {
-                Id = answer.Id,
-                QuestionId = answer.QuestionId,
-                OptionId = answer.OptionId,
-                OptionContent = options.FirstOrDefault(o => o.Id == answer.OptionId)?.Content,
-                Position = options.FirstOrDefault(o => o.Id == answer.OptionId)?.Position, // Add Position here
-                QuestionnaireIndex = answer.QuestionnaireIndex
-            }).ToList();
-
-            detailedQuestions.Add(new QuestionDetailDTO
-            {
-                Id = question.Id,
-                Content = questionContent?.Content,
-                Answers = answerDtos
-            });
-        }
 
         if (detailedQuestions.Any())
         {
@@ -172,9 +173,7 @@ public class QuestionnaireService : IQuestionnaireService
         }
     }
 
-    return detailedQuestionnaires;
-}
-
-
+        return detailedQuestionnaires;
+    }
 
 }

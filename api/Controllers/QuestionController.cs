@@ -21,11 +21,13 @@ public class QuestionController : ControllerBase
 {
     private readonly IQuestionRepository _questionRepository;
     private readonly PebblesContext _context;
+    private readonly ICategoryRepository _categoryRepository;
 
-    public QuestionController(IQuestionRepository questionRepository, PebblesContext context)
+    public QuestionController(IQuestionRepository questionRepository, PebblesContext context, ICategoryRepository categoryRepository)
     {
         _questionRepository = questionRepository;
         _context = context;
+        _categoryRepository = categoryRepository;
     }
 
     [HttpPost("addquestion")]
@@ -52,5 +54,53 @@ public class QuestionController : ControllerBase
             return BadRequest($"Failed to add question: {ex.Message}");
         }
     }
+
+    [HttpGet("getallquestions")]
+    public async Task<IActionResult> GetAllQuestions()
+    {
+        try
+        {
+            var questions = await _questionRepository.GetAllQuestionsAsync();
+
+            if (questions == null)
+            {
+                return NotFound("No questions found.");
+            }
+
+            var questionDtos = new List<QuestionDTO>();
+
+            foreach (var question in questions)
+            {
+                var questionDto = new QuestionDTO
+                {
+                    Id = question.Id,
+                    CategoryId = question.CategoryId,
+                    SpecialistId = question.SpecialistId,
+                    ScaleId = question.ScaleId,
+                    Content = question.Content
+                };
+
+                // Retrieve the category name based on CategoryId
+                if (question.CategoryId != null) // Check if CategoryId is not null
+                {
+                    var categoryName = await _categoryRepository.GetCategoryNameByIdAsync(question.CategoryId);
+                    if (categoryName != null)
+                    {
+                        questionDto.CategoryName = categoryName;
+                    }
+                }
+
+                questionDtos.Add(questionDto);
+            }
+
+            return Ok(questionDtos);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Failed to get questions: {ex.Message}");
+        }
+    }
+
+
 
 }
