@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 
+
 public interface IQuestionnaireService
 {
     Task<Questionnaire> GetQuestionnaireByIdAsync(Guid id);
@@ -25,6 +26,7 @@ public interface IQuestionnaireService
     Task<List<Questionnaire>> GetQuestionnairesAsync();
 
     Task<bool> CheckIfFirstQuestionnaireOfTheDay(Guid userId);
+    Task<bool> CheckIfBonusDone(Guid userId);
 
     Task<List<QuestionnaireDetailDTO>> GetQuestionnairesWithDetailsByPatientIdAsync(Guid patientId, List<string> categories);
 
@@ -92,16 +94,32 @@ public class QuestionnaireService : IQuestionnaireService
         return isFirstQuestionnaire;
     }
 
-    public async Task<List<QuestionnaireDetailDTO>> GetQuestionnairesWithDetailsByPatientIdAsync(Guid patientId, List<string> categories)
+  public async Task<bool> CheckIfBonusDone(Guid userId)
+  {
+    DateTime currentDate = DateTime.Now.Date;
+
+    var questionnaireExists = await _context.Questionnaire
+      .Include(q => q.Questions)
+        .ThenInclude(q => q.Category)
+      .Where(q => q.PatientId == userId)
+      .Where(q => q.Date.HasValue && q.Date.Value.Date == currentDate)
+      .AnyAsync(q => q.Questions.Any(q => q.Category.Name == "Bonus"));
+
+    return questionnaireExists;
+  }
+
+  public async Task<List<QuestionnaireDetailDTO>> GetQuestionnairesWithDetailsByPatientIdAsync(Guid patientId, List<string> categories)
+{
+    var questionnaires = await _questionnaireRepository.GetFullQuestionnairesByPatientIdAsync(patientId);
+    var detailedQuestionnaires = new List<QuestionnaireDetailDTO>();
+
+    foreach (var questionnaire in questionnaires)
     {
-        var questionnaires = await _questionnaireRepository.GetFullQuestionnairesByPatientIdAsync(patientId);
-        var detailedQuestionnaires = new List<QuestionnaireDetailDTO>();
+        // Skip if Date is null
+        if (questionnaire.Date == null) continue;
 
-        foreach (var questionnaire in questionnaires.Where(q => q.Date != null))
-        {
-            var detailedQuestions = new List<QuestionDetailDTO>();
-
-            string categoryName = null;
+        var detailedQuestions = new List<QuestionDetailDTO>();
+        string categoryName = null;
 
             foreach (var question in questionnaire.Questions)
             {
@@ -142,18 +160,18 @@ public class QuestionnaireService : IQuestionnaireService
                 }
             }
 
-            if (detailedQuestions.Any())
+        if (detailedQuestions.Any())
+        {
+            detailedQuestionnaires.Add(new QuestionnaireDetailDTO
             {
-                detailedQuestionnaires.Add(new QuestionnaireDetailDTO
-                {
-                    Id = questionnaire.Id,
-                    CategoryName = categoryName,
-                    Date = questionnaire.Date,
-                    PatientId = questionnaire.PatientId,
-                    Questions = detailedQuestions
-                });
-            }
+                Id = questionnaire.Id,
+                CategoryName = categoryName,  // Use categoryName here
+                Date = questionnaire.Date,
+                PatientId = questionnaire.PatientId,
+                Questions = detailedQuestions
+            });
         }
+    }
 
         return detailedQuestionnaires;
     }

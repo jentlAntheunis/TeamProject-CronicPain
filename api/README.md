@@ -233,7 +233,7 @@ PUT
 - /store/{<span style="color: cornflowerblue">patientId</span>}/use/{<span style="color: cornflowerblue">colorId</span>}
   - Adds the color if owned to the patients avatar, and sets the color as active in the store endpoint
 
-## Question
+## Questionnaires
 
 GET
 
@@ -246,6 +246,8 @@ GET
 - /questionnaire/checkifFirstquestionnaireoftheday
   - Returns true if it's the first answered questionnaire of the day
   - Returns false if it's not the fist answered questionnaire of the day
+- /questionnaire/checkifbonusdone/{patientId}
+  - Returns true or false when the patient has already done a bonus questionnaire today
 
 ## Answer
 
@@ -330,8 +332,6 @@ GET
 
 - /all
   - Returns an array with all the categories (id and name)
-
-## Category
 
 POST
 

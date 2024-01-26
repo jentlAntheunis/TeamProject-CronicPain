@@ -26,6 +26,7 @@ import QuestionnaireDetails from "../screens/Specialist/QuestionnaireDetails/Que
 import Shop from "../screens/Shop/Shop";
 import RoleRouter from "./auth/RoleRouter";
 import Progress from "../screens/Patient/Progress/Progress";
+import AddQuestionCsv from "../screens/Specialist/AddQuestionCsv/AddQuestionCsv";
 
 const App = () => (
   <Routes>
@@ -84,6 +85,7 @@ const App = () => (
           element={<QuestionnaireDetails />}
         />
         <Route path={SpecialistRoutes.AddQuestion} element={<AddQuestion />} />
+        <Route path={SpecialistRoutes.AddQuestionCsv} element={<AddQuestionCsv />} />
       </Route>
 
       {/* Patient */}

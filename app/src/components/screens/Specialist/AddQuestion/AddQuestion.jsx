@@ -15,6 +15,7 @@ import {
 import Input from "../../../ui/Input/Input";
 import { useEffect, useState } from "react";
 import Select from "../../../ui/Select/Select";
+import { Link } from "react-router-dom";
 import {
   addQuestion,
   getCategories,
@@ -48,7 +49,6 @@ const AddQuestion = () => {
 
   const {
     data: scaleData,
-    isLoading: scaleLoading,
     isError: scaleError,
   } = useQuery({
     queryKey: ["scale"],
@@ -57,7 +57,6 @@ const AddQuestion = () => {
 
   const {
     data: categoryData,
-    isLoading: categoryLoading,
     isError: categoryError,
   } = useQuery({
     queryKey: ["category"],
@@ -112,9 +111,11 @@ const AddQuestion = () => {
             Vraag toevoegen
           </PageHeading>
           <div className="desktop-only">
+          <Link to={SpecialistRoutes.AddQuestionCsv}>
             <Button variant="secondary" className={styles.csvImport}>
               CSV importeren
             </Button>
+          </Link>
           </div>
         </div>
         <Form
