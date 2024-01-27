@@ -231,6 +231,11 @@ const addQuestion = async (data) => await request({
   data: data,
 })
 
+const storeQuestionList = async ( questions ) => await request({
+  url: `/question/addquestions`,
+  method: "POST",
+  data: questions,
+})
 
 export {
   getUser,
@@ -261,6 +266,7 @@ export {
   getScales,
   getCategories,
   addQuestion,
+  storeQuestionList,
   checkFirstQuestionnaire,
   checkBonusQuestionnaire,
 };
