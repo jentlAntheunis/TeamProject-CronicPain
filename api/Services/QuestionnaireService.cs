@@ -80,7 +80,11 @@ public class QuestionnaireService : IQuestionnaireService
         DateTime currentDate = DateTime.Now.Date;
 
         var questionnaireExists = await _context.Questionnaire
-            .AnyAsync(q => q.PatientId == userId && q.Date.HasValue && q.Date.Value.Date == currentDate);
+            .Where(q => q.PatientId == userId && q.Date.HasValue && q.Date.Value.Date == currentDate)
+            .Join(_context.QuestionnaireQuestion, q => q.Id, qq => qq.QuestionnaireId, (q, qq) => new { q, qq })
+            .Join(_context.Question, qq => qq.qq.QuestionId, q => q.Id, (qq, q) => new { qq, q })
+            .Join(_context.Category, q => q.q.CategoryId, c => c.Id, (q, c) => new { q, c })
+            .AnyAsync(x => (x.c.Name == "bonus" || x.c.Name == "beweging") && x.c.Name != "pijn");
 
         bool isFirstQuestionnaire = !questionnaireExists;
         if (isFirstQuestionnaire)
@@ -88,11 +92,16 @@ public class QuestionnaireService : IQuestionnaireService
             var patient = await _context.Patient
                 .FirstOrDefaultAsync(p => p.Id == userId);
 
-            patient.Streak += 1;
-            await _context.SaveChangesAsync();
+            if (patient != null)
+            {
+                patient.Streak += 1;
+                await _context.SaveChangesAsync();
+            }
         }
+
         return isFirstQuestionnaire;
     }
+
 
   public async Task<bool> CheckIfBonusDone(Guid userId)
   {
