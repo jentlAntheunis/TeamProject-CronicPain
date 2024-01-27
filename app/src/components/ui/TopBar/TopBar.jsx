@@ -4,11 +4,16 @@ import Streaks from "../Icons/Streaks";
 import RewardMetric from "../RewardMetric/RewardMetric.jsx";
 
 import styles from "./TopBar.module.css";
-import { DotsThreeVertical, SignOut, Scroll, Info } from "@phosphor-icons/react";
+import {
+  DotsThreeVertical,
+  SignOut,
+  Scroll,
+  Info,
+} from "@phosphor-icons/react";
 import Modal from "../Modal/Modal.jsx";
 import Button from "../Button/Button.jsx";
 import { useAuthContext } from "../../app/auth/AuthProvider.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PatientRoutes } from "../../../core/config/routes.js";
 
 const TopBar = ({ coins, streak }) => {
@@ -85,6 +90,8 @@ const TopBar = ({ coins, streak }) => {
 };
 
 const Menu = forwardRef(({ showMenu, setShowMenu, setShowModal }, ref) => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (!showMenu) {
       document.body.classList.remove("modal-open");
@@ -96,6 +103,12 @@ const Menu = forwardRef(({ showMenu, setShowMenu, setShowModal }, ref) => {
   if (!showMenu) {
     return null;
   }
+
+  const handleInfo = () => {
+    setShowModal(false);
+    document.body.classList.remove("modal-open");
+    navigate(PatientRoutes.ExtraInfo);
+  };
 
   return (
     <div className={styles.menuWrapper}>
@@ -110,12 +123,10 @@ const Menu = forwardRef(({ showMenu, setShowMenu, setShowModal }, ref) => {
           Uitloggen
           <SignOut size={24} />
         </button>
-        <Link to={PatientRoutes.ExtraInfo} className="link-reset">
-          <button className={`btn-reset ${styles.menuItem}`}>
-            Info
-            <Info size={24} />
-          </button>
-        </Link>
+        <button className={`btn-reset ${styles.menuItem}`} onClick={handleInfo}>
+          Info
+          <Info size={24} />
+        </button>
       </div>
     </div>
   );
