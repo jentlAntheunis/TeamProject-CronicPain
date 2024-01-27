@@ -21,9 +21,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useUser } from "../../../app/auth/AuthProvider";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import Input from "../../../ui/Input/Input";
 import Select from "../../../ui/Select/Select";
-import { getCategories, getScales } from "../../../../core/utils/apiCalls";
+import { getCategories, getScales, storeQuestionList } from "../../../../core/utils/apiCalls";
 import {
   DatabaseCategories,
   DatabaseScales,
@@ -63,9 +62,9 @@ const AddQuestionCsv = () => {
 
   const navigate = useNavigate();
 
-  // const { mutateAsync } = useMutation({
-  //   mutationFn: storePatientList, TODO
-  // });
+  const { mutateAsync } = useMutation({
+    mutationFn: storeQuestionList,
+  });
 
   const { data: scaleData, isError: scaleError } = useQuery({
     queryKey: ["scale"],
@@ -110,7 +109,7 @@ const AddQuestionCsv = () => {
         setLoading(true);
         try {
           console.log({ data: questions });
-          // await mutateAsync(questions); TODO
+          await mutateAsync({ data: questions });
           setLoading(false);
           toast.success("Vragen toegevoegd");
           navigate(SpecialistRoutes.QuestionsOverview);

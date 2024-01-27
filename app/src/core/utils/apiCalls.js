@@ -231,6 +231,12 @@ const addQuestion = async (data) => await request({
   data: data,
 })
 
+const storeQuestionList = async ( questions ) => await request({
+  url: `/question/addquestions`,
+  method: "POST",
+  data: questions,
+})
+
 const getAllQuestions = async () => await request({
   url: `/question/getallquestions`,
   method: 'GET',
@@ -265,6 +271,7 @@ export {
   getScales,
   getCategories,
   addQuestion,
+  storeQuestionList,
   getAllQuestions,
   checkFirstQuestionnaire,
   checkBonusQuestionnaire,
