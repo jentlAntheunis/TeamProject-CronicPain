@@ -51,7 +51,7 @@ public class QuestionController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest($"Failed to add question: {ex.Message}");
+            return StatusCode(500, $"Internal server error.");
         }
     }
 
@@ -80,8 +80,7 @@ public class QuestionController : ControllerBase
                     Content = question.Content
                 };
 
-                // Retrieve the category name based on CategoryId
-                if (question.CategoryId != null) // Check if CategoryId is not null
+                if (question.CategoryId != null)
                 {
                     var categoryName = await _categoryRepository.GetCategoryNameByIdAsync(question.CategoryId);
                     if (categoryName != null)
@@ -97,7 +96,7 @@ public class QuestionController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest($"Failed to get questions: {ex.Message}");
+            return StatusCode(500, $"Internal server error.");
         }
     }
 
@@ -124,7 +123,7 @@ public class QuestionController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest($"Failed to update question: {ex.Message}");
+            return StatusCode(500, $"Internal server error.");
         }
     }
 
@@ -133,6 +132,8 @@ public class QuestionController : ControllerBase
     [HttpPost("addquestions")]
     public async Task<IActionResult> AddQuestions([FromBody] QuestionListDTO questionList)
     {
+      try
+      {
         if (questionList?.Data == null || !questionList.Data.Any())
         {
             return BadRequest("Invalid data. Please provide a list of questions.");
@@ -162,6 +163,11 @@ public class QuestionController : ControllerBase
         await _context.SaveChangesAsync();
 
         return Ok("Questions added successfully.");
+      }
+      catch (Exception ex)
+      {
+        return StatusCode(500, $"Internal server error.");
+      }
     }
 
 

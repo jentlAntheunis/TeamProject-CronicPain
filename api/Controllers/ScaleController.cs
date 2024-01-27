@@ -29,18 +29,25 @@ public class ScaleController : ControllerBase
     [HttpGet("all")]
     public async Task<IActionResult> GetAllScalesAsync()
     {
+      try
+      {
         var scales = await _scaleRepository.GetAllScalesAsync();
         if (scales == null)
         {
             return StatusCode(500);
         }
-        
+
         var response = scales.Select(scale => new {
             id = scale.Id,
             name = scale.Name
         });
 
         return Ok(JsonConvert.SerializeObject(response));
+      }
+      catch (Exception ex)
+      {
+        return StatusCode(500, "Internal server error.");
+      }
     }
 
 }

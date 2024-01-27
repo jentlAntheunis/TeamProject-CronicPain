@@ -36,6 +36,8 @@ public class SpecialistController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllSpecialistsAsync()
     {
+      try
+      {
         var specialists = await _specialistService.GetAllSpecialistsAsync();
         if(specialists == null)
         {
@@ -45,39 +47,71 @@ public class SpecialistController : ControllerBase
             specialists = specialists
         };
         return Ok(JsonConvert.SerializeObject(response));
+      }
+      catch (Exception ex)
+      {
+        return StatusCode(500, "Internal server error.");
+      }
     }
 
     [HttpGet("{specialistId}")]
     public async Task<IActionResult> GetSpecialistByIdAsync(Guid specialistId)
     {
+      try
+      {
         var specialist = await _specialistService.GetSpecialistByIdAsync(specialistId);
         if(specialist == null)
         {
             return NotFound();
         }
         return Ok(JsonConvert.SerializeObject(specialist));
+      }
+      catch (Exception ex)
+      {
+        return StatusCode(500, "Internal server error.");
+      }
     }
 
     [HttpGet("/{specialistId}/haspatient/{patientId}")]
     public async Task<IActionResult> SpecialistHasPatient(Guid specialistId, Guid patientId)
     {
+      try{
         var specialistHasPatient = await _specialistService.SpecialistHasPatient(specialistId, patientId);
         return Ok(JsonConvert.SerializeObject(specialistHasPatient));
+      }
+      catch (Exception ex)
+      {
+        return StatusCode(500, "Internal server error.");
+      }
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateSpecialistAsync([FromBody] Specialist specialist)
     {
+      try
+      {
         var newSpecialist = await _specialistService.CreateSpecialistAsync(specialist);
         return Ok(JsonConvert.SerializeObject(newSpecialist));
+      }
+      catch (Exception ex)
+      {
+        return StatusCode(500, "Internal server error.");
+      }
     }
 
     [HttpPut("{specialistId}")]
     public async Task<IActionResult> UpdateSpecialistAsync(Guid specialistId, [FromBody] Specialist specialist)
     {
+      try
+      {
         specialist.Id = specialistId;
         var updatedSpecialist = await _specialistService.UpdateSpecialistAsync(specialist);
         return Ok(JsonConvert.SerializeObject(updatedSpecialist));
+      }
+      catch (Exception ex)
+      {
+        return StatusCode(500, "Internal server error.");
+      }
     }
 
     [HttpPost("send-email/{specialistId}")]
@@ -98,7 +132,7 @@ public class SpecialistController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, $"Error sending email: {ex.Message}");
+            return StatusCode(500, "Internal server error.");
         }
     }
 
@@ -112,8 +146,7 @@ public class SpecialistController : ControllerBase
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex);
-            return StatusCode(500);
+            return StatusCode(500, "Internal server error.");
         }
     }
 
@@ -127,26 +160,39 @@ public class SpecialistController : ControllerBase
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex);
-            return StatusCode(500);
+            return StatusCode(500, "Internal server error.");
         }
     }
 
     [HttpGet("{specialistId}/patients")]
     public async Task<IActionResult> GetPatientsBySpecialistAsync(Guid specialistId)
     {
+      try
+      {
         var patients = await _patientService.GetPatientsBySpecialistAsync(specialistId);
         if(patients == null)
         {
             return StatusCode(500);
         }
         return Ok(JsonConvert.SerializeObject(patients));
+      }
+      catch (Exception ex)
+      {
+        return StatusCode(500, "Internal server error.");
+      }
     }
 
     [HttpPost("{specialistId}/patients/{patientId}/movementsuggestions")]
     public async Task<IActionResult> AddMovementSuggestionAsync(Guid specialistId, Guid patientId, [FromBody] MovementSuggestion movementSuggestion)
     {
+      try
+      {
         await _patientService.AddMovementSuggestion(specialistId, patientId, movementSuggestion);
         return Ok();
+      }
+      catch (Exception ex)
+      {
+        return StatusCode(500, "Internal server error.");
+      }
     }
 }
