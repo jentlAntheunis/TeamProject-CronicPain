@@ -27,6 +27,7 @@ import Shop from "../screens/Patient/Shop/Shop";
 import RoleRouter from "./auth/RoleRouter";
 import Progress from "../screens/Patient/Progress/Progress";
 import AddQuestionCsv from "../screens/Specialist/AddQuestionCsv/AddQuestionCsv";
+import ExtraInfoScreen from "../screens/Patient/ExtraInfo/ExtraInfoScreen";
 
 const App = () => (
   <Routes>
@@ -104,6 +105,7 @@ const App = () => (
         <Route path={PatientRoutes.Streaks} element={<StreaksScreen />} />
         <Route path={PatientRoutes.Shop} element={<Shop />} />
         <Route path={PatientRoutes.Progress} element={<Progress />} />
+        <Route path={PatientRoutes.ExtraInfo} element={<ExtraInfoScreen />} />
 
         {/* Questionnaire Paths */}
         <Route
