@@ -13,16 +13,147 @@ GET
 - /
   - Default endpoint dat aangeeft of de backend werkt
 
+
+## Users (specialists and patients combined)
+
+GET
+
+- /users
+  - Gets all users
+- /users/exists/{email}
+  - Returns true if it finds the email in the user database
+  - Returns false if the email is not in the database
+
+POST
+
+- /users/loginbyemail
+  - Returns user object
+  - Body:
+    ```json
+    "email"
+    ```
+
+PUT
+
+- /users/{userId}
+  - Used to edit any user
+  - Body:
+    ```json
+    {
+      "firstName": "string",
+      "lastName": "string",
+      "email": "string"
+    }
+    ```
+
+DELETE
+
+- /users/{userId}
+  - Used to soft-delete any user
+
+
+## Patients
+
+GET
+
+- /patients/{patientId}
+  - Gets patient by id
+- /patients/{patientId}/details
+  - Gets patient by id with more detail such as logins, movement sessions and suggestions
+- /patients/{patientId}/movementsessions
+  - Gets all movement sessions of the patient
+- /patients/{patientId}/movementsuggestions
+  - Gets all movement suggestions of the patient
+- /patients/{patientId}/pebblesmood
+  - Gets the mood pebbles should be in right now
+  - Output:
+    ```
+      HAPPY | NEUTRAL | SAD
+    ```
+- /patients/{patientId}/movementtimeweek
+  - Gets the movement times of the last 7 days
+  - Output:
+    ```json
+      {
+        "days": [
+          {
+            "date": "DateTime",
+            "total": int
+          },
+          ... *7
+        ]
+      }
+    ```
+- /patients/{patientId}/streakhistory
+
+  - Gets the amount of questionnaires filled in in the last 7 days
+  - Output:
+
+    ```json
+      {
+        "days": [
+          {
+            "date": "DateTime",
+            "total": int
+          },
+          ... *7
+        ]
+      }
+
+    ```
+- /patients/{patientId}/painhistory
+  - Returns a list of pain values of each day in the last month
+  - Output:
+    ```json
+      {
+        "days": [
+          {
+            "date": "DateTime",
+            "total": int
+          },
+          ... *7
+        ]
+      }
+    ```
+  - /patients/{patientId}/questionnaires
+    - Returns a json with all the questionnaires (incl their id, date, category name, patient id), their questions (id and content) and their answers (before and after the movement in the case of a movement questionnaire: see the questionnaire index, the answer id, the question id, the option id, the position of the option and the option content)
+
+POST
+
+- /patients/{patientId}/movementsessions
+  - Post a movement session
+  - Body:
+    ```json
+      {
+        "seconds": int
+      }
+    ```
+
+PUT
+
+- /patients/{patientId}/addcoins/{amount}
+  - Add coins to the patient
+- /patients/{patientId}/checkstreak
+  - Checks if patient has filled in a questionnaire yesterday and today. If both are false, resets streak to 0
+- /patients/{patientId}/addstreak
+  - Increases the patient streak with one
+
+
+
+
 ## Specialists
 
 GET
 
 - /specialists
   - gets all specialists
-- /specialists/{<span style="color: cornflowerblue">specialistId</span>}
+- /specialists/{specialistId}
   - gets specialist by id
-- /specialists/{<span style="color: cornflowerblue">specialistId</span>}/patients
+- /specialists/{specialistId}/patients
   - Gets a list of Patients for the specialist
+- /specialists/{specialistId}/haspatient/{patientId}
+  - Checks if a patient and specialist are connected
+
 
 POST
 
@@ -36,7 +167,7 @@ POST
       "email": "string"
     }
     ```
-- /specialists/send-email/{<span style="color: cornflowerblue">specialistId</span>}
+- /specialists/send-email/{specialistId}
   - Sends an invitation email from the specialist to a user
   - Body:
     ```json
@@ -46,7 +177,7 @@ POST
       "email": "string"
     }
     ```
-- /specialists/{<span style="color: cornflowerblue">specialistId</span>}/patients
+- /specialists/{specialistId}/patients
   - Adds a new patient to the specialist. If the patient is already present in the database (checked by email, then lastname, then firstname), it adds a new relation between the specialist and patient, but no new patient.
   - Body:
     ```json
@@ -56,7 +187,7 @@ POST
       "email": "string"
     }
     ```
-- /specialists/{<span style="color: cornflowerblue">specialistId</span>}/patients/addlist
+- /specialists/{specialistId}/patients/addlist
   - Adds a list of patients
   - Body:
     ```json
@@ -74,7 +205,7 @@ POST
       ...
     ]
     ```
-- /specialists/{<span style="color: cornflowerblue">specialistId</span>}/patients/{<span style="color: cornflowerblue">patientId</span>}/movementSuggestions
+- /specialists/{specialistId}/patients/{patientId}/movementSuggestions
   - Add movement suggestion to patient
   - Body:
     ```json
@@ -87,7 +218,7 @@ POST
 
 PUT
 
-- /specialists/{<span style="color: cornflowerblue">specialistId</span>}
+- /specialists/{specialistId}
   - Edits the specialist information
   - Body:
     ```json
@@ -98,140 +229,67 @@ PUT
     }
     ```
 
-## Patients
+## Question
 
 GET
 
-- /patients/{<span style="color: cornflowerblue">patientId</span>}
-  - Gets patient by id
-- /patients/{<span style="color: cornflowerblue">patientId</span>}/details
-  - Gets patient by id with more detail
-    - such as logins, movement sessions and suggestions
-- /patients/{<span style="color: cornflowerblue">patientId</span>}/movementsessions
-  - Gets all movement sessions of the patient
-- /patients/{<span style="color: cornflowerblue">patientId</span>}/movementsuggestions
-  - Gets all movement suggestions of the patient
-- /patients/{<span style="color: cornflowerblue">patientId</span>}/pebblesmood
-  - Gets the mood pebbles should be in right now
-  - Output:
-    ```
-      HAPPY | NEUTRAL | SAD
-    ```
-- /patients/{<span style="color: cornflowerblue">patientId</span>}/movementtimeweek
-  - Gets the movement times of the last 7 days
-  - Output:
-    ```json
-      {
-        "days": [
-          {
-            "date": "DateTime",
-            "total": int
-          },
-          ... *7
-        ]
-      }
-    ```
-- /patients/{<span style="color: cornflowerblue">patientId</span>}/streakhistory
-
-  - Gets the amount of questionnaires filled in in the last 7 days
-  - Output:
-
-    ```json
-      {
-        "days": [
-          {
-            "date": "DateTime",
-            "total": int
-          },
-          ... *7
-        ]
-      }
-
-    ```
-
-- /patients/{<span style="color: cornflowerblue">patientId</span>}/questionnaires
-  - Returns a json with all the questionnaires (incl their date), their questions and their answers (before and after the movement in the case of a movement questionnaire)
-- /patients/{<span style="color: cornflowerblue">patientId</span>}/painhistory
-  - Returns a list of pain values of each day in the last month
-  - Output:
-    ```json
-      {
-        "days": [
-          {
-            "date": "DateTime",
-            "total": int
-          },
-          ... *7
-        ]
-      }
-    ```
+- /question/getallquestions
+  - Gives back a list of all the questions in the database (including id, category id, category name, specialist id, scale id and content)
 
 POST
 
-- /patients/{<span style="color: cornflowerblue">patientId</span>}/movementsessions
-  - Post a movement session
-  - Body:
-    ```json
-      {
-        "seconds": int
-      }
-    ```
-
-PUT
-
-- /patients/{<span style="color: cornflowerblue">patientId</span>}/addcoins/{<span style="color: cornflowerblue">amount</span>}
-- Add coins to the patient
-
-## Users (specialists and patients combined)
-
-GET
-
-- /users
-  - Gets all users
-- /users/exists/{<span style="color: cornflowerblue">email</span>}
-  - Returns true if it finds the email in the user database
-  - Returns false if the email is not in the database
-
-POST
-
-- /users/loginbyemail
-  - Returns user object
-  - Body:
-    ```json
-    "email"
-    ```
-
-PUT
-
-- /users/{<span style="color: cornflowerblue">userId</span>}
-  - Used to edit any user
+- /question/addquestion
+  - Adds a question to the database
   - Body:
     ```json
     {
-      "firstName": "string",
-      "lastName": "string",
-      "email": "string"
+    "CategoryId": "string",
+    "SpecialistId": "string",
+    "ScaleId": "string",
+    "Content": "string"
+    }
+    ```
+- /question/addquestions
+  - Adds a list of questions to the database
+  - Body:
+    ```json
+    {
+    "data": [
+      {
+        "content": "string",
+        "categoryId": "string",
+        "scaleId": "string",
+        "specialistId": "string"
+      },
+      {
+        "content": "string",
+        "categoryId": "string",
+        "scaleId": "string",
+        "specialistId": "string"
+      },
+      ...
+    ]
     }
     ```
 
-DELETE
-
-- /users/{<span style="color: cornflowerblue">userId</span>}
-  - Used to soft-delete any user
-
-## Store
-
-GET
-
-- /store/{<span style="color: cornflowerblue">patientId</span>}
-  - Gets a complete list of all store items, with info on owned and active
-
 PUT
 
-- /store/{<span style="color: cornflowerblue">patientId</span>}/buy/{<span style="color: cornflowerblue">colorId</span>}
-  - Subtracts patient coins if they have enough and adds the color to their account
-- /store/{<span style="color: cornflowerblue">patientId</span>}/use/{<span style="color: cornflowerblue">colorId</span>}
-  - Adds the color if owned to the patients avatar, and sets the color as active in the store endpoint
+- /question/updatequestion/{userid}
+  - Updates an existing question in the database (you give the question id)
+  - Body:
+    ```json
+    {
+    "CategoryId": "string",
+    "SpecialistId": "string",
+    "ScaleId": "string",
+    "Content": "string"
+    }
+    ```
+
+
+
+
+
 
 ## Questionnaires
 
@@ -319,13 +377,6 @@ POST
     }
     ```
 
-## Scale
-
-GET
-
-- /all
-  - Returns an array with all the scales (id and name)
-
 ## Category
 
 GET
@@ -333,16 +384,27 @@ GET
 - /all
   - Returns an array with all the categories (id and name)
 
-POST
 
-- /question/addquestion
-  - Adds a question by a specialist
-  - Body:
-  ```json
-  {
-    "categoryId": "string",
-    "specialistId": "string",
-    "scaleId": "string",
-    "content": "string"
-  }
-  ```
+## Scale
+
+GET
+
+- /all
+  - Returns an array with all the scales (id and name)
+
+
+## Store
+
+GET
+
+- /store/{patientId}
+  - Gets a complete list of all store items, with info on owned and active
+- /store/{patientId}/byprice
+  - Gets a complete list of all store items, with info on owned and active, ordered by price
+
+PUT
+
+- /store/{patientId}/buy/{colorId}
+  - Subtracts patient coins if they have enough and adds the color to their account
+- /store/{patientId}/use/{colorId}
+  - Adds the color if owned to the patients avatar, and sets the color as active in the store endpoint

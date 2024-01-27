@@ -8,6 +8,7 @@ public interface ISpecialistRepository
 {
     Task<List<Specialist>> GetAllSpecialistsAsync();
     Task<Specialist> GetSpecialistByIdAsync(Guid id);
+    Task<Specialist> GetSpecialistWithPatientIdsByIdAsync(Guid id);
     Task<Specialist> CreateSpecialistAsync(Specialist specialist);
     Task<Specialist> UpdateSpecialistAsync(Specialist specialist);
     Task DeleteSpecialistAsync(Specialist specialist);
@@ -24,6 +25,8 @@ public class SpecialistRepository : ISpecialistRepository
     public async Task<List<Specialist>> GetAllSpecialistsAsync() => await _context.Specialist.Where(s => s.IsDeleted == false).ToListAsync();
 
     public async Task<Specialist> GetSpecialistByIdAsync(Guid id) => await _context.Specialist.FirstOrDefaultAsync(s => s.Id == id);
+
+    public async Task<Specialist> GetSpecialistWithPatientIdsByIdAsync(Guid id) => await _context.Specialist.Include(s => s.PatientSpecialists).FirstOrDefaultAsync(s => s.Id == id);
 
     public async Task<Specialist> CreateSpecialistAsync(Specialist specialist)
     {
