@@ -1,14 +1,30 @@
+import { useQuery } from "@tanstack/react-query";
+import { getAllQuestions } from "../../../../core/utils/apiCalls";
 import Button from "../../../ui/Button/Button";
 import styles from "./QuestionList.module.css";
 import Skeleton from "react-loading-skeleton";
+import { toast } from "react-toastify";
 
-const QuestionList = ({ questions, search, filters }) => {
-  const filteredQuestions = questions
-    .filter((question) => filters.includes(question.category))
-    .filter((question) =>
-      question.question.toLowerCase().includes(search.toLowerCase())
-    )
-    .map((question) => question.question);
+const QuestionList = ({ search, filters }) => {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["questions"],
+    queryFn: () => getAllQuestions(),
+  });
+
+  if (isLoading) return null;
+
+  if (isError) {
+    return toast("Er is iets misgelopen bij het ophalen van de vragen", {
+      type: "error",
+    });
+  }
+
+  const filteredQuestions = data.data
+  .filter((question) => filters.includes(question.categoryName))
+  .filter((question) =>
+    question.content.toLowerCase().includes(search.toLowerCase())
+  )
+  .map((question) => question.content);
 
   return (
     <>
