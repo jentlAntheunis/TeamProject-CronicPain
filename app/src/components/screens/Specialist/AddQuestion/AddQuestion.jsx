@@ -49,18 +49,12 @@ const AddQuestion = () => {
     mutationFn: addQuestion,
   });
 
-  const {
-    data: scaleData,
-    isError: scaleError,
-  } = useQuery({
+  const { data: scaleData, isError: scaleError } = useQuery({
     queryKey: ["scale"],
     queryFn: () => getScales(),
   });
 
-  const {
-    data: categoryData,
-    isError: categoryError,
-  } = useQuery({
+  const { data: categoryData, isError: categoryError } = useQuery({
     queryKey: ["category"],
     queryFn: () => getCategories(),
   });
@@ -71,14 +65,14 @@ const AddQuestion = () => {
     scaleId: "",
   };
 
-  const handleSubmit = (data) => {
+  const handleSubmit = async (data) => {
     setLoading(true);
     try {
       const newData = {
         ...data,
         specialistId: user.id,
       };
-      addMutation.mutate(newData);
+      await addMutation.mutateAsync(newData);
       toast.success("Vraag toegevoegd");
       setLoading(false);
       navigate(SpecialistRoutes.QuestionsOverview);

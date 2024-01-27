@@ -231,6 +231,10 @@ const addQuestion = async (data) => await request({
   data: data,
 })
 
+const getAllQuestions = async () => await request({
+  url: `/question/getallquestions`,
+  method: 'GET',
+})
 
 export {
   getUser,
@@ -261,6 +265,7 @@ export {
   getScales,
   getCategories,
   addQuestion,
+  getAllQuestions,
   checkFirstQuestionnaire,
   checkBonusQuestionnaire,
 };
