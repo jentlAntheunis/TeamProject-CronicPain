@@ -12,6 +12,7 @@ import {
 import { LineChart, Line } from "recharts";
 import InfoTooltip from "../InfoTooltip/InfoTooltip";
 import clsx from "clsx";
+import Skeleton from "react-loading-skeleton";
 const lineData = [];
 
 for (let i = 0; i < 30; i++) {
@@ -202,5 +203,23 @@ const GraphComponent = ({ variant, data }) => {
     );
   }
 };
+
+export const GraphSkeleton = ({ className }) => (
+  <div className={clsx(styles.graphContainer, className)}>
+    <div className={styles.titleContainer}>
+      <div className={styles.graphTitle}>
+        <Skeleton width={250} height={24} style={{ zIndex: 0 }} />
+      </div>
+      <InfoTooltip text="Deze grafiek geeft de pijnervaring weer op een schaal van 0 tot 10." />
+    </div>
+    <Skeleton
+      containerClassName="flex-1"
+      height={300}
+      borderRadius={22}
+      style={{ zIndex: 0 }}
+    />
+  </div>
+);
+
 
 export default Graph;

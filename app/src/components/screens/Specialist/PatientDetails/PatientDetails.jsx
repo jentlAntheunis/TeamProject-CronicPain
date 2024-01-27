@@ -4,8 +4,8 @@ import NavBar from "../../../ui/NavBar/NavBar";
 import PageHeading from "../../../ui/PageHeading/PageHeading";
 import { SpecialistRoutes } from "../../../../core/config/routes";
 import styles from "./PatientDetails.module.css";
-import MovingInfluenceCard from "../../../ui/MovingInfluenceCard/MovingInfluenceCard";
-import Graph from "../../../ui/Graph/Graph";
+import MovingInfluenceCard, { MovingInfluenceCardSkeleton } from "../../../ui/MovingInfluenceCard/MovingInfluenceCard";
+import Graph, { GraphSkeleton } from "../../../ui/Graph/Graph";
 import Button from "../../../ui/Button/Button";
 import RewardMetric from "../../../ui/RewardMetric/RewardMetric";
 import Streaks from "../../../ui/Icons/Streaks";
@@ -30,52 +30,10 @@ import {
 } from "../../../../core/utils/apiCalls";
 import { Impacts } from "../../../../core/config/impacts";
 import { fillMissingDates, fillMissingMovementDates } from "../../../../core/utils/patientDetails";
-import QuestionnaireList from "../../../app/questionnaire/QuestionnaireList/QuestionnaireList";
+import QuestionnaireList, { QuestionnaireListSkeleton } from "../../../app/questionnaire/QuestionnaireList/QuestionnaireList";
 import useTitle from "../../../../core/hooks/useTitle";
 import { useUser } from "../../../app/auth/AuthProvider";
-
-const questionnaires = [
-  {
-    category: "bewegingsvragen",
-    datetime: "03/01/2024 14:03",
-  },
-  {
-    category: "bonusvragen",
-    datetime: "04/01/2024 15:12",
-  },
-  {
-    category: "bewegingsvragen",
-    datetime: "04/01/2024 10:45",
-  },
-  {
-    category: "bewegingsvragen",
-    datetime: "04/01/2024 09:27",
-  },
-  {
-    category: "bonusvragen",
-    datetime: "05/01/2024 16:58",
-  },
-  {
-    category: "bewegingsvragen",
-    datetime: "05/01/2024 11:30",
-  },
-  {
-    category: "bewegingsvragen",
-    datetime: "05/01/2024 13:15",
-  },
-  {
-    category: "bewegingsvragen",
-    datetime: "05/01/2024 08:59",
-  },
-  {
-    category: "bonusvragen",
-    datetime: "05/01/2024 17:42",
-  },
-  {
-    category: "bonusvragen",
-    datetime: "06/01/2024 12:20",
-  },
-];
+import Skeleton from "react-loading-skeleton";
 
 const PatientDetails = () => {
   const [date, setDate] = useState();
@@ -154,7 +112,7 @@ const PatientDetails = () => {
             <InfoTooltip text="Deze kaartjes geven de invloed weer van het bewegen op de pijn" />
           </div>
           <div className={styles.movingInfluenceCardsContainer}>
-            {impactData && (
+            {impactData ? (
               <>
                 <MovingInfluenceCard
                   variant={Impacts.Positive}
@@ -169,11 +127,17 @@ const PatientDetails = () => {
                   data={impactData.data}
                 />
               </>
+            ) : (
+              <>
+                <MovingInfluenceCardSkeleton/>
+                <MovingInfluenceCardSkeleton/>
+                <MovingInfluenceCardSkeleton/>
+              </>
             )}
           </div>
         </div>
         <div className={styles.graphs}>
-          {movementData && painData && (
+          {movementData && painData ? (
             <>
               <Graph
                 variant={"bar"}
@@ -187,6 +151,11 @@ const PatientDetails = () => {
                 data={fillMissingDates(painData.data.days)}
                 tooltip="Deze grafiek geeft de pijnervaring weer op een schaal van 0 tot 10."
               ></Graph>
+            </>
+          ) : (
+            <>
+              <GraphSkeleton />
+              <GraphSkeleton />
             </>
           )}
         </div>
@@ -215,11 +184,13 @@ const PatientDetails = () => {
             </Popover>
           </div>
           <div className={styles.questionnaires}>
-            {questionnairesData && (
+            {questionnairesData ? (
               <QuestionnaireList
                 questionnaires={sortedQuestionnaires}
                 date={date}
               />
+            ) : (
+              <QuestionnaireListSkeleton />
             )}
           </div>
         </div>

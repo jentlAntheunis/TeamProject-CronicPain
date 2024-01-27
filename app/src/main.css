@@ -173,6 +173,10 @@ strong {
   position: fixed;
 }
 
+.flex-1 {
+  flex: 1;
+}
+
 .screen-margin {
   margin: var(--margin-top) var(--margin-side) var(--margin-bottom);
 }

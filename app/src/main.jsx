@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "./normalize.css";
 import "./main.css";
 import "react-toastify/dist/ReactToastify.min.css";
+import "react-loading-skeleton/dist/skeleton.css";
 import App from "./components/app/App.jsx";
 import AuthProvider from "./components/app/auth/AuthProvider.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

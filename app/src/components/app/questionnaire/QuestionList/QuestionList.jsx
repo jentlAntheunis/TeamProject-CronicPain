@@ -1,5 +1,6 @@
 import Button from "../../../ui/Button/Button";
 import styles from "./QuestionList.module.css";
+import Skeleton from "react-loading-skeleton";
 
 const QuestionList = ({ questions, search, filters }) => {
   const filteredQuestions = questions
@@ -48,5 +49,28 @@ const QuestionList = ({ questions, search, filters }) => {
     </>
   );
 };
+
+const QuestionListSkeleton = () => (
+  <>
+    <div className={styles.question}>
+      <div className={styles.questionName}>
+        <Skeleton width={100} />
+      </div>
+      <Skeleton width={110} height={40} borderRadius={8} />
+    </div>
+    <div className={styles.question}>
+      <div className={styles.questionName}>
+        <Skeleton width={100} />
+      </div>
+      <Skeleton width={110} height={40} borderRadius={8} />
+    </div>
+    <div className={styles.question}>
+      <div className={styles.questionName}>
+        <Skeleton width={100} />
+      </div>
+      <Skeleton width={110} height={40} borderRadius={8} />
+    </div>
+  </>
+);
 
 export default QuestionList;

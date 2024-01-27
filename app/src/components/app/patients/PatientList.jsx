@@ -6,6 +6,7 @@ import { SpecialistRoutes } from "../../../core/config/routes";
 import { Link } from "react-router-dom";
 import Button from "../../ui/Button/Button";
 import styles from "./PatientList.module.css";
+import Skeleton from "react-loading-skeleton";
 
 const PatientList = ({ search }) => {
   const user = useUser();
@@ -15,7 +16,7 @@ const PatientList = ({ search }) => {
     queryFn: () => getPatients(user.id),
   });
 
-  if (isLoading) return null;
+  if (isLoading) return <PatientListSkeleton />;
 
   if (isError) {
     return toast("Er is iets misgelopen bij het ophalen van de patiënten", {
@@ -74,5 +75,34 @@ const PatientList = ({ search }) => {
     </div>
   );
 };
+
+export const PatientListSkeleton = () => (
+  <div className={styles.patients}>
+    <div className={styles.patient}>
+      <div className={styles.patientName}>
+        <Skeleton width={150} height={30} />
+      </div>
+      <Skeleton width={85} height={40} borderRadius={8} />
+    </div>
+    <div className={styles.patient}>
+      <div className={styles.patientName}>
+        <Skeleton width={150} height={30} />
+      </div>
+      <Skeleton width={85} height={40} borderRadius={8} />
+    </div>
+    <div className={styles.patient}>
+      <div className={styles.patientName}>
+        <Skeleton width={150} height={30} />
+      </div>
+      <Skeleton width={85} height={40} borderRadius={8} />
+    </div>
+    <div className={styles.patient}>
+      <div className={styles.patientName}>
+        <Skeleton width={150} height={30} />
+      </div>
+      <Skeleton width={85} height={40} borderRadius={8} />
+    </div>
+  </div>
+);
 
 export default PatientList;
