@@ -121,7 +121,7 @@ public class PatientService : IPatientService
   public async Task<MovementSession> AddMovementSessionAsync(Guid patientId, MovementSession movementSession)
   {
     movementSession.PatientId = patientId;
-    movementSession.StartTime = DateTime.Now;
+    movementSession.StartTime = DateTime.Now.AddHours(1);
     await _movementSessionRepository.CreateMovementSessionAsync(movementSession);
     return movementSession;
   }
