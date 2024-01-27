@@ -11,10 +11,16 @@ import { useNavigate } from "react-router-dom";
 import { PatientRoutes } from "../../../../core/config/routes";
 import RecieveCoinsModal from "../../../ui/Modal/RecieveCoinsModal";
 import QuestionCategories from "../../../../core/config/questionCategories";
-import { addCoins, sendAnswers } from "../../../../core/utils/apiCalls";
+import {
+  addCoins,
+  addStreak,
+  checkFirstQuestionnaire,
+  sendAnswers,
+} from "../../../../core/utils/apiCalls";
 import { useUser } from "../../../app/auth/AuthProvider";
 import { toast } from "react-toastify";
 import useTitle from "../../../../core/hooks/useTitle";
+import { useQuery } from "@tanstack/react-query";
 
 const QuestionaireScreen = () => {
   // States
@@ -36,13 +42,16 @@ const QuestionaireScreen = () => {
     answers,
     incrementCurrentQuestion,
     decrementCurrentQuestion,
-    resetCurrentQuestion,
-    incrementQuestionaireIndex,
     addAnswer,
-    replaceLastAnswer,
   } = useStore();
 
   const navigate = useNavigate();
+
+  // Queries
+  const { data: isFirstQuestionnaire, isError } = useQuery({
+    queryKey: ["questionnaire", user.id],
+    queryFn: () => checkFirstQuestionnaire(user.id),
+  });
 
   useEffect(() => {
     // If answer already exists, set slider to that value
@@ -91,13 +100,16 @@ const QuestionaireScreen = () => {
           answers: [...answers, answer],
         };
 
-        // TODO: add streaks to database
         setLoading(true);
         try {
           // send answers to backend
           console.log("send answers");
           await sendAnswers(data);
           setAmount(coins);
+          if (isFirstQuestionnaire.data) {
+            // TODO: add streaks to database
+            await addStreak(user.id);
+          }
           await addCoins(user.id, coins);
           setLoading(false);
           setShowModal(true);
@@ -121,6 +133,13 @@ const QuestionaireScreen = () => {
     if (current.scale.options.length - 1 < sliderValue) return false;
     return true;
   };
+
+  if (isError) {
+    toast.error(
+      "Er is iets misgegaan bij het ophalen van de vragenlijst. Probeer het later opnieuw."
+    );
+    return null;
+  }
 
   return (
     <FullHeightScreen>
@@ -172,7 +191,11 @@ const QuestionaireScreen = () => {
         showModal={showModal}
         setShowModal={setShowModal}
         amount={amount}
-        linkTo={PatientRoutes.Streaks}
+        linkTo={
+          isFirstQuestionnaire?.data
+            ? PatientRoutes.Streaks
+            : PatientRoutes.Dashboard
+        }
       />
     </FullHeightScreen>
   );

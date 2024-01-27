@@ -69,7 +69,7 @@ const MyStopwatch = () => {
       release();
       pause();
 
-      if (minutes >= 0) {
+      if (minutes >= 5) {
         setMovementTime(totalSeconds);
         setLoading(true);
 
