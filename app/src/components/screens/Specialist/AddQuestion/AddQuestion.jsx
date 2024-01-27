@@ -15,7 +15,7 @@ import {
 import Input from "../../../ui/Input/Input";
 import { useEffect, useState } from "react";
 import Select from "../../../ui/Select/Select";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   addQuestion,
   getCategories,
@@ -39,6 +39,11 @@ const formSchema = z.object({
 
 const AddQuestion = () => {
   const [loading, setLoading] = useState(false);
+
+  const { state } = useLocation();
+  useEffect(() => {
+    console.log(state);
+  }, [state]);
 
   useTitle("Vraag toevoegen");
   const user = useUser();
@@ -107,11 +112,11 @@ const AddQuestion = () => {
             Vraag toevoegen
           </PageHeading>
           <div className="desktop-only">
-          <Link to={SpecialistRoutes.AddQuestionCsv}>
-            <Button variant="secondary" className={styles.csvImport}>
-              CSV importeren
-            </Button>
-          </Link>
+            <Link to={SpecialistRoutes.AddQuestionCsv}>
+              <Button variant="secondary" className={styles.csvImport}>
+                CSV importeren
+              </Button>
+            </Link>
           </div>
         </div>
         <Form

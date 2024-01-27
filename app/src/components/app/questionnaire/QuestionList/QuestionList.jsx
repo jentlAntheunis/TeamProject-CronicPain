@@ -5,6 +5,8 @@ import styles from "./QuestionList.module.css";
 import Skeleton from "react-loading-skeleton";
 import { toast } from "react-toastify";
 import { DatabaseCategoriesSingular } from "../../../../core/config/questionCategories";
+import { Link } from "react-router-dom";
+import { SpecialistRoutes } from "../../../../core/config/routes";
 
 const QuestionList = ({ search, filters }) => {
   const { data, isLoading, isError } = useQuery({
@@ -66,9 +68,11 @@ const QuestionList = ({ search, filters }) => {
                   DatabaseCategoriesSingular[question.categoryName]}
               </div>
             </div>
-            <Button variant="tertiary" size="superSmall">
-              Aanpassen
-            </Button>
+            <Link to={SpecialistRoutes.AddQuestion} state={question}>
+              <Button variant="tertiary" size="superSmall">
+                Aanpassen
+              </Button>
+            </Link>
           </div>
         );
       })}
