@@ -65,4 +65,27 @@ const fillMissingDates = (data) => {
   return resultArray;
 }
 
-export { countImpact, fillMissingDates }
+const fillMissingMovementDates = (data) => {
+  const today = new Date();
+  const dayNames = ["Zo", "Ma", "Di", "Wo", "Do", "Vr", "Za"];
+
+  const combinedResults = [];
+
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date();
+    date.setDate(today.getDate() - i);
+    const dateString = date.toLocaleDateString("nl-NL");
+    // console.log(dateString, dataDates)
+    const matchingEntry = data.find((entry) => {
+      const entryDate = new Date(entry.date);
+      return entryDate.toLocaleDateString("nl-NL") === dateString;
+    });
+    combinedResults.push({
+      date: dayNames[date.getDay()],
+      Tijdsduur: matchingEntry ? Math.round(matchingEntry.int / 60) : 0,
+    });
+  }
+  return combinedResults;
+}
+
+export { countImpact, fillMissingDates, fillMissingMovementDates }
