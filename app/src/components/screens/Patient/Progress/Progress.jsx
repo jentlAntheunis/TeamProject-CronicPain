@@ -20,7 +20,7 @@ import { X } from "@phosphor-icons/react";
 import Button from "../../../ui/Button/Button";
 import { useEffect, useState } from "react";
 import { Impacts } from "../../../../core/config/impacts";
-import { fillMissingDates } from "../../../../core/utils/patientDetails";
+import { fillMissingDates, fillMissingMovementDates } from "../../../../core/utils/patientDetails";
 import useTitle from "../../../../core/hooks/useTitle";
 
 const Progress = () => {
@@ -110,6 +110,7 @@ const Progress = () => {
           <Graph
             variant={"bar"}
             title="Duur bewegingssessies voorbije week"
+            data={fillMissingMovementDates(movementData.data.days)}
             tooltip="Deze grafiek geeft de duur van de bewegingssessies weer per dag van de week uitgedrukt in minuten."
             className={styles.graph}
             setShowModal={setShowModal}

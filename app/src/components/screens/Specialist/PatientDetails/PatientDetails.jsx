@@ -29,7 +29,7 @@ import {
   validatePatient,
 } from "../../../../core/utils/apiCalls";
 import { Impacts } from "../../../../core/config/impacts";
-import { fillMissingDates } from "../../../../core/utils/patientDetails";
+import { fillMissingDates, fillMissingMovementDates } from "../../../../core/utils/patientDetails";
 import QuestionnaireList from "../../../app/questionnaire/QuestionnaireList/QuestionnaireList";
 import useTitle from "../../../../core/hooks/useTitle";
 import { useUser } from "../../../app/auth/AuthProvider";
@@ -92,10 +92,6 @@ const PatientDetails = () => {
     queryKey: ["user", id],
     queryFn: () => getUserData(id),
   });
-  const { data: impactData } = useQuery({
-    queryKey: ["impact", id],
-    queryFn: () => getImpact(id),
-  });
   const { data: movementData } = useQuery({
     queryKey: ["movement", id],
     queryFn: () => getMovementWeek(id),
@@ -103,6 +99,10 @@ const PatientDetails = () => {
   const { data: painData } = useQuery({
     queryKey: ["pain", id],
     queryFn: () => getPainMonth(id),
+  });
+  const { data: impactData } = useQuery({
+    queryKey: ["impact", id],
+    queryFn: () => getImpact(id),
   });
   const { data: questionnairesData } = useQuery({
     queryKey: ["questionnaires", id],
@@ -114,7 +114,7 @@ const PatientDetails = () => {
     if (validatedData && !validatedData.data) {
       navigate(SpecialistRoutes.PatientsOverview);
     }
-  }, [validatedData, navigate])
+  }, [validatedData, navigate]);
 
   useTitle(
     patientData
@@ -123,7 +123,6 @@ const PatientDetails = () => {
   );
 
   if (!validatedData) return null;
-
 
   // Sort questionnaires by date descending
   const sortedQuestionnaires = questionnairesData?.data.sort((a, b) => {
@@ -179,6 +178,7 @@ const PatientDetails = () => {
               <Graph
                 variant={"bar"}
                 title="Duur bewegingssessies voorbije week"
+                data={fillMissingMovementDates(movementData.data.days)}
                 tooltip="Deze grafiek geeft de duur van de bewegingssessies weer per dag van de week uitgedrukt in minuten."
               ></Graph>
               <Graph
