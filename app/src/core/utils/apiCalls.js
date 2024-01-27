@@ -110,6 +110,11 @@ const sendAnswers = async (data) =>
     data: data,
   });
 
+const checkFirstQuestionnaire = async (userId) => await request({
+  url: `/questionnaires/checkIfFirstQuestionnaireOfTheDay/${userId}`,
+  method: "GET",
+})
+
 const checkBonusQuestionnaire = async (userId) => await request({
   url: `/questionnaires/checkifbonusdone/${userId}`,
   method: "GET",
@@ -123,6 +128,13 @@ const addCoins = async (userId, amount) =>
     url: `/patients/${userId}/addcoins/${amount}`,
     method: "PUT",
   });
+
+const addStreak = async (userId) => {
+  await request({
+    url: `/patients/${userId}/addstreak`,
+    method: "PUT",
+  });
+}
 
 const getStreakHistory = async (userId) =>
   await request({
@@ -233,6 +245,7 @@ export {
   getDailyQuestionnaire,
   sendAnswers,
   addCoins,
+  addStreak,
   getShopItems,
   buyColor,
   activateColor,
@@ -248,5 +261,6 @@ export {
   getScales,
   getCategories,
   addQuestion,
+  checkFirstQuestionnaire,
   checkBonusQuestionnaire,
 };
