@@ -1,9 +1,9 @@
-import { useEffect } from "react";
 import styles from "./QuestionnaireList.module.css";
 import { Link } from "react-router-dom";
 import Button from "../../../ui/Button/Button";
 import { dateToDateTimeString } from "../../../../core/utils/timeData";
 import { SpecialistRoutes } from "../../../../core/config/routes";
+import { DatabaseCategories } from "../../../../core/config/questionCategories";
 import Skeleton from "react-loading-skeleton";
 
 const QuestionnaireList = ({ questionnaires, date }) => {
@@ -25,7 +25,9 @@ const QuestionnaireList = ({ questionnaires, date }) => {
               <div className={styles.datetime}>
                 {dateToDateTimeString(new Date(questionnaire.date))}
               </div>
-              <div className={styles.category}>{questionnaire.category}</div>
+              <div className={styles.category}>
+                {questionnaire.categoryName && DatabaseCategories[questionnaire.categoryName]}
+              </div>
             </div>
             {/* TODO: changeroute */}
             <Link

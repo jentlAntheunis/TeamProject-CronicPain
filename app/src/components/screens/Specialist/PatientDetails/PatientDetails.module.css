@@ -51,3 +51,10 @@
 .noValue {
   color: var(--grey-400);
 }
+
+.noQuestionnaires {
+  font-size: var(--paragraph);
+  color: var(--grey-400);
+  margin-top: 2rem;
+  text-align: center;
+}

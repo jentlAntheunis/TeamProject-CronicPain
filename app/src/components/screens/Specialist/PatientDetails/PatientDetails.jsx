@@ -1,4 +1,4 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ScrollableScreen from "../../../ui/ScrollableScreen/ScrollableScreen";
 import NavBar from "../../../ui/NavBar/NavBar";
 import PageHeading from "../../../ui/PageHeading/PageHeading";
@@ -33,7 +33,6 @@ import { fillMissingDates, fillMissingMovementDates } from "../../../../core/uti
 import QuestionnaireList, { QuestionnaireListSkeleton } from "../../../app/questionnaire/QuestionnaireList/QuestionnaireList";
 import useTitle from "../../../../core/hooks/useTitle";
 import { useUser } from "../../../app/auth/AuthProvider";
-import Skeleton from "react-loading-skeleton";
 
 const PatientDetails = () => {
   const [date, setDate] = useState();
@@ -129,9 +128,9 @@ const PatientDetails = () => {
               </>
             ) : (
               <>
-                <MovingInfluenceCardSkeleton/>
-                <MovingInfluenceCardSkeleton/>
-                <MovingInfluenceCardSkeleton/>
+                <MovingInfluenceCardSkeleton />
+                <MovingInfluenceCardSkeleton />
+                <MovingInfluenceCardSkeleton />
               </>
             )}
           </div>
@@ -185,10 +184,16 @@ const PatientDetails = () => {
           </div>
           <div className={styles.questionnaires}>
             {questionnairesData ? (
-              <QuestionnaireList
-                questionnaires={sortedQuestionnaires}
-                date={date}
-              />
+              questionnairesData?.data.length ? (
+                <QuestionnaireList
+                  questionnaires={sortedQuestionnaires}
+                  date={date}
+                />
+              ) : (
+                <div className={styles.noQuestionnaires}>
+                  Geen vragenlijsten gevonden.
+                </div>
+              )
             ) : (
               <QuestionnaireListSkeleton />
             )}
