@@ -11,21 +11,28 @@ import ScrollableScreen from "../../../ui/ScrollableScreen/ScrollableScreen";
 import TopBar from "../../../ui/TopBar/TopBar";
 import TabBarNav from "../../../ui/TabBarNav/TabBarNav";
 import styles from "./Progress.module.css";
-import MovingInfluenceCard from "../../../ui/MovingInfluenceCard/MovingInfluenceCard";
+import MovingInfluenceCard, {
+  MovingInfluenceCardSkeleton,
+} from "../../../ui/MovingInfluenceCard/MovingInfluenceCard";
 import InfoTooltip from "../../../ui/InfoTooltip/InfoTooltip";
-import Graph from "../../../ui/Graph/Graph";
+import Graph, { GraphSkeleton } from "../../../ui/Graph/Graph";
 import clsx from "clsx";
 import Modal from "../../../ui/Modal/Modal";
 import { X } from "@phosphor-icons/react";
 import Button from "../../../ui/Button/Button";
 import { useEffect, useState } from "react";
 import { Impacts } from "../../../../core/config/impacts";
-import { fillMissingDates } from "../../../../core/utils/patientDetails";
+import {
+  fillMissingDates,
+  fillMissingMovementDates,
+} from "../../../../core/utils/patientDetails";
+import useTitle from "../../../../core/hooks/useTitle";
 
 const Progress = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState("");
 
+  useTitle("Voortgang");
   const user = useUser();
 
   const { data, isLoading, isError } = useQuery({
@@ -86,7 +93,7 @@ const Progress = () => {
         />
       </div>
       <div className={styles.movingInfluenceCardsContainer}>
-        {impactData && (
+        {impactData ? (
           <>
             <MovingInfluenceCard
               variant={Impacts.Positive}
@@ -101,13 +108,20 @@ const Progress = () => {
               data={impactData.data}
             />
           </>
+        ) : (
+          <>
+            <MovingInfluenceCardSkeleton />
+            <MovingInfluenceCardSkeleton />
+            <MovingInfluenceCardSkeleton />
+          </>
         )}
       </div>
-      {movementData && painData && (
+      {movementData && painData ? (
         <>
           <Graph
             variant={"bar"}
             title="Duur bewegingssessies voorbije week"
+            data={fillMissingMovementDates(movementData.data.days)}
             tooltip="Deze grafiek geeft de duur van de bewegingssessies weer per dag van de week uitgedrukt in minuten."
             className={styles.graph}
             setShowModal={setShowModal}
@@ -122,6 +136,11 @@ const Progress = () => {
             setShowModal={setShowModal}
             setModalContent={setModalContent}
           ></Graph>
+        </>
+      ) : (
+        <>
+          <GraphSkeleton className={styles.graph} />
+          <GraphSkeleton className={clsx(styles.graph, styles.lastGraph)} />
         </>
       )}
       <TabBarNav />

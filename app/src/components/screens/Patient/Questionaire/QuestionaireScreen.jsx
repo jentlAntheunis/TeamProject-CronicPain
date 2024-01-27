@@ -14,6 +14,7 @@ import QuestionCategories from "../../../../core/config/questionCategories";
 import { addCoins, sendAnswers } from "../../../../core/utils/apiCalls";
 import { useUser } from "../../../app/auth/AuthProvider";
 import { toast } from "react-toastify";
+import useTitle from "../../../../core/hooks/useTitle";
 
 const QuestionaireScreen = () => {
   // States
@@ -24,6 +25,7 @@ const QuestionaireScreen = () => {
   const [amount, setAmount] = useState(0);
 
   // Hooks
+  useTitle("Vragenlijst");
   const user = useUser();
   const {
     questions,
@@ -116,7 +118,7 @@ const QuestionaireScreen = () => {
 
   // Check if slider value is valid
   const checkSliderValue = (current) => {
-    if (current.scale.options.length < sliderValue) return false;
+    if (current.scale.options.length - 1 < sliderValue) return false;
     return true;
   };
 

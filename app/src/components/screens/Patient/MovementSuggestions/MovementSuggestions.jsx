@@ -1,16 +1,18 @@
 import { useEffect, useRef, useState } from "react";
-import Button from "../../ui/Button/Button";
-import FullHeightScreen from "../../ui/FullHeightScreen/FullHeightScreen";
-import PageHeading from "../../ui/PageHeading/PageHeading";
+import Button from "../../../ui/Button/Button";
+import FullHeightScreen from "../../../ui/FullHeightScreen/FullHeightScreen";
+import PageHeading from "../../../ui/PageHeading/PageHeading";
 import styles from "./MovementSuggestions.module.css";
-import { suggestions } from "../../../core/config/movementSuggestions";
-import { PatientRoutes } from "../../../core/config/routes";
+import { suggestions } from "../../../../core/config/movementSuggestions";
+import { PatientRoutes } from "../../../../core/config/routes";
 import { useNavigate } from "react-router-dom";
+import useTitle from "../../../../core/hooks/useTitle";
 
 const MovementSuggestions = () => {
   const [selectedSuggestion, setSelectedSuggestion] = useState(null);
   const suggestionsContainerRef = useRef(null);
 
+  useTitle("Kies een activiteit");
   const navigate = useNavigate();
 
   const handleSuggestionClick = (index) => {

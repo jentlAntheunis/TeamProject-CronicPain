@@ -7,12 +7,15 @@ import styles from "./QuestionnaireDetails.module.css";
 import { dateToDateTimeString } from "../../../../core/utils/timeData";
 import { useEffect } from "react";
 import { DatabaseCategories } from "../../../../core/config/questionCategories";
+import useTitle from "../../../../core/hooks/useTitle";
 
 const QuestionnaireDetails = () => {
   const { state } = useLocation();
   useEffect(() => {
     console.log(state.questionnaire, "state");
   }, [state]);
+
+  useTitle("Details vragenlijst");
 
   if (!state) return <Navigate to={SpecialistRoutes.PatientsOverview} />;
 

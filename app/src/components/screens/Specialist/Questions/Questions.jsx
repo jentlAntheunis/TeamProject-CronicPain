@@ -10,6 +10,7 @@ import { Plus } from "@phosphor-icons/react";
 import { useState } from "react";
 import clsx from "clsx";
 import QuestionList from "../../../app/questionnaire/QuestionList/QuestionList";
+import useTitle from "../../../../core/hooks/useTitle";
 
 const questions = [
   {
@@ -78,6 +79,8 @@ const questions = [
 
 const Questions = () => {
   const [searchInput, setSearchInput] = useState("");
+
+  useTitle("Vragen");
 
   const handleSearchChange = (event) => {
     setSearchInput(event.target.value);

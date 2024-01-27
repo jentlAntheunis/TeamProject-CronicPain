@@ -1,11 +1,11 @@
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ScrollableScreen from "../../../ui/ScrollableScreen/ScrollableScreen";
 import NavBar from "../../../ui/NavBar/NavBar";
 import PageHeading from "../../../ui/PageHeading/PageHeading";
 import { SpecialistRoutes } from "../../../../core/config/routes";
 import styles from "./PatientDetails.module.css";
-import MovingInfluenceCard from "../../../ui/MovingInfluenceCard/MovingInfluenceCard";
-import Graph from "../../../ui/Graph/Graph";
+import MovingInfluenceCard, { MovingInfluenceCardSkeleton } from "../../../ui/MovingInfluenceCard/MovingInfluenceCard";
+import Graph, { GraphSkeleton } from "../../../ui/Graph/Graph";
 import Button from "../../../ui/Button/Button";
 import RewardMetric from "../../../ui/RewardMetric/RewardMetric";
 import Streaks from "../../../ui/Icons/Streaks";
@@ -26,66 +26,28 @@ import {
   getPainMonth,
   getQuestionnaires,
   getUserData,
+  validatePatient,
 } from "../../../../core/utils/apiCalls";
 import { Impacts } from "../../../../core/config/impacts";
-import { fillMissingDates } from "../../../../core/utils/patientDetails";
-import QuestionnaireList from "../../../app/questionnaire/QuestionnaireList/QuestionnaireList";
-
-const questionnaires = [
-  {
-    category: "bewegingsvragen",
-    datetime: "03/01/2024 14:03",
-  },
-  {
-    category: "bonusvragen",
-    datetime: "04/01/2024 15:12",
-  },
-  {
-    category: "bewegingsvragen",
-    datetime: "04/01/2024 10:45",
-  },
-  {
-    category: "bewegingsvragen",
-    datetime: "04/01/2024 09:27",
-  },
-  {
-    category: "bonusvragen",
-    datetime: "05/01/2024 16:58",
-  },
-  {
-    category: "bewegingsvragen",
-    datetime: "05/01/2024 11:30",
-  },
-  {
-    category: "bewegingsvragen",
-    datetime: "05/01/2024 13:15",
-  },
-  {
-    category: "bewegingsvragen",
-    datetime: "05/01/2024 08:59",
-  },
-  {
-    category: "bonusvragen",
-    datetime: "05/01/2024 17:42",
-  },
-  {
-    category: "bonusvragen",
-    datetime: "06/01/2024 12:20",
-  },
-];
+import { fillMissingDates, fillMissingMovementDates } from "../../../../core/utils/patientDetails";
+import QuestionnaireList, { QuestionnaireListSkeleton } from "../../../app/questionnaire/QuestionnaireList/QuestionnaireList";
+import useTitle from "../../../../core/hooks/useTitle";
+import { useUser } from "../../../app/auth/AuthProvider";
 
 const PatientDetails = () => {
   const [date, setDate] = useState();
   let { id } = useParams();
+  const user = useUser();
+  const navigate = useNavigate();
 
   // Queries
+  const { data: validatedData } = useQuery({
+    queryKey: ["validated", id],
+    queryFn: () => validatePatient(user.id, id),
+  });
   const { data: patientData } = useQuery({
     queryKey: ["user", id],
     queryFn: () => getUserData(id),
-  });
-  const { data: impactData } = useQuery({
-    queryKey: ["impact", id],
-    queryFn: () => getImpact(id),
   });
   const { data: movementData } = useQuery({
     queryKey: ["movement", id],
@@ -95,22 +57,29 @@ const PatientDetails = () => {
     queryKey: ["pain", id],
     queryFn: () => getPainMonth(id),
   });
+  const { data: impactData } = useQuery({
+    queryKey: ["impact", id],
+    queryFn: () => getImpact(id),
+  });
   const { data: questionnairesData } = useQuery({
     queryKey: ["questionnaires", id],
     queryFn: () => getQuestionnaires(id),
   });
 
   useEffect(() => {
-    if (questionnairesData) {
-      console.log(questionnairesData.data);
+    // If patient is not validated, navigate to overview
+    if (validatedData && !validatedData.data) {
+      navigate(SpecialistRoutes.PatientsOverview);
     }
-  }, [questionnairesData]);
+  }, [validatedData, navigate]);
 
-  useEffect(() => {
-    if (impactData) {
-      console.log(impactData.data);
-    }
-  }, [impactData]);
+  useTitle(
+    patientData
+      ? patientData.data.lastName + " " + patientData.data.firstName
+      : "Patiënt details"
+  );
+
+  if (!validatedData) return null;
 
   // Sort questionnaires by date descending
   const sortedQuestionnaires = questionnairesData?.data.sort((a, b) => {
@@ -142,7 +111,7 @@ const PatientDetails = () => {
             <InfoTooltip text="Deze kaartjes geven de invloed weer van het bewegen op de pijn" />
           </div>
           <div className={styles.movingInfluenceCardsContainer}>
-            {impactData && (
+            {impactData ? (
               <>
                 <MovingInfluenceCard
                   variant={Impacts.Positive}
@@ -157,15 +126,22 @@ const PatientDetails = () => {
                   data={impactData.data}
                 />
               </>
+            ) : (
+              <>
+                <MovingInfluenceCardSkeleton />
+                <MovingInfluenceCardSkeleton />
+                <MovingInfluenceCardSkeleton />
+              </>
             )}
           </div>
         </div>
         <div className={styles.graphs}>
-          {movementData && painData && (
+          {movementData && painData ? (
             <>
               <Graph
                 variant={"bar"}
                 title="Duur bewegingssessies voorbije week"
+                data={fillMissingMovementDates(movementData.data.days)}
                 tooltip="Deze grafiek geeft de duur van de bewegingssessies weer per dag van de week uitgedrukt in minuten."
               ></Graph>
               <Graph
@@ -174,6 +150,11 @@ const PatientDetails = () => {
                 data={fillMissingDates(painData.data.days)}
                 tooltip="Deze grafiek geeft de pijnervaring weer op een schaal van 0 tot 10."
               ></Graph>
+            </>
+          ) : (
+            <>
+              <GraphSkeleton />
+              <GraphSkeleton />
             </>
           )}
         </div>
@@ -202,15 +183,19 @@ const PatientDetails = () => {
             </Popover>
           </div>
           <div className={styles.questionnaires}>
-            {questionnairesData && questionnairesData?.data.length ? (
-              <QuestionnaireList
-                questionnaires={sortedQuestionnaires}
-                date={date}
-              />
+            {questionnairesData ? (
+              questionnairesData?.data.length ? (
+                <QuestionnaireList
+                  questionnaires={sortedQuestionnaires}
+                  date={date}
+                />
+              ) : (
+                <div className={styles.noQuestionnaires}>
+                  Geen vragenlijsten gevonden.
+                </div>
+              )
             ) : (
-              <div className={styles.noQuestionnaires}>
-                Geen vragenlijsten gevonden.
-              </div>
+              <QuestionnaireListSkeleton />
             )}
           </div>
         </div>

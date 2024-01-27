@@ -4,6 +4,7 @@ import Wave from "../Illustrations/Wave";
 import { useEffect, useState } from "react";
 import { Impacts } from "../../../core/config/impacts";
 import { countImpact } from "../../../core/utils/patientDetails";
+import Skeleton from "react-loading-skeleton";
 
 const cardVariants = cva(styles.movingInfluenceCard, {
   variants: {
@@ -62,5 +63,14 @@ const MovingInfluenceCard = ({ variant, data }) => {
     </div>
   );
 };
+
+export const MovingInfluenceCardSkeleton = () => (
+  <Skeleton
+    containerClassName="flex-1"
+    height="100%"
+    borderRadius={8}
+    style={{ zIndex: 0 }}
+  />
+);
 
 export default MovingInfluenceCard;

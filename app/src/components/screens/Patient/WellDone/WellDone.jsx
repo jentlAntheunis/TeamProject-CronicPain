@@ -14,11 +14,13 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "../../../app/auth/AuthProvider";
 import { toast } from "react-toastify";
 import { PebblesMoods } from "../../../../core/config/pebblesMoods";
+import useTitle from "../../../../core/hooks/useTitle";
 
 const WellDone = () => {
   // state management
   const { movementTime } = useStore();
 
+  useTitle("Klaar met bewegen");
   const user = useUser();
   const navigate = useNavigate();
 

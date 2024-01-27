@@ -1,18 +1,19 @@
 import { ArrowLeft, Play, Stop } from "@phosphor-icons/react";
-import Button from "../../ui/Button/Button";
-import FullHeightScreen from "../../ui/FullHeightScreen/FullHeightScreen";
+import Button from "../../../ui/Button/Button";
+import FullHeightScreen from "../../../ui/FullHeightScreen/FullHeightScreen";
 import styles from "./TimeTracker.module.css";
 import { useStopwatch } from "react-timer-hook";
 import { Link } from "react-router-dom";
-import { PatientRoutes } from "../../../core/config/routes";
+import { PatientRoutes } from "../../../../core/config/routes";
 import { useNavigate } from "react-router-dom";
-import useStore from "../../../core/hooks/useStore";
-import { timeToStringValue } from "../../../core/utils/timeData";
+import useStore from "../../../../core/hooks/useStore";
+import { timeToStringValue } from "../../../../core/utils/timeData";
 import { useWakeLock } from "react-screen-wake-lock";
 import { toast } from "react-toastify";
-import { sendAnswers, storeMovement } from "../../../core/utils/apiCalls";
+import { sendAnswers, storeMovement } from "../../../../core/utils/apiCalls";
 import { useState } from "react";
-import { useUser } from "../../app/auth/AuthProvider";
+import { useUser } from "../../../app/auth/AuthProvider";
+import useTitle from "../../../../core/hooks/useTitle";
 
 const TimeTracker = () => {
   return (
@@ -42,6 +43,7 @@ const MyStopwatch = () => {
   const setMovementTime = useStore((state) => state.setMovementTime);
   const [loading, setLoading] = useState(false);
 
+  useTitle("Bewegingssessie");
   const navigate = useNavigate();
   const {
     totalSeconds,
@@ -72,12 +74,14 @@ const MyStopwatch = () => {
         setLoading(true);
 
         try {
-          await storeMovement(user.id, totalSeconds)
+          await storeMovement(user.id, totalSeconds);
           setLoading(false);
           incrementQuestionaireIndex();
         } catch (error) {
           setLoading(false);
-          toast.error("Er ging iets mis bij het opslaan van je bewegingssessie.");
+          toast.error(
+            "Er ging iets mis bij het opslaan van je bewegingssessie."
+          );
           console.error(error);
           resetEverything();
           navigate(PatientRoutes.Dashboard);

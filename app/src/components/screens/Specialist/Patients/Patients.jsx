@@ -9,9 +9,12 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { SpecialistRoutes } from "../../../../core/config/routes";
 import PatientList from "../../../app/patients/PatientList";
+import useTitle from "../../../../core/hooks/useTitle";
 
 const Patients = () => {
   const [searchInput, setSearchInput] = useState("");
+
+  useTitle("Patiënten");
 
   const handleSearchChange = (event) => {
     setSearchInput(event.target.value);

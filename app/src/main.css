@@ -88,6 +88,9 @@ html {
   box-sizing: border-box;
   -werbkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body {
   overflow-x: hidden;
 }
 
@@ -101,9 +104,9 @@ html {
 }
 
 body.modal-open {
-  overflow: hidden;
-  height: 100svh;
-  position: fixed;
+  overflow: hidden !important;
+  overscroll-behavior: contain;
+  position: relative !important;
 }
 
 ::selection {
@@ -168,6 +171,10 @@ strong {
   width: 100vw;
   overflow: hidden;
   position: fixed;
+}
+
+.flex-1 {
+  flex: 1;
 }
 
 .screen-margin {
@@ -237,5 +244,3 @@ strong {
     }
   }
 }
-
-
