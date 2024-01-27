@@ -29,17 +29,25 @@ public class CategoryController : ControllerBase
     [HttpGet("all")]
     public async Task<IActionResult> GetAllCategoriesAsync()
     {
+      try
+      {
         var categories = await _categoryRepository.GetAllCategoriesAsync();
         if (categories == null)
         {
             return StatusCode(500);
         }
-        
+
         var response = categories.Select(category => new {
             id = category.Id,
             name = category.Name
         });
 
         return Ok(JsonConvert.SerializeObject(response));
+
+      }
+      catch (Exception ex)
+      {
+        return StatusCode(500, "Internal server error.");
+      }
     }
 }
