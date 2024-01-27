@@ -101,6 +101,33 @@ public class QuestionController : ControllerBase
         }
     }
 
+    [HttpPut("updatequestion/{id}")]
+    public async Task<IActionResult> UpdateQuestion(Guid id, [FromBody] Question updatedQuestion)
+    {
+        try
+        {
+            var existingQuestion = await _context.Question.FindAsync(id);
+            if (existingQuestion == null)
+            {
+                return NotFound($"Question with ID {id} not found.");
+            }
+
+            existingQuestion.CategoryId = updatedQuestion.CategoryId;
+            existingQuestion.SpecialistId = updatedQuestion.SpecialistId;
+            existingQuestion.ScaleId = updatedQuestion.ScaleId;
+            existingQuestion.Content = updatedQuestion.Content;
+
+            _context.Question.Update(existingQuestion);
+            await _context.SaveChangesAsync();
+
+            return Ok($"Question with ID {id} updated successfully.");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Failed to update question: {ex.Message}");
+        }
+    }
+
 
 
 }
