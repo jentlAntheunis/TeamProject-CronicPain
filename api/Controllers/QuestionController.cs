@@ -130,4 +130,39 @@ public class QuestionController : ControllerBase
 
 
 
+    [HttpPost("addquestions")]
+    public async Task<IActionResult> AddQuestions([FromBody] QuestionListDTO questionList)
+    {
+        if (questionList?.Data == null || !questionList.Data.Any())
+        {
+            return BadRequest("Invalid data. Please provide a list of questions.");
+        }
+
+        foreach (var QuestionDTO in questionList.Data)
+        {
+            var newQuestion = new Question
+            {
+                Id = Guid.NewGuid(),
+                Content = QuestionDTO.Content
+            };
+
+            if (QuestionDTO.CategoryId != null)
+                newQuestion.CategoryId = (Guid)QuestionDTO.CategoryId;
+
+            if (QuestionDTO.SpecialistId != null)
+                newQuestion.SpecialistId = (Guid)QuestionDTO.SpecialistId;
+
+            if (QuestionDTO.ScaleId != null)
+                newQuestion.ScaleId = (Guid)QuestionDTO.ScaleId;
+
+            _context.Question.Add(newQuestion);
+        }
+
+
+        await _context.SaveChangesAsync();
+
+        return Ok("Questions added successfully.");
+    }
+
+
 }

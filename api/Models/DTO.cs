@@ -17,6 +17,11 @@ public class QuestionnaireDTO2
     public List<QuestionDTO> Questions { get; set; }
 }
 
+public class QuestionListDTO
+{
+    public List<QuestionDTO> Data { get; set; }
+}
+
 public class QuestionDTO
 {
     public Guid Id { get; set; }
