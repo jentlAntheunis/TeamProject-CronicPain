@@ -29,7 +29,6 @@ const QuestionnaireList = ({ questionnaires, date }) => {
                 {questionnaire.categoryName && DatabaseCategories[questionnaire.categoryName]}
               </div>
             </div>
-            {/* TODO: changeroute */}
             <Link
               to={SpecialistRoutes.QuestionnaireDetails}
               state={{ questionnaire: questionnaire }}
@@ -57,7 +56,7 @@ export const QuestionnaireListSkeleton = () => (
           <Skeleton width={150} height={22} />
         </div>
         <div className={styles.category}>
-          <Skeleton width={100} />
+          <Skeleton width={125} />
         </div>
       </div>
       <Skeleton width={85} height={40} borderRadius={8} />
@@ -68,7 +67,7 @@ export const QuestionnaireListSkeleton = () => (
           <Skeleton width={150} height={22} />
         </div>
         <div className={styles.category}>
-          <Skeleton width={100} />
+          <Skeleton width={125} />
         </div>
       </div>
       <Skeleton width={85} height={40} borderRadius={8} />
@@ -79,7 +78,7 @@ export const QuestionnaireListSkeleton = () => (
           <Skeleton width={150} height={22} />
         </div>
         <div className={styles.category}>
-          <Skeleton width={100} />
+          <Skeleton width={125} />
         </div>
       </div>
       <Skeleton width={85} height={40} borderRadius={8} />
@@ -90,7 +89,7 @@ export const QuestionnaireListSkeleton = () => (
           <Skeleton width={150} height={22} />
         </div>
         <div className={styles.category}>
-          <Skeleton width={100} />
+          <Skeleton width={125} />
         </div>
       </div>
       <Skeleton width={85} height={40} borderRadius={8} />
