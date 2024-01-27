@@ -1,0 +1,20 @@
+.title {
+  font-size: var(--h4);
+  font-weight: var(--medium);
+  margin-top: 3rem;
+}
+
+.credits {
+  font-size: var(--small);
+  font-weight: var(--regular);
+  color: var(--grey-700);
+  margin-top: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.howestLogo {
+  height: 2rem;
+}

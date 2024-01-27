@@ -11,6 +11,7 @@ const PatientRoutes = {
   WellDone: '/patient/well-done',
   MovementSuggestions: '/patient/movement-suggestions',
   TimeTracker: '/patient/time-tracker',
+  ExtraInfo: '/patient/extra-info',
 };
 
 const SpecialistRoutes = {

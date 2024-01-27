@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const PageHeading = ({ backLink, onBack, children }) => (
   <div className={styles.pageHeading}>
     {(backLink || onBack) && (
-      <Link to={backLink} className={`btn-reset ${styles.backBtn}`}>
+      <Link to={backLink} className={`btn-reset ${styles.backBtn}`} onClick={onBack || null}>
         <ArrowLeft size={32} display="block" className={styles.backIcon} />
         <div className={`desktop-only ${styles.backText}`}>Terug</div>
       </Link>
