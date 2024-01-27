@@ -25,7 +25,7 @@ const ExtraInfoScreen = () => {
         <li>Juul Van de Velde - Student Next Web Developer</li>
         <li>Jentl Antheunis - Student Smart XR Develop</li>
       </ul>
-      <h2 className={styles.title}>Over ons</h2>
+      <h2 className={styles.title}>Ons project: Pebbles</h2>
       <p>
         Ons project, genaamd Pebbles, heeft als doel een gebruiksvriendelijk
         platform te bieden dat niet alleen bewegingsstatistieken, maar ook de

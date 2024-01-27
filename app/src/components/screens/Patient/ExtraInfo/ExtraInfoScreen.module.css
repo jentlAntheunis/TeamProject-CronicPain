@@ -1,10 +1,6 @@
 .title {
   font-size: var(--h4);
   font-weight: var(--medium);
-  margin-top: 2rem;
-}
-
-.title:first-of-type {
   margin-top: 3rem;
 }
 
