@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "../../../app/form/Form";
 import Input from "../../../ui/Input/Input";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Select from "../../../ui/Select/Select";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -30,6 +30,7 @@ import {
 import { useUser } from "../../../app/auth/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import useTitle from "../../../../core/hooks/useTitle";
+import { useFormContext } from "react-hook-form";
 
 const formSchema = z.object({
   content: z.string().min(5, { message: "Vraag is te kort" }),
@@ -39,13 +40,19 @@ const formSchema = z.object({
 
 const AddQuestion = () => {
   const [loading, setLoading] = useState(false);
+  const [formValues, setFormValues] = useState({});
 
   const { state } = useLocation();
   useEffect(() => {
     console.log(state);
   }, [state]);
 
-  useTitle("Vraag toevoegen");
+  let title = "Vraag toevoegen";
+  if (state) {
+    title = "Vraag aanpassen";
+  }
+  useTitle(title);
+
   const user = useUser();
 
   const navigate = useNavigate();
@@ -64,11 +71,19 @@ const AddQuestion = () => {
     queryFn: () => getCategories(),
   });
 
-  const defaultValues = {
+  let defaultValues = {
     content: "",
     categoryId: "",
     scaleId: "",
   };
+
+  if (state) {
+    defaultValues = {
+      content: state.content,
+      categoryId: state.categoryId,
+      scaleId: state.scaleId,
+    };
+  }
 
   const handleSubmit = async (data) => {
     setLoading(true);
@@ -109,15 +124,17 @@ const AddQuestion = () => {
       <div className="container">
         <div className={styles.header}>
           <PageHeading backLink={SpecialistRoutes.QuestionsOverview}>
-            Vraag toevoegen
+            {state ? "Vraag aanpassen" : "Vraag toevoegen"}
           </PageHeading>
-          <div className="desktop-only">
-            <Link to={SpecialistRoutes.AddQuestionCsv}>
-              <Button variant="secondary" className={styles.csvImport}>
-                CSV importeren
-              </Button>
-            </Link>
-          </div>
+          {!state && (
+            <div className="desktop-only">
+              <Link to={SpecialistRoutes.AddQuestionCsv}>
+                <Button variant="secondary" className={styles.csvImport}>
+                  CSV importeren
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
         <Form
           schema={formSchema}
@@ -125,6 +142,7 @@ const AddQuestion = () => {
           onSubmit={handleSubmit}
           className={styles.formContainer}
         >
+          <FormWatcher onValuesChange={setFormValues} />
           <div className={styles.formItems}>
             <FormItem name="content">
               <FormLabel>Vraag</FormLabel>
@@ -164,18 +182,33 @@ const AddQuestion = () => {
           </div>
           <div className={`mobile-only ${styles.removePadding}`}>
             <Button type="submit" size="full" disabled={loading}>
-              Toevoegen
+              {state ? "Aanpassen" : "Toevoegen"}
             </Button>
           </div>
           <div className={`desktop-only ${styles.removePadding}`}>
-            <Button type="submit" size="default" disabled={loading}>
-              Toevoegen
+            <Button type="submit" size="default" disabled={loading || JSON.stringify(formValues) == JSON.stringify(defaultValues)}>
+              {state ? "Aanpassen" : "Toevoegen"}
             </Button>
           </div>
         </Form>
       </div>
     </ScrollableScreen>
   );
+};
+
+const FormWatcher = ({ onValuesChange }) => {
+  const { watch } = useFormContext();
+  const values = watch();
+
+  const prevValuesRef = useRef();
+  useEffect(() => {
+    if (JSON.stringify(prevValuesRef.current) !== JSON.stringify(values)) {
+      onValuesChange(values);
+    }
+    prevValuesRef.current = values;
+  }, [values, onValuesChange]);
+
+  return null;
 };
 
 export default AddQuestion;
