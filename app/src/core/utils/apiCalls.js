@@ -242,6 +242,12 @@ const getAllQuestions = async () => await request({
   method: 'GET',
 })
 
+const editQuestion = async ({data, questionId}) => await request({
+  url: `/question/updatequestion/${questionId}`,
+  method: 'PUT',
+  data: data,
+})
+
 export {
   getUser,
   checkIfUserExists,
@@ -273,6 +279,7 @@ export {
   addQuestion,
   storeQuestionList,
   getAllQuestions,
+  editQuestion,
   checkFirstQuestionnaire,
   checkBonusQuestionnaire,
 };

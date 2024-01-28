@@ -18,6 +18,7 @@ import Select from "../../../ui/Select/Select";
 import { Link, useLocation } from "react-router-dom";
 import {
   addQuestion,
+  editQuestion,
   getCategories,
   getScales,
 } from "../../../../core/utils/apiCalls";
@@ -61,6 +62,10 @@ const AddQuestion = () => {
     mutationFn: addQuestion,
   });
 
+  const editMutation = useMutation({
+    mutationFn: editQuestion,
+  });
+
   const { data: scaleData, isError: scaleError } = useQuery({
     queryKey: ["scale"],
     queryFn: () => getScales(),
@@ -88,12 +93,17 @@ const AddQuestion = () => {
   const handleSubmit = async (data) => {
     setLoading(true);
     try {
-      const newData = {
-        ...data,
-        specialistId: user.id,
-      };
-      await addMutation.mutateAsync(newData);
-      toast.success("Vraag toegevoegd");
+      if (state) {
+        await editMutation.mutateAsync({data: data, questionId: state.id});
+        toast.success("Vraag aangepast");
+      } else {
+        const newData = {
+          ...data,
+          specialistId: user.id,
+        };
+        await addMutation.mutateAsync(newData);
+        toast.success("Vraag toegevoegd");
+      }
       setLoading(false);
       navigate(SpecialistRoutes.QuestionsOverview);
     } catch (error) {
@@ -181,12 +191,26 @@ const AddQuestion = () => {
             </FormItem>
           </div>
           <div className={`mobile-only ${styles.removePadding}`}>
-            <Button type="submit" size="full" disabled={loading}>
+            <Button
+              type="submit"
+              size="full"
+              disabled={
+                loading ||
+                JSON.stringify(formValues) == JSON.stringify(defaultValues)
+              }
+            >
               {state ? "Aanpassen" : "Toevoegen"}
             </Button>
           </div>
           <div className={`desktop-only ${styles.removePadding}`}>
-            <Button type="submit" size="default" disabled={loading || JSON.stringify(formValues) == JSON.stringify(defaultValues)}>
+            <Button
+              type="submit"
+              size="default"
+              disabled={
+                loading ||
+                JSON.stringify(formValues) == JSON.stringify(defaultValues)
+              }
+            >
               {state ? "Aanpassen" : "Toevoegen"}
             </Button>
           </div>
