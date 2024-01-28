@@ -25,6 +25,7 @@ const StreaksScreen = () => {
   } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUserData(user.id),
+    refetchOnWindowFocus: false,
   });
 
   const {
@@ -34,6 +35,7 @@ const StreaksScreen = () => {
   } = useQuery({
     queryKey: ["streak"],
     queryFn: () => getStreakHistory(user.id),
+    refetchOnWindowFocus: false,
   });
 
   useEffect(() => {

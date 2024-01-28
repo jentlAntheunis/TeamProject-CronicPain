@@ -8,7 +8,6 @@ import { useSendSignInLinkToEmail } from "react-firebase-hooks/auth";
 import { actionCodeSettings } from "../../../core/config/emailAuth";
 import { z } from "zod";
 import { toast } from "react-toastify";
-import { useQuery } from "@tanstack/react-query";
 
 import {
   Form,
