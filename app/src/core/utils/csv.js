@@ -103,7 +103,6 @@ const validateQuestionCsv = (data) => {
 
   const hasValidQuestions = data.every((row) => {
     const question = row[0];
-    console.log(z.string().min(5).safeParse(question).success);
     return z.string().min(5).safeParse(question).success;
   });
 
