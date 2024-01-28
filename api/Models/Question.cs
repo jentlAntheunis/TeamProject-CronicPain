@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Pebbles.Models;
 
-public class Question
+public class Question :ISoftDelete
 {
     public Guid Id { get; set; }
 
@@ -20,4 +20,8 @@ public class Question
     public string Content { get; set; }
 
     public List<Answer> Answers { get; set; }
+
+    public bool IsDeleted { get; set; }
+
+    public DateTimeOffset? DeletedAt { get; set; }
 }

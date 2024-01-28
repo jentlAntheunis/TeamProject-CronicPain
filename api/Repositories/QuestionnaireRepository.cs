@@ -66,7 +66,7 @@ public class QuestionnaireRepository : IQuestionnaireRepository
             Console.WriteLine($"AddMovementQuestionnaireAsync - CategoryId: {categoryId}");
 
             var randomQuestions = await _context.Question
-                .Where(q => q.CategoryId == categoryId)
+                .Where(q => q.CategoryId == categoryId && !q.IsDeleted)
                 .OrderBy(q => Guid.NewGuid()) // Shuffle the questions randomly
                 .Take(5)
                 .Include(q => q.Scale)
@@ -135,7 +135,7 @@ public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
             var scaleName = "niet_altijd";
 
             var categoryId = await _context.Category
-                .Where(c => c.Name == categoryName)
+                .Where(c => c.Name == categoryName )
                 .Select(c => c.Id)
                 .FirstOrDefaultAsync();
 
@@ -152,7 +152,7 @@ public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
             Console.WriteLine($"AddBonusQuestionnaireAsync - CategoryId: {categoryId}");
 
             var randomQuestions = await _context.Question
-                .Where(q => q.CategoryId == categoryId)
+                .Where(q => q.CategoryId == categoryId && !q.IsDeleted)
                 .OrderBy(q => Guid.NewGuid()) // Shuffle the questions randomly
                 .Take(10)
                 .Include(q => q.Scale)
@@ -242,7 +242,7 @@ public async Task<QuestionnaireDTO> AddBonusQuestionnaireAsync(Guid userId)
             Console.WriteLine($"AddDailyPainQuestionnaireAsync - CategoryId: {categoryId}");
 
             var questions = await _context.Question
-                .Where(q => q.CategoryId == categoryId)
+                .Where(q => q.CategoryId == categoryId && !q.IsDeleted)
                 .Include(q => q.Scale)
                 .ThenInclude(scale => scale.Options)
                 .ToListAsync();

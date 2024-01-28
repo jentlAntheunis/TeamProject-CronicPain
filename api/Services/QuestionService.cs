@@ -24,7 +24,7 @@ public class QuestionService : IQuestionService
         _categoryRepository = categoryRepository;
         _scaleRepository = scaleRepository;
     }
-    
+
 
     public async Task<List<Question>> GetAllQuestionsAsync() => await _questionRepository.GetAllQuestionsAsync();
 
@@ -53,6 +53,8 @@ public class QuestionService : IQuestionService
 
     public async Task<Question> UpdateQuestionAsync(Question question) => await _questionRepository.UpdateQuestionAsync(question);
 
-    public async Task DeleteQuestionAsync(Question question) => await _questionRepository.DeleteQuestionAsync(question);
-}
+    public async Task DeleteQuestionAsync(Question question) =>
+            await _questionRepository.DeleteQuestionAsync(question);
+
+    }
 
