@@ -87,17 +87,6 @@ public class QuestionnaireService : IQuestionnaireService
             .AnyAsync(x => (x.c.Name == "bonus" || x.c.Name == "beweging") && x.c.Name != "pijn");
 
         bool isFirstQuestionnaire = !questionnaireExists;
-        if (isFirstQuestionnaire)
-        {
-            var patient = await _context.Patient
-                .FirstOrDefaultAsync(p => p.Id == userId);
-
-            if (patient != null)
-            {
-                patient.Streak += 1;
-                await _context.SaveChangesAsync();
-            }
-        }
 
         return isFirstQuestionnaire;
     }
