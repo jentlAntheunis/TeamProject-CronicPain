@@ -39,8 +39,6 @@ const QuestionList = ({ search, filters }) => {
     )
     .map((question) => question);
 
-  console.log(filteredQuestions);
-
   return (
     <>
       {filteredQuestions.map((question, index) => {

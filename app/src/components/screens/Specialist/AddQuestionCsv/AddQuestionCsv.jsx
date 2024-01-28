@@ -108,7 +108,6 @@ const AddQuestionCsv = () => {
 
         setLoading(true);
         try {
-          console.log({ data: questions });
           await mutateAsync({ data: questions });
           setLoading(false);
           toast.success("Vragen toegevoegd");

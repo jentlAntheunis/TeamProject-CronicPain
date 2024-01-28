@@ -44,19 +44,14 @@ const AddQuestion = () => {
   const [formValues, setFormValues] = useState({});
 
   const { state } = useLocation();
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
+  const user = useUser();
+  const navigate = useNavigate();
 
   let title = "Vraag toevoegen";
   if (state) {
     title = "Vraag aanpassen";
   }
   useTitle(title);
-
-  const user = useUser();
-
-  const navigate = useNavigate();
 
   const addMutation = useMutation({
     mutationFn: addQuestion,
@@ -112,14 +107,6 @@ const AddQuestion = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    console.log(scaleData);
-  }, [scaleData]);
-
-  useEffect(() => {
-    console.log(categoryData);
-  }, [categoryData]);
 
   if (!categoryData || !scaleData) return;
 

@@ -75,7 +75,6 @@ const fillMissingMovementDates = (data) => {
     const date = new Date();
     date.setDate(today.getDate() - i);
     const dateString = date.toLocaleDateString("nl-NL");
-    // console.log(dateString, dataDates)
     const matchingEntry = data.find((entry) => {
       const entryDate = new Date(entry.date);
       return entryDate.toLocaleDateString("nl-NL") === dateString;
