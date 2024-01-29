@@ -15,18 +15,18 @@ const request = async ({ ...options }) => {
       client.defaults.headers.common.Authorization = `Bearer ${token}`;
     });
   } else {
-    console.error("User not logged in, no token");
+    // console.error("User not logged in, no token");
     throw new Error('User not logged in');
   }
 
   const onSuccess = (response) => {
-    console.debug('Request Successful!', response);
+    // console.debug('Request Successful!', response);
     return response;
   };
   const onError = (error) => {
     // if session expired, log user out and redirect to login page
-    console.error('Request Failed:', error.message);
-    console.log(error)
+    // console.error('Request Failed:', error.message);
+    // console.log(error)
     if (error.response.status === 401) {
       auth.signOut();
     }
