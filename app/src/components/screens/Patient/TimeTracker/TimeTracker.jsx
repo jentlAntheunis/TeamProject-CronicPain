@@ -54,7 +54,7 @@ const MyStopwatch = () => {
   const { isSupported, request, release } = useWakeLock({
     onRequest: () => console.info("Wake Lock was requested"),
     onRelease: () => console.info("Wake Lock was released"),
-    onError: (err) => console.error("Wake Lock request failed", err),
+    onError: () => console.error("Wake Lock request failed"),
   });
 
   // https://www.npmjs.com/package/react-timer-hook
@@ -77,7 +77,7 @@ const MyStopwatch = () => {
           toast.error(
             "Er ging iets mis bij het opslaan van je bewegingssessie."
           );
-          console.error(error);
+          // console.error(error);
           resetEverything();
           navigate(PatientRoutes.Dashboard);
         }

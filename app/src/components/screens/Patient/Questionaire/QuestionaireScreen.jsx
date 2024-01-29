@@ -103,11 +103,10 @@ const QuestionaireScreen = () => {
         setLoading(true);
         try {
           // send answers to backend
-          console.log("send answers");
+          // console.log("send answers");
           await sendAnswers(data);
           setAmount(coins);
           if (isFirstQuestionnaire.data) {
-            // TODO: add streaks to database
             await addStreak(user.id);
           }
           await addCoins(user.id, coins);
@@ -115,7 +114,7 @@ const QuestionaireScreen = () => {
           setShowModal(true);
         } catch (error) {
           setLoading(false);
-          console.log(error);
+          // console.log(error);
           toast.error(
             "Er is iets misgegaan bij het opslaan van je antwoorden."
           );

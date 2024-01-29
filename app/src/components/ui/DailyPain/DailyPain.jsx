@@ -32,7 +32,7 @@ const DailyPain = ({ question, setQuestion }) => {
     } catch (error) {
       setLoading(false);
       toast.error("Er is iets misgegaan bij het opslaan van je antwoord.");
-      console.error(error);
+      // console.error(error);
     }
     setQuestion(null);
   }

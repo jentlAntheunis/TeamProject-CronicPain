@@ -74,7 +74,7 @@ const AddPatient = () => {
         navigate(SpecialistRoutes.PatientsOverview);
       }
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       toast.error("Er ging iets mis. Probeer het opnieuw.");
       setLoading(false);
     }

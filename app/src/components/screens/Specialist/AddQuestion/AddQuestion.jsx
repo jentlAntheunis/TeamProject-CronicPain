@@ -102,7 +102,7 @@ const AddQuestion = () => {
       setLoading(false);
       navigate(SpecialistRoutes.QuestionsOverview);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       toast.error("Er ging iets mis. Probeer het opnieuw.");
       setLoading(false);
     }
