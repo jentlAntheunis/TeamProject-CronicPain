@@ -1,6 +1,5 @@
 .patients {
   margin-top: 2.5rem;
-  padding-bottom: 3rem;
 }
 
 .patientName {
@@ -30,6 +29,7 @@
 @media (max-width: 1024px) {
   .patients {
     margin-top: 0;
+    padding-bottom: 3rem;
   }
 }
 

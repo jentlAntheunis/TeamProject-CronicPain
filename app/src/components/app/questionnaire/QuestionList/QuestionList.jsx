@@ -40,7 +40,7 @@ const QuestionList = ({ search, filters }) => {
     .map((question) => question);
 
   return (
-    <>
+    <div className={styles.questions}>
       {filteredQuestions.map((question, index) => {
         const indexMatch = question.content
           .toLowerCase()
@@ -85,7 +85,7 @@ const QuestionList = ({ search, filters }) => {
           </div>
         )
       )}
-    </>
+    </div>
   );
 };
 
