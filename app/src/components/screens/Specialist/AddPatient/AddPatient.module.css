@@ -10,13 +10,6 @@
   padding-top: 1rem;
 }
 
-/* this code is for mobile view */
-/* .screen {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-} */
-
 .header {
   display: flex;
   justify-content: space-between;
@@ -32,6 +25,12 @@
 
 .removePadding {
   padding: 0;
+}
+
+.addBtnMobile {
+  position: fixed;
+  bottom: 2.5rem;
+  width: calc(100% - 2 * var(--margin-side));
 }
 
 @media (min-width: 1024px) {
