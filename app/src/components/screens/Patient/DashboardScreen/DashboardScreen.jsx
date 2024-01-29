@@ -143,7 +143,7 @@ const DashboardScreen = () => {
   return (
     <FullHeightScreen>
       <DailyPain question={dailyQuestion} setQuestion={setDailyQuestion} />
-      <div className={styles.screen}>
+      <div className={clsx(styles.screen, "container")}>
         <TopBar coins={data.data.coins} streak={data.data.streak} />
         <Avatar color={data.data.avatar.color.hex} mood={moodData.data} />
         <div className={styles.btnContainer}>
@@ -184,6 +184,7 @@ const DashboardScreen = () => {
           size="full"
           onClick={() => handleStartMovement()}
           disabled={loading}
+          className="container"
         >
           Start vragenlijst
         </Button>

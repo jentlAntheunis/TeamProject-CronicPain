@@ -5,8 +5,10 @@ import PageHeading from "../../../ui/PageHeading/PageHeading";
 import styles from "./MovementSuggestions.module.css";
 import { suggestions } from "../../../../core/config/movementSuggestions";
 import { PatientRoutes } from "../../../../core/config/routes";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useTitle from "../../../../core/hooks/useTitle";
+import clsx from "clsx";
+import { ArrowLeft } from "@phosphor-icons/react";
 
 const MovementSuggestions = () => {
   const [selectedSuggestion, setSelectedSuggestion] = useState(null);
@@ -37,10 +39,22 @@ const MovementSuggestions = () => {
 
   return (
     <FullHeightScreen className={styles.screen}>
-      <div className={styles.layout}>
-        <PageHeading backLink={PatientRoutes.Questionaire}>
+      <div className={clsx(styles.layout, "container")}>
+        <PageHeading
+          backLink={PatientRoutes.Questionaire}
+          className="mobile-only"
+        >
           Kies een activiteit
         </PageHeading>
+        <div className={clsx(styles.header, "desktop-only")}>
+          <Link
+            to={PatientRoutes.Questionaire}
+            className={`btn-reset ${styles.backBtn}`}
+          >
+            <ArrowLeft size={32} display="block" className={styles.backIcon} />
+          </Link>
+          <h1 className={styles.headingText}>Kies een activiteit</h1>
+        </div>
         <div className={styles.suggestions} ref={suggestionsContainerRef}>
           {suggestions.map((suggestion, index) => (
             <button

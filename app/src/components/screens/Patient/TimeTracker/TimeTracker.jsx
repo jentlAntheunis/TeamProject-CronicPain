@@ -20,15 +20,17 @@ const TimeTracker = () => {
   const [ isRunning, setIsRunning ] = useState(false);
 
   return (
-    <FullHeightScreen className={styles.screen}>
-      <Link
-        to={PatientRoutes.MovementSuggestions}
-        className={clsx("btn-reset", styles.backBtn, isRunning && styles.disabled)}
-        disabled={isRunning}
-      >
-        <ArrowLeft size={32} />
-      </Link>
-      <MyStopwatch setIsRunning={setIsRunning} />
+    <FullHeightScreen>
+      <div className={clsx(styles.screen, "container")}>
+        <Link
+          to={PatientRoutes.MovementSuggestions}
+          className={clsx("btn-reset", styles.backBtn, isRunning && styles.disabled)}
+          disabled={isRunning}
+        >
+          <ArrowLeft size={32} />
+        </Link>
+        <MyStopwatch setIsRunning={setIsRunning} />
+      </div>
     </FullHeightScreen>
   );
 };

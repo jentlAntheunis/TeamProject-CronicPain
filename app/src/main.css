@@ -214,11 +214,11 @@ strong {
 }
 
 .mobile-only {
-  display: block;
+  display: inherit !important;
 }
 
 .desktop-only {
-  display: none;
+  display: none !important;
 }
 
 @media (max-width: 1023px) {
@@ -237,11 +237,11 @@ strong {
   }
 
   .mobile-only {
-    display: none;
+    display: none !important;
   }
 
   .desktop-only {
-    display: block;
+    display: inherit !important;
   }
 }
 
