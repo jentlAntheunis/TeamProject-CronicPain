@@ -31,6 +31,7 @@ const WellDone = () => {
   } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUserData(user.id),
+    refetchOnWindowFocus: false,
   });
 
   if (!userData) return;

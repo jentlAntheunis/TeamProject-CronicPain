@@ -20,7 +20,7 @@ import clsx from "clsx";
 import Modal from "../../../ui/Modal/Modal";
 import { X } from "@phosphor-icons/react";
 import Button from "../../../ui/Button/Button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Impacts } from "../../../../core/config/impacts";
 import {
   fillMissingDates,
@@ -38,6 +38,7 @@ const Progress = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUserData(user.id),
+    refetchOnWindowFocus: false,
   });
   const { data: impactData } = useQuery({
     queryKey: ["impact", user.id],

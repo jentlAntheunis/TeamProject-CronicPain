@@ -35,6 +35,7 @@ const Shop = () => {
   } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUserData(user.id),
+    refetchOnWindowFocus: false,
   });
 
   const {
@@ -44,6 +45,7 @@ const Shop = () => {
   } = useQuery({
     queryKey: ["shop"],
     queryFn: () => getShopItems(user.id),
+    refetchOnWindowFocus: false,
   });
 
   const { data: moodData, isError: moodError } = useQuery({

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SpecialistRoutes } from "../../../../core/config/routes";
 import {
   Form,
@@ -69,11 +69,13 @@ const AddQuestionCsv = () => {
   const { data: scaleData, isError: scaleError } = useQuery({
     queryKey: ["scale"],
     queryFn: () => getScales(),
+    refetchOnWindowFocus: false,
   });
 
   const { data: categoryData, isError: categoryError } = useQuery({
     queryKey: ["category"],
     queryFn: () => getCategories(),
+    refetchOnWindowFocus: false,
   });
 
   const defaultValues = {
