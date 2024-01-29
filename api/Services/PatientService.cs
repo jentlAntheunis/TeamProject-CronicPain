@@ -251,24 +251,36 @@ public class PatientService : IPatientService
 
   public async Task<IntOverDaysDTO> GetStreakHistoryAsync(Guid patientId)
   {
-    var patient = await _patientRepository.GetPatientByIdAsync(patientId);
-    if (patient == null)
-      throw new Exception("Patient does not exist");
-    var questionnaires = await _questionnaireRepository.GetQuestionnairesByPatientIdAsync(patientId);
-    var IntOverDaysDTO = new IntOverDaysDTO
-    {
-      Days = questionnaires
-            .Where(q => q.Date.HasValue && q.Date.Value.Date >= DateTime.Now.AddDays(-7).Date)
-            .GroupBy(q => q.Date.Value.Date)
-            .Select(g => new DayTDO
-            {
-              Date = g.Key,
-              Int = g.Count()
-            })
-            .ToList()
-    };
-    return IntOverDaysDTO;
+      var patient = await _patientRepository.GetPatientByIdAsync(patientId);
+      if (patient == null)
+          throw new Exception("Patient does not exist");
+
+      var bonusQuestionnaires = await _questionnaireRepository.GetQuestionnairesByCategoryAsync("bonus");
+      var bewegingQuestionnaires = await _questionnaireRepository.GetQuestionnairesByCategoryAsync("beweging");
+
+      // Combine the IDs into a HashSet for efficient lookup
+      var includedQuestionnaireIds = new HashSet<Guid>(bonusQuestionnaires.Select(q => q.Id).Concat(bewegingQuestionnaires.Select(q => q.Id)));
+
+      var questionnaires = await _questionnaireRepository.GetQuestionnairesByPatientIdAsync(patientId);
+      var filteredQuestionnaires = questionnaires
+          .Where(q => includedQuestionnaireIds.Contains(q.Id) && q.Date.HasValue && q.Date.Value.Date >= DateTime.Now.AddDays(-7).Date)
+          .ToList();
+
+      var IntOverDaysDTO = new IntOverDaysDTO
+      {
+          Days = filteredQuestionnaires
+              .GroupBy(q => q.Date.Value.Date)
+              .Select(g => new DayTDO
+              {
+                  Date = g.Key,
+                  Int = g.Count()
+              })
+              .ToList()
+      };
+
+      return IntOverDaysDTO;
   }
+
 
 
   public async Task<IntOverDaysDTO> GetPainHistoryAsync(Guid patientId)
