@@ -22,3 +22,8 @@
 .startStopBtn:hover {
   background-color: var(--black);
 }
+
+.disabled {
+  opacity: 0;
+  pointer-events: none;
+}

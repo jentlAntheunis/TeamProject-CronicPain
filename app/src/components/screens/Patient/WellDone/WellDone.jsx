@@ -33,6 +33,7 @@ const WellDone = () => {
     queryFn: () => getUserData(user.id),
     refetchOnWindowFocus: false,
   });
+  const { resetEverything } = useStore();
 
   if (!userData) return;
   if (userLoading) return null;
@@ -64,6 +65,7 @@ const WellDone = () => {
     if (isLongSession) {
       navigate(PatientRoutes.Questionaire);
     } else {
+      resetEverything();
       navigate(PatientRoutes.Dashboard);
     }
   };

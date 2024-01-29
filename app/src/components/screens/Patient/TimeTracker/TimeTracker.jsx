@@ -14,22 +14,26 @@ import { sendAnswers, storeMovement } from "../../../../core/utils/apiCalls";
 import { useState } from "react";
 import { useUser } from "../../../app/auth/AuthProvider";
 import useTitle from "../../../../core/hooks/useTitle";
+import clsx from "clsx";
 
 const TimeTracker = () => {
+  const [ isRunning, setIsRunning ] = useState(false);
+
   return (
     <FullHeightScreen className={styles.screen}>
       <Link
         to={PatientRoutes.MovementSuggestions}
-        className={`btn-reset ${styles.backBtn}`}
+        className={clsx("btn-reset", styles.backBtn, isRunning && styles.disabled)}
+        disabled={isRunning}
       >
         <ArrowLeft size={32} />
       </Link>
-      <MyStopwatch />
+      <MyStopwatch setIsRunning={setIsRunning} />
     </FullHeightScreen>
   );
 };
 
-const MyStopwatch = () => {
+const MyStopwatch = ({ setIsRunning }) => {
   // state management
   const {
     questionaireId,
@@ -68,11 +72,10 @@ const MyStopwatch = () => {
     if (isRunning) {
       release();
       pause();
+      setMovementTime(totalSeconds);
 
       if (minutes >= 5) {
-        setMovementTime(totalSeconds);
         setLoading(true);
-
         try {
           await storeMovement(user.id, totalSeconds);
           setLoading(false);
@@ -86,8 +89,6 @@ const MyStopwatch = () => {
           resetEverything();
           navigate(PatientRoutes.Dashboard);
         }
-      } else {
-        resetEverything();
       }
       resetCurrentQuestion();
       navigate(PatientRoutes.WellDone);
@@ -95,6 +96,8 @@ const MyStopwatch = () => {
       !isSupported && console.warn("Wake Lock API not supported");
       request();
       start();
+      console.log(setIsRunning)
+      setIsRunning(true);
     }
   };
 
