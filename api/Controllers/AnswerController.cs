@@ -58,7 +58,7 @@ public class AnswerController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, "Internal server error." + ex.Message);
+            return StatusCode(500, "Internal server error.");
         }
     }
 

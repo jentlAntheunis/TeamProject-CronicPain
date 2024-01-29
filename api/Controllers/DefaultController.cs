@@ -26,7 +26,7 @@ public class DefaultController : ControllerBase
     [Route("/")]
     public IActionResult Index()
     {
-        return Ok("Ja hoor, de backend werkt");
+        return Ok("Welkom bij de Pebbles API!");
     }
 
 }
