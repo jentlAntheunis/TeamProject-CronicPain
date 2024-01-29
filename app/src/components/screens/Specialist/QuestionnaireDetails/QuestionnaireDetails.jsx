@@ -21,7 +21,9 @@ const QuestionnaireDetails = () => {
 
   return (
     <ScrollableScreen>
-      <NavBar />
+      <div className="desktop-only">
+        <NavBar />
+      </div>
       <div className="container">
         <PageHeading
           backLink={`${SpecialistRoutes.PatientsOverview}/${state.questionnaire.patientId}`}
@@ -34,49 +36,45 @@ const QuestionnaireDetails = () => {
         </h2>
         {/* Questions */}
         <div className={styles.questionContainer}>
-          {state.questionnaire.questions.map(
-            (question, index) => (
-              (
-                <div className={styles.question} key={index}>
-                  <p className={styles.questionNumber}>Vraag {index + 1}</p>
-                  <p className={styles.questionText}>{question.content}</p>
-                  <div className={styles.answers}>
-                    {question.answers.length > 1 ? (
-                      <>
-                        <div>
-                          <p className={styles.answerLabel}>Antwoord voor:</p>
-                          <p className={styles.answerText}>
-                            {
-                              question.answers.find(
-                                (answer) => answer.questionnaireIndex === 0
-                              ).optionContent
-                            }
-                          </p>
-                        </div>
-                        <div>
-                          <p className={styles.answerLabel}>Antwoord na:</p>
-                          <p className={styles.answerText}>
-                            {
-                              question.answers.find(
-                                (answer) => answer.questionnaireIndex === 1
-                              ).optionContent
-                            }
-                          </p>
-                        </div>
-                      </>
-                    ) : (
-                      <div>
-                        <p className={styles.answerLabel}>Antwoord:</p>
-                        <p className={styles.answerText}>
-                          {question.answers[0].optionContent}
-                        </p>
-                      </div>
-                    )}
+          {state.questionnaire.questions.map((question, index) => (
+            <div className={styles.question} key={index}>
+              <p className={styles.questionNumber}>Vraag {index + 1}</p>
+              <p className={styles.questionText}>{question.content}</p>
+              <div className={styles.answers}>
+                {question.answers.length > 1 ? (
+                  <>
+                    <div>
+                      <p className={styles.answerLabel}>Antwoord voor:</p>
+                      <p className={styles.answerText}>
+                        {
+                          question.answers.find(
+                            (answer) => answer.questionnaireIndex === 0
+                          ).optionContent
+                        }
+                      </p>
+                    </div>
+                    <div>
+                      <p className={styles.answerLabel}>Antwoord na:</p>
+                      <p className={styles.answerText}>
+                        {
+                          question.answers.find(
+                            (answer) => answer.questionnaireIndex === 1
+                          ).optionContent
+                        }
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <div>
+                    <p className={styles.answerLabel}>Antwoord:</p>
+                    <p className={styles.answerText}>
+                      {question.answers[0].optionContent}
+                    </p>
                   </div>
-                </div>
-              )
-            )
-          )}
+                )}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </ScrollableScreen>
