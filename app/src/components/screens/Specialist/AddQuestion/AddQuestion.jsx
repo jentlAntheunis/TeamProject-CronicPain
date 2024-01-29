@@ -89,7 +89,7 @@ const AddQuestion = () => {
     setLoading(true);
     try {
       if (state) {
-        await editMutation.mutateAsync({data: data, questionId: state.id});
+        await editMutation.mutateAsync({ data: data, questionId: state.id });
         toast.success("Vraag aangepast");
       } else {
         const newData = {
@@ -117,7 +117,9 @@ const AddQuestion = () => {
 
   return (
     <ScrollableScreen className={styles.screenContainer}>
-      <NavBar />
+      <div className="desktop-only">
+        <NavBar />
+      </div>
       <div className="container">
         <div className={styles.header}>
           <PageHeading backLink={SpecialistRoutes.QuestionsOverview}>
@@ -177,7 +179,9 @@ const AddQuestion = () => {
               <FormMessage />
             </FormItem>
           </div>
-          <div className={`mobile-only ${styles.removePadding}`}>
+          <div
+            className={`mobile-only ${styles.removePadding} ${styles.addBtnMobile}`}
+          >
             <Button
               type="submit"
               size="full"

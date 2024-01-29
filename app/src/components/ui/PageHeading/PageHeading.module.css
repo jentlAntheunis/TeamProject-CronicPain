@@ -1,11 +1,11 @@
 .pageHeading {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
 .backBtn {
-  position: absolute;
   left: var(--margin-side);
   text-decoration: none;
 }
@@ -25,7 +25,6 @@
     display: flex;
     gap: 0.25rem;
     align-items: center;
-    position: static;
   }
 
   .backIcon {
