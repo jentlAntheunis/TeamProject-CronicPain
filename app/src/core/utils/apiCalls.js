@@ -248,6 +248,11 @@ const editQuestion = async ({data, questionId}) => await request({
   data: data,
 })
 
+const removeQuestion = async (questionId) => await request({
+  url: `/question/deletequestion/${questionId}`,
+  method: 'DELETE',
+})
+
 export {
   getUser,
   checkIfUserExists,
@@ -282,4 +287,5 @@ export {
   editQuestion,
   checkFirstQuestionnaire,
   checkBonusQuestionnaire,
+  removeQuestion,
 };

@@ -33,6 +33,9 @@
   --lime-800: #3f6212;
   --lime-900: #365314;
   --error: #dc2626;
+  --error-500: #ef4444;
+  --error-400: #f87171;
+  --error-50: #fef2f2;
   --transparent: #00000000;
   --bg-overlay: rgba(0, 0, 0, 0.5);
 

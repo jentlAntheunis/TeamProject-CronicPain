@@ -15,6 +15,26 @@
   font-weight: var(--regular);
 }
 
+.deleteBtn {
+  background-color: var(--error-500);
+}
+
+.deleteBtn:hover {
+  background-color: var(--error);
+}
+
+.secondaryDeleteBtn {
+  font-size: var(--p);
+  border-width: 1px;
+  font-weight: var(--regular);
+  border-color: var(--error);
+  color: var(--error);
+}
+
+.secondaryDeleteBtn:hover {
+  background-color: var(--error-light);
+}
+
 .formContainer {
   padding-top: 1rem;
   display: flex;
@@ -29,6 +49,22 @@
 
 .removePadding {
   padding: 0;
+}
+
+.modalText {
+  font-size: var(--h6);
+  margin-bottom: 2rem;
+}
+
+.modalButtons{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.modalButtons button {
+  flex-grow: 1;
 }
 
 @media (min-width: 1024px) {
