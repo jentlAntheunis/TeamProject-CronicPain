@@ -136,7 +136,7 @@ public class AnswerService : IAnswerService
     public async Task<Dictionary<Guid, string>> GetQuestionnaireImpactsByUserId(Guid userId)
     {
         var questionnaireIds = await _questionnaireRepository.GetQuestionnaireIdsByUserId(userId);
-        var painQuestionnaires = await _questionnaireRepository.GetQuestionnairesByCategoryAsync("pain");
+        var painQuestionnaires = await _questionnaireRepository.GetQuestionnairesByCategoryAsync("pijn");
 
         var painQuestionnaireIds = new HashSet<Guid>(painQuestionnaires.Select(q => q.Id));
         var filteredQuestionnaireIds = questionnaireIds.Where(id => !painQuestionnaireIds.Contains(id)).ToList();
