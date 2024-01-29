@@ -79,6 +79,13 @@
   padding: 0.625rem 1.25rem;
 }
 
+.square {
+  font-size: var(--small);
+  font-weight: var(--medium);
+  width: auto;
+  padding: 0.5rem;
+}
+
 .shop {
   font-size: var(--paragraph);
   font-weight: var(--medium);

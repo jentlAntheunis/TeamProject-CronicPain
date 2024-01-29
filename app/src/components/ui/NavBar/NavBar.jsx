@@ -2,11 +2,11 @@ import clsx from "clsx";
 import Button from "../Button/Button";
 import styles from "./NavBar.module.css";
 import { Link, NavLink } from "react-router-dom";
-import { auth } from "../../../core/services/firebase";
 import Modal from "../Modal/Modal.jsx";
 import { useState } from "react";
 import { useAuthContext } from "../../app/auth/AuthProvider.jsx";
 import { SpecialistRoutes } from "../../../core/config/routes.js";
+import { SignOut } from "@phosphor-icons/react";
 
 const NavBar = () => {
   const [showModal, setShowModal] = useState(false);
@@ -18,19 +18,35 @@ const NavBar = () => {
   };
 
   return (
-    <div className={`desktop-only ${styles.navBarContainer}`}>
-      <div className={styles.navBarLeft}>
-        <Link to={SpecialistRoutes.PatientsOverview} className={styles.removeTextDecoration}>
-          <div className={styles.navBarLogo}>Pebbles</div>
-        </Link>
-        {user && (
-          <>
-            <div className={styles.navBarSpacer}></div>
-            <div className={styles.navBarSpecialist}>
-              {user.firstName + " " + user.lastName}
-            </div>
-          </>
-        )}
+    <div className={styles.navBarContainer}>
+      <div className="mobile-only">
+        <Button
+          className={`btn-reset ${styles.mobileLogOut}`}
+          onClick={() => setShowModal(true)}
+          disabled={showModal}
+          size="square"
+          variant="tertiary"
+        >
+          <SignOut size={20} className={styles.dots} />
+        </Button>
+      </div>
+      <div className="desktop-only">
+        <div className={styles.navBarLeft}>
+          <Link
+            to={SpecialistRoutes.PatientsOverview}
+            className={styles.removeTextDecoration}
+          >
+            <div className={styles.navBarLogo}>Pebbles</div>
+          </Link>
+          {user && (
+            <>
+              <div className={styles.navBarSpacer}></div>
+              <div className={styles.navBarSpecialist}>
+                {user.firstName + " " + user.lastName}
+              </div>
+            </>
+          )}
+        </div>
       </div>
       {user && (
         <div className={styles.navBarMenu}>
@@ -50,13 +66,15 @@ const NavBar = () => {
           >
             Vragen
           </NavLink>
-          <Button
-            variant="tertiary"
-            size="small"
-            onClick={() => setShowModal(true)}
-          >
-            Uitloggen
-          </Button>
+          <div className="desktop-only">
+            <Button
+              variant="tertiary"
+              size="small"
+              onClick={() => setShowModal(true)}
+            >
+              Uitloggen
+            </Button>
+          </div>
         </div>
       )}
       <Modal showModal={showModal} setShowModal={setShowModal}>

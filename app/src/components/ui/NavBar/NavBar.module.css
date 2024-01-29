@@ -52,7 +52,8 @@
   text-decoration: none;
 }
 
-.navBarMenuItem:hover, .navBarMenuItem.active {
+.navBarMenuItem:hover,
+.navBarMenuItem.active {
   color: var(--black);
 }
 
@@ -61,7 +62,7 @@
   margin-bottom: 2rem;
 }
 
-.modalButtons{
+.modalButtons {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -72,6 +73,45 @@
   flex-grow: 1;
 }
 
-.removeTextDecoration{
+.removeTextDecoration {
   text-decoration: none;
+}
+
+.mobileLogOut {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  border: 1px solid var(--grey-200);
+}
+
+@media (max-width: 1024px) {
+  .navBarContainer {
+    justify-content: center;
+    padding: 0;
+    border-bottom: 2px solid var(--grey-200);
+    padding-top: 3.5rem;
+  }
+
+  .navBarMenu {
+    gap: 0;
+    width: 100%;
+  }
+
+  .navBarMenuItem {
+    padding: 1rem 0;
+    position: relative;
+    text-align: center;
+    width: 50%;
+  }
+
+  .navBarMenuItem.active::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 3px;
+    width: 100%;
+    background: var(--blue-500);
+  }
 }
