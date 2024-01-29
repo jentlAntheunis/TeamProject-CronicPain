@@ -8,4 +8,30 @@
   margin-top: 1rem;
 }
 
+@media (max-width: 1024px) {
+  .searchAndAdd {
+    justify-content: center;
+    padding: 2.25rem 0 1rem 0;
+    border-bottom: 2px solid var(--grey-200);
+    width: 100vw;
+    margin-left: calc(var(--margin-side) * -1);
+  }
 
+  .addPatientMobile {
+    background-image: linear-gradient(
+      to bottom,
+      var(--transparent) 0%,
+      var(--white) 40%
+    );
+    width: 100vw;
+    position: fixed;
+    padding: 2rem 0 2.5rem 0;
+    bottom: 0;
+    margin-left: calc(var(--margin-side) * -1);
+  }
+
+  .addPatient {
+    width: calc(100vw - (var(--margin-side) * 2));
+    margin-left: var(--margin-side);
+  }
+}

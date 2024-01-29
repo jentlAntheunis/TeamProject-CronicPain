@@ -24,7 +24,9 @@ const Patients = () => {
     <ScrollableScreen>
       <NavBar />
       <div className="container">
+        <div className="desktop-only">
         <PageHeading>Patiënten</PageHeading>
+        </div>
         <div className={styles.searchAndAdd}>
           <Search
             name="fullNameSearch"
@@ -32,14 +34,27 @@ const Patients = () => {
             onChange={handleSearchChange}
             placeholder="Zoek patiënt"
           />
-          <Link to={SpecialistRoutes.AddPatient}>
-            <Button>
-              <Plus size={18} weight="bold" />
-              Voeg patiënt toe
-            </Button>
-          </Link>
+          <div className="desktop-only">
+            <Link
+              to={SpecialistRoutes.AddPatient}
+              className={styles.addPatient}
+            >
+              <Button>
+                <Plus size={18} weight="bold" />
+                Voeg patiënt toe
+              </Button>
+            </Link>
+          </div>
         </div>
         <PatientList search={searchInput} />
+      </div>
+      <div className={`mobile-only ${styles.addPatientMobile}`}>
+        <Link to={SpecialistRoutes.AddPatient}>
+          <Button className={styles.addPatient}>
+            <Plus size={18} weight="bold" />
+            Voeg patiënt toe
+          </Button>
+        </Link>
       </div>
     </ScrollableScreen>
   );

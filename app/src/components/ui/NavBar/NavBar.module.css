@@ -80,7 +80,7 @@
 .mobileLogOut {
   position: absolute;
   top: 1rem;
-  right: 1rem;
+  right: var(--margin-side);
   border: 1px solid var(--grey-200);
 }
 
