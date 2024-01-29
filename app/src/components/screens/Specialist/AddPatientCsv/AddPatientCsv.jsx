@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SpecialistRoutes } from "../../../../core/config/routes";
 import {
   Form,
@@ -94,7 +94,7 @@ const AddPatientCsv = () => {
           navigate(SpecialistRoutes.PatientsOverview);
         } catch (error) {
           setLoading(false);
-          console.error(error);
+          // console.error(error);
           toast.error("Er ging iets mis. Probeer het opnieuw.");
         }
       },

@@ -94,7 +94,7 @@ const LoginForm = () => {
       }
     } catch (error) {
       setIsLoading(false);
-      console.error(error);
+      // console.error(error);
       toast("Er is iets fout gegaan, probeer opnieuw of neem contact op", {
         type: "error",
       });

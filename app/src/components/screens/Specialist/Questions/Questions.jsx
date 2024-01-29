@@ -21,7 +21,6 @@ const Questions = () => {
     setSearchInput(event.target.value);
   };
 
-  // TODO: change to config categories
   const [filters, setFilters] = useState([]);
 
   const handleFilterClick = (filter) => {
@@ -36,7 +35,9 @@ const Questions = () => {
     <ScrollableScreen>
       <NavBar />
       <div className="container">
-        <PageHeading>Vragen</PageHeading>
+        <div className="desktop-only">
+          <PageHeading>Vragen</PageHeading>
+        </div>
         <div className={styles.searchAndAdd}>
           <Search
             name="QuestionSearch"
@@ -44,12 +45,14 @@ const Questions = () => {
             onChange={handleSearchChange}
             placeholder="Zoek vraag"
           />
-          <Link to={SpecialistRoutes.AddQuestion}>
-            <Button>
-              <Plus size={18} weight="bold" />
-              Voeg vraag toe
-            </Button>
-          </Link>
+          <div className="desktop-only">
+            <Link to={SpecialistRoutes.AddQuestion}>
+              <Button>
+                <Plus size={18} weight="bold" />
+                Voeg vraag toe
+              </Button>
+            </Link>
+          </div>
         </div>
         <div className={styles.filters}>
           <button
@@ -69,9 +72,15 @@ const Questions = () => {
             Bonusvragen
           </button>
         </div>
-        <div className={styles.questions}>
-          <QuestionList search={searchInput} filters={filters} />
-        </div>
+        <QuestionList search={searchInput} filters={filters} />
+      </div>
+      <div className={`mobile-only ${styles.addQuestionMobile}`}>
+        <Link to={SpecialistRoutes.AddQuestion}>
+          <Button className={styles.addQuestion}>
+            <Plus size={18} weight="bold" />
+            Voeg vraag toe
+          </Button>
+        </Link>
       </div>
     </ScrollableScreen>
   );

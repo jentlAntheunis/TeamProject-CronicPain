@@ -1,6 +1,5 @@
 import Button from "../Button/Button";
 import Modal from "../Modal/Modal";
-import { X } from "@phosphor-icons/react";
 import styles from "./DailyPain.module.css";
 import Slider from "../Slider/Slider";
 
@@ -33,7 +32,7 @@ const DailyPain = ({ question, setQuestion }) => {
     } catch (error) {
       setLoading(false);
       toast.error("Er is iets misgegaan bij het opslaan van je antwoord.");
-      console.error(error);
+      // console.error(error);
     }
     setQuestion(null);
   }

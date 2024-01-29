@@ -30,3 +30,15 @@
   font-size: var(--h6);
   color: var(--grey-400);
 }
+
+@media (max-width: 1024px) {
+  .questions {
+    margin-top: 0;
+    padding-bottom: 3rem;
+  }
+
+  .question {
+    gap: 1rem;
+  }
+}
+

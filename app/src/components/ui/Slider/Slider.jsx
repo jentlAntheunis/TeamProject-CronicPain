@@ -1,6 +1,5 @@
 import { capitalize, spaceToBreak } from "../../../core/utils/formatText";
 import styles from "./Slider.module.css";
-import { useState } from "react";
 
 const Slider = ({ max, value, setValue, minLabel, maxLabel }) => {
   const markers = Array.from(Array(max + 1).keys());

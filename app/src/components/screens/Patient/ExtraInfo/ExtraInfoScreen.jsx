@@ -24,7 +24,7 @@ const ExtraInfoScreen = () => {
           <li>Thibault Feraux - Student AI Engineer</li>
           <li>Lien De Jong - Student AI Engineer</li>
           <li>Juul Van de Velde - Student Next Web Developer</li>
-          <li>Jentl Antheunis - Student Smart XR Develop</li>
+          <li>Jentl Antheunis - Student Smart XR Developer</li>
         </ul>
         <h2 className={styles.title}>Ons project: Pebbles</h2>
         <p>

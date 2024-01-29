@@ -1,4 +1,4 @@
-import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
 import OnboardingLayout from "./auth/OnboardingLayout";
 import AuthContainer from "./auth/AuthContainer";
 import RoleContainer from "./auth/RoleContainer";

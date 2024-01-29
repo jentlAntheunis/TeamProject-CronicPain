@@ -51,12 +51,18 @@
   padding: 0;
 }
 
+.addBtnMobile {
+  position: fixed;
+  bottom: 2.5rem;
+  width: calc(100% - 2 * var(--margin-side));
+}
+
 .modalText {
   font-size: var(--h6);
   margin-bottom: 2rem;
 }
 
-.modalButtons{
+.modalButtons {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;

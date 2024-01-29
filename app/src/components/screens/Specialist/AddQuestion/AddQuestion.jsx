@@ -108,7 +108,7 @@ const AddQuestion = () => {
       setLoading(false);
       navigate(SpecialistRoutes.QuestionsOverview);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       toast.error("Er ging iets mis. Probeer het opnieuw.");
       setLoading(false);
     }
@@ -123,7 +123,9 @@ const AddQuestion = () => {
 
   return (
     <ScrollableScreen className={styles.screenContainer}>
-      <NavBar />
+      <div className="desktop-only">
+        <NavBar />
+      </div>
       <div className="container">
         <div className={styles.header}>
           <PageHeading backLink={SpecialistRoutes.QuestionsOverview}>
@@ -194,7 +196,9 @@ const AddQuestion = () => {
               <FormMessage />
             </FormItem>
           </div>
-          <div className={`mobile-only ${styles.removePadding}`}>
+          <div
+            className={`mobile-only ${styles.removePadding} ${styles.addBtnMobile}`}
+          >
             <Button
               type="submit"
               size="full"

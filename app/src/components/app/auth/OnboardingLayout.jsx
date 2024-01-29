@@ -37,7 +37,7 @@ const OnboardingLayout = () => {
         setLoginLoading(false);
         setError(false);
       } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
         setLoginLoading(false);
         setError(true);
       }

@@ -7,13 +7,12 @@ import styles from "./TopBar.module.css";
 import {
   DotsThreeVertical,
   SignOut,
-  Scroll,
   Info,
 } from "@phosphor-icons/react";
 import Modal from "../Modal/Modal.jsx";
 import Button from "../Button/Button.jsx";
 import { useAuthContext } from "../../app/auth/AuthProvider.jsx";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { PatientRoutes } from "../../../core/config/routes.js";
 
 const TopBar = ({ coins, streak }) => {

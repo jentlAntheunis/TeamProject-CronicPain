@@ -4,7 +4,9 @@ import NavBar from "../../../ui/NavBar/NavBar";
 import PageHeading from "../../../ui/PageHeading/PageHeading";
 import { SpecialistRoutes } from "../../../../core/config/routes";
 import styles from "./PatientDetails.module.css";
-import MovingInfluenceCard, { MovingInfluenceCardSkeleton } from "../../../ui/MovingInfluenceCard/MovingInfluenceCard";
+import MovingInfluenceCard, {
+  MovingInfluenceCardSkeleton,
+} from "../../../ui/MovingInfluenceCard/MovingInfluenceCard";
 import Graph, { GraphSkeleton } from "../../../ui/Graph/Graph";
 import Button from "../../../ui/Button/Button";
 import RewardMetric from "../../../ui/RewardMetric/RewardMetric";
@@ -29,8 +31,13 @@ import {
   validatePatient,
 } from "../../../../core/utils/apiCalls";
 import { Impacts } from "../../../../core/config/impacts";
-import { fillMissingDates, fillMissingMovementDates } from "../../../../core/utils/patientDetails";
-import QuestionnaireList, { QuestionnaireListSkeleton } from "../../../app/questionnaire/QuestionnaireList/QuestionnaireList";
+import {
+  fillMissingDates,
+  fillMissingMovementDates,
+} from "../../../../core/utils/patientDetails";
+import QuestionnaireList, {
+  QuestionnaireListSkeleton,
+} from "../../../app/questionnaire/QuestionnaireList/QuestionnaireList";
 import useTitle from "../../../../core/hooks/useTitle";
 import { useUser } from "../../../app/auth/AuthProvider";
 
@@ -90,7 +97,9 @@ const PatientDetails = () => {
 
   return (
     <ScrollableScreen>
-      <NavBar />
+      <div className="desktop-only">
+        <NavBar />
+      </div>
       <div className="container">
         <PageHeading backLink={SpecialistRoutes.PatientsOverview}>
           {patientData && (

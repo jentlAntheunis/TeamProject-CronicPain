@@ -84,7 +84,7 @@ const Shop = () => {
       refetchShopData();
       refetchUserData();
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       toast.error("Er is iets misgegaan bij het kopen van de kleur.");
     }
   };
@@ -94,7 +94,7 @@ const Shop = () => {
       await activateColor(user.id, colorId);
       refetchShopData();
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       toast.error("Er is iets misgegaan bij het activeren van de kleur.");
     }
   };
@@ -113,7 +113,7 @@ const Shop = () => {
   };
 
   return (
-    <ScrollableScreen>
+    <ScrollableScreen className={styles.wrapper}>
       <Modal showModal={showModal} setShowModal={setShowModal}>
         <div className={styles.center}>
           <div className={styles.modalHeader}>

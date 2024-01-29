@@ -10,7 +10,7 @@ import useStore from "../../../../core/hooks/useStore";
 import { timeToStringValue } from "../../../../core/utils/timeData";
 import { useWakeLock } from "react-screen-wake-lock";
 import { toast } from "react-toastify";
-import { sendAnswers, storeMovement } from "../../../../core/utils/apiCalls";
+import { storeMovement } from "../../../../core/utils/apiCalls";
 import { useState } from "react";
 import { useUser } from "../../../app/auth/AuthProvider";
 import useTitle from "../../../../core/hooks/useTitle";
@@ -38,13 +38,9 @@ const TimeTracker = () => {
 const MyStopwatch = ({ setIsRunning }) => {
   // state management
   const {
-    questionaireId,
-    questionaireIndex,
-    answers,
     incrementQuestionaireIndex,
     resetCurrentQuestion,
     resetEverything,
-    removeAnswers,
   } = useStore();
   const setMovementTime = useStore((state) => state.setMovementTime);
   const [loading, setLoading] = useState(false);
@@ -59,13 +55,12 @@ const MyStopwatch = ({ setIsRunning }) => {
     isRunning,
     start,
     pause,
-    reset,
   } = useStopwatch();
   const user = useUser();
   const { isSupported, request, release } = useWakeLock({
     onRequest: () => console.info("Wake Lock was requested"),
     onRelease: () => console.info("Wake Lock was released"),
-    onError: (err) => console.error("Wake Lock request failed", err),
+    onError: () => console.error("Wake Lock request failed"),
   });
 
   // https://www.npmjs.com/package/react-timer-hook
@@ -87,7 +82,7 @@ const MyStopwatch = ({ setIsRunning }) => {
           toast.error(
             "Er ging iets mis bij het opslaan van je bewegingssessie."
           );
-          console.error(error);
+          // console.error(error);
           resetEverything();
           navigate(PatientRoutes.Dashboard);
         }

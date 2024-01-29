@@ -74,7 +74,7 @@ const AddPatient = () => {
         navigate(SpecialistRoutes.PatientsOverview);
       }
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       toast.error("Er ging iets mis. Probeer het opnieuw.");
       setLoading(false);
     }
@@ -82,10 +82,14 @@ const AddPatient = () => {
 
   return (
     <ScrollableScreen>
-      <NavBar />
+      <div className="desktop-only">
+        <NavBar />
+      </div>
       <div className="container">
         <div className={styles.header}>
-          <PageHeading backLink={SpecialistRoutes.PatientsOverview}>Patiënt toevoegen</PageHeading>
+          <PageHeading backLink={SpecialistRoutes.PatientsOverview}>
+            Patiënt toevoegen
+          </PageHeading>
           <div className="desktop-only">
             <Link to={SpecialistRoutes.AddPatientCsv}>
               <Button variant="secondary" className={styles.csvImport}>
@@ -123,7 +127,9 @@ const AddPatient = () => {
               <FormMessage />
             </FormItem>
           </div>
-          <div className={`mobile-only ${styles.removePadding}`}>
+          <div
+            className={`mobile-only ${styles.removePadding} ${styles.addBtnMobile}`}
+          >
             <Button type="submit" size="full" disabled={loading}>
               Toevoegen
             </Button>

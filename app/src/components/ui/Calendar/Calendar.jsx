@@ -1,4 +1,3 @@
-import * as React from "react";
 import { DayPicker } from "react-day-picker";
 import clsx from "clsx";
 import styles from "./Calendar.module.css";
@@ -35,9 +34,9 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }) {
         ...classNames,
       }}
       components={{
-        IconLeft: ({ ...props }) => <CaretLeft size={16} />,
+        IconLeft: () => <CaretLeft size={16} />,
 
-        IconRight: ({ ...props }) => <CaretRight size={16} />,
+        IconRight: () => <CaretRight size={16} />,
       }}
       locale={nlBE}
       {...props}
