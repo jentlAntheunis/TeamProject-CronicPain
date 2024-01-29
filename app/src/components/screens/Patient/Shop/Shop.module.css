@@ -63,7 +63,7 @@
   font-size: var(--h4);
 }
 
-.pebbles{
+.pebbles {
   margin: 0.90625rem 0;
 }
 
@@ -73,4 +73,10 @@
   align-items: center;
   width: 100%;
   gap: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .wrapper {
+    padding: 4.5rem;
+  }
 }

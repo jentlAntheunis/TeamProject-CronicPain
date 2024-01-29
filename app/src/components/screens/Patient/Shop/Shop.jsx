@@ -113,7 +113,7 @@ const Shop = () => {
   };
 
   return (
-    <ScrollableScreen>
+    <ScrollableScreen className={styles.wrapper}>
       <Modal showModal={showModal} setShowModal={setShowModal}>
         <div className={styles.center}>
           <div className={styles.modalHeader}>
