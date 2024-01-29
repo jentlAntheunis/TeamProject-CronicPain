@@ -60,17 +60,19 @@
 }
 
 @media (max-width: 400px) {
-  .titleAndSearchContainer{
+  .titleAndSearchContainer {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
   }
-}
 
+  .noValue {
+    width: 100%;
+  }
+}
 
 @media (max-width: 900px) {
   .graphs {
     flex-direction: column;
   }
 }
-
