@@ -15,6 +15,7 @@ import { useUser } from "../../../app/auth/AuthProvider";
 import { toast } from "react-toastify";
 import { PebblesMoods } from "../../../../core/config/pebblesMoods";
 import useTitle from "../../../../core/hooks/useTitle";
+import clsx from "clsx";
 
 const WellDone = () => {
   // state management
@@ -31,7 +32,9 @@ const WellDone = () => {
   } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUserData(user.id),
+    refetchOnWindowFocus: false,
   });
+  const { resetEverything } = useStore();
 
   if (!userData) return;
   if (userLoading) return null;
@@ -63,13 +66,14 @@ const WellDone = () => {
     if (isLongSession) {
       navigate(PatientRoutes.Questionaire);
     } else {
+      resetEverything();
       navigate(PatientRoutes.Dashboard);
     }
   };
 
   return (
     <FullHeightScreen>
-      <div className={styles.layout}>
+      <div className={clsx(styles.layout, "container")}>
         <div>
           <Avatar color={userData.data.avatar.color.hex} mood={pebblesMood} />
           <div className={styles.textContainer}>

@@ -49,3 +49,15 @@
 .modalText {
   font-size: var(--h6);
 }
+
+@media (min-width: 1024px) {
+  .graphs {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .wrapper {
+    padding-top: 5rem;
+  }
+}
+

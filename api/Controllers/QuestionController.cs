@@ -170,5 +170,27 @@ public class QuestionController : ControllerBase
       }
     }
 
+    [HttpDelete("deletequestion/{id}")]
+    public async Task<IActionResult> DeleteQuestion(Guid id)
+    {
+        try
+        {
+            var existingQuestion = await _questionRepository.GetQuestionByIdAsync(id);
+            if (existingQuestion == null)
+            {
+                return NotFound($"Question with ID {id} not found.");
+            }
+
+            await _questionRepository.DeleteQuestionAsync(existingQuestion);
+
+            return Ok($"Question with ID {id} deleted successfully.");
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error.");
+        }
+    }
+
+
 
 }

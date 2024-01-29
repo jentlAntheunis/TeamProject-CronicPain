@@ -38,6 +38,7 @@ const Progress = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUserData(user.id),
+    refetchOnWindowFocus: false,
   });
   const { data: impactData } = useQuery({
     queryKey: ["impact", user.id],
@@ -60,7 +61,7 @@ const Progress = () => {
   }
 
   return (
-    <ScrollableScreen>
+    <ScrollableScreen className={styles.wrapper}>
       <Modal showModal={showModal} setShowModal={setShowModal}>
         <div className={styles.modalContainer}>
           <div className={styles.modalHeader}>
@@ -116,33 +117,36 @@ const Progress = () => {
           </>
         )}
       </div>
-      {movementData && painData ? (
-        <>
-          <Graph
-            variant={"bar"}
-            title="Duur bewegingssessies voorbije week"
-            data={fillMissingMovementDates(movementData.data.days)}
-            tooltip="Deze grafiek geeft de duur van de bewegingssessies weer per dag van de week uitgedrukt in minuten."
-            className={styles.graph}
-            setShowModal={setShowModal}
-            setModalContent={setModalContent}
-          ></Graph>
-          <Graph
-            variant={"line"}
-            title={"Pijn ervaring voorbije maand"}
-            data={fillMissingDates(painData.data.days)}
-            tooltip="Deze grafiek geeft de pijnervaring weer op een schaal van 0 tot 10."
-            className={clsx(styles.graph, styles.lastGraph)}
-            setShowModal={setShowModal}
-            setModalContent={setModalContent}
-          ></Graph>
-        </>
-      ) : (
-        <>
-          <GraphSkeleton className={styles.graph} />
-          <GraphSkeleton className={clsx(styles.graph, styles.lastGraph)} />
-        </>
-      )}
+      <div className={styles.graphs}>
+        {movementData && painData ? (
+          <>
+            <Graph
+              variant={"bar"}
+              title="Duur bewegingssessies voorbije week"
+              data={fillMissingMovementDates(movementData.data.days)}
+              tooltip="Deze grafiek geeft de duur van de bewegingssessies weer per dag van de week uitgedrukt in minuten."
+              className={styles.graph}
+              setShowModal={setShowModal}
+              setModalContent={setModalContent}
+            ></Graph>
+            <Graph
+              variant={"line"}
+              title={"Pijn ervaring voorbije maand"}
+              data={fillMissingDates(painData.data.days)}
+              tooltip="Deze grafiek geeft de pijnervaring weer op een schaal van 0 tot 10."
+              className={clsx(styles.graph, styles.lastGraph)}
+              setShowModal={setShowModal}
+              setModalContent={setModalContent}
+            ></Graph>
+          </>
+        ) : (
+          <>
+            <GraphSkeleton className={styles.graph} />
+            <GraphSkeleton className={clsx(styles.graph, styles.lastGraph)} />
+          </>
+        )}
+
+      </div>
       <TabBarNav />
     </ScrollableScreen>
   );

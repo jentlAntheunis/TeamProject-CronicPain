@@ -25,6 +25,7 @@ const StreaksScreen = () => {
   } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUserData(user.id),
+    refetchOnWindowFocus: false,
   });
 
   const {
@@ -34,6 +35,7 @@ const StreaksScreen = () => {
   } = useQuery({
     queryKey: ["streak"],
     queryFn: () => getStreakHistory(user.id),
+    refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
@@ -77,7 +79,9 @@ const StreaksScreen = () => {
             <div>{userData.data.streak}</div>
             <Streaks size={50} />
           </div>
-          <div className={styles.streaksText}>dagen op een rij!</div>
+          <div className={styles.streaksText}>
+            {userData.data.streak === 1 ? "dag" : "dagen"} op een rij!
+          </div>
         </div>
         <div className={styles.stats}>
           <div className={styles.weekdays}>

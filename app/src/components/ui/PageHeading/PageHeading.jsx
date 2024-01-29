@@ -1,9 +1,10 @@
 import styles from "./PageHeading.module.css";
 import { ArrowLeft } from "@phosphor-icons/react";
+import clsx from "clsx";
 import { Link } from "react-router-dom";
 
-const PageHeading = ({ backLink, onBack, children }) => (
-  <div className={styles.pageHeading}>
+const PageHeading = ({ backLink, onBack, children, className }) => (
+  <div className={clsx(styles.pageHeading, className)}>
     {(backLink || onBack) && (
       <Link
         to={backLink}

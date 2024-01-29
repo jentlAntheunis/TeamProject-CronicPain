@@ -159,30 +159,40 @@ public class PatientService : IPatientService
 
   public async Task<string> GetPebblesMoodAsync(Guid patientId)
   {
-    var patient = await _patientRepository.GetPatientByIdAsync(patientId);
-    if (patient == null)
-      throw new Exception("Patient does not exist");
-    if (patient.Streak >= 3) return "HAPPY";
+      var patient = await _patientRepository.GetPatientByIdAsync(patientId);
+      if (patient == null)
+          throw new Exception("Patient does not exist");
 
-    var logins = await _loginRepository.GetLoginsByUserAsync(patientId);
-    var firstLogin = logins.OrderBy(l => l.Timestamp).FirstOrDefault();
-    var isNewPatient = firstLogin.Timestamp > DateTime.Now.AddDays(-3);
+      if (patient.Streak >= 3) return "HAPPY";
 
-    var questionnaires = await _questionnaireRepository.GetQuestionnairesByPatientIdAsync(patientId);
-    var questionnairesByDate = questionnaires
-        .Where(q => q.Date.HasValue)
-        .GroupBy(q => q.Date.Value.Date)
-        .Select(g => g.First())
-        .ToList();
-    if (!isNewPatient)
-    {
-      if (questionnairesByDate.Count >= 3) return "HAPPY";
-      if (questionnairesByDate.Count >= 1) return "NEUTRAL";
-      return "SAD";
-    }
-    if (questionnairesByDate.Count >= 1) return "HAPPY";
-    return "NEUTRAL";
+      var logins = await _loginRepository.GetLoginsByUserAsync(patientId);
+      var firstLogin = logins.OrderBy(l => l.Timestamp).FirstOrDefault();
+      var isNewPatient = firstLogin?.Timestamp > DateTime.Now.AddDays(-3);
+
+      var painQuestionnaires = await _questionnaireRepository.GetQuestionnairesByCategoryAsync("pijn");
+      var painQuestionnaireIds = new HashSet<Guid>(painQuestionnaires.Select(q => q.Id));
+
+      var questionnaires = await _questionnaireRepository.GetQuestionnairesByPatientIdAsync(patientId);
+      var nonPainQuestionnaires = questionnaires
+          .Where(q => !painQuestionnaireIds.Contains(q.Id))
+          .ToList();
+
+      var questionnairesByDate = nonPainQuestionnaires
+          .Where(q => q.Date.HasValue)
+          .GroupBy(q => q.Date.Value.Date)
+          .Select(g => g.First())
+          .ToList();
+
+      if (!isNewPatient)
+      {
+          if (questionnairesByDate.Count >= 3) return "HAPPY";
+          if (questionnairesByDate.Count >= 1) return "NEUTRAL";
+          return "SAD";
+      }
+      if (questionnairesByDate.Count >= 1) return "HAPPY";
+      return "NEUTRAL";
   }
+
 
   public async Task AddCoinsAsync(Guid patientId, int amount)
   {
@@ -241,74 +251,35 @@ public class PatientService : IPatientService
 
   public async Task<IntOverDaysDTO> GetStreakHistoryAsync(Guid patientId)
   {
-    var patient = await _patientRepository.GetPatientByIdAsync(patientId);
-    if (patient == null)
-      throw new Exception("Patient does not exist");
-    var questionnaires = await _questionnaireRepository.GetQuestionnairesByPatientIdAsync(patientId);
-    var IntOverDaysDTO = new IntOverDaysDTO
-    {
-      Days = questionnaires
-            .Where(q => q.Date.HasValue && q.Date.Value.Date >= DateTime.Now.AddDays(-7).Date)
-            .GroupBy(q => q.Date.Value.Date)
-            .Select(g => new DayTDO
-            {
-              Date = g.Key,
-              Int = g.Count()
-            })
-            .ToList()
-    };
-    return IntOverDaysDTO;
+      var patient = await _patientRepository.GetPatientByIdAsync(patientId);
+      if (patient == null)
+          throw new Exception("Patient does not exist");
+
+      var bonusQuestionnaires = await _questionnaireRepository.GetQuestionnairesByCategoryAsync("bonus");
+      var bewegingQuestionnaires = await _questionnaireRepository.GetQuestionnairesByCategoryAsync("beweging");
+
+      // Combine the IDs into a HashSet for efficient lookup
+      var includedQuestionnaireIds = new HashSet<Guid>(bonusQuestionnaires.Select(q => q.Id).Concat(bewegingQuestionnaires.Select(q => q.Id)));
+
+      var questionnaires = await _questionnaireRepository.GetQuestionnairesByPatientIdAsync(patientId);
+      var filteredQuestionnaires = questionnaires
+          .Where(q => includedQuestionnaireIds.Contains(q.Id) && q.Date.HasValue && q.Date.Value.Date >= DateTime.Now.AddDays(-7).Date)
+          .ToList();
+
+      var IntOverDaysDTO = new IntOverDaysDTO
+      {
+          Days = filteredQuestionnaires
+              .GroupBy(q => q.Date.Value.Date)
+              .Select(g => new DayTDO
+              {
+                  Date = g.Key,
+                  Int = g.Count()
+              })
+              .ToList()
+      };
+
+      return IntOverDaysDTO;
   }
-  /*
-    public async Task<IntOverDaysDTO> GetPainHistoryAsync(Guid patientId)
-    {
-        var categoryName = "pijn";
-        var questionnaires = await _questionnaireRepository.GetQuestionnairesByCategoryAsync(categoryName);
-
-        // Filter questionnaires for the specific patient and date range
-        questionnaires = questionnaires
-            .Where(q => q.PatientId == patientId && q.Date.HasValue && q.Date.Value.Date >= DateTime.Now.AddDays(-30).Date)
-            .OrderBy(q => q.Date)
-            .ToList();
-
-        var intOverDaysDTO = new IntOverDaysDTO
-        {
-            Days = new List<DayTDO>()
-        };
-
-        foreach (var questionnaire in questionnaires)
-        {
-            if (!questionnaire.Date.HasValue) continue; // Skip if no date is set
-
-            var dayTDO = new DayTDO
-            {
-                Date = questionnaire.Date.Value.Date,
-                Int = 0 // Initialize to 0
-            };
-
-            foreach (var question in questionnaire.Questions)
-            {
-                var answer = question.Answers.FirstOrDefault();
-                if (answer != null)
-                {
-                    if (int.TryParse(answer.Position, out int painIntensity))
-                    {
-                        // Assuming 'option.Position' holds the pain intensity (int)
-                        // Since there's only one questionnaire per day, we take the first valid answer
-                        dayTDO.Int = painIntensity;
-                        break;
-                    }
-                }
-            }
-
-            intOverDaysDTO.Days.Add(dayTDO);
-        }
-
-        return intOverDaysDTO;
-    }
-    */
-
-
 
 
 

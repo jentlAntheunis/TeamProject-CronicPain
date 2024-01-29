@@ -21,6 +21,7 @@ import { useUser } from "../../../app/auth/AuthProvider";
 import { toast } from "react-toastify";
 import useTitle from "../../../../core/hooks/useTitle";
 import { useQuery } from "@tanstack/react-query";
+import clsx from "clsx";
 
 const QuestionaireScreen = () => {
   // States
@@ -142,7 +143,7 @@ const QuestionaireScreen = () => {
 
   return (
     <FullHeightScreen>
-      <div className={styles.container}>
+      <div className={clsx(styles.container, "container")}>
         <div>
           <QuestionTopBar
             questionNumber={currentQuestion + 1}

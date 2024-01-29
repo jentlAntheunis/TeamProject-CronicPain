@@ -35,6 +35,7 @@ const Shop = () => {
   } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUserData(user.id),
+    refetchOnWindowFocus: false,
   });
 
   const {
@@ -44,6 +45,7 @@ const Shop = () => {
   } = useQuery({
     queryKey: ["shop"],
     queryFn: () => getShopItems(user.id),
+    refetchOnWindowFocus: false,
   });
 
   const { data: moodData, isError: moodError } = useQuery({
@@ -166,62 +168,64 @@ const Shop = () => {
           </div>
         )}
       </Modal>
-      <TopBar coins={userData.data.coins} streak={userData.data.streak} />
-      <div className={styles.center}>
-        <Pebbles
-          size="13.75rem"
-          shieldColor={shopData.data.find((item) => item.active)?.hex}
-          className={styles.pebbles}
-          mood={moodData.data}
-        />
-        <div className={styles.shopItems}>
-          {shopData.data.map((item) => (
-            <div className={styles.shopItem} key={item.id}>
-              <div
-                className={styles.colorCard}
-                style={{ backgroundColor: item.hex }}
-              ></div>
-              <div className={styles.colorName}>
-                {item.name.replace(" (Default)", "")}
+      <div className="container">
+        <TopBar coins={userData.data.coins} streak={userData.data.streak} />
+        <div className={styles.center}>
+          <Pebbles
+            size="13.75rem"
+            shieldColor={shopData.data.find((item) => item.active)?.hex}
+            className={styles.pebbles}
+            mood={moodData.data}
+          />
+          <div className={styles.shopItems}>
+            {shopData.data.map((item) => (
+              <div className={styles.shopItem} key={item.id}>
+                <div
+                  className={styles.colorCard}
+                  style={{ backgroundColor: item.hex }}
+                ></div>
+                <div className={styles.colorName}>
+                  {item.name.replace(" (Default)", "")}
+                </div>
+                {item.owned ? (
+                  <Button
+                    size="shop"
+                    variants="shop"
+                    disabled={item.active}
+                    onClick={() =>
+                      handleClickShopItem({
+                        id: item.id,
+                        colorName: item.name,
+                        hex: item.hex,
+                        owned: item.owned,
+                        active: item.active,
+                      })
+                    }
+                  >
+                    {item.active ? "Actief" : "Gebruik"}
+                  </Button>
+                ) : (
+                  <Button
+                    size="shop"
+                    variants="shop"
+                    onClick={() =>
+                      handleClickShopItem({
+                        id: item.id,
+                        colorName: item.name,
+                        price: item.price,
+                        hex: item.hex,
+                        owned: item.owned,
+                        active: item.active,
+                      })
+                    }
+                  >
+                    <Coin size={18} />
+                    {item.price}
+                  </Button>
+                )}
               </div>
-              {item.owned ? (
-                <Button
-                  size="shop"
-                  variants="shop"
-                  disabled={item.active}
-                  onClick={() =>
-                    handleClickShopItem({
-                      id: item.id,
-                      colorName: item.name,
-                      hex: item.hex,
-                      owned: item.owned,
-                      active: item.active,
-                    })
-                  }
-                >
-                  {item.active ? "Actief" : "Gebruik"}
-                </Button>
-              ) : (
-                <Button
-                  size="shop"
-                  variants="shop"
-                  onClick={() =>
-                    handleClickShopItem({
-                      id: item.id,
-                      colorName: item.name,
-                      price: item.price,
-                      hex: item.hex,
-                      owned: item.owned,
-                      active: item.active,
-                    })
-                  }
-                >
-                  <Coin size={18} />
-                  {item.price}
-                </Button>
-              )}
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
       <TabBarNav />

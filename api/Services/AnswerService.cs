@@ -137,8 +137,16 @@ public class AnswerService : IAnswerService
     {
         var questionnaireIds = await _questionnaireRepository.GetQuestionnaireIdsByUserId(userId);
 
+        var painQuestionnaires = await _questionnaireRepository.GetQuestionnairesByCategoryAsync("pijn");
+        var bonusQuestionnaires = await _questionnaireRepository.GetQuestionnairesByCategoryAsync("bonus");
+
+        // Combine the IDs into a HashSet for efficient lookup
+        var excludedQuestionnaireIds = new HashSet<Guid>(painQuestionnaires.Select(q => q.Id).Concat(bonusQuestionnaires.Select(q => q.Id)));
+
+        var filteredQuestionnaireIds = questionnaireIds.Where(id => !excludedQuestionnaireIds.Contains(id)).ToList();
+
         var impacts = new Dictionary<Guid, string>();
-        foreach (var questionnaireId in questionnaireIds)
+        foreach (var questionnaireId in filteredQuestionnaireIds)
         {
             var questionnaire = await _questionnaireRepository.GetQuestionnaireByIdAsync(questionnaireId);
 
@@ -152,6 +160,7 @@ public class AnswerService : IAnswerService
 
         return impacts;
     }
+
 
 
 

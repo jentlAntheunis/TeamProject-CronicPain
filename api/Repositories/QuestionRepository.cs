@@ -22,7 +22,11 @@ public class QuestionRepository : IQuestionRepository
         _context = context;
     }
 
-    public async Task<List<Question>> GetAllQuestionsAsync() => await _context.Question.ToListAsync();
+    public async Task<List<Question>> GetAllQuestionsAsync() =>
+    await _context.Question
+        .Where(q => !q.IsDeleted)
+        .OrderBy(q => q.Content) 
+        .ToListAsync();
 
     public async Task<Question> GetQuestionByIdAsync(Guid id) => await _context.Question.FirstOrDefaultAsync(q => q.Id == id);
 
@@ -42,13 +46,9 @@ public class QuestionRepository : IQuestionRepository
 
     public async Task DeleteQuestionAsync(Question question)
     {
-        var answers = await _context.Answer.Where(a => a.QuestionId == question.Id).ToListAsync();
-        if (answers.Count > 0)
-        {
-            _context.Answer.RemoveRange(answers);
-        }
-
-        _context.Question.Remove(question);
+        question.IsDeleted = true;
+        question.DeletedAt = DateTimeOffset.UtcNow;
+        _context.Question.Update(question);
         await _context.SaveChangesAsync();
     }
 

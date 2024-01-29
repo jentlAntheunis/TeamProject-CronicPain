@@ -21,6 +21,7 @@ import {
   editQuestion,
   getCategories,
   getScales,
+  removeQuestion,
 } from "../../../../core/utils/apiCalls";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -32,6 +33,8 @@ import { useUser } from "../../../app/auth/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import useTitle from "../../../../core/hooks/useTitle";
 import { useFormContext } from "react-hook-form";
+import Modal from "../../../ui/Modal/Modal";
+import clsx from "clsx";
 
 const formSchema = z.object({
   content: z.string().min(5, { message: "Vraag is te kort" }),
@@ -42,6 +45,7 @@ const formSchema = z.object({
 const AddQuestion = () => {
   const [loading, setLoading] = useState(false);
   const [formValues, setFormValues] = useState({});
+  const [showModal, setShowModal] = useState(false);
 
   const { state } = useLocation();
   const user = useUser();
@@ -64,11 +68,13 @@ const AddQuestion = () => {
   const { data: scaleData, isError: scaleError } = useQuery({
     queryKey: ["scale"],
     queryFn: () => getScales(),
+    refetchOnWindowFocus: false,
   });
 
   const { data: categoryData, isError: categoryError } = useQuery({
     queryKey: ["category"],
     queryFn: () => getCategories(),
+    refetchOnWindowFocus: false,
   });
 
   let defaultValues = {
@@ -125,7 +131,18 @@ const AddQuestion = () => {
           <PageHeading backLink={SpecialistRoutes.QuestionsOverview}>
             {state ? "Vraag aanpassen" : "Vraag toevoegen"}
           </PageHeading>
-          {!state && (
+          {state ? (
+            <div className="desktop-only">
+              <Button
+                variant="secondary"
+                size="small"
+                className={styles.secondaryDeleteBtn}
+                onClick={() => setShowModal(true)}
+              >
+                Verwijder
+              </Button>
+            </div>
+          ) : (
             <div className="desktop-only">
               <Link to={SpecialistRoutes.AddQuestionCsv}>
                 <Button variant="secondary" className={styles.csvImport}>
@@ -207,7 +224,45 @@ const AddQuestion = () => {
           </div>
         </Form>
       </div>
+      {state && (
+        <DeleteModal showModal={showModal} setShowModal={setShowModal} questionId={state.id} />
+      )}
     </ScrollableScreen>
+  );
+};
+
+const DeleteModal = ({ showModal, setShowModal, questionId }) => {
+  const navigate = useNavigate();
+
+  const { mutate, isLoading, isError } = useMutation({
+    mutationFn: () => removeQuestion(questionId),
+    onSuccess: () => navigate(SpecialistRoutes.QuestionsOverview),
+  });
+
+  if (isError) {
+    toast.error("Er is iets misgegaan bij het verwijderen van de vraag.");
+    return null;
+  }
+
+  return (
+    <Modal showModal={showModal} setShowModal={setShowModal}>
+      <div className={styles.modalText}>
+        Weet je zeker dat je deze vraag wilt verwijderen?
+      </div>
+      <div className={styles.modalButtons}>
+        <Button
+          variant="tertiary"
+          size="small"
+          className="btn-reset"
+          onClick={() => setShowModal(false)}
+        >
+          Annuleren
+        </Button>
+        <Button size="small" disabled={isLoading} className={clsx("btn-reset", styles.deleteBtn)} onClick={mutate}>
+          Verwijder
+        </Button>
+      </div>
+    </Modal>
   );
 };
 
