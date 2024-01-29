@@ -23,7 +23,10 @@ public class QuestionRepository : IQuestionRepository
     }
 
     public async Task<List<Question>> GetAllQuestionsAsync() =>
-        await _context.Question.Where(q => !q.IsDeleted).ToListAsync();
+    await _context.Question
+        .Where(q => !q.IsDeleted)
+        .OrderBy(q => q.Content) 
+        .ToListAsync();
 
     public async Task<Question> GetQuestionByIdAsync(Guid id) => await _context.Question.FirstOrDefaultAsync(q => q.Id == id);
 
