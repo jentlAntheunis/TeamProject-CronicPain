@@ -1,6 +1,5 @@
 import Button from "../Button/Button";
 import Modal from "../Modal/Modal";
-import { X } from "@phosphor-icons/react";
 import styles from "./DailyPain.module.css";
 import Slider from "../Slider/Slider";
 

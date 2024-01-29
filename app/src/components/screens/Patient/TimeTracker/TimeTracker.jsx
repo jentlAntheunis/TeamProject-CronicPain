@@ -10,7 +10,7 @@ import useStore from "../../../../core/hooks/useStore";
 import { timeToStringValue } from "../../../../core/utils/timeData";
 import { useWakeLock } from "react-screen-wake-lock";
 import { toast } from "react-toastify";
-import { sendAnswers, storeMovement } from "../../../../core/utils/apiCalls";
+import { storeMovement } from "../../../../core/utils/apiCalls";
 import { useState } from "react";
 import { useUser } from "../../../app/auth/AuthProvider";
 import useTitle from "../../../../core/hooks/useTitle";
@@ -32,13 +32,9 @@ const TimeTracker = () => {
 const MyStopwatch = () => {
   // state management
   const {
-    questionaireId,
-    questionaireIndex,
-    answers,
     incrementQuestionaireIndex,
     resetCurrentQuestion,
     resetEverything,
-    removeAnswers,
   } = useStore();
   const setMovementTime = useStore((state) => state.setMovementTime);
   const [loading, setLoading] = useState(false);
@@ -53,7 +49,6 @@ const MyStopwatch = () => {
     isRunning,
     start,
     pause,
-    reset,
   } = useStopwatch();
   const user = useUser();
   const { isSupported, request, release } = useWakeLock({

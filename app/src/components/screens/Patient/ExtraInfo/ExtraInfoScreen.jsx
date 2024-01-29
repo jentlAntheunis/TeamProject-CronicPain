@@ -12,7 +12,7 @@ const ExtraInfoScreen = () => {
       <PageHeading onBack={() => navigate(-1)}>Extra informatie</PageHeading>
       <h2 className={styles.title}>Over ons</h2>
       <p>
-        Welkom op de "Extra Info" pagina van ons project! Wij zijn een
+        Welkom op de &quot;Extra Info&quot; pagina van ons project! Wij zijn een
         gepassioneerd groepje MCT-studenten, gevestigd in België. Voor het vak
         Team Project hebben we de opdracht gekregen om een innovatieve
         applicatie te ontwikkelen die specifiek is ontworpen voor chronische
@@ -23,7 +23,7 @@ const ExtraInfoScreen = () => {
         <li>Thibault Feraux - Student AI Engineer</li>
         <li>Lien De Jong - Student AI Engineer</li>
         <li>Juul Van de Velde - Student Next Web Developer</li>
-        <li>Jentl Antheunis - Student Smart XR Develop</li>
+        <li>Jentl Antheunis - Student Smart XR Developer</li>
       </ul>
       <h2 className={styles.title}>Ons project: Pebbles</h2>
       <p>

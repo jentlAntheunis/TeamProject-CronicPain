@@ -42,7 +42,7 @@ const NavBar = () => {
             <>
               <div className={styles.navBarSpacer}></div>
               <div className={styles.navBarSpecialist}>
-                {user.firstName + " " + user.lastName}
+                {user.lastName + " " + user.firstName}
               </div>
             </>
           )}

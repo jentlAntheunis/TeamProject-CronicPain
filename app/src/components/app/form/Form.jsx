@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, FormProvider, Controller } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import styling from "./Form.module.css";
 import { createContext, forwardRef, useId } from "react";
 import clsx from "clsx";

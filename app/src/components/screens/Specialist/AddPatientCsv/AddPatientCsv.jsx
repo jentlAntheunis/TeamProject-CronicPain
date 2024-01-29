@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SpecialistRoutes } from "../../../../core/config/routes";
 import {
   Form,
