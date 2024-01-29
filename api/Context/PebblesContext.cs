@@ -167,7 +167,7 @@ public class PebblesContext : DbContext
             new Color("Paars", "#AF3BF6", 50),
             new Color("Roze", "#F14DD7", 500),
             new Color("Oranje", "#F7990C", 100),
-            new Color("Goud", "#F8D101", 950),
+            new Color("Goud", "#F8D101", 950)
         );
     }
 }

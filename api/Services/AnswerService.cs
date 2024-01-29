@@ -136,9 +136,13 @@ public class AnswerService : IAnswerService
     public async Task<Dictionary<Guid, string>> GetQuestionnaireImpactsByUserId(Guid userId)
     {
         var questionnaireIds = await _questionnaireRepository.GetQuestionnaireIdsByUserId(userId);
+        var painQuestionnaires = await _questionnaireRepository.GetQuestionnairesByCategoryAsync("pain");
+
+        var painQuestionnaireIds = new HashSet<Guid>(painQuestionnaires.Select(q => q.Id));
+        var filteredQuestionnaireIds = questionnaireIds.Where(id => !painQuestionnaireIds.Contains(id)).ToList();
 
         var impacts = new Dictionary<Guid, string>();
-        foreach (var questionnaireId in questionnaireIds)
+        foreach (var questionnaireId in filteredQuestionnaireIds)
         {
             var questionnaire = await _questionnaireRepository.GetQuestionnaireByIdAsync(questionnaireId);
 
