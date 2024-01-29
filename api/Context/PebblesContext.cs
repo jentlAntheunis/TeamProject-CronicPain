@@ -20,6 +20,9 @@ public class PebblesContext : DbContext
     public DbSet<Questionnaire> Questionnaire { get; set; }
     public DbSet<Scale> Scale { get; set; }
     public DbSet<User> User { get; set; }
+    public DbSet<Login> Login { get; set; }
+    public DbSet<QuestionnaireQuestion> QuestionnaireQuestion { get; set; }
+    public DbSet<MovementSession> MovementSession { get; set; }
 
     private readonly IConfiguration _configuration;
 
@@ -30,26 +33,31 @@ public class PebblesContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(_configuration.GetConnectionString("PebblesDB"));
+        optionsBuilder
+            // .UseSqlServer(_configuration.GetConnectionString("PebblesDB"))
+            .UseSqlServer(_configuration.GetConnectionString("PebblesDB"))
+            .AddInterceptors(new SoftDeleteInterceptor());
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AnonymousPatientData>().HasNoKey();
-        
+
         modelBuilder.Entity<Purchase>()
             .HasKey(p => new { p.PatientId, p.ColorId });
-        
+
         modelBuilder.Entity<PatientSpecialist>()
             .HasKey(ps => new { ps.PatientId, ps.SpecialistId });
 
-        //relations between tables
+        modelBuilder.Entity<QuestionnaireQuestion>()
+            .HasKey(qq => new { qq.QuestionnaireId, qq.QuestionId });
 
+        //relations between tables
         modelBuilder.Entity<Specialist>()
             .HasMany(s => s.Patients)
             .WithMany(p => p.Specialists)
             .UsingEntity<PatientSpecialist>();
-            
+
         modelBuilder.Entity<Patient>()
             .HasMany(p => p.Colors)
             .WithMany(c => c.Patients)
@@ -83,15 +91,11 @@ public class PebblesContext : DbContext
             .HasForeignKey(q => q.PatientId)
             .OnDelete(DeleteBehavior.NoAction);
         modelBuilder.Entity<Questionnaire>()
-            .HasOne(q => q.Specialist)
-            .WithMany(s => s.Questionnaires)
-            .HasForeignKey(q => q.SpecialistId)
-            .OnDelete(DeleteBehavior.NoAction);
-        modelBuilder.Entity<Questionnaire>()
             .HasMany(q => q.Questions)
-            .WithOne(a => a.Questionnaire)
-            .HasForeignKey(a => a.QuestionnaireId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .WithMany(a => a.Questionnaires)
+            .UsingEntity<QuestionnaireQuestion>();
+
+
 
         modelBuilder.Entity<Question>()
             .HasOne(q => q.Category)
@@ -115,6 +119,11 @@ public class PebblesContext : DbContext
             .HasForeignKey(a => a.OptionId)
             .OnDelete(DeleteBehavior.NoAction);
 
+        modelBuilder.Entity<Answer>()
+            .Property(a => a.QuestionnaireIndex)
+            .IsRequired();
+
+
         modelBuilder.Entity<Option>()
             .HasOne(o => o.Scale)
             .WithMany(q => q.Options)
@@ -132,12 +141,33 @@ public class PebblesContext : DbContext
             .HasForeignKey(m => m.SpecialistId)
             .OnDelete(DeleteBehavior.NoAction);
 
+        modelBuilder.Entity<Login>()
+            .HasOne(l => l.User)
+            .WithMany(u => u.Logins)
+            .HasForeignKey(l => l.UserId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<MovementSession>()
+            .HasOne(m => m.Patient)
+            .WithMany(p => p.MovementSessions)
+            .HasForeignKey(m => m.PatientId)
+            .OnDelete(DeleteBehavior.NoAction);
+
         //seed data
         modelBuilder.Entity<Specialist>().HasData(
             //specialists
             new Specialist("Walter", "De Pril", "walter.de.pril@ziekenhuis.be"),
             new Specialist("Johan", "Van der Auwera", "johan.van.der.auwera@ziekenhuis.be"),
             new Specialist("Rita", "Coonincks", "rita.coonincks@ziekenhuis.be")
+        );
+
+        modelBuilder.Entity<Color>().HasData(
+            new Color("Blauw (Default)", "#3B82F6"),
+            new Color("Rood", "#F63B3B", 250),
+            new Color("Paars", "#AF3BF6", 50),
+            new Color("Roze", "#F14DD7", 500),
+            new Color("Oranje", "#F7990C", 100),
+            new Color("Goud", "#F8D101", 950)
         );
     }
 }

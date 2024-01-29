@@ -1,0 +1,47 @@
+.modal {
+  z-index: 9999;
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: overlayShow 150ms var(--animate-in);
+}
+
+.modalBackground {
+  z-index: -1;
+  position: fixed;
+  /* TODO: change background color to variable */
+  background-color: var(--bg-overlay);
+  inset: 0;
+}
+
+.modalContent {
+  background-color: var(--white);
+  border-radius: var(--border-radius-xl);
+  padding: 2rem;
+  margin: 0 var(--margin-side);
+  max-width: 30rem;
+  width: 100%;
+  animation: contentShow 150ms var(--animate-in);
+}
+
+@keyframes overlayShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: translateY(2%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

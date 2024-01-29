@@ -1,0 +1,21 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 50svh;
+  margin-top: 1rem;
+}
+
+.question {
+  font-size: var(--h4);
+}
+
+.sliderValue {
+  font-size: var(--h2);
+  text-align: center;
+  line-height: 1;
+}
+
+.button {
+  margin-top: 1.625rem;
+}

@@ -1,0 +1,21 @@
+.inputContainer {
+  position: relative;
+}
+
+.input {
+  padding-left: 2.875rem;
+  width: 25rem;
+}
+
+.icon {
+  position: absolute;
+  top: 1.125rem;
+  left: 1rem;
+  color: var(--grey-400);
+}
+
+@media (max-width: 1024px) {
+  .input {
+    width: calc(100vw - var(--margin-side) * 2);
+  }
+}

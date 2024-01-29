@@ -1,0 +1,11 @@
+.formItem > * + * {
+  margin-top: 0.25rem;
+}
+
+.form > * + * {
+  padding-top: 1rem;
+}
+
+.labelError {
+  color: var(--error);
+}

@@ -32,6 +32,12 @@
   --lime-700: #4d7c0f;
   --lime-800: #3f6212;
   --lime-900: #365314;
+  --error: #dc2626;
+  --error-500: #ef4444;
+  --error-400: #f87171;
+  --error-50: #fef2f2;
+  --transparent: #00000000;
+  --bg-overlay: rgba(0, 0, 0, 0.5);
 
   /* Font Family */
   --font-sans: "Outfit", sans-serif;
@@ -58,14 +64,24 @@
   /* Media queries */
   --phone: 600px;
   --tablet: 900px;
-  --desktop: 1200px;
-  --large-desktop: 1800px;
+  --desktop: 1024px;
+  --large-desktop: 1536px;
 
   /* Border radius */
   --border-radius: 0.5rem;
   --border-radius-sm: 0.25rem;
   --border-radius-xl: 1.375rem;
   --border-radius-2xl: 1.875rem;
+
+  /* Margins */
+  --margin-side: 1.5rem;
+  --margin-top: 4.5rem;
+  --margin-bottom: 2.5rem;
+
+  /* Bezier */
+  --animate-in: cubic-bezier(0.32, 0.94, 0.6, 1);
+  --animate-ease: cubic-bezier(0.66, 0, 0.34, 1);
+  --animate-out: cubic-bezier(0.4, 0, 0.68, 0.06);
 }
 
 html {
@@ -77,10 +93,23 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 *,
-*::before,
-*::after {
-  box-sizing: inherit;
+*:before,
+*:after {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+}
+
+body.modal-open {
+  overflow: hidden !important;
+  overscroll-behavior: contain;
+  position: relative !important;
 }
 
 ::selection {
@@ -100,30 +129,126 @@ h6 {
   line-height: 1.2;
 }
 
+button,
+input,
+textarea,
+optgroup,
+select {
+  font-family: inherit;
+}
+
+strong {
+  font-weight: var(--semi-bold);
+}
 
 /* UTILS */
 
 /* Reset button style */
 .btn-reset {
-    border: none;
-    margin: 0;
-    padding: 0;
-    width: auto;
-    overflow: visible;
-    background: transparent;
-    appearance: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  overflow: visible;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
 
-    /* inherit font & color from ancestor */
-    color: inherit;
-    font: inherit;
+  /* inherit font & color from ancestor */
+  color: inherit;
+  font: inherit;
 
-    /* Normalize `line-height`. Cannot be changed from `normal` in Firefox 4+. */
-    line-height: normal;
+  /* Normalize `line-height`. Cannot be changed from `normal` in Firefox 4+. */
+  line-height: normal;
 
-    /* Corrects font smoothing for webkit */
-    -webkit-font-smoothing: inherit;
-    -moz-osx-font-smoothing: inherit;
+  /* Corrects font smoothing for webkit */
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
 
-    /* Corrects inability to style clickable `input` types in iOS */
-    -webkit-appearance: none;
+  /* Corrects inability to style clickable `input` types in iOS */
+  -webkit-appearance: none;
+}
+
+.link-reset {
+  text-decoration: none;
+  color: inherit;
+}
+
+.full-height {
+  height: 100svh;
+  width: 100vw;
+  overflow: hidden;
+  position: fixed;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.screen-margin {
+  margin: var(--margin-top) var(--margin-side) var(--margin-bottom);
+}
+
+.screen-padding {
+  padding: var(--margin-top) var(--margin-side) var(--margin-bottom);
+}
+
+.error-message {
+  color: var(--error);
+  font-size: var(--small);
+  margin-bottom: 0;
+}
+
+/* Container class */
+.container {
+  width: 100%;
+
+  @media (min-width: 1024px) {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 1536px) {
+    max-width: 1536px;
+  }
+}
+
+.mobile-only {
+  display: inherit !important;
+}
+
+.desktop-only {
+  display: none !important;
+}
+
+@media (max-width: 1023px) {
+  body {
+    min-height: 100svh;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    .margins-desktop {
+      --margin-side: 5rem;
+      --margin-top: 10rem;
+      --margin-bottom: 0rem;
+    }
+  }
+
+  .mobile-only {
+    display: none !important;
+  }
+
+  .desktop-only {
+    display: inherit !important;
+  }
+}
+
+@media (min-width: 1536px) {
+  :root {
+    .margins-desktop {
+      --margin-side: 7.5rem;
+    }
+  }
 }

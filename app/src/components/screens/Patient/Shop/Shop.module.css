@@ -1,0 +1,82 @@
+.center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.shopItems {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 5.8125rem;
+
+  @media (min-width: 600px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (min-width: 900px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.shopItem {
+  border: 1px solid var(--grey-200);
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.colorCard {
+  width: 50%;
+  aspect-ratio: 1/1;
+  border-radius: var(--border-radius);
+}
+
+.colorName {
+  font-size: var(--h5);
+  font-weight: var(--medium);
+}
+
+.closeBtn {
+  color: var(--grey-400);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.modalTitle {
+  color: var(--grey-500);
+  font-size: var(--paragraph);
+}
+
+.modalColorTitle {
+  color: var(--black);
+  font-size: var(--h4);
+}
+
+.pebbles {
+  margin: 0.90625rem 0;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .wrapper {
+    padding: 4.5rem;
+  }
+}

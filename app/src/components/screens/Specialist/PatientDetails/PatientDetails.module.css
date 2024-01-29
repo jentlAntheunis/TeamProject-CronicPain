@@ -1,0 +1,78 @@
+.titleAndTooltipContainer {
+  font-size: var(--h5);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.h5 {
+  font-size: var(--h5);
+}
+
+.nameAndStreaksContainer {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.streaks {
+  font-size: var(--paragraph);
+}
+
+.movingInfluenceContainer {
+  margin-top: 3rem;
+}
+
+.movingInfluenceCardsContainer {
+  display: flex;
+  width: 100%;
+  height: 7.75rem;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 3rem;
+}
+
+.graphs {
+  display: flex;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+.questionnairesContainer {
+  margin-top: 3rem;
+}
+
+.titleAndSearchContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.noValue {
+  color: var(--grey-400);
+}
+
+.noQuestionnaires {
+  font-size: var(--paragraph);
+  color: var(--grey-400);
+  margin-top: 2rem;
+  text-align: center;
+}
+
+@media (max-width: 400px) {
+  .titleAndSearchContainer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .noValue {
+    width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  .graphs {
+    flex-direction: column;
+  }
+}

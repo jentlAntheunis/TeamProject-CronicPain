@@ -1,0 +1,35 @@
+.tooltip {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.tooltipIcon {
+  color: var(--grey-400);
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  background-color: var(--black);
+  color: var(--white);
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  position: absolute;
+  z-index: 1;
+  width: 150px;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -75px;
+  font-size: var(--small);
+}
+
+@media (min-width: 1024px) {
+  .tooltipIcon:hover {
+    color: var(--black);
+  }
+
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+}

@@ -1,0 +1,41 @@
+.category {
+  font-size: var(--h5);
+  margin-top: 1rem;
+}
+
+.question {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--grey-200);
+}
+
+.questionNumber {
+  font-size: var(--small);
+  color: var(--grey-400);
+  margin: 0;
+  margin-bottom: .5rem;
+}
+
+.questionText {
+  font-size: var(--h6);
+  color: var(--grey-800);
+  margin: 0;
+}
+
+.answers {
+  margin-top: .75rem;
+  display: flex;
+}
+
+.answers > * {
+  width: 15rem;
+}
+
+.answerLabel {
+  color: var(--grey-400);
+  margin: 0;
+}
+
+.answerText {
+  color: var(--grey-800);
+  margin: 0;
+}

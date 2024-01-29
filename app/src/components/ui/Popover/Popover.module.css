@@ -1,0 +1,49 @@
+.popover {
+  z-index: 50;
+  width: 18rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--grey-200);
+  background-color: var(--white);
+  padding: 1rem;
+  color: var(--black);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  outline: none;
+  opacity: 1;
+
+  /* Slide-in animations based on the side */
+  &[data-state="open"] {
+    animation: animate-in 0.15s var(--animate-in);
+  }
+
+  &[data-state="closed"] {
+    animation: animate-out 0.15s var(--animate-in);
+  }
+
+  &[data-state="closed"]:hover {
+    opacity: 0;
+  }
+}
+
+/* ANIMATIONS */
+@keyframes animate-in {
+  0% {
+    opacity: 0;
+    scale: 0.95;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes animate-out {
+  0% {
+    opacity: 1;
+    scale: 1;
+  }
+  100% {
+    opacity: 0;
+    scale: 0.95;
+  }
+}

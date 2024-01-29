@@ -1,0 +1,107 @@
+.button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  gap: 0.5rem;
+  border-radius: var(--border-radius);
+  font-weight: var(--medium);
+  background-color: var(--white);
+  padding: 0.875rem 2rem;
+  font-size: var(--h6);
+  cursor: pointer;
+}
+
+.button:disabled {
+  pointer-events: none;
+  opacity: 50%;
+}
+
+.primary {
+  background: var(--blue-500);
+  color: var(--white);
+}
+
+.primary:hover {
+  background-color: var(--blue-600);
+}
+
+.secondary {
+  background: var(--transparent);
+  color: var(--blue-500);
+  border: 2px solid var(--blue-500);
+}
+
+.secondary:hover {
+  background-color: var(--blue-50);
+}
+
+.tertiary {
+  background: var(--white);
+  color: var(--grey-700);
+  border: 1px solid var(--grey-200);
+}
+
+.tertiary:hover {
+  background-color: var(--grey-50);
+}
+
+.input {
+  background: var(--white);
+  color: var(--grey-700);
+  border: 1px solid var(--grey-200);
+  padding: 0.875rem 1.25rem;
+  justify-content: left;
+}
+
+.input:hover {
+  background-color: var(--grey-50);
+}
+
+.defaultSize {
+  width: auto;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.small {
+  font-size: var(--paragraph);
+  font-weight: var(--medium);
+  width: auto;
+}
+
+.superSmall {
+  font-size: var(--small);
+  font-weight: var(--medium);
+  width: auto;
+  padding: 0.625rem 1.25rem;
+}
+
+.square {
+  font-size: var(--small);
+  font-weight: var(--medium);
+  width: auto;
+  padding: 0.5rem;
+}
+
+.shop {
+  font-size: var(--paragraph);
+  font-weight: var(--medium);
+  width: 5.625rem;
+  padding: 0.625rem 0;
+}
+
+.shop:disabled {
+  opacity: 100%;
+  background-color: var(--grey-100);
+  color: var(--grey-700);
+}
+
+.inputSize {
+  min-width: 12rem;
+  width: auto;
+  font-size: var(--paragraph);
+  font-weight: var(--regular);
+}

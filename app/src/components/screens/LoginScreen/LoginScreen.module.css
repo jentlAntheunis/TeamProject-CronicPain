@@ -1,0 +1,125 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.titleContainer {
+  height: 20%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.titleContainer h1 {
+  font-size: var(--h1);
+  font-weight: var(--semi-bold);
+  color: var(--blue-600);
+}
+
+.titleContainer p {
+  font-size: var(--h6);
+  font-weight: var(--regular);
+}
+
+.formContainer {
+  margin-bottom: 4rem;
+}
+
+.emailInput {
+  background-color: var(--white) !important;
+}
+
+.submit {
+  margin-top: 1.625rem;
+}
+
+.success {
+  font-weight: var(--medium);
+  padding: 1rem 0;
+  background-color: var(--grey-100);
+  border-radius: var(--border-radius);
+}
+
+.pebbles {
+  z-index: -1;
+  position: absolute;
+  left: 50%;
+  bottom: 52.5%;
+  translate: -50% 50%;
+}
+
+.waterBackground {
+  z-index: -1;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  scale: -1.5 1;
+}
+
+.water {
+  background-color: #2987fb4d;
+  flex-grow: 1;
+}
+
+@media (min-width: 1024px) {
+  .titleContainer {
+    height: 10%;
+    justify-content: flex-start;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-bottom: 1px solid var(--grey-200);
+  }
+
+  .titleContainer h1 {
+    font-size: var(--h4);
+    font-weight: var(--medium);
+    margin-left: var(--margin-side);
+  }
+
+  .formContainer {
+    width: 40%;
+    max-width: 550px;
+    background-color: var(--white);
+    border-radius: var(--border-radius-xl);
+    box-shadow: 0 0 24px rgba(15, 23, 42, 0.15);
+    padding: 2.5rem;
+    margin-bottom: 0;
+    margin-right: calc(var(--margin-side) + 0.5rem);
+    position: absolute;
+    bottom: 30%;
+    right: 0;
+  }
+
+  .formTitle {
+    font-size: var(--h3);
+    text-align: center;
+    margin-bottom: 3.125rem;
+  }
+
+  .emailInput {
+    background-color: var(--grey-100) !important;
+  }
+
+  .submit {
+    margin-top: 2.5rem;
+  }
+
+  .pebbles {
+    left: 24%;
+    bottom: 41%;
+    transform: rotate(4.7deg);
+    transform-origin: 50% 50%;
+  }
+
+  .waterBackground {
+    height: 50%;
+    scale: 1.2 1;
+  }
+}
