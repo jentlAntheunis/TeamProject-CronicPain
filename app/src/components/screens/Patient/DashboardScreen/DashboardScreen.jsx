@@ -145,7 +145,7 @@ const DashboardScreen = () => {
       <DailyPain question={dailyQuestion} setQuestion={setDailyQuestion} />
       <div className={clsx(styles.screen, "container")}>
         <TopBar coins={data.data.coins} streak={data.data.streak} />
-        <Avatar color={data.data.avatar.color.hex} mood={moodData.data} />
+        <Avatar color={data.data.avatar.color.hex} mood={moodData.data} tooltipActive={true} />
         <div className={styles.btnContainer}>
           <Button
             variant="primary"
